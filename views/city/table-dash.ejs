@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>Document</title>
+    <style>
+        .table-container {
+            margin-left: 150px;
+            margin-right: 150px;
+            margin-bottom: 50px;
+            background-color: #808080;
+            /* สีเขียวตามที่คุณต้องการ */
+            padding: 20px;
+            /* ปรับค่า padding ตามที่ต้องการ */
+            border-radius: 1rem;
+            /* ปรับค่า border-radius ตามที่ต้องการ */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* เพิ่มเอฟเฟค shadow ตามที่คุณต้องการ */
+            border: 2px solid #04B2A1;
+            box-sizing: border-box;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border: none;
+            border-radius: 0px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: none;
+        }
+
+        th {
+            background-color: #04B2A1;
+        }
+
+        .citie-text {
+            color: #C2AF76;
+            /* รหัสสีของเมืองที่คุณต้องการ */
+        }
+
+        #table-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-right: 10px;
+            margin-left: 10px;
+
+        }
+
+        .image-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 5px;
+            text-align: center;
+            flex-wrap: wrap;
+            /* เพิ่ม flex-wrap เพื่อให้รับทราบว่าหากเกินขนาดจะขึ้นบรรทัดใหม่ */
+        }
+
+        .image-container {
+            /* ปรับความกว้างของแต่ละ image-container และเพิ่มระยะห่าง */
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            width: 80px;
+            border-radius: 50px;
+            border: 2px solid #04B2A1;
+            box-sizing: border-box;
+            padding: 10px;
+            margin: 10px;
+            background-color: #ffffff;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 20px;
+            /* เพิ่ม transition เพื่อทำให้เปลี่ยนสไตล์เรื่อย ๆ */
+        }
+
+        .image-container img:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #04B2A1;
+            /* เพิ่มเอฟเฟคการกรอบเรืองแสง */
+        }
+
+        .image-container h5 {
+            margin-top: 5px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .button {
+            cursor: pointer;
+            /* คุณสามารถเพิ่มสไตล์การทำงานเมื่อ hover ได้ตามต้องการ */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .percentage-tube {
+            display: flex;
+            align-items: center;
+            height: 10px;
+            /* ปรับความสูงของหลอด */
+            background-color: #04B2A1;
+            /* สีของหลอด */
+            color: white;
+            padding: 10px;
+            border-radius: 50px;
+            /* ขนาดของมุมหลอด */
+        }
+
+        .percentage-tube-1 {
+            display: flex;
+            align-items: center;
+            height: 20px;
+            /* ปรับความสูงของหลอด */
+            background-color: #ffd700;
+            /* สีของหลอด */
+            color: white;
+            padding: 5px;
+            border-radius: 50px;
+            /* ขนาดของมุมหลอด */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table-container">
+        <h2></h2>
+        <div class="image-row">
+            <div class="image-container">
+                <img src="/img/favi.png" alt="Image 0" class="button">
+                <h5>โครงสร้าง</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/s1.png" alt="Image 1" class="button">
+                <h5>Smart Environment</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/se.png" alt="Image 2" class="button">
+                <h5>Smart Energy</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/sec.png" alt="Image 3" class="button">
+                <h5>Smart Economy</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/sm.png" alt="Image 4" class="button">
+                <h5>Smart Mobility</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/sco.png" alt="Image 5" class="button">
+                <h5>Smart Governance</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/sp.png" alt="Image 6" class="button">
+                <h5>Smart People</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/sl.png" alt="Image 7" class="button">
+                <h5>Smart Living</h5>
+            </div>
+            <div class="image-container">
+                <img src="/img/all01.png" alt="Image 8" class="button">
+                <h5>All</h5>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Pencent ความสำเร็จ</th>
+                    <th>Pencent ความคืบหน้า</th>
+                    <th>รอบติดตาม 12 เดือน</th>
+                    <th>รอบติดตาม 24 เดือน</th>
+                    <th>รอบติดตามความคืบหน้าเพื่อต่อตราสัญลักษณ์</th>
+                </tr>
+            <tbody>
+                <tr>
+                    <td>โครงสร้างพื้นฐานกายภาพ</td>
+                    <td>
+                        <div class="percentage-tube" style="width: 50%;"> <!-- เปลี่ยนค่า width เป็นเปอร์เซ็นต์ที่ต้องการ -->
+                            50%
+                        </div>
+                    </td>
+                    <td>
+                        <div class="percentage-tube-1" style="width: 50%;"> <!-- เปลี่ยนค่า width เป็นเปอร์เซ็นต์ที่ต้องการ -->
+                            50%
+                        </div>
+                    </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>โครงสร้างพื้นฐานด้านดิจิตอล</td>
+                    <td>
+                        <div class="percentage-tube" style="width: 50%;"> <!-- เปลี่ยนค่า width เป็นเปอร์เซ็นต์ที่ต้องการ -->
+                            50%
+                        </div>
+                    </td>
+                    <td>
+                        <div class="percentage-tube-1" style="width: 50%;"> <!-- เปลี่ยนค่า width เป็นเปอร์เซ็นต์ที่ต้องการ -->
+                            50%
+                        </div>
+                    </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>ระบบบริหารข้อมูลเมือง City Data Platform</td>
+                    <td>
+                        <div class="percentage-tube" style="width: 50%;"> <!-- เปลี่ยนค่า width เป็นเปอร์เซ็นต์ที่ต้องการ -->
+                            50%
+                        </div>
+                    </td>
+                    <td>
+                        <div class="percentage-tube-1" style="width: 50%;"> <!-- เปลี่ยนค่า width เป็นเปอร์เซ็นต์ที่ต้องการ -->
+                            50%
+                        </div>
+                    </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageContainers = document.querySelectorAll('.image-container');
+            const tableRows = document.querySelectorAll('.table tbody tr');
+
+            imageContainers.forEach((container, index) => {
+                container.addEventListener('click', function() {
+                    // เมื่อคลิกที่รูปภาพ แสดงข้อมูลที่ต้องการในตาราง
+                    displayData(index);
+                });
+            });
+
+            function displayData(index) {
+                // รับข้อมูลที่ต้องการแสดงในตาราง ตามลำดับรูปภาพที่คลิก
+                const data = getDataForImage(index);
+
+                // แสดงข้อมูลในตาราง
+                tableRows.forEach((row, rowIndex) => {
+                    const cell = row.cells[index + 1]; // +1 เพราะตารางมีรูปภาพอยู่ที่ index 1 เป็นต้นไป
+                    cell.innerHTML = data[rowIndex];
+                });
+            }
+
+            function getDataForImage(index) {
+                // กำหนดข้อมูลที่ต้องการแสดงในตาราง ตามลำดับรูปภาพที่คลิก
+                switch (index) {
+                    case 0:
+                        return ['โครงสร้างพื้นฐานกายภาพ', '50%', '50%', '-', '-', '-'];
+                    case 1:
+                        return ['โครงสร้างพื้นฐานด้านดิจิตอล', '50%', '50%', '-', '-', '-'];
+                    case 2:
+                        return ['City Data Platform', '50%', '50%', '-', '-', '-'];
+                        // เพิ่ม case ตามลำดับได้ตามที่คุณต้องการ
+                    default:
+                        return [];
+                }
+            }
+        });
+    </script>
+
+
+
+
+
+</body>
+
+</html>

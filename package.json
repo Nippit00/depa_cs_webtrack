@@ -1,0 +1,27 @@
+{
+  "name": "depa_cs_webtrack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suthivich/depa_cs_webtrack.git"
+  },
+  "author": "suthivich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suthivich/depa_cs_webtrack/issues"
+  },
+  "homepage": "https://github.com/suthivich/depa_cs_webtrack#readme",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
