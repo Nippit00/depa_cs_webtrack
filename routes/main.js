@@ -5,6 +5,11 @@ const mainController = require('../controllers/main');
 const router = express.Router();
 
 // **************************
+// ***    Welcome Page    ***
+// **************************
+router.get('/welcome', mainController.getWelcomePage);
+
+// **************************
 // ***     Main Page      ***
 // **************************
 router.get('/', mainController.getMainPage);
