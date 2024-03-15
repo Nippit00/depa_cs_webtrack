@@ -10,6 +10,7 @@ const CityData = require("../models/cityData");
 exports.getLogin = (req, res, next) => {
   // Render the /login page
   res.render("auth/login", {
+    req, 
     pageTitle: "Authentication",
     path: "/login",
   });
