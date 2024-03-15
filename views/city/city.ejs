@@ -11,7 +11,7 @@
     <!-- Add this before closing </body> tag -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-    <title>City</title>
+    <title><%= pageTitle %></title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
         .title-container {
@@ -177,7 +177,7 @@
     </div>
 
     <div class="title-container">
-        <h1>แผน <span class="citie-text">Smart City</span></h1>
+        <h1>แผน <span class="citie-text">Smart City  e</span></h1>
     </div>
 
     <%- include('../component/menu.ejs') %>
@@ -186,28 +186,28 @@
         <div class="text-container">
             <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
             <br>
-            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b>
+            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <%= cityInfo.cityname %>
             <br>
             <br>
-            <b class="menu-text">จังหวัด :</b>
+            <b class="menu-text">จังหวัด :</b> <%= cityInfo.citydata[0].province %>
             <br>
             <br>
-            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b>
+            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <%= cityInfo.citydata[0].developer %>
             <br>
             <br>
-            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b>
+            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <%= cityInfo.citydata[0].date %>
             <br>
             <br>
-            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b>
+            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <%= cityInfo.citydata[0].executive %>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุน :</b>
+            <b class="menu-text">มูลค่าการลงทุน :</b> <%= (cityInfo.citydata[0].invest_gov+cityInfo.citydata[0].invest_pri).toLocaleString() %> บาท
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b>
+            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <%= cityInfo.citydata[0].invest_gov.toLocaleString() %> บาท
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b>
+            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <%= cityInfo.citydata[0].invest_pri.toLocaleString() %> บาท
             <br>
             <br>
             <b class="menu-text">7 smart :</b>
@@ -277,6 +277,7 @@
     <br>
     <a href="" class="link-u">4.อื่นๆ</a>
 
+    <center><a><small>d</small></a></center><br>
     <%- include('../component/footer.ejs') %>
 
     <script>
