@@ -7,7 +7,9 @@ const session = require('express-session');
 const csrf = require('csurf');
 
 const mongoDbStore = require('connect-mongodb-session')(session);
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/depa-sc';
+// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/depa-sc';
+const MONGODB_URI = 'mongodb+srv://hammdepa:LRloKdxkmajvDUIi@cluster0.acbqjha.mongodb.net/depa-sc-test?retryWrites=true&w=majority&appName=Cluster0';
+
 
 const app = express();
 const csrfProtection = csrf(); 
