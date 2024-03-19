@@ -2,88 +2,94 @@
 <html lang="en">
 
 <head>
-  <%- include('../include/head.ejs') %>
-  <title>
-          <%= pageTitle %>
-  </title>
-    <style>
-        .title-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: -300px;
-        }
+    <%- include('../include/head.ejs') %>
+        <title>
+            <%= pageTitle %>
+        </title>
+        <style>
+            .title-container {
+                text-align: center;
+                padding: 20px;
+                position: relative;
+                top: -300px;
+            }
 
-        .titles-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: 0px;
-        }
+            .titles-container {
+                text-align: center;
+                padding: 20px;
+                position: relative;
+                top: 0px;
+            }
 
-        .collapsible {
-            background-color: #FEDC7A;
-            color: white;
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            text-align: left;
-            outline: none;
-            font-size: 16px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            color: #424242;
-        }
+            .collapsible {
+                background-color: #FEDC7A;
+                color: white;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                text-align: left;
+                outline: none;
+                font-size: 16px;
+                border-radius: 20px;
+                margin-bottom: 10px;
+                color: #424242;
+            }
 
-        .collapsible:hover {
-            background-color: #C2AF76;
-            color: white;
-        }
+            .collapsible:hover {
+                background-color: #C2AF76;
+                color: white;
+            }
 
-        .content {
-            display: none;
-            padding: 10px;
-            /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
-            overflow: hidden;
-            background-color: #f1f1f1;
-            margin-bottom: 10px;
-            margin-left: 10px;
-            margin-right: 10px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
+            .content {
+                display: none;
+                padding: 10px;
+                /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
+                overflow: hidden;
+                background-color: #f1f1f1;
+                margin-bottom: 10px;
+                margin-left: 10px;
+                margin-right: 10px;
+                border-radius: 20px;
+                margin-bottom: 10px;
+            }
 
-        .table-container {
-            width: 80%;
-            margin: 0 auto;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            /* เพิ่ม overflow: hidden เพื่อป้องกัน input ทับข้อมูลตาราง */
-            margin-bottom: 50px;
-            background-color: #FEDC7A;
-        }
+            .table-container {
+                width: 80%;
+                margin: 0 auto;
+                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+                border-radius: 20px;
+                /* เพิ่ม overflow: hidden เพื่อป้องกัน input ทับข้อมูลตาราง */
+                margin-bottom: 50px;
+                background-color: #FEDC7A;
+            }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            font-size: 14px;
-        }
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                font-size: 16px;
+            }
 
-        th {
-            background-color: #AABA73;
-            color: white;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-    </style>
-     
+            th {
+                background-color: #FEDC7A;
+                color: black;
+                border-radius: 0rem;
+                font-size: 14px;
+                color: #424242;
+            }
+
+            .card-body {
+                background-color: #FFF4D1;
+                /* เปลี่ยนสีพื้นหลังของเนื้อหาในรายการ Accordion */
+            }
+        </style>
+
 </head>
 
 <body>
@@ -106,13 +112,20 @@
             <div class="table-container">
                 <button class="collapsible">ภูเก็ตเมืองอัจฉริยะ</button>
                 <div class="content">
+                    <table>
+                        <tr>
+                            <th>โครงสร้าง / Smart</th>
+                            <th>Project</th>
+                            <th>Response</th>
+                        </tr>
+                    </table>
                     <div id="accordion">
                         <div class="card">
                             <div class="card-header" id="headingOne">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
                                         aria-expanded="true" aria-controls="collapseOne">
-                                        Collapsible Group Item #1
+                                        โครงสร้างพื้นฐานด้านกายภาพ
                                     </button>
                                 </h5>
                             </div>
@@ -120,14 +133,13 @@
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                 data-parent="#accordion">
                                 <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                                    aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                    ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
-                                    accusamus labore sustainable VHS.
+                                    <table>
+                                        <td>
+                                        <td>โครงสร้างพื้นฐานกายภาพ</td>
+                                        <td><a href="./form.php">โครงสร้างพื้นฐานกายภาพ</a></td>
+                                        <td>ยังไม่ได้รายงาน</td>
+                                        </td>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -136,21 +148,20 @@
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
                                         data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Collapsible Group Item #2
+                                        โครงสร้างพื้นฐานด้านดิจิทัล
                                     </button>
                                 </h5>
                             </div>
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                                 data-parent="#accordion">
                                 <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                                    aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                    ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
-                                    accusamus labore sustainable VHS.
+                                    <table>
+                                        <td>
+                                        <td>โครงสร้างพื้นฐานด้านดิจิทัล</td>
+                                        <td><a href="/form.php">โครงสร้างพื้นฐานด้านดิจิทัล</a></td>
+                                        <td>ยังไม่ได้รายงาน</td>
+                                        </td>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -160,21 +171,156 @@
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
                                         data-target="#collapseThree" aria-expanded="false"
                                         aria-controls="collapseThree">
-                                        Collapsible Group Item #3
+                                        ระบบบริหารข้อมูลเมือง City Data Platform
                                     </button>
                                 </h5>
                             </div>
                             <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
                                 data-parent="#accordion">
                                 <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                                    aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                    ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
-                                    accusamus labore sustainable VHS.
+                                    <table>
+                                        <tr>
+                                            <td>City Data Platform</td>
+                                            <td><a href="./form.php">ระบบบริหารข้อมูลเมือง City Data Platform</a></td>
+                                            <td>ยังไม่ได้รายงาน</td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>City Data Platform</td>
+                                            <td><a href="./form.php">Data Catelog</a></td>
+                                            <td>ยังไม่ได้รายงาน</td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>City Data Platform</td>
+                                            <td><a href="./form.php">Data exchange</a></td>
+                                            <td>ยังไม่ได้รายงาน</td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td>City Data Platform</td>
+                                            <td><a href="./form.php">Data grovernent</a></td>
+                                            <td>ยังไม่ได้รายงาน</td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingfour">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+                                        Smart Environment
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapsefour" class="collapse" aria-labelledby="headingfour"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingfive">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+                                        Smart Energy
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapsefive" class="collapse" aria-labelledby="headingfive"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingsix">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
+                                        Smart Economy
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapsesix" class="collapse" aria-labelledby="headingsix"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingseven">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapseseven" aria-expanded="false"
+                                        aria-controls="collapseseven">
+                                        Smart Mobility
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseseven" class="collapse" aria-labelledby="headingseven"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingeeight">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapseeight" aria-expanded="false"
+                                        aria-controls="collapseeight">
+                                        Smart Governance
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseeight" class="collapse" aria-labelledby="headingeight"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingenine">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapsenine" aria-expanded="false" aria-controls="collapsenine">
+                                        Smart People
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapsenine" class="collapse" aria-labelledby="headingenine"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingeten">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                        data-target="#collapseten" aria-expanded="false" aria-controls="collapseten">
+                                        Smart Living
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseten" class="collapse" aria-labelledby="headingeten"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    content
                                 </div>
                             </div>
                         </div>
