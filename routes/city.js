@@ -12,5 +12,8 @@ router.get('/', isAuth, cityController.getCity);
 router.get('/dashboard', isAuth, cityController.getCityDashboard);
 router.get('/follow', isAuth, cityController.getCityFollow);
 router.get('/upload', isAuth, cityController.getCityUpload);
+router.get('/form', isAuth, cityController.getCityForm);
+router.get('/form-cdp', isAuth, cityController.getCityFormCdp);
+
 
 module.exports = router;

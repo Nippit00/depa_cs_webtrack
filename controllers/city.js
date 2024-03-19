@@ -63,3 +63,22 @@ exports.getCityUpload = (req, res, next) => {
     path: "/city",
   });
 };
+
+exports.getCityForm = (req, res, next) => {
+  // Render the /form page
+  res.render("city/form", {
+    pageTitle: "Upload Data",
+    path: "/city",
+  });
+};
+
+exports.getCityFormCdp = (req, res, next) => {
+  // Render the /form page
+  res.render("city/form-cdp", {
+    pageTitle: "Upload Data Cdp",
+    path: "/city",
+  });
+};
+
+
+

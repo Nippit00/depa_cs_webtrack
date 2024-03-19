@@ -88,6 +88,11 @@
                 background-color: #FFF4D1;
                 /* เปลี่ยนสีพื้นหลังของเนื้อหาในรายการ Accordion */
             }
+
+            .btn.btn-link:hover {
+                background-color: #FEDC7A;
+            }
+
         </style>
 
 </head>
@@ -110,22 +115,18 @@
             <br>
 
             <div class="table-container">
-                <button class="collapsible">ภูเก็ตเมืองอัจฉริยะ</button>
+                <button class="collapsible">เมืองอัจฉริยะ</button>
                 <div class="content">
-                    <table>
-                        <tr>
-                            <th>โครงสร้าง / Smart</th>
-                            <th>Project</th>
-                            <th>Response</th>
-                        </tr>
-                    </table>
                     <div id="accordion">
                         <div class="card">
                             <div class="card-header" id="headingOne">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
-                                        aria-expanded="true" aria-controls="collapseOne">
-                                        โครงสร้างพื้นฐานด้านกายภาพ
+                                        aria-expanded="true" aria-controls="collapseOne" onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-up" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;">
+                                                โครงสร้างพื้นฐานด้านกายภาพ</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -134,11 +135,21 @@
                                 data-parent="#accordion">
                                 <div class="card-body">
                                     <table>
-                                        <td>
-                                        <td>โครงสร้างพื้นฐานกายภาพ</td>
-                                        <td><a href="./form.php">โครงสร้างพื้นฐานกายภาพ</a></td>
-                                        <td>ยังไม่ได้รายงาน</td>
-                                        </td>
+                                        <thead>
+                                            <tr>
+                                                <th>โครงสร้าง</th>
+                                                <th>Project</th>
+                                                <th>Response</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>โครงสร้างพื้นฐานกายภาพ</td>
+                                                <td><a href="/city/form" class="fas fa-file-alt">
+                                                        โครงสร้างพื้นฐานกายภาพ</a></td>
+                                                <td>ยังไม่ได้รายงาน</td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -147,8 +158,12 @@
                             <div class="card-header" id="headingTwo">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        โครงสร้างพื้นฐานด้านดิจิทัล
+                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;">
+                                                โครงสร้างพื้นฐานด้านดิจิทัล</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -156,11 +171,21 @@
                                 data-parent="#accordion">
                                 <div class="card-body">
                                     <table>
-                                        <td>
-                                        <td>โครงสร้างพื้นฐานด้านดิจิทัล</td>
-                                        <td><a href="/form.php">โครงสร้างพื้นฐานด้านดิจิทัล</a></td>
-                                        <td>ยังไม่ได้รายงาน</td>
-                                        </td>
+                                        <thead>
+                                            <tr>
+                                                <th>โครงสร้าง</th>
+                                                <th>Project</th>
+                                                <th>Response</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>โครงสร้างพื้นฐานด้านดิจิทัล</td>
+                                                <td><a href="/city/form" class="fas fa-file-alt">
+                                                        โครงสร้างพื้นฐานด้านดิจิทัล</a></td>
+                                                <td>ยังไม่ได้รายงาน</td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -169,9 +194,12 @@
                             <div class="card-header" id="headingThree">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseThree" aria-expanded="false"
-                                        aria-controls="collapseThree">
-                                        ระบบบริหารข้อมูลเมือง City Data Platform
+                                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;">
+                                                ระบบบริหารข้อมูลเมือง City Data Platform</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -179,43 +207,55 @@
                                 data-parent="#accordion">
                                 <div class="card-body">
                                     <table>
-                                        <tr>
-                                            <td>City Data Platform</td>
-                                            <td><a href="./form.php">ระบบบริหารข้อมูลเมือง City Data Platform</a></td>
-                                            <td>ยังไม่ได้รายงาน</td>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th>โครงสร้าง</th>
+                                                <th>Project</th>
+                                                <th>Response</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>ระบบบริหารข้อมูลเมือง City Data Platform</td>
+                                                <td><a href="/city/form-cdp" class="fas fa-file-alt">
+                                                        ระบบบริหารข้อมูลเมือง City Data
+                                                        Platform</a></td>
+                                                <td>ยังไม่ได้รายงาน</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ระบบบริหารข้อมูลเมือง City Data Platform</td>
+                                                <td><a href="/city/form-cdp" class="fas fa-file-alt"> Data Catalog</a>
+                                                </td>
+                                                <td>ยังไม่ได้รายงาน</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ระบบบริหารข้อมูลเมือง City Data Platform</td>
+                                                <td><a href="/city/form-cdp" class="fas fa-file-alt"> Data Exchange</a>
+                                                </td>
+                                                <td>ยังไม่ได้รายงาน</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ระบบบริหารข้อมูลเมือง City Data Platform</td>
+                                                <td><a href="/city/form-cdp" class="fas fa-file-alt"> Data
+                                                        Governance</a></td>
+                                                <td>ยังไม่ได้รายงาน</td>
+                                            </tr>
+                                        </tbody>
                                     </table>
-                                    <table>
-                                        <tr>
-                                            <td>City Data Platform</td>
-                                            <td><a href="./form.php">Data Catelog</a></td>
-                                            <td>ยังไม่ได้รายงาน</td>
-                                        </tr>
-                                    </table>
-                                    <table>
-                                        <tr>
-                                            <td>City Data Platform</td>
-                                            <td><a href="./form.php">Data exchange</a></td>
-                                            <td>ยังไม่ได้รายงาน</td>
-                                        </tr>
-                                    </table>
-                                    <table>
-                                        <tr>
-                                            <td>City Data Platform</td>
-                                            <td><a href="./form.php">Data grovernent</a></td>
-                                            <td>ยังไม่ได้รายงาน</td>
-                                        </tr>
-                                    </table>
-
                                 </div>
                             </div>
                         </div>
+
                         <div class="card">
                             <div class="card-header" id="headingfour">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-                                        Smart Environment
+                                        data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                Environment</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -230,8 +270,12 @@
                             <div class="card-header" id="headingfive">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
-                                        Smart Energy
+                                        data-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                Energy</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -246,8 +290,12 @@
                             <div class="card-header" id="headingsix">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
-                                        Smart Economy
+                                        data-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                Energy</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -262,9 +310,12 @@
                             <div class="card-header" id="headingseven">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseseven" aria-expanded="false"
-                                        aria-controls="collapseseven">
-                                        Smart Mobility
+                                        data-target="#collapseseven" aria-expanded="false" aria-controls="collapseseven"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                Mobility</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -279,9 +330,12 @@
                             <div class="card-header" id="headingeeight">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseeight" aria-expanded="false"
-                                        aria-controls="collapseeight">
-                                        Smart Governance
+                                        data-target="#collapseeight" aria-expanded="false" aria-controls="collapseeight"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                Governance</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -296,8 +350,12 @@
                             <div class="card-header" id="headingenine">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapsenine" aria-expanded="false" aria-controls="collapsenine">
-                                        Smart People
+                                        data-target="#collapsenine" aria-expanded="false" aria-controls="collapsenine"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                People</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -312,8 +370,12 @@
                             <div class="card-header" id="headingeten">
                                 <h5 class="mb-0">
                                     <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#collapseten" aria-expanded="false" aria-controls="collapseten">
-                                        Smart Living
+                                        data-target="#collapseten" aria-expanded="false" aria-controls="collapseten"
+                                        onclick="toggleArrow(this)">
+                                        <i class="fa fa-chevron-circle-down" aria-hidden="true"
+                                            style="color: #04B2A1;"><span
+                                                style="font-family: 'Sarabun', sans-serif; color: #424242;"> Smart
+                                                Living</span></i>
                                     </button>
                                 </h5>
                             </div>
@@ -349,6 +411,12 @@
                             });
                         });
                     });
+
+                    function toggleArrow(button) {
+                        var arrowIcon = button.querySelector('.fa');
+                        arrowIcon.classList.toggle("fa-chevron-circle-down");
+                        arrowIcon.classList.toggle("fa-chevron-circle-up");
+                    }
 
                 </script>
 
