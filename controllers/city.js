@@ -38,23 +38,73 @@ exports.getCity = (req, res, next) => {
     .catch((error) => {
       console.error(error);
     });
+
 };
 
 exports.getCityDashboard = (req, res, next) => {
-  // Render the /dashboard page
-  res.render("city/dashboard", {
-    pageTitle: "Dashboard",
-    path: "/city",
-  });
+  const cityID = req.session.userID;
+
+  // Define the aggregation pipeline
+  const pipeline = [
+      { $match: { cityID: cityID } },
+      {
+          $lookup: {
+              from: "citydata",
+              localField: "cityID",
+              foreignField: "cityID",
+              as: "citydata",
+          },
+      },
+      { $limit: 1 },
+  ];
+
+  City.aggregate(pipeline)
+      .then((cityInfo) => {
+          // Render the /follow page and pass cityInfo to the template
+          res.render("city/dashboard", {
+              pageTitle: "Dashboard",
+              path: "/city",
+              cityInfo: cityInfo[0] // Pass cityInfo to the template
+          });
+      })
+      .catch((error) => {
+          console.error(error);
+          // Handle the error here
+      });
 };
 
 exports.getCityFollow = (req, res, next) => {
-  // Render the /follow page
-  res.render("city/follow", {
-    pageTitle: "Follow",
-    path: "/city",
-  });
+  const cityID = req.session.userID;
+
+  // Define the aggregation pipeline
+  const pipeline = [
+      { $match: { cityID: cityID } },
+      {
+          $lookup: {
+              from: "citydata",
+              localField: "cityID",
+              foreignField: "cityID",
+              as: "citydata",
+          },
+      },
+      { $limit: 1 },
+  ];
+
+  City.aggregate(pipeline)
+      .then((cityInfo) => {
+          // Render the /follow page and pass cityInfo to the template
+          res.render("city/follow", {
+              pageTitle: "Follow",
+              path: "/city",
+              cityInfo: cityInfo[0] // Pass cityInfo to the template
+          });
+      })
+      .catch((error) => {
+          console.error(error);
+          // Handle the error here
+      });
 };
+
 
 exports.getCityUpload = (req, res, next) => {
   // Render the /upload page
