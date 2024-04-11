@@ -103,23 +103,19 @@
         <div class="nav-item active">
           <img src="/img/favii.png" alt="Description of the image">
           
-         
+          <% if (!isAuthenticated) { %>
             <li>
-              <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> SING IN<span class="sr-only"></span></a>
+              <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> SIGN IN<span class="sr-only"></span></a>
             </li>
-     
-         
-
-
-          <form action="/logout" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken%>">
-            <button class="nav-link" type="submit"><i class="fas fa-sign-in-alt"></i> Log out<span class="sr-only"></span></button>
-        </form>
-    
-          
-          
-          
-          </ul>
+          <% } else { %>
+            <li>
+              <form action="/logout" method="POST" style="list-style-type: none;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="nav-link" style="background: none; border: none; cursor: pointer; color: #007bff; padding: 0; display: inline;" type="submit"><i class="fas fa-sign-out-alt"></i> Log out<span class="sr-only"></span></button>
+              </form>
+            </li>
+          <% } %>          
+           </ul>
         </div>
     </div>
   </nav>
