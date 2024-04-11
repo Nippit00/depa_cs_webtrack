@@ -9,8 +9,6 @@
     <!-- Add this in the head section -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Add this before closing </body> tag -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
     <title><%= pageTitle %></title>
@@ -179,37 +177,37 @@
     </div>
 
     <div class="title-container">
-        <h1>แผน <span class="citie-text">Smart City </span></h1>
+        <h1>แผน <span class="citie-text">Smart City  e</span></h1>
     </div>
 
     <%- include('../component/menu.ejs') %>
     
     <div class="content-container">
         <div class="text-container">
-            <h4><span class="cities-text"><%= cityInfo.cityname %></span></h4>
+            <h4><span class="cities-text"><%= cityInfo.cityName %></span></h4>
             <br>
-            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.cityname %></b>
-            <br>
-            <br>
-            <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;"><%= cityInfo.citydata[0].province %></b>
+            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.cityName %>
             <br>
             <br>
-            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.citydata[0].developer %></b>
+            <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;"><%= cityInfo.province %></b>
             <br>
             <br>
-            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.citydata[0].date %></b>
+            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.developer %></b>
             <br>
             <br>
-            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;"><%= cityInfo.citydata[0].executive %></b>
+            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.date.toLocaleString() %></b>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;"><%= (cityInfo.citydata[0].invest_gov+cityInfo.citydata[0].invest_pri).toLocaleString() %> บาท</b>
+            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;"><%= cityInfo.executive %></b>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;"><%= cityInfo.citydata[0].invest_gov.toLocaleString() %> บาท</b>
+            <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;"><%= (cityInfo.government_investment+cityInfo.private_investment).toLocaleString() %> บาท </b>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;"><%= cityInfo.citydata[0].invest_pri.toLocaleString() %> บาท</b>
+            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;"><%= cityInfo.government_investment.toLocaleString() %> บาท </b>
+            <br>
+            <br>
+            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;"><%= cityInfo.private_investment.toLocaleString() %> บาท </b>
             <br>
             <br>
             <b class="menu-text">7 smart :</b>
@@ -279,6 +277,7 @@
     <br>
     <a href="" class="link-u">4.อื่นๆ</a>
 
+    <center><a><small>d</small></a></center><br>
     <%- include('../component/footer.ejs') %>
 
     <script>
@@ -301,6 +300,9 @@
                 }
             });
         });
+    </script>
+    <script>
+        
     </script>
 </body>
 

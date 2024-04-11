@@ -2,22 +2,15 @@ const path = require("path");
 const express = require("express");
 // const bcrypt = require('bcryptjs');
 
-const mongoose = require('mongoose');
 const session = require('express-session');
 const csrf = require('csurf');
+require('dotenv').config();
 
-const mongoDbStore = require('connect-mongodb-session')(session);
-// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/depa-sc';
-const MONGODB_URI = 'mongodb+srv://hammdepa:LRloKdxkmajvDUIi@cluster0.acbqjha.mongodb.net/depa-sc-test?retryWrites=true&w=majority&appName=Cluster0';
 
 
 const app = express();
 const csrfProtection = csrf(); 
 
-const store = new mongoDbStore({
-  uri: MONGODB_URI,
-  collection: 'sessions',
-});
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -32,7 +25,6 @@ app.use(session({
   secret: 'my secret for depa',
   resave: false,
   saveUninitialized: false,
-  store: store,
 }))
 
 app.use(csrfProtection);
@@ -55,12 +47,7 @@ app.use("/admin", adminRoute);
 app.use("/city", cityRoute);
 
 
-mongoose.connect(MONGODB_URI)
-const server = app.listen(8888, () => {
-  console.log("******************************");
-  console.log(
-    `depa-SmartCity-WebTracking is running on port ${server.address().port}`
-  );
-  console.log(`http://localhost:${server.address().port}`);
-  console.log("******************************");
-});
+    app.listen(process.env.PORT, () => {
+      console.log(`depa-SmartCity-WebTracking is running on port 8888`);
+      console.log("******************************");
+    });
