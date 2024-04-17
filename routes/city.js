@@ -8,7 +8,7 @@ const router = express.Router();
 // **************************
 // ***     City Page      ***
 // **************************
-router.get('/', isAuth, cityController.getCity);
+router.get('/', isAuth, cityController.GetCity);
 router.get('/dashboard', isAuth, cityController.getCityDashboard);
 router.get('/follow', isAuth, cityController.getCityFollow);
 router.get('/upload', isAuth, cityController.getCityUpload);

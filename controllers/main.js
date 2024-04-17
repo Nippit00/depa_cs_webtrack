@@ -1,6 +1,6 @@
 // Display the Welcome Page
 exports.getWelcomePage = (req, res, next) => {
-  res.render("welcome", { req, pageTitle: "", path: "/welcome" });
+  res.render("welcome", { req, pageTitle: "Welcome", path: "/welcome" });
 };
 
 // Display the Main Page

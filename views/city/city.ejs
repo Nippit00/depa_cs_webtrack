@@ -2,6 +2,16 @@
 <html lang="en">
 
 <head>
+    <script>
+        // Redirect away from the login page if user is already logged in
+        if (sessionStorage.getItem('isLoggedIn')) {
+            window.location.href = '/city'; // Redirect to city page
+        }
+        history.pushState(null, null, location.href);
+        window.onpopstate = function(event) {
+            history.go(1);
+        };
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -184,30 +194,30 @@
     
     <div class="content-container">
         <div class="text-container">
-            <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
+            <h4><span class="cities-text"><%= cityInfo.cityName %></span></h4>
             <br>
-            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <%= cityInfo.cityname %>
-            <br>
-            <br>
-            <b class="menu-text">จังหวัด :</b> <%= cityInfo.citydata[0].province %>
+            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.cityName %>
             <br>
             <br>
-            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <%= cityInfo.citydata[0].developer %>
+            <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;"><%= cityInfo.province %></b>
             <br>
             <br>
-            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <%= cityInfo.citydata[0].date %>
+            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.developer %></b>
             <br>
             <br>
-            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <%= cityInfo.citydata[0].executive %>
+            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.date.toLocaleString() %></b>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุน :</b> <%= (cityInfo.citydata[0].invest_gov+cityInfo.citydata[0].invest_pri).toLocaleString() %> บาท
+            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;"><%= cityInfo.executive %></b>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <%= cityInfo.citydata[0].invest_gov.toLocaleString() %> บาท
+            <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;"><%= (cityInfo.government_investment+cityInfo.private_investment).toLocaleString() %> บาท </b>
             <br>
             <br>
-            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <%= cityInfo.citydata[0].invest_pri.toLocaleString() %> บาท
+            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;"><%= cityInfo.government_investment.toLocaleString() %> บาท </b>
+            <br>
+            <br>
+            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;"><%= cityInfo.private_investment.toLocaleString() %> บาท </b>
             <br>
             <br>
             <b class="menu-text">7 smart :</b>
@@ -300,6 +310,9 @@
                 }
             });
         });
+    </script>
+    <script>
+        
     </script>
 </body>
 

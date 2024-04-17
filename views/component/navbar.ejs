@@ -94,7 +94,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/index"><i class="fas fa-home"></i><span class="city-text"> ความคืบหน้าของเมืองที่ได้รับตราสัญลักษณ์</span></a>
+    <a class="navbar-brand" href="/"><i class="fas fa-home"></i><span class="city-text"> ความคืบหน้าของเมืองที่ได้รับตราสัญลักษณ์</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -105,17 +105,21 @@
           
           <% if (!isAuthenticated) { %>
             <li>
-              <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> SIGN IN<span class="sr-only"></span></a>
+              <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> SING IN<span class="sr-only"></span></a>
             </li>
-          <% } else { %>
-            <li>
-              <form action="/logout" method="POST" style="list-style-type: none;">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="nav-link" style="background: none; border: none; cursor: pointer; color: #007bff; padding: 0; display: inline;" type="submit"><i class="fas fa-sign-out-alt"></i> Log out<span class="sr-only"></span></button>
-              </form>
-            </li>
-          <% } %>          
-           </ul>
+     
+         
+
+
+          <form action="/logout" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+            <button class="nav-link" type="submit"><i class="fas fa-sign-in-alt"></i> Log out<span class="sr-only"></span></button>
+        </form>
+    
+          
+          
+          
+          </ul>
         </div>
     </div>
   </nav>
