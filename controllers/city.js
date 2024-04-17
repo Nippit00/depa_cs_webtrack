@@ -8,37 +8,67 @@ const CityData = require("../models/cityData");
 // ****************
 // **  getCity   **
 // ****************
-exports.GetCity=(req,res)=>{
+exports.GetCity = (req, res) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?"
+  const q =
+    "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?";
+  try {
+    db.query(q, [cityID], (err, data) => {
+      if (err) return res.status(500).json(err);
+      db.query(
+        "SELECT `smartKey` FROM `solution` WHERE cityID=? ",
+        [cityID],
+        (err, result) => {
+          if (err) return res.status(500).json(err);
+          
+          // เก็บจำนวน smart key แต่ละตัวในออบเจกต์
+          const smartKeyCounts = {};
+          result.forEach(row => {
+            if (smartKeyCounts[row.smartKey]) {
+              smartKeyCounts[row.smartKey]++;
+            } else {
+              smartKeyCounts[row.smartKey] = 1;
+            }
+          });
+
+          console.log(smartKeyCounts)
+          res.render("city/city", {
+            req,
+            pageTitle: data[0].cityname,
+            path: "/city",
+            cityInfo: data[0],
+            citysolution: result,
+            smartKeyCounts: smartKeyCounts // ส่งจำนวน smart key แต่ละตัวในออบเจกต์ไปยัง view
+          });
+        }
+      );
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+
+exports.getCityDashboard = (req, res, next) => {
+  const cityID = req.session.userID;
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID WHERE solution.cityID = ?"
   try{
     db.query(q,[cityID],(err,data)=>{
+      console.log(data)
       if(err) return res.status(500).json(err)
-
-      console.log(data[0])
-      res.render("city/city", {
+      res.render("city/dashboard", {
         req,
-        pageTitle: data[0].cityname,
+        pageTitle: "Dashboard",
         path: "/city",
-        cityInfo: data[0],
+        solutionInfo: data,
       });
-
     })
-    
 
   }catch(err){
     console.log(err)
     res.status(500).json(err)
   }
-}
-
-
-exports.getCityDashboard = (req, res, next) => {
-  // Render the /dashboard page
-  res.render("city/dashboard", {
-    pageTitle: "Dashboard",
-    path: "/city",
-  });
 };
 
 exports.getCityFollow = (req, res, next) => {
