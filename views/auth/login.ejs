@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+  <script>
+    // Redirect away from the login page if user is already logged in
+    if (sessionStorage.getItem('isLoggedIn')) {
+        window.location.href = '/city'; // Redirect to city page
+    }
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">

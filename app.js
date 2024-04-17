@@ -9,7 +9,7 @@ require('dotenv').config();
 
 
 const app = express();
-const csrfProtection = csrf(); 
+const csrfProtection = csrf();
 
 
 app.set("view engine", "ejs");
@@ -41,7 +41,7 @@ const mainRoute = require("./routes/main");
 const adminRoute = require("./routes/admin.js");
 const cityRoute = require("./routes/city");
 
-app.use(authRoute);
+app.use(authRoute,csrfProtection);
 app.use(mainRoute);
 app.use("/admin", adminRoute);
 app.use("/city", cityRoute);

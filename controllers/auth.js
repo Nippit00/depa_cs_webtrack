@@ -10,12 +10,18 @@ const CityData = require("../models/cityData");
 // **  getLogin  **
 // ****************
 exports.getLogin = (req, res, next) => {
-  // Render the /login page
-  res.render("auth/login", {
-    req, 
-    pageTitle: "Authentication",
-    path: "/login",
-  });
+  try {
+      // Render the login view with CSRF token and additional details
+      res.render("auth/login", {
+          pageTitle: "Login - Authentication",
+          path: "/login",
+          csrfToken: req.csrfToken() // Pass CSRF token to view for form submission
+      });
+  } catch (error) {
+      // Handle errors that may occur during rendering
+      console.error('Error rendering login page:', error);
+      next(error); // Pass errors to Express error handling middleware
+  }
 };
 
 // *****************
@@ -40,6 +46,7 @@ exports.PostLogin = (req, res) => {
         // รหัสผ่านถูกต้อง
         req.session.isLoggedIn = true;
         req.session.userID = cityData.cityID;
+        console.log(req.session)
 
         // บันทึก session
         return req.session.save((err) => {

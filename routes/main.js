@@ -1,4 +1,5 @@
 const express = require('express');
+const isLoggedIn = require('../middlewares/is-login')
 
 const mainController = require('../controllers/main');
 
@@ -12,7 +13,5 @@ router.get('/welcome', mainController.getWelcomePage);
 // **************************
 // ***     Main Page      ***
 // **************************
-router.get('/', mainController.getMainPage);
-router.get('/index', mainController.getMainPage);
-
+router.get('/', isLoggedIn,mainController.getMainPage);
 module.exports = router;
