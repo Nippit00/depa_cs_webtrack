@@ -15,7 +15,7 @@ exports.getLogin = (req, res, next) => {
       res.render("auth/login", {
           pageTitle: "Login - Authentication",
           path: "/login",
-          csrfToken: req.csrfToken() // Pass CSRF token to view for form submission
+          // csrfToken: req.csrfToken() ********************************
       });
   } catch (error) {
       // Handle errors that may occur during rendering
@@ -46,7 +46,6 @@ exports.PostLogin = (req, res) => {
         // รหัสผ่านถูกต้อง
         req.session.isLoggedIn = true;
         req.session.userID = cityData.cityID;
-        console.log(req.session)
 
         // บันทึก session
         return req.session.save((err) => {

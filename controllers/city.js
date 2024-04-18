@@ -30,8 +30,6 @@ exports.GetCity = (req, res) => {
               smartKeyCounts[row.smartKey] = 1;
             }
           });
-
-          console.log(smartKeyCounts)
           res.render("city/city", {
             req,
             pageTitle: data[0].cityname,
@@ -52,31 +50,46 @@ exports.GetCity = (req, res) => {
 
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID WHERE solution.cityID = ?"
-  try{
-    db.query(q,[cityID],(err,data)=>{
-      console.log(data)
-      if(err) return res.status(500).json(err)
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID WHERE solution.cityID = ?";
+  try {
+    db.query(q, [cityID], (err, data) => {
+      if (err) return res.status(500).json(err);
       res.render("city/dashboard", {
         req,
         pageTitle: "Dashboard",
         path: "/city",
         solutionInfo: data,
       });
-    })
-
-  }catch(err){
-    console.log(err)
-    res.status(500).json(err)
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 };
 
+
+
+
 exports.getCityFollow = (req, res, next) => {
-  // Render the /follow page
-  res.render("city/follow", {
-    pageTitle: "Follow",
-    path: "/city",
-  });
+  const cityID = req.session.userID;
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? GROUP BY solution.solutionName";
+  try{
+    db.query(q, [cityID], (err, data) => {
+      console.log(data)
+      if (err) return res.status(500).json(err);
+      res.render("city/follow", {
+        pageTitle: "Follow",
+        path: "/city",
+        followdata: data
+      });
+    });
+
+
+
+  }catch(err){
+    console.log(err);
+    res.status(500).json(err)
+  }
 };
 
 exports.getCityUpload = (req, res, next) => {
