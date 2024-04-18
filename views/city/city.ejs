@@ -226,91 +226,89 @@
                     <div class="image-container">
                         <h5>Smart Environment</h5>
                         <img src="img/s1.png" alt="Image 1">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.ENV %> โครงการ</h5>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="image-container">
                         <h5>Smart Energy</h5>
                         <img src="img/se.png" alt="Image 2">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.ENE%> โครงการ</h5>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="image-container">
                         <h5>Smart Economy</h5>
                         <img src="img/sec.png" alt="Image 3">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.ECO%>  โครงการ</h5>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="image-container">
                         <h5>Smart Mobility</h5>
                         <img src="img/sm.png" alt="Image 4">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.MOB%>  โครงการ</h5>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="image-container">
                         <h5>Smart Governance</h5>
                         <img src="img/sco.png" alt="Image 5">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.GOV%>  โครงการ</h5>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="image-container">
                         <h5>Smart People</h5>
                         <img src="img/sp.png" alt="Image 6">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.PEO%>  โครงการ</h5>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="image-container">
                         <h5>Smart Living</h5>
                         <img src="img/sl.png" alt="Image 7">
-                        <h5>0 โครงการ</h5>
+                        <h5><%= smartKeyCounts.LIV%>  โครงการ</h5>
                     </div>
                 </div>
             </div>
         </div>
         <div class="map-container">
-            <img src="img/mapmap.png" alt="Map Image">
+            <%- include('./map.ejs') %>
         </div>
-    </div>
+        <h6><span style="color: blue;">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
+        <a href="" class="link-u">1.ข้อสรุปผู้บริหาร</a>
+        <br>
+        <a href="" class="link-u">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
+        <br>
+        <a href="" class="link-u">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
+        <br>
+        <a href="" class="link-u">4.อื่นๆ</a>
 
-    <h6><span style="color: blue;">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
-    <a href="" class="link-u">1.ข้อสรุปผู้บริหาร</a>
-    <br>
-    <a href="" class="link-u">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
-    <br>
-    <a href="" class="link-u">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
-    <br>
-    <a href="" class="link-u">4.อื่นๆ</a>
+        <center><a><small>d</small></a></center><br>
+        <%- include('../component/footer.ejs') %>
 
-    <center><a><small>d</small></a></center><br>
-    <%- include('../component/footer.ejs') %>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // แสดง SweetAlert ที่ถูกปรับแต่ง
-            Swal.fire({
-                title: 'ยินดีต้อนรับ',
-                text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
-                imageUrl: "img/favi.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                imageAlt: "Custom image",
-                confirmButtonText: 'OK',
-                customClass: {
-                    container: 'my-swal-container',
-                    popup: 'my-swal-popup',
-                    title: 'my-swal-title',
-                    text: 'my-swal-text',
-                    confirmButton: 'my-swal-confirm-button'
-                }
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // แสดง SweetAlert ที่ถูกปรับแต่ง
+                Swal.fire({
+                    title: 'ยินดีต้อนรับ',
+                    text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
+                    imageUrl: "img/favi.png",
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    imageAlt: "Custom image",
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        container: 'my-swal-container',
+                        popup: 'my-swal-popup',
+                        title: 'my-swal-title',
+                        text: 'my-swal-text',
+                        confirmButton: 'my-swal-confirm-button'
+                    }
+                });
             });
-        });
-    </script>
+        </script>
     <script>
         
     </script>
