@@ -75,7 +75,6 @@ exports.getCityFollow = (req, res, next) => {
   const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? GROUP BY solution.solutionName";
   try{
     db.query(q, [cityID], (err, data) => {
-      console.log(data)
       if (err) return res.status(500).json(err);
       res.render("city/follow", {
         pageTitle: "Follow",
