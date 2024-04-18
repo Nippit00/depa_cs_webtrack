@@ -242,41 +242,33 @@
         document.addEventListener('DOMContentLoaded', function() {
             const imageContainers = document.querySelectorAll('.image-container');
             const tableRows = document.querySelectorAll('.table tbody tr');
-
+    
+            // กำหนดข้อมูลล่วงหน้าสำหรับแต่ละรูปภาพในรูปแบบของอาร์เรย์
+            const imageData = [
+                ['โครงสร้างพื้นฐานด้านกายภาพ', '50%', '50%', '-', '-', '-'],
+                ['โครงสร้างพื้นฐานด้านดิจิตอล', '50%', '50%', '-', '-', '-'],
+                ['City Data Platform', '50%', '50%', '-', '-', '-']
+            ];
+    
             imageContainers.forEach((container, index) => {
-                container.addEventListener('click', function() {
-                    // เมื่อคลิกที่รูปภาพ แสดงข้อมูลที่ต้องการในตาราง
-                    displayData(index);
-                });
+                container.addEventListener('click', () => displayData(index));
             });
-
+    
             function displayData(index) {
-                // รับข้อมูลที่ต้องการแสดงในตาราง ตามลำดับรูปภาพที่คลิก
-                const data = getDataForImage(index);
-
-                // แสดงข้อมูลในตาราง
-                tableRows.forEach((row, rowIndex) => {
-                    const cell = row.cells[index + 1]; // +1 เพราะตารางมีรูปภาพอยู่ที่ index 1 เป็นต้นไป
-                    cell.innerHTML = data[rowIndex];
-                });
-            }
-
-            function getDataForImage(index) {
-                // กำหนดข้อมูลที่ต้องการแสดงในตาราง ตามลำดับรูปภาพที่คลิก
-                switch (index) {
-                    case 0:
-                        return ['โครงสร้างพื้นฐานกายภาพ', '50%', '50%', '-', '-', ''];
-                    case 1:
-                        return ['โครงสร้างพื้นฐานด้านดิจิตอล', '50%', '50%', '-', '-', '-'];
-                    case 2:
-                        return ['City Data Platform', '50%', '50%', '-', '-', '-'];
-                        // เพิ่ม case ตามลำดับได้ตามที่คุณต้องการ
-                    default:
-                        return [];
+                if (index < imageData.length) {
+                    imageData[index].forEach((item, rowIndex) => {
+                        if (rowIndex < tableRows.length) {
+                            // อัปเดตเซลล์ที่สองในแต่ละแถวด้วยข้อมูลที่สอดคล้อง
+                            tableRows[rowIndex].cells[1].innerHTML = item;
+                        }
+                    });
+                } else {
+                    console.error('Index out of bounds: No data available for this image.');
                 }
             }
         });
     </script>
+    
 
 
 

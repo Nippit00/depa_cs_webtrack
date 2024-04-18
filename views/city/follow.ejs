@@ -79,7 +79,7 @@
         th {
             background-color: #AABA73;
             color: white;
-            border-radius: 20px;
+            border-radius: 0px;
             font-size: 14px;
         }
     </style>
@@ -87,6 +87,18 @@
 </head>
 
 <body>
+    <%
+    function countEcoSolutions(data) {
+        let count = 0;
+        followdata.forEach((item) => {
+            if (item.smartKey === data) {
+                count++;
+            }
+        });
+        return count;
+    }
+    %>
+    
 
     <%- include('../component/navbar.ejs') %>
 
@@ -100,58 +112,396 @@
 
     <%- include('../component/menu.ejs') %>
 
-    <h4 style="text-align: center; color:#04B2A1">เมืองอัจฉริยะ</h4>
+    <h4 style="text-align: center; color:#04B2A1"><%=followdata[0].cityName%></h4>
     <br>
 
     <div class="table-container">
-        <button class="collapsible">ภูเก็ตเมืองอัจฉริยะ</button>
+        <button class="collapsible"><%=followdata[0].cityName%></button>
         <div class="content">
-            <div id="accordion">
-                <div class="card">
-                  <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Collapsible Group Item #1
-                      </button>
-                    </h5>
-                  </div>
-              
-                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Collapsible Group Item #2
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Collapsible Group Item #3
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                  </div>
+          <div id="accordion">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne">
+                    โครงสร้างพื้นฐานด้านกายภาพ
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>   
+                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>โครงสร้างพื้นฐานกายภาพ</td>
+                          <td>โครงสร้างพื้นฐานกายภาพ</td>
+                          <td>complete 0/0</td>
+                        </tr>
+                    </table>
                 </div>
               </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                    aria-controls="collapseTwo">
+                    โครงสร้างพื้นฐานด้านดิจิทัล
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>โครงสร้างพื้นฐานกายภาพ</td>
+                          <td>โครงสร้างพื้นฐานกายภาพ</td>
+                          <td>complete 0/0</td>
+                        </tr>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingTree">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTree" aria-expanded="true"
+                    aria-controls="collapseTree">
+                    ระบบบริหารข้อมูลเมือง City Data Platform
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTree" class="collapse" aria-labelledby="headingTree" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>City Data Platform</td>
+                        <td>โครงสร้างพื้นฐานดิจิทัล</td>
+                        <td>complete 0/0</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                    aria-controls="collapseFour">
+                    Smart Environment
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Environment</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'ENV') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const envcount = countEcoSolutions("ENV") %>
+                            complete 0/<%=envcount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingFive">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+                    aria-controls="collapseFive">
+                    Smart Energy
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Energy</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'ENE') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const enecount = countEcoSolutions("ENE") %>
+                            complete 0/<%=enecount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingsix">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapsesix" aria-expanded="true"
+                    aria-controls="collapsesix">
+                    Smart Economy
+                  </button>
+                </h5>
+              </div>
+              <div id="collapsesix" class="collapse" aria-labelledby="headingsix" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Economy</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'ECO') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const ecocount = countEcoSolutions("ECO") %>
+                            complete 0/<%=ecocount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingseven">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseseven" aria-expanded="true"
+                    aria-controls="collapseseven">
+                    Smart Mobility
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseseven" class="collapse" aria-labelledby="headingseven" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Mobility</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'MOB') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const mobcount = countEcoSolutions("MOB") %>
+                            complete 0/<%=mobcount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingEgg">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEgg" aria-expanded="true"
+                    aria-controls="collapseEgg">
+                    Smart Governance
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseEgg" class="collapse" aria-labelledby="headingEgg" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Governance</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'GOV') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const govcount = countEcoSolutions("GOV") %>
+                            complete 0/<%=govcount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingnine">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapsenine" aria-expanded="true"
+                    aria-controls="collapsenine">
+                    Smart People
+                  </button>
+                </h5>
+              </div>
+              <div id="collapsenine" class="collapse" aria-labelledby="headingnine" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart People</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'PEO') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const peocount = countEcoSolutions("PEO") %>
+                            complete 0/<%=peocount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingten">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseten" aria-expanded="true"
+                    aria-controls="collapseten">
+                    Smart Living
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseten" class="collapse" aria-labelledby="headingten" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Living</td>
+                        <td><% followdata.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'LIV') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="#"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            <% const livcount = countEcoSolutions("LIV") %>
+                            complete 0/<%=livcount%>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+            
     </div>
 
     <br>
