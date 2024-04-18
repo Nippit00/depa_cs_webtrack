@@ -274,7 +274,15 @@
             </div>
         </div>
         <div class="map-container">
-            <%- include('./map.ejs') %>
+            <!-- <%- include('./map.ejs') %> -->
+            <iframe
+            width="600"
+            height="450"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityInfo.LAT%>,<%=cityInfo.LNG%>&zoom=5" allowfullscreen>
+          </iframe>
+          
+
         </div>
         <h6><span style="color: blue;">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
         <a href="" class="link-u">1.ข้อสรุปผู้บริหาร</a>
