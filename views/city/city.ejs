@@ -274,43 +274,41 @@
             </div>
         </div>
         <div class="map-container">
-            <img src="img/mapmap.png" alt="Map Image">
+            <%- include('./map.ejs') %>
         </div>
-    </div>
+        <h6><span style="color: blue;">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
+        <a href="" class="link-u">1.ข้อสรุปผู้บริหาร</a>
+        <br>
+        <a href="" class="link-u">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
+        <br>
+        <a href="" class="link-u">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
+        <br>
+        <a href="" class="link-u">4.อื่นๆ</a>
 
-    <h6><span style="color: blue;">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
-    <a href="" class="link-u">1.ข้อสรุปผู้บริหาร</a>
-    <br>
-    <a href="" class="link-u">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
-    <br>
-    <a href="" class="link-u">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
-    <br>
-    <a href="" class="link-u">4.อื่นๆ</a>
+        <center><a><small>d</small></a></center><br>
+        <%- include('../component/footer.ejs') %>
 
-    <center><a><small>d</small></a></center><br>
-    <%- include('../component/footer.ejs') %>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // แสดง SweetAlert ที่ถูกปรับแต่ง
-            Swal.fire({
-                title: 'ยินดีต้อนรับ',
-                text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
-                imageUrl: "img/favi.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                imageAlt: "Custom image",
-                confirmButtonText: 'OK',
-                customClass: {
-                    container: 'my-swal-container',
-                    popup: 'my-swal-popup',
-                    title: 'my-swal-title',
-                    text: 'my-swal-text',
-                    confirmButton: 'my-swal-confirm-button'
-                }
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // แสดง SweetAlert ที่ถูกปรับแต่ง
+                Swal.fire({
+                    title: 'ยินดีต้อนรับ',
+                    text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
+                    imageUrl: "img/favi.png",
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    imageAlt: "Custom image",
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        container: 'my-swal-container',
+                        popup: 'my-swal-popup',
+                        title: 'my-swal-title',
+                        text: 'my-swal-text',
+                        confirmButton: 'my-swal-confirm-button'
+                    }
+                });
             });
-        });
-    </script>
+        </script>
     <script>
         
     </script>
