@@ -198,8 +198,9 @@
         <button class="btn btn-primary" style="margin-left: 20px;"><i class="fas fa-download"></i> download</button>
     </a>
     <div class="upload-form-container">
-    <form action="upload.php" method="post" enctype="multipart/form-data" id="uploadForm" onsubmit="return confirmUpload()">
+    <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm" onsubmit="return confirmUpload()">
             <div class="titles-container">
+                <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                 <h5>อัปโหลดไฟล์ครบ 2ปี</h5>
                 <div class="upload-container" id="uploadContainer">
                     <div for="fileToUpload" class="upload-btn" id="uploadBtn">Browse Files or Drop Here</div>
