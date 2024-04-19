@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
+    <style>
+        .title-container {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            top: -300px;
+        }
+
+        .titles-container {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            top: 0px;
+        }
+
+        .content-container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-container,
+        .map-container {
+            flex: 1;
+        }
+
+        .text-container {
+            padding: 20px;
+            position: relative;
+            top: -150px;
+            /* ปรับค่า top ตามที่คุณต้องการ */
+
+        }
+
+
+        .menu-text {
+            color: black;
+        }
+
+        .map-container {
+            text-align: right;
+        }
+
+        .map-container {
+            text-align: left;
+            position: relative;
+            top: -100px;
+            margin-left: 120px;
+            margin-bottom: 150px;
+            /* ปรับค่า margin-left ตามที่ต้องการ */
+        }
+
+
+        .map-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .text-container b.menu-text {
+            margin-bottom: 50px;
+            /* ปรับค่า margin-bottom ตามที่ต้องการ */
+        }
+
+        .text-container b.menu-text {
+            margin-bottom: 50px;
+        }
+
+        .cities-text {
+            color: #04B2A1;
+            /* รหัสสีของเมืองที่คุณต้องการ */
+        }
+
+        #myChart {
+            display: block;
+            margin-left: 65%;
+            margin-right: auto;
+            margin-top: -500px;
+            margin-bottom: 250px;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <%- include('../component/navbar.ejs') %>
+
+    <div class="banner">
+        <img src="/img/bbj.png" alt="Banner Image">
+    </div>
+
+    <div class="title-container">
+        <h1>ผลรายงานความคืบหน้า<span class="citie-text">เมืองที่ได้รับตราสัญลักณษ์</span></h1>
+    </div>
+
+    <%- include('../component/menu.ejs') %>
+
+
+    <div class="content-container">
+        <div class="text-container">
+            <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
+        </div>
+    </div>
+    <div class="map-container">
+        <img src="/img/mapmap.png" alt="Map Image">
+    </div>
+    </div>
+
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <%- include('table-dash.ejs') %>
+
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['ต.1', 'ต.2', 'ต.3', 'ต.4'], // ตัวอย่าง label
+                datasets: [{
+                    label: 'จำนวนประชากร',
+                    data: [150, 200, 120, 180], // ตัวอย่างข้อมูล
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // สีพื้นหลัง
+                    borderColor: 'rgba(75, 192, 192, 1)', // สีขอบ
+                    borderWidth: 1 // ความหนาขอบ
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function openTab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.classList.add("active");
+        }
+    </script>
+
+
+
+<%- include('../component/footer.ejs') %>
+
+</body>
+
+</html>
