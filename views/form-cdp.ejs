@@ -125,6 +125,29 @@
         #fileUpload {
             display: none;
         }
+        .right-content ul {
+            list-style-type: none; /* ลบเครื่องหมายหน้ารายการออก */
+            padding: 0;
+            margin: 0;
+        }
+        .right-content li {
+            border-bottom: 1px solid #ccc; /* เพิ่มเส้นแบ่งระหว่างรายการ */
+            padding: 8px; /* เพิ่มพื้นที่รอบรายการ */
+            margin-bottom: 5px; /* เพิ่มระยะห่างระหว่างรายการ */
+        }
+        .left-content {
+            padding: 10px; /* เพิ่มพื้นที่รอบข้อมูล */
+            margin: 10px 0; /* เพิ่มระยะห่างด้านบนและล่าง */
+        }
+        .left-content p {
+            margin: 5px 0; /* ตั้งค่าระยะห่างระหว่างประโยค */
+            padding-left: 20px; /* เพิ่มพื้นที่ด้านซ้าย */
+        }
+        .left-content p.header {
+            font-weight: bold; /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
+            padding-left: 10px; /* ปรับตำแหน่งของหัวข้อ */
+            color: #444; /* เปลี่ยนสีตัวอักษร */
+        }
     </style>
 </head>
 
@@ -141,22 +164,31 @@
     </div>
 
     <div class="head">
-        <h5>เมืองอัจฉริยะ</h5>
+        <h5><%=formdata[0].cityName%></h5>
     </div>
 
     <div class="head">
-        <h6>ระบบบริหารข้อมูลเมือง City Data Platform </h6>
+        <h6>ชื่อโครงการ: <%= formdata[0].solutionName  %> </h6>
     </div>
 
     <div class="custom-container">
         <div class="left-content">
-            <p>ระบบบริหารข้อมูลเมือง City Data Platform</p>
-            <p>แหล่งเงินทุน : </p>
-            <p>เงินทุน (บาท) : </p>
+            <p class="header">รายละเอียดโครงการ:</p>
+            <p><strong>ชื่อโครงการ:</strong> <%= formdata[0].solutionName %></p>
+            <p><strong>รหัสโครงการ:</strong> <%= formdata[0].solutionID %></p>
+            <p><strong>Smart:</strong> <%= formdata[0].smart %></p>
+            <p><strong>แหล่งเงินทุน:</strong></p>
+            <p><strong>เงินทุน (บาท):</strong> <%= formdata[0].funds %> บาท</p>
         </div>
         <div class="right-content">
-            <p>CDP : </p>
+            <p><strong>CDP :</strong></p>
+            <ul>
+                <% formdata.forEach((item) => { %>
+                    <li> - <%= item.kpiName %></li>
+                <% }); %>
+            </ul>
         </div>
+        
     </div>
 
     <div class="custom-container-1">
