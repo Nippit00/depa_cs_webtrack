@@ -15,7 +15,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">  
+    <link rel="stylesheet" href="/css/styles.css">
     <!-- Add this in the head section -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Add this before closing </body> tag -->
@@ -186,8 +186,8 @@
         <img src="img/bbj.png" alt="Banner Image">
     </div>
 
-    <div class="title-container text-3xl">
-        <h1>แผน <span class="citie-text">Smart City e</span></h1>
+    <div class="title-container">
+        <h1>แผน <span class="citie-text">Smart City  e</span></h1>
     </div>
 
     <%- include('../component/menu.ejs') %>
@@ -274,20 +274,30 @@
             </div>
         </div>
         <div class="map-container">
-            <img src="img/mapmap.png" alt="Map Image">
+            <iframe
+            width="600"
+            height="450"
+            frameborder="0" style="border:0"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityInfo.LAT%>,<%=cityInfo.LNG%>&zoom=5" allowfullscreen>
+          </iframe>
         </div>
-        </div>
-        <h6 class="ml-48 relative top-[-100px]"><span class="text-blue-500">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
-    <a href="" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a>
+    </div>
+
+    <h6><span style="color: blue;">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
+    <a href="" class="link-u">1.ข้อสรุปผู้บริหาร</a>
     <br>
-    <a href="" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
+    <a href="" class="link-u">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
     <br>
-    <a href="" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
+    <a href="" class="link-u">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
     <br>
-    <a href="" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
+    <a href="" class="link-u">4.อื่นๆ</a>
+
+    <center><a><small>d</small></a></center><br>
     <%- include('../component/footer.ejs') %>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // แสดง SweetAlert ที่ถูกปรับแต่ง
             Swal.fire({
                 title: 'ยินดีต้อนรับ',
                 text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
@@ -297,17 +307,18 @@
                 imageAlt: "Custom image",
                 confirmButtonText: 'OK',
                 customClass: {
-                    container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
-                    popup: 'bg-[#F8F9FA] border-none shadow-none',
-                    title: 'text-[#04B2A1]',
-                    text: 'text-[#495057]',
-                    confirmButton: 'bg-green-600 text-white rounded-md'
+                    container: 'my-swal-container',
+                    popup: 'my-swal-popup',
+                    title: 'my-swal-title',
+                    text: 'my-swal-text',
+                    confirmButton: 'my-swal-confirm-button'
                 }
             });
         });
     </script>
+    <script>
+        
+    </script>
 </body>
 
 </html>
-
-
