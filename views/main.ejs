@@ -124,6 +124,9 @@
             color: white;
             border: 3px solid #FFF8D6;
         }
+        .table tr[style*="display: none"] {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 
@@ -150,7 +153,7 @@
 
     <div class="table-container">
         <h2></h2>
-        <input type="text" id="searchInput" placeholder="ค้นหา...">
+        <input type="text" id="searchInput" placeholder="ค้นหา..." onkeyup="searchTable()">
         <table class="table">
             <thead>
                 <tr>
