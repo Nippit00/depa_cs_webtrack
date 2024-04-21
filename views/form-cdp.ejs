@@ -8,22 +8,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="path/to/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
-        .back{
+        .back {
             margin: 30px 0px 0px 30px;
             color: #000000;
-      /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
-      background-color: #FFF0C4;
-      border-radius: 20px;
-      width: 100px;
-      height: 40px;
-      text-align: center;
+            /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
+            background-color: #FFF0C4;
+            border-radius: 20px;
+            width: 100px;
+            height: 40px;
+            text-align: center;
         }
 
-        
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -49,7 +49,7 @@
             background-color: #FFF0C4;
         }
 
-        .custom-container-1 > div {
+        .custom-container-1>div {
             width: 48%;
             padding: 10px;
             box-sizing: border-box;
@@ -126,29 +126,46 @@
         #fileUpload {
             display: none;
         }
+
         .right-content ul {
-            list-style-type: none; /* ลบเครื่องหมายหน้ารายการออก */
+            list-style-type: none;
+            /* ลบเครื่องหมายหน้ารายการออก */
             padding: 0;
             margin: 0;
         }
+
         .right-content li {
-            border-bottom: 1px solid #ccc; /* เพิ่มเส้นแบ่งระหว่างรายการ */
-            padding: 8px; /* เพิ่มพื้นที่รอบรายการ */
-            margin-bottom: 5px; /* เพิ่มระยะห่างระหว่างรายการ */
+            border-bottom: 1px solid #ccc;
+            /* เพิ่มเส้นแบ่งระหว่างรายการ */
+            padding: 8px;
+            /* เพิ่มพื้นที่รอบรายการ */
+            margin-bottom: 5px;
+            /* เพิ่มระยะห่างระหว่างรายการ */
         }
+
         .left-content {
-            padding: 10px; /* เพิ่มพื้นที่รอบข้อมูล */
-            margin: 10px 0; /* เพิ่มระยะห่างด้านบนและล่าง */
+            padding: 10px;
+            /* เพิ่มพื้นที่รอบข้อมูล */
+            margin: 10px 0;
+            /* เพิ่มระยะห่างด้านบนและล่าง */
         }
+
         .left-content p {
-            margin: 5px 0; /* ตั้งค่าระยะห่างระหว่างประโยค */
-            padding-left: 20px; /* เพิ่มพื้นที่ด้านซ้าย */
+            margin: 5px 0;
+            /* ตั้งค่าระยะห่างระหว่างประโยค */
+            padding-left: 20px;
+            /* เพิ่มพื้นที่ด้านซ้าย */
         }
+
         .left-content p.header {
-            font-weight: bold; /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
-            padding-left: 10px; /* ปรับตำแหน่งของหัวข้อ */
-            color: #444; /* เปลี่ยนสีตัวอักษร */
+            font-weight: bold;
+            /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
+            padding-left: 10px;
+            /* ปรับตำแหน่งของหัวข้อ */
+            color: #444;
+            /* เปลี่ยนสีตัวอักษร */
         }
+
         /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
         #submitButton:disabled {
             background-color: #ccc;
@@ -160,88 +177,92 @@
 <body>
 
     <%- include('component/navbar.ejs') %>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-    <div>
-        <button class="back" onclick="goBack()">ย้อนกลับ</button>
-    </div>
-
-    <div class="head">
-        <% if (formdata && formdata.length > 0 && formdata[0].cityName) { %>
-            <h5><%= formdata[0].cityName %></h5>
-        <% } else { %>
-            <h5>ไม่พบข้อมูลเมือง</h5>
-        <% } %>
-    </div>
-    
-
-    <div class="head">
-        <% if (formdata && formdata.length > 0 && formdata[0].solutionName) { %>
-            <h6>ชื่อโครงการ: <%= formdata[0].solutionName %> </h6>
-        <% } else { %>
-            <h6>ชื่อโครงการ: N/A </h6>
-        <% } %>
-    </div>
-    
-
-    <div class="custom-container">
-        <div class="left-content">
-            <p class="header">รายละเอียดโครงการ:</p>
-            <p><strong>ชื่อโครงการ:</strong>
-                <% if (!formdata || formdata.length === 0) { %>
-                    <p>ไม่พบข้อมูล</p>
-                <% } else { %>
-                    <%= formdata[0].solutionName %>
-                <% } %>
-            </p>
-            <p><strong>รหัสโครงการ:</strong>
-                <% if (!formdata || formdata.length === 0) { %>
-                    <p>ไม่พบข้อมูล</p>
-                <% } else { %>
-                    <%= formdata[0].solutionID %>
-                <% } %>
-            </p>
-            <p><strong>Smart:</strong>
-                <% if (!formdata || formdata.length === 0) { %>
-                    <p>ไม่พบข้อมูล</p>
-                <% } else { %>
-                    <%= formdata[0].smart %>
-                <% } %>
-            </p>
-            <p><strong>แหล่งเงินทุน:</strong>
-                <% if (!formdata || formdata.length === 0) { %>
-                    <p>ไม่พบข้อมูล</p>
-                <% } %>
-            </p>
-            <p><strong>เงินทุน (บาท):</strong>
-                <% if (!formdata || formdata.length === 0) { %>
-                    <p>ไม่พบข้อมูล</p>
-                <% } else { %>
-                    <%= formdata[0].funds %> บาท
-                <% } %>
-            </p>
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+        <div>
+            <button class="back" onclick="goBack()">ย้อนกลับ</button>
         </div>
-        
-        <div class="right-content">
-            <p><strong>CDP :</strong></p>
-            <ul>
-                <% if (formdata && formdata.length > 0) { %>
-                    <% formdata.forEach((item) => { %>
-                        <li> - <%= item.kpiName %></li>
-                    <% }); %>
-                <% } else { %>
-                    <li>No data available</li>
-                <% } %>
-            </ul>
-        </div>
-        
-        
-    </div>
 
-    <!-- <div class="custom-container-1">
+        <div class="head">
+            <% if (formdata && formdata.length> 0 && formdata[0].cityName) { %>
+                <h5>
+                    <%= formdata[0].cityName %>
+                </h5>
+                <% } else { %>
+                    <h5>ไม่พบข้อมูลเมือง</h5>
+                    <% } %>
+        </div>
+
+
+        <div class="head">
+            <% if (formdata && formdata.length> 0 && formdata[0].solutionName) { %>
+                <h6>ชื่อโครงการ: <%= formdata[0].solutionName %>
+                </h6>
+                <% } else { %>
+                    <h6>ชื่อโครงการ: N/A </h6>
+                    <% } %>
+        </div>
+
+
+        <div class="custom-container">
+            <div class="left-content">
+                <p class="header">รายละเอียดโครงการ:</p>
+                <p><strong>ชื่อโครงการ:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].solutionName %>
+                                <% } %>
+                </p>
+                <p><strong>รหัสโครงการ:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].solutionID %>
+                                <% } %>
+                </p>
+                <p><strong>Smart:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].smart %>
+                                <% } %>
+                </p>
+                <p><strong>แหล่งเงินทุน:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } %>
+                </p>
+                <p><strong>เงินทุน (บาท):</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].funds %> บาท
+                                <% } %>
+                </p>
+            </div>
+
+            <div class="right-content">
+                <p><strong>CDP :</strong></p>
+                <ul>
+                    <% if (formdata && formdata.length> 0) { %>
+                        <% formdata.forEach((item)=> { %>
+                            <li> - <%= item.kpiName %>
+                            </li>
+                            <% }); %>
+                                <% } else { %>
+                                    <li>No data available</li>
+                                    <% } %>
+                </ul>
+            </div>
+
+
+        </div>
+
+        <!-- <div class="custom-container-1">
         <form action="/sendformcdp/" method="post">
             <div>
                 <label for="status">สถานะ :</label>
@@ -400,116 +421,134 @@
             updateSubmitButtonState();
         });
     </script> -->
-    <div class="custom-container-1">
-        <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
-            <div>
-                <label for="status">สถานะ :</label>
-                <select id="status" name="status" >
-                    <option value="null">ระบุ สถานะโครงการ</option>
-                    <option value="delayed">ล่าช้ากว่าแผน</option>
-                    <option value="on_schedule">ตามแผน</option>
-                    <option value="ahead_of_schedule">เร็วกว่าแผน</option>
-                    <option value="not_started">ยังไม่ดำเนินโครงการ</option>
-                </select>
-            </div>
+        <div class="custom-container-1">
+            <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+                <div>
+                    <label for="status">สถานะ :</label>
+                    <select id="status" name="status" required>
+                        <option value="null">ระบุ สถานะโครงการ</option>
+                        <option value="delayed">ล่าช้ากว่าแผน</option>
+                        <option value="on_schedule">ตามแผน</option>
+                        <option value="ahead_of_schedule">เร็วกว่าแผน</option>
+                        <option value="not_started">ยังไม่ดำเนินโครงการ</option>
+                    </select>
+                </div>
 
-            <div>
-                <label for="progress">ความก้าวหน้าโครงการ :</label>
-                <select id="progress" name="progress" >
-                    <option value="null">ระบุ % ความก้าวหน้า</option>
-                    <option value="0">0%</option>
-                    <option value="5">5%</option>
-                    <!-- เพิ่มตัวเลือกอื่น ๆ ตามความเหมาะสม -->
-                </select>
-            </div>
+                <div>
+                    <label for="progress">ความก้าวหน้าโครงการ :</label>
+                    <select id="progress" name="progress">
+                        <option value="null">ระบุ % ความก้าวหน้า</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <!-- เพิ่มตัวเลือกอื่น ๆ ตามความเหมาะสม -->
+                    </select>
+                </div>
 
-            <div>
-                <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx" >
-            </div>
+                <div>
+                    <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx">
+                </div>
 
-            <div>
-                <label for="operation">ผลการดำเนินงาน:</label>
-                <textarea id="operation" name="operation" placeholder="กรอกข้อความ...." ></textarea>
-            </div>
+                <div>
+                    <label for="operation">ผลการดำเนินงาน:</label>
+                    <textarea id="operation" name="operation" placeholder="กรอกข้อความ...."></textarea>
+                </div>
 
-            <div>
-                <label for="problem_type">ประเภทปัญหา:</label>
-                <select id="problem_type" name="problem_type" >
-                    <option value="null">ระบุ ประเภทปัญหา</option>
-                    <option value="0">0%</option>
-                    <option value="5">5%</option>
-                    <option value="10">10%</option>
-                </select>
-            </div>
+                <div>
+                    <label for="problem_type">ประเภทปัญหา:</label>
+                    <select id="problem_type" name="problem_type">
+                        <option value="null">ระบุ ประเภทปัญหา</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                    </select>
+                </div>
 
-            <div>
-                <label for="result">ผลลัพธ์:</label>
-                <textarea id="result" name="result" placeholder="กรอกข้อความ...." ></textarea>
-            </div>
+                <div>
+                    <label for="result">ผลลัพธ์:</label>
+                    <textarea id="result" name="result" placeholder="กรอกข้อความ...."></textarea>
+                </div>
 
-            <div>
-                <label for="problem">ปัญหา/อุปสรรค:</label>
-                <textarea id="problem" name="problem" placeholder="กรอกข้อความ...." ></textarea>
-            </div>
+                <div>
+                    <label for="problem">ปัญหา/อุปสรรค:</label>
+                    <textarea id="problem" name="problem" placeholder="กรอกข้อความ...."></textarea>
+                </div>
 
-            <div>
-                <label for="solution">แนวทางแก้ไข:</label>
-                <textarea id="solution" name="solution" placeholder="กรอกข้อความ...." ></textarea>
-            </div>
+                <div>
+                    <label for="solution">แนวทางแก้ไข:</label>
+                    <textarea id="solution" name="solution" placeholder="กรอกข้อความ...."></textarea>
+                </div>
 
-            <div>
-                <label for="note">หมายเหตุ:</label>
-                <textarea id="note" name="note" placeholder="กรอกข้อความ...." ></textarea>
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button type="submit" id="saveButton">บันทึก</button>
-            <button type="button" id="submitButton" disabled>ส่งรายงาน</button>
-        </form>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    var saveButton = document.getElementById('saveButton');
-    var submitButton = document.getElementById('submitButton');
-    var form = document.getElementById('reportForm');
-
-    saveButton.addEventListener('click', function() {
-        enableSubmitButton();
-        // sendDataToAPI(); // เรียกใช้ฟังก์ชัน sendDataToAPI() เมื่อคลิกที่ปุ่ม "บันทึก"
-    });
-
-    function enableSubmitButton() {
-        submitButton.disabled = false;
-    }
-
-    // async function sendDataToAPI() {
-    //     var formData = new FormData(form);
+                <div>
+                    <label for="note">หมายเหตุ:</label>
+                    <textarea id="note" name="note" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
+                <button type="submit" id="saveButton">บันทึก</button>
+                <button type="button" id="submitButton" disabled>ส่งรายงาน</button>
+            </form>
+        </div>
         
 
-    //     try {
-    //         // เรียกใช้ Fetch API เพื่อส่งข้อมูลไปยัง API
-    //         var response = await fetch('/sendformcdp', {
-    //             method: 'POST',
-    //             body: formData, // ส่งข้อมูลฟอร์มไปยัง API
-    //             headers: {
-    //                 'CSRF-Token': csrfToken // เพิ่ม CSRF token เป็นส่วนหนึ่งของ header
-    //             }
-    //         });
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                //checkstatus to alert
+                const urlParams = new URLSearchParams(window.location.search);
+                const successParam = urlParams.get('success');
+                //send timestamp
+                const currentDateTimeField = document.getElementById('currentDateTime');
+                const currentDateTime = new Date().toLocaleString('th-TH', {
+                    timeZone: 'Asia/Bangkok',
+                    hour12: false, 
+                });
+                currentDateTimeField.value = currentDateTime;
+                //action button
+                var saveButton = document.getElementById('saveButton');
+                var submitButton = document.getElementById('submitButton');
+                var form = document.getElementById('reportForm');
 
-    //         // ตรวจสอบสถานะการตอบกลับ
-    //         if (!response.ok) {
-    //             throw new Error('Failed to send data');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error sending data to API:', error);
-    //     }
-    // }
+                saveButton.addEventListener('click', function () {
+                    enableSubmitButton();
+                    // sendDataToAPI(); // เรียกใช้ฟังก์ชัน sendDataToAPI() เมื่อคลิกที่ปุ่ม "บันทึก"
+                });
 
-});
+                function enableSubmitButton() {
+                    submitButton.disabled = false;
+                }
+                if (successParam === 'true') {
+                    swal("Success!", "Data saved successfully", "success");
+                }
+                
 
-    </script>
 
-    <%- include('component/footer.ejs') %>
+                // async function sendDataToAPI() {
+                //     var formData = new FormData(form);
+
+
+                //     try {
+                //         // เรียกใช้ Fetch API เพื่อส่งข้อมูลไปยัง API
+                //         var response = await fetch('/sendformcdp', {
+                //             method: 'POST',
+                //             body: formData, // ส่งข้อมูลฟอร์มไปยัง API
+                //             headers: {
+                //                 'CSRF-Token': csrfToken // เพิ่ม CSRF token เป็นส่วนหนึ่งของ header
+                //             }
+                //         });
+
+                //         // ตรวจสอบสถานะการตอบกลับ
+                //         if (!response.ok) {
+                //             throw new Error('Failed to send data');
+                //         }
+                //     } catch (error) {
+                //         console.error('Error sending data to API:', error);
+                //     }
+                // }
+
+            });
+
+        </script>
+
+        <%- include('component/footer.ejs') %>
 
 </body>
 
