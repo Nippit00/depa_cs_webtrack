@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="path/to/sweetalert.min.js"></script>
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
@@ -148,6 +149,11 @@
             padding-left: 10px; /* ปรับตำแหน่งของหัวข้อ */
             color: #444; /* เปลี่ยนสีตัวอักษร */
         }
+        /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
+        #submitButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -164,35 +170,79 @@
     </div>
 
     <div class="head">
-        <h5><%=formdata[0].cityName%></h5>
+        <% if (formdata && formdata.length > 0 && formdata[0].cityName) { %>
+            <h5><%= formdata[0].cityName %></h5>
+        <% } else { %>
+            <h5>ไม่พบข้อมูลเมือง</h5>
+        <% } %>
     </div>
+    
 
     <div class="head">
-        <h6>ชื่อโครงการ: <%= formdata[0].solutionName  %> </h6>
+        <% if (formdata && formdata.length > 0 && formdata[0].solutionName) { %>
+            <h6>ชื่อโครงการ: <%= formdata[0].solutionName %> </h6>
+        <% } else { %>
+            <h6>ชื่อโครงการ: N/A </h6>
+        <% } %>
     </div>
+    
 
     <div class="custom-container">
         <div class="left-content">
             <p class="header">รายละเอียดโครงการ:</p>
-            <p><strong>ชื่อโครงการ:</strong> <%= formdata[0].solutionName %></p>
-            <p><strong>รหัสโครงการ:</strong> <%= formdata[0].solutionID %></p>
-            <p><strong>Smart:</strong> <%= formdata[0].smart %></p>
-            <p><strong>แหล่งเงินทุน:</strong></p>
-            <p><strong>เงินทุน (บาท):</strong> <%= formdata[0].funds %> บาท</p>
+            <p><strong>ชื่อโครงการ:</strong>
+                <% if (!formdata || formdata.length === 0) { %>
+                    <p>ไม่พบข้อมูล</p>
+                <% } else { %>
+                    <%= formdata[0].solutionName %>
+                <% } %>
+            </p>
+            <p><strong>รหัสโครงการ:</strong>
+                <% if (!formdata || formdata.length === 0) { %>
+                    <p>ไม่พบข้อมูล</p>
+                <% } else { %>
+                    <%= formdata[0].solutionID %>
+                <% } %>
+            </p>
+            <p><strong>Smart:</strong>
+                <% if (!formdata || formdata.length === 0) { %>
+                    <p>ไม่พบข้อมูล</p>
+                <% } else { %>
+                    <%= formdata[0].smart %>
+                <% } %>
+            </p>
+            <p><strong>แหล่งเงินทุน:</strong>
+                <% if (!formdata || formdata.length === 0) { %>
+                    <p>ไม่พบข้อมูล</p>
+                <% } %>
+            </p>
+            <p><strong>เงินทุน (บาท):</strong>
+                <% if (!formdata || formdata.length === 0) { %>
+                    <p>ไม่พบข้อมูล</p>
+                <% } else { %>
+                    <%= formdata[0].funds %> บาท
+                <% } %>
+            </p>
         </div>
+        
         <div class="right-content">
             <p><strong>CDP :</strong></p>
             <ul>
-                <% formdata.forEach((item) => { %>
-                    <li> - <%= item.kpiName %></li>
-                <% }); %>
+                <% if (formdata && formdata.length > 0) { %>
+                    <% formdata.forEach((item) => { %>
+                        <li> - <%= item.kpiName %></li>
+                    <% }); %>
+                <% } else { %>
+                    <li>No data available</li>
+                <% } %>
             </ul>
         </div>
         
+        
     </div>
 
-    <div class="custom-container-1">
-        <form action="submit" method="post">
+    <!-- <div class="custom-container-1">
+        <form action="/sendformcdp/" method="post">
             <div>
                 <label for="status">สถานะ :</label>
                 <select id="status" name="status">
@@ -349,6 +399,114 @@
 
             updateSubmitButtonState();
         });
+    </script> -->
+    <div class="custom-container-1">
+        <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+            <div>
+                <label for="status">สถานะ :</label>
+                <select id="status" name="status" >
+                    <option value="null">ระบุ สถานะโครงการ</option>
+                    <option value="delayed">ล่าช้ากว่าแผน</option>
+                    <option value="on_schedule">ตามแผน</option>
+                    <option value="ahead_of_schedule">เร็วกว่าแผน</option>
+                    <option value="not_started">ยังไม่ดำเนินโครงการ</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="progress">ความก้าวหน้าโครงการ :</label>
+                <select id="progress" name="progress" >
+                    <option value="null">ระบุ % ความก้าวหน้า</option>
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <!-- เพิ่มตัวเลือกอื่น ๆ ตามความเหมาะสม -->
+                </select>
+            </div>
+
+            <div>
+                <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx" >
+            </div>
+
+            <div>
+                <label for="operation">ผลการดำเนินงาน:</label>
+                <textarea id="operation" name="operation" placeholder="กรอกข้อความ...." ></textarea>
+            </div>
+
+            <div>
+                <label for="problem_type">ประเภทปัญหา:</label>
+                <select id="problem_type" name="problem_type" >
+                    <option value="null">ระบุ ประเภทปัญหา</option>
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="result">ผลลัพธ์:</label>
+                <textarea id="result" name="result" placeholder="กรอกข้อความ...." ></textarea>
+            </div>
+
+            <div>
+                <label for="problem">ปัญหา/อุปสรรค:</label>
+                <textarea id="problem" name="problem" placeholder="กรอกข้อความ...." ></textarea>
+            </div>
+
+            <div>
+                <label for="solution">แนวทางแก้ไข:</label>
+                <textarea id="solution" name="solution" placeholder="กรอกข้อความ...." ></textarea>
+            </div>
+
+            <div>
+                <label for="note">หมายเหตุ:</label>
+                <textarea id="note" name="note" placeholder="กรอกข้อความ...." ></textarea>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" id="saveButton">บันทึก</button>
+            <button type="button" id="submitButton" disabled>ส่งรายงาน</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    var saveButton = document.getElementById('saveButton');
+    var submitButton = document.getElementById('submitButton');
+    var form = document.getElementById('reportForm');
+
+    saveButton.addEventListener('click', function() {
+        enableSubmitButton();
+        // sendDataToAPI(); // เรียกใช้ฟังก์ชัน sendDataToAPI() เมื่อคลิกที่ปุ่ม "บันทึก"
+    });
+
+    function enableSubmitButton() {
+        submitButton.disabled = false;
+    }
+
+    // async function sendDataToAPI() {
+    //     var formData = new FormData(form);
+        
+
+    //     try {
+    //         // เรียกใช้ Fetch API เพื่อส่งข้อมูลไปยัง API
+    //         var response = await fetch('/sendformcdp', {
+    //             method: 'POST',
+    //             body: formData, // ส่งข้อมูลฟอร์มไปยัง API
+    //             headers: {
+    //                 'CSRF-Token': csrfToken // เพิ่ม CSRF token เป็นส่วนหนึ่งของ header
+    //             }
+    //         });
+
+    //         // ตรวจสอบสถานะการตอบกลับ
+    //         if (!response.ok) {
+    //             throw new Error('Failed to send data');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error sending data to API:', error);
+    //     }
+    // }
+
+});
+
     </script>
 
     <%- include('component/footer.ejs') %>

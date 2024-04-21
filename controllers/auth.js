@@ -15,7 +15,7 @@ exports.getLogin = (req, res, next) => {
       res.render("auth/login", {
           pageTitle: "Login - Authentication",
           path: "/login",
-          // csrfToken: req.csrfToken() ********************************
+          csrfToken: req.csrfToken()
       });
   } catch (error) {
       // Handle errors that may occur during rendering
@@ -28,46 +28,47 @@ exports.getLogin = (req, res, next) => {
 // **  postLogin  **
 // *****************
 
-exports.PostLogin = (req, res) => {
+exports.PostLogin = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   const q = "SELECT * FROM citydata WHERE username = ?";
-  db.query(q, [username], (err, data) => {
-    try {
-      if (err || !data || data.length === 0) {
-        // ไม่พบชื่อผู้ใช้ในฐานข้อมูลหรือเกิดข้อผิดพลาดในการค้นหา
-        return res.status(404).redirect("/login");
-      }
+  
+  try {
+    const data = await new Promise((resolve, reject) => {
+      db.query(q, [username], (err, data) => {
+        if (err) reject(err);
+        else resolve(data);
+      });
+    });
 
-      const cityData = data[0]; // ข้อมูลเมืองที่พบในฐานข้อมูล
+    if (!data || data.length === 0) {
+      return res.status(404).redirect("/login");
+    }
 
-      if (cityData.password === password) {
-        // รหัสผ่านถูกต้อง
-        req.session.isLoggedIn = true;
-        req.session.userID = cityData.cityID;
+    const cityData = data[0];
+    
+    if (cityData.password === password) {
+      req.session.isLoggedIn = true;
+      req.session.userID = cityData.cityID;
 
-        // บันทึก session
-        return req.session.save((err) => {
-          if (err) {
-            console.log(err);
-            req.flash("alert", "invalid login");
-            return res.redirect("/login");
-          }
-          // เมื่อบันทึก session สำเร็จ ให้เปลี่ยนเส้นทางไปยังหน้า "/city"
-          res.redirect("/city");
+      await new Promise((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) reject(err);
+          else resolve();
         });
-      } else {
-        // รหัสผ่านไม่ถูกต้อง
-        return res.redirect("/login");
-      }
-    } catch (err) {
-      console.log(err);
-      // หากเกิดข้อผิดพลาดในการประมวลผล ส่งกลับไปยังหน้า "/login"
+      });
+
+      return res.redirect("/city");
+    } else {
       return res.redirect("/login");
     }
-  });
+  } catch (err) {
+    console.error(err);
+    return res.redirect("/login");
+  }
 };
+
 
 
 // ******************

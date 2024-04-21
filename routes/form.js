@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.get('/form',isAuth,formController.getform);
 router.get('/formcdp/:solutionID',isAuth,formController.getformCdp);
-
+router.post('/sendformcdp/:solutionID',formController.postFormCdp);
+// router.get('/sendformcdp',formController.postFormCdp);
 module.exports = router;
