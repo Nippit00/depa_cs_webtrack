@@ -82,6 +82,20 @@
             border-radius: 0px;
             font-size: 14px;
         }
+        .complete {
+          color: green;
+      }
+      
+      .not-complete {
+        color: orange;
+    }
+    
+    
+      
+      .incomplete {
+          color: red;
+      }
+      
     </style>
      
 </head>
@@ -107,7 +121,7 @@
     </div>
 
     <div class="title-container">
-        <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1>
+        <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1> 
     </div>
 
     <%- include('../component/menu.ejs') %>
@@ -191,7 +205,7 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th></th>
                       </tr>
                       <tr>
                         <td>City Data Platform</td>
@@ -219,7 +233,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const envcount = countEcoSolutions("ENV") %>
+                          complete 0/<%=envcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Environment</td>
@@ -236,8 +251,22 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const envcount = countEcoSolutions("ENV") %>
-                            complete 0/<%=envcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'ENV') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        
                         </td>
                       </tr>
                       </tbody>
@@ -261,7 +290,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const enecount = countEcoSolutions("ENE") %>
+                          complete 0/<%=enecount%></th>
                       </tr>
                       <tr>
                         <td>Smart Energy</td>
@@ -278,8 +308,21 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const enecount = countEcoSolutions("ENE") %>
-                            complete 0/<%=enecount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'ENE') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -303,7 +346,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const ecocount = countEcoSolutions("ECO") %>
+                          complete 0/<%=ecocount%></th>
                       </tr>
                       <tr>
                         <td>Smart Economy</td>
@@ -320,8 +364,21 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const ecocount = countEcoSolutions("ECO") %>
-                            complete 0/<%=ecocount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'ECO') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -345,7 +402,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const mobcount = countEcoSolutions("MOB") %>
+                          complete 0/<%=mobcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Mobility</td>
@@ -362,8 +420,21 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const mobcount = countEcoSolutions("MOB") %>
-                            complete 0/<%=mobcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'MOB') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -387,7 +458,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const govcount = countEcoSolutions("GOV") %>
+                          complete 0/<%=govcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Governance</td>
@@ -404,8 +476,21 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const govcount = countEcoSolutions("GOV") %>
-                            complete 0/<%=govcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'GOV') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -429,7 +514,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const peocount = countEcoSolutions("PEO") %>
+                          complete 0/<%=peocount%></th>
                       </tr>
                       <tr>
                         <td>Smart People</td>
@@ -446,8 +532,21 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const peocount = countEcoSolutions("PEO") %>
-                            complete 0/<%=peocount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'PEO') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -471,7 +570,8 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th><% const livcount = countEcoSolutions("LIV") %>
+                          complete 0/<%=livcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Living</td>
@@ -488,8 +588,21 @@
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const livcount = countEcoSolutions("LIV") %>
-                            complete 0/<%=livcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'LIV') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - Complete
+                                    <% } else if (item.status === 1) { %>
+                                        - Not yet complete
+                                    <% } else { %>
+                                        - Incomplete
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
