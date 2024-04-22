@@ -28,7 +28,7 @@ exports.getLogin = (req, res, next) => {
 // **  postLogin  **
 // *****************
 
-exports.PostLogin = async (req, res) => {
+exports.PostLogin = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -63,10 +63,7 @@ exports.PostLogin = async (req, res) => {
     } else {
       return res.redirect("/login");
     }
-  } catch (err) {
-    console.error(err);
-    return res.redirect("/login");
-  }
+  });
 };
 
 
