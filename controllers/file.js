@@ -3,10 +3,10 @@ const db = require('../db.js'); // เชื่อมต่อกับฐาน
 exports.SaveFile = (req, res, next) => {
   try {
     // รับข้อมูลที่ส่งมาจากไคลเอนต์
-    const { base64File } = req.body;
-    const cityID = req.session.userID;
-    const timestamp = new Date();
-    console.log(req.body)
+    // const { base64File } = req.body;
+    // const cityID = req.session.userID;
+    // const timestamp = new Date();
+    console.log(req.body.submit[1])
     // บันทึกข้อมูลลงในฐานข้อมูล
     // const q = "INSERT INTO `2yearfileupload`( `cityID`, `timestamp`, `summitfile`) VALUES ( ?, ?, ?)";
     // db.query(q, [ cityID, timestamp, base64File], (err, result) => {
