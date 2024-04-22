@@ -3,8 +3,7 @@ const db = require("../db.js");
 // **************
 // **  Models  **
 // **************
-const city = require("../models/city");
-const CityData = require("../models/cityData");
+
 
 // ****************
 // **  getLogin  **
@@ -31,36 +30,56 @@ exports.getLogin = (req, res, next) => {
 exports.PostLogin = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-
-  const q = "SELECT * FROM citydata WHERE username = ?";
   
-  try {
-    const data = await new Promise((resolve, reject) => {
-      db.query(q, [username], (err, data) => {
-        if (err) reject(err);
-        else resolve(data);
-      });
-    });
-
-    if (!data || data.length === 0) {
-      return res.status(404).redirect("/login");
-    }
-
-    const cityData = data[0];
-    
-    if (cityData.password === password) {
-      req.session.isLoggedIn = true;
-      req.session.userID = cityData.cityID;
-
-      await new Promise((resolve, reject) => {
-        req.session.save((err) => {
-          if (err) reject(err);
-          else resolve();
+  const q = "SELECT * FROM citydata WHERE username = ?";
+  db.query(q, [username], (err, data) => {
+    try {
+      if (err || !data || data.length === 0) {
+        // Handle admin login
+        const AdminC = "SELECT * FROM `AdminInfo` WHERE AdminUsername = ?";
+        db.query(AdminC, [username], (err, adminData) => {
+          try {
+            if (err || !adminData || adminData.length === 0) {
+              return res.status(404).redirect("/login");
+            }
+            const adminInfo = adminData[0];
+            if (adminInfo.AdminPassword === password) {
+              req.session.isAdmin = true;
+              req.session.userID = adminInfo.AdminUsername;
+              return req.session.save((err) => {
+                if (err) {
+                  console.log(err);
+                  req.flash("alert", "invalid login");
+                  return res.redirect("/admin");
+                }
+                console.log("Admin login successful");
+                res.redirect("/admin");
+              });
+            }
+          } catch (error) {
+            console.log(error);
+          }
         });
-      });
-
-      return res.redirect("/city");
-    } else {
+      } else {
+        const cityData = data[0];
+        if (cityData.password === password) {
+          req.session.isLoggedIn = true;
+          req.session.userID = cityData.cityID;
+          return req.session.save((err) => {
+            if (err) {
+              console.log(err);
+              req.flash("alert", "invalid login");
+              return res.redirect("/login");
+            }
+            console.log("User login successful");
+            res.redirect("/city");
+          });
+        } else {
+          return res.redirect("/login");
+        }
+      }
+    } catch (err) {
+      console.log(err);
       return res.redirect("/login");
     }
   } catch (err) {

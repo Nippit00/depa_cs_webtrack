@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <script>
+    <!-- <script>
         // Redirect away from the login page if user is already logged in
         if (sessionStorage.getItem('isLoggedIn')) {
             window.location.href = '/city'; // Redirect to city page
@@ -11,7 +11,7 @@
         window.onpopstate = function(event) {
             history.go(1);
         };
-    </script>
+    </script> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -71,11 +71,11 @@
         }
 
         .map-container {
-            text-align: right;
-            position: relative;
-            top: -120px; /* ปรับค่า top ตามที่ต้องการ */
-            margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
-        }
+    text-align: right;
+    position: relative;
+    top: -120px; /* ปรับค่า top ตามที่ต้องการ */
+    margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+}
 
         .text-container b.menu-text {
             margin-bottom: 50px;
