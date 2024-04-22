@@ -123,31 +123,30 @@
 
 <body>
 
-    <?php include './component/navbar.php'; ?>
+    <%- include('component/navbar.ejs') %>
 
     <div class="head">
         <h5>เมืองอัจฉริยะ</h5>
     </div>
 
     <div class="head">
-        <h6>ระบบบริหารข้อมูลเมือง City Data Platform </h6>
+        <h6>ชื่อโครงการ : </h6>
     </div>
-
-
 
     <div class="custom-container">
         <div class="left-content">
             <!-- เนื้อหาฝั่งซ้าย -->
-            <p>ระบบบริหารข้อมูลเมือง City Data Platform</p>
+            <p>ชื่อโครงการ : </p>
+            <p>รหัสโครงการ : </p>
+            <p>Smart : </p>
             <p>แหล่งเงินทุน : </p>
             <p>เงินทุน (บาท) : </p>
         </div>
         <div class="right-content">
             <!-- เนื้อหาฝั่งขวา -->
-            <p>CDP : </p>
+            <p>ตัวชี้วัด ที่ได้รับอนุมติ : </p>
         </div>
     </div>
-
 
     <div class="custom-container-1">
         <form action="submit" method="post">
@@ -209,7 +208,7 @@
                     <option value="0">0%</option>
                     <option value="5">5%</option>
                     <option value="10">15%</option>
-                </select>
+                </select
             </div>
 
             <!-- ตำแหน่ง textarea ที่เพิ่ม id="result" เพื่อให้สอดคล้องกับ label -->
@@ -249,7 +248,7 @@
             var statusSelect = document.getElementById('status');
             var progressSelect = document.getElementById('progress');
             var fileUploadInput = document.getElementById('fileUpload');
-            var submitButton = document.getElementById('submitButton'); // Updated selector
+            var submitButton = document.getElementById('submitButton');
             var form = document.querySelector('form');
 
             statusSelect.addEventListener('change', function() {
@@ -267,7 +266,7 @@
             });
 
             submitButton.addEventListener('click', function() {
-                form.submit(); // จะทำให้ฟอร์มถูกส่งไปยัง action ที่ระบุใน form tag
+                form.submit(); // This will submit the form to the specified 'action' in the form tag
             });
 
             function toggleFileUpload() {
@@ -282,14 +281,14 @@
                 var isFormValid = Array.from(form.elements).every(function(element) {
                     if (
                         (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') &&
-                        element.type !== 'file' && // ไม่นับ input type file
+                        element.type !== 'file' && // Do not count input type file
                         element.value.trim() !== ''
                     ) {
                         return true;
                     } else if (element.type === 'file') {
-                        return true; // ไม่ต้องตรวจสอบไฟล์ที่อัปโหลด
+                        return true; // No need to check uploaded file
                     } else if (element.type === 'button') {
-                        return true; // ปุ่มบันทึกและส่งรายงานสามารถกดได้ตลอดเวลา
+                        return true; // Save and report buttons can always be pressed
                     } else {
                         return false;
                     }
@@ -311,23 +310,17 @@
                 updateSubmitButtonState();
             });
 
-            // ให้เรียก updateSubmitButtonState เมื่อมีการเปลี่ยนแปลงในฟอร์ม
+            // Call updateSubmitButtonState when there are changes in the form
             form.addEventListener('input', function() {
                 updateSubmitButtonState();
             });
 
-            // ให้เรียกฟังก์ชัน updateSubmitButtonState เมื่อโหลดหน้าเว็บ
+            // Call the function updateSubmitButtonState when the web page loads
             updateSubmitButtonState();
         });
     </script>
 
-
-
-
-
-
-
-    <?php include './component/footer.php'; ?>
+    <%- include('component/footer.ejs') %>
 
 </body>
 

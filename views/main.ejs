@@ -124,6 +124,9 @@
             color: white;
             border: 3px solid #FFF8D6;
         }
+        .table tr[style*="display: none"] {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 
@@ -143,24 +146,14 @@
     <iframe title="web" width="1024" height="612" src="https://app.powerbi.com/view?r=eyJrIjoiZjk0NTY5ZDgtODgwOC00Yjc1LTg0MDUtNjllZDM3M2Y0NmRmIiwidCI6IjRhNGY3YjUyLTBlMDUtNDQxNS04NDU0LTc2ODliMDBhODdiMiIsImMiOjEwfQ%3D%3D&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
 
     </div>
-    <div>
-        <iframe
-        width="600"
-        height="450"
-        frameborder="0"
-        style="border:0"
-        src="https://www.google.com/maps/embed/v1/view?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&center=13.7563,100.5018&zoom=5"
-        allowfullscreen>
-        <!-- AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o -->
-    </iframe>
-    </div>
+
     <div class="titles-container">
         <h1><span class="citie-text">CITY</span> OVERALL</h1>
     </div>
 
     <div class="table-container">
         <h2></h2>
-        <input type="text" id="searchInput" placeholder="ค้นหา...">
+        <input type="text" id="searchInput" placeholder="ค้นหา..." onkeyup="searchTable()">
         <table class="table">
             <thead>
                 <tr>
