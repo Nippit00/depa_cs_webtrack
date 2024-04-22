@@ -111,7 +111,20 @@
         });
         return count;
     }
+    function countComplete(data) {
+        let count = 0;
+        followdata.forEach((item) => {
+          if (item.smartKey === data) {
+            if (item.status === 2) {
+                count++;
+              }
+            }
+            
+        });
+        return count;
+    }
     %>
+    
     
 
     <%- include('../component/navbar.ejs') %>
@@ -232,9 +245,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const envcountProject = countEcoSolutions("ENV") %>
+                          <%=envcountProject%> Project</th>
                         <th><% const envcount = countEcoSolutions("ENV") %>
-                          complete 0/<%=envcount%></th>
+                          <% const envcountSuccess = countComplete("ENV") %>
+                          complete <%=envcountSuccess%>/<%=envcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Environment</td>
@@ -289,9 +304,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const enecountProject = countEcoSolutions("ENE") %>
+                          <%=enecountProject%> Project</th>
                         <th><% const enecount = countEcoSolutions("ENE") %>
-                          complete 0/<%=enecount%></th>
+                          <% const enecountSuccess = countComplete("ENE") %>
+                          complete <%=enecountSuccess%>/<%=enecount%></th>
                       </tr>
                       <tr>
                         <td>Smart Energy</td>
@@ -345,9 +362,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const ecocountProject = countEcoSolutions("ECO") %>
+                          <%=ecocountProject%> Project</th>
                         <th><% const ecocount = countEcoSolutions("ECO") %>
-                          complete 0/<%=ecocount%></th>
+                          <% const ecocountSuccess = countComplete("ECO") %>
+                          complete <%=ecocountSuccess%>/<%=ecocount%></th>
                       </tr>
                       <tr>
                         <td>Smart Economy</td>
@@ -401,9 +420,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const mobcountProject = countEcoSolutions("MOB") %>
+                          <%=mobcountProject%> Project</th>
                         <th><% const mobcount = countEcoSolutions("MOB") %>
-                          complete 0/<%=mobcount%></th>
+                          <% const mobcountSuccess = countComplete("MOB") %>
+                          complete <%=mobcountSuccess%>/<%=mobcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Mobility</td>
@@ -457,9 +478,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const govcountProject = countEcoSolutions("GOV") %>
+                          <%=govcountProject%> Project</th>
                         <th><% const govcount = countEcoSolutions("GOV") %>
-                          complete 0/<%=govcount%></th>
+                          <% const govcountSuccess = countComplete("GOV") %>
+                          complete <%=govcountSuccess%>/<%=govcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Governance</td>
@@ -513,9 +536,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const peocountProject = countEcoSolutions("PEO") %>
+                          <%=peocountProject%> Project</th>
                         <th><% const peocount = countEcoSolutions("PEO") %>
-                          complete 0/<%=peocount%></th>
+                          <% const peocountSuccess = countComplete("PEO") %>
+                          complete <%=peocountSuccess%>/<%=peocount%></th>
                       </tr>
                       <tr>
                         <td>Smart People</td>
@@ -569,9 +594,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
+                        <th><% const livcountProject = countEcoSolutions("LIV") %>
+                          <%=livcountProject%> Project</th>
                         <th><% const livcount = countEcoSolutions("LIV") %>
-                          complete 0/<%=livcount%></th>
+                          <% const livcountSuccess = countComplete("LIV") %>
+                          complete <%=livcountSuccess%>/<%=livcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Living</td>
