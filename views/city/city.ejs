@@ -71,23 +71,11 @@
         }
 
         .map-container {
-            text-align: right;
-        }
-
-        .map-container {
-            text-align: right;
-            position: relative;
-            top: -120px;
-            /* ปรับค่า top ตามที่ต้องการ */
-            /* หรือใช้ margin-top แทน
-        margin-top: -20px; 
-        */
-        }
-
-        .map-container img {
-            max-width: 100%;
-            height: auto;
-        }
+    text-align: right;
+    position: relative;
+    top: -120px; /* ปรับค่า top ตามที่ต้องการ */
+    margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+}
 
         .text-container b.menu-text {
             margin-bottom: 50px;
@@ -274,7 +262,6 @@
             </div>
         </div>
         <div class="map-container">
-            <!-- <%- include('./map.ejs') %> -->
             <iframe
             width="600"
             height="450"
