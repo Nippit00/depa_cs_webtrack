@@ -2,8 +2,7 @@ const db = require("../db.js");
 // **************
 // **  Models  **
 // **************
-const City = require("../models/city");
-const CityData = require("../models/cityData");
+
 
 // ****************
 // **  getCity   **
