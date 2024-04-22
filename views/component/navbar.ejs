@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <nav class="text-black bg-green-400">
+    <nav class="text-black bg-green-400 hover:no-underline">
         <div class="mx-auto flex flex-row justify-between text-center align-items-center">
-            <a class="bg-white py-2 rounded-full px-3 border-2 border-black ml-2" href="/">
+            <a class="bg-white py-2 rounded-full px-3 border-2 border-black ml-2 hover:no-underline" href="/">
               <i class="fas fa-home"></i>
                 <span class="city-text"> d-SCORE</span>
             </a>
@@ -25,7 +25,7 @@
                         <img src="/img/favii.png" alt="Description of the image" class=" h-16 rounded-full">
                         <% if (!isAuthenticated) { %>
                         <li>
-                        <a class=" bg-green-300 p-3 rounded-full hover:bg-green-500" href="/login">
+                        <a class=" bg-green-300 p-3 rounded-full hover:bg-green-500  hover:no-underline" href="/login">
                           SIGN IN
                         </a>
                     </li>
