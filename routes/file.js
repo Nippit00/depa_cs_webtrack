@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.post('/upload',isAuth,FileController.SaveFile);
-router.get('/upload',isAuth,FileController.getSaveFile);
+// router.get('/upload',isAuth,FileController.getSaveFile);
 
 
 module.exports = router;
