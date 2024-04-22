@@ -2,128 +2,47 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/styles.css">
-  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-  <style>
-    .navbar {
-      background-color: #AABA73 !important;
-      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
-    }
-
-    .navbar-brand {
-      background-color: #ffffff;
-      border: 2px solid #C2AF76;
-      border-radius: 50px;
-      padding: 5px;
-      display: inline-block;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .navbar-brand:hover {
-      background-color: #C2AF76;
-      /* ตั้งค่าสีพื้นหลังของลิงก์เมื่อเม้าส์ hover เป็นสีเหลือง */
-      color: black;
-      /* ตั้งค่าสีข้อความในลิงก์เมื่อเม้าส์ hover เป็นสีดำ (หรือสีอื่นตามที่คุณต้องการ) */
-      transition: 0.3s;
-      /* ตั้งค่าเวลาที่ให้เกิด transition เมื่อมีการ hover */
-    }
-
-    .nav-item.active {
-      background-color: #ffffff;
-      border: 3px solid #ffffff;
-      border-radius: 0 0 0 50px;
-      padding: 5px;
-      display: inline-block;
-      width: 500px;
-      height: 50px;
-      margin-top: -10px;
-      margin-right: -15px;
-      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
-      position: relative;
-      /* เพิ่มบรรทัดนี้เพื่อให้สามารถใส่รูปภาพเป็นพื้นหลัง */
-    }
-
-    .nav-item.active img {
-      position: absolute;
-      top: 50%;
-      /* จัดตำแหน่งให้อยู่กึ่งกลางตามความสูง */
-      left: 25%;
-      /* จัดตำแหน่งให้อยู่กึ่งกลางตามความกว้าง */
-      transform: translate(-50%, -50%);
-      /* จัดตำแหน่งให้อยู่กึ่งกลาง */
-      max-width: 230px;
-      max-height: 200px;
-      border-radius: 0%;
-      /* ใส่ border-radius เพื่อทำให้รูปภาพเป็นวงกลม (สามารถปรับแต่งตามต้องการ) */
-    }
-
-
-    .nav-link {
-      color: #ffffff;
-      /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
-      background-color: #FEDC7A;
-      /* ตั้งค่าสีพื้นหลังของลิงก์เป็นสีเหลือง */
-      border-radius: 50px;
-      /* ตั้งค่ารูปร่างของกรอบของลิงก์ */
-      padding: 5px 20px;
-      /* ตั้งค่าระยะห่างของข้อความจากรอบ */
-      width: 90px;
-      margin-left: 80%;
-      text-align: center;
-      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav-link:hover {
-      background-color: #ffd700;
-      /* ตั้งค่าสีพื้นหลังของลิงก์เมื่อเม้าส์ hover เป็นสีเหลือง */
-      color: #000000;
-      /* ตั้งค่าสีข้อความในลิงก์เมื่อเม้าส์ hover เป็นสีดำ (หรือสีอื่นตามที่คุณต้องการ) */
-      transition: 0.3s;
-      /* ตั้งค่าเวลาที่ให้เกิด transition เมื่อมีการ hover */
-    }
-
-    .city-text {
-      color: black;
-      /* รหัสสีของเมืองที่คุณต้องการ */
-    }
-  </style>
-</head>
-
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/"><i class="fas fa-home"></i><span class="city-text"> ความคืบหน้าของเมืองที่ได้รับตราสัญลักษณ์</span></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav ms-auto">
-        <div class="nav-item active">
-          <img src="/img/favii.png" alt="Description of the image">
-          
-          <% if (!isAuthenticated) { %>
-            <li>
-              <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> SING IN<span class="sr-only"></span></a>
-            </li>
-     
-         
-
-
-          <form action="/logout" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken%>">
-            <button class="nav-link" type="submit"><i class="fas fa-sign-in-alt"></i> Log out<span class="sr-only"></span></button>
-        </form>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ'
+        crossorigin='anonymous'>
+    <script src="https://cdn.tailwindcss.com"></script>
     
+</head>
+<body>
+  <nav class="text-black bg-green-400">
+      <div class="mx-auto flex flex-row justify-between text-center align-items-center">
+          <a class="bg-white py-2 rounded-full px-3 border-2 border-black ml-2 hover:no-underline " href="/">
+              <i class="fas fa-home"></i>
+              <span class=""> d-SCORE</span>
+          </a>
           
-          
-          
-          </ul>
-        </div>
-    </div>
+          <div class="bg-white rounded-bl-full px-3 mb-1 " id="navbarNavDropdown">
+              <ul class="ml-auto flex flex-row text-center align-items-center ">
+                  <li class="text-transparent">
+                      <img src="/img/favii.png" alt="Description of the image" class=" h-16 rounded-full">
+                  </li>
+                  <% if (!isAuthenticated) { %>
+                  <li>
+                      <a class="bg-green-300 p-3 rounded-full hover:bg-green-500 hover:no-underline hover:text-white duration-100" href="/login">
+                          SIGN IN
+                      </a>
+                  </li>
+                  <% } else { %>
+                  <li>
+                      <form action="/logout" method="POST" >
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button class="bg-red-300 p-3 rounded-full hover:bg-red-500 hover:text-white hover:no-underline duration-100">
+                              Logout
+                          </button>
+                      </form>
+                  </li>
+                  <% } %>
+              </ul>
+          </div>
+      </div>
   </nav>
-
 </body>
 
 </html>

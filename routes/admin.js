@@ -10,7 +10,7 @@ const router = express.Router();
 // **************************
 // ***     Admin Page     ***
 // **************************
-router.get('/', isAuth, isAdmin, adminController.getAdPage);
+router.get('/', isAdmin, adminController.getAdPage);
 
 
 // **************************

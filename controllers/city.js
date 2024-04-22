@@ -2,8 +2,7 @@ const db = require("../db.js");
 // **************
 // **  Models  **
 // **************
-const City = require("../models/city");
-const CityData = require("../models/cityData");
+
 
 // ****************
 // **  getCity   **
@@ -90,10 +89,11 @@ exports.GetPosition = (req, res) => {
 
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID WHERE solution.cityID = ?";
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN citydata ON citydata.cityID = solution.cityID WHERE solution.cityID = ?";
   try {
     db.query(q, [cityID], (err, data) => {
       if (err) return res.status(500).json(err);
+      console.log(data)
       res.render("city/dashboard", {
         req,
         pageTitle: "Dashboard",
