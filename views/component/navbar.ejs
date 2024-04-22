@@ -10,32 +10,31 @@
 </head>
 
 <body>
-    <nav class="text-black bg-green-400">
-        <div class="mx-auto flex flex-row justify-between text-center align-items-center">
-            <div class="bg-white py-2 rounded-full px-3 border-2 border-black ml-2">
+  <nav class="text-black bg-green-400">
+      <div class="mx-auto flex flex-row justify-between text-center align-items-center">
+          <a class="bg-white py-2 rounded-full px-3 border-2 border-black ml-2 hover:no-underline " href="/">
               <i class="fas fa-home"></i>
-                <span class="city-text"> ความคืบหน้าของเมืองที่ได้รับตราสัญลักษณ์</span>
-            </div>
-                
-            
-            <div class="bg-white rounded-bl-full px-3 mb-1 " id="navbarNavDropdown">
-            
-                <ul class="ml-auto flex flex-row text-center align-items-center ">
-                    <li class="text-transparent">
-                        <img src="/img/favii.png" alt="Description of the image" class=" h-16 rounded-full">
-                        <% if (!isAuthenticated) { %>
-                        <li>
-                        <a class=" bg-green-300 p-3 rounded-full hover:bg-green-500" href="/login">
+              <span class=""> d-SCORE</span>
+          </a>
+          
+          <div class="bg-white rounded-bl-full px-3 mb-1 " id="navbarNavDropdown">
+              <ul class="ml-auto flex flex-row text-center align-items-center ">
+                  <li class="text-transparent">
+                      <img src="/img/favii.png" alt="Description of the image" class=" h-16 rounded-full">
+                  </li>
+                  <% if (!isAuthenticated) { %>
+                  <li>
+                      <a class="bg-green-300 p-3 rounded-full hover:bg-green-500 hover:no-underline hover:text-white duration-100" href="/login">
                           SIGN IN
-                        </a>
-                    </li>
-                    <% } else { %>
-                    <li>
-                      <form action="/logout" method="POST" class="">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button class=" bg-red-300 p-3 rounded-full hover:bg-red-500 hover:text-white">
-                             Log out
-                        </button>
+                      </a>
+                  </li>
+                  <% } else { %>
+                  <li>
+                      <form action="/logout" method="POST" >
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button class="bg-red-300 p-3 rounded-full hover:bg-red-500 hover:text-white hover:no-underline duration-100">
+                              Logout
+                          </button>
                       </form>
                     </li>
                   <% } %>

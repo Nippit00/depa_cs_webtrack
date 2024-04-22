@@ -15,7 +15,7 @@ exports.getLogin = (req, res, next) => {
       res.render("auth/login", {
           pageTitle: "Login - Authentication",
           path: "/login",
-          // csrfToken: req.csrfToken() ********************************
+          csrfToken: req.csrfToken() 
       });
   } catch (error) {
       // Handle errors that may occur during rendering
