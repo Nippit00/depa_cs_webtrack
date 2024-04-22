@@ -31,15 +31,12 @@ exports.getformCdp = (req, res, next) => {
 };
 
 
-
-
-
 exports.postFormCdp = (req, res, next) => {
   try {
     console.log(req.body)
     const postData = req.body
     const solutionParam = req.params
-    const qInsert = "INSERT INTO anssolution (solutionID, timestamp, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+    const qInsert = "INSERT INTO anssolution (solutionID, timestamp, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
     const qFechdata = "SELECT * FROM anssolution WHERE solutionID = ?"
     const qUpdate = "UPDATE anssolution SET timestamp = ?, Q1=?, Q2=?, Q3=?, Q4=?, Q5=?, Q6=?, Q7=?, Q8=?, Q9=? WHERE solutionID=?;"
     db.query(qFechdata,[solutionParam.solutionID],(err,fechData)=>{
@@ -52,7 +49,7 @@ exports.postFormCdp = (req, res, next) => {
           })
       } else {
         db.query(qInsert,[solutionParam.solutionID,postData.currentDateTime,postData.status,postData.progress,postData.fileUpload,postData.operation,
-          postData.problem_type,postData.result,postData.problem,postData.solution,postData.note],(err,insertData)=>{
+          postData.problem_type,postData.result,postData.problem,postData.solution,postData.note,0],(err,insertData)=>{
             if(err) return res.status(500).json("insertdataError",err)
 
             return res.redirect(`/formcdp/${req.params.solutionID}?success=true`);
@@ -66,5 +63,12 @@ exports.postFormCdp = (req, res, next) => {
   }
 };
 
-
-
+exports.postSubmitCdp =(req,res)=>{
+  try {
+      console.log(req.body)
+      res.status(200)
+  } catch (error) {
+    console.log(error)
+    
+  } 
+}
