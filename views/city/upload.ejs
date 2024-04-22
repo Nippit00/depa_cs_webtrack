@@ -213,7 +213,8 @@
                 <br>
                 <br>
                 <!-- ปุ่ม submit -->
-                <input type="submit" value="Upload File" name="submit" class="upload-btn-n">
+                <input type="hidden" value="" name="submit" class="upload-btn-n">
+                <input type="submit" value="Upload Files" name="submit" class="upload-btn-n">
 
             </div>
         </form>
@@ -221,9 +222,34 @@
 
 
     <script>
-        document.getElementById('fileToUpload').addEventListener('change', function(e) {
-            document.getElementById('fileName').textContent = e.target.files[0].name;
+       document.getElementById('fileToUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const base64Data = event.target.result;
+        // เขียนค่า base64 ลงใน value ของ input
+        document.querySelector('.upload-btn-n').value = base64Data;
+
+        const formData = new FormData();
+        formData.append('base64File', base64Data);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
+    };
+
+    reader.readAsDataURL(file);
+});
+
 
         const uploadContainer = document.getElementById('uploadContainer');
         const uploadBtn = document.getElementById('uploadBtn');
@@ -262,18 +288,6 @@
 
                 // เพิ่มชื่อไฟล์ที่อัปโหลดแล้วลงใน container
                 const uploadedFileElement = document.createElement('div');
-                uploadedFileElement.textContent = fileName;
-                uploadedFilesContainer.appendChild(uploadedFileElement);
-            }
-        }
-
-        function handleFiles(files) {
-            if (files.length > 0) {
-                const fileName = files[0].name;
-                fileNameSpan.textContent = fileName;
-
-                // เพิ่มชื่อไฟล์ที่อัปโหลดแล้วลงใน container
-                const uploadedFileElement = document.createElement('div');
                 uploadedFileElement.classList.add('uploaded-file');
 
                 uploadedFileElement.innerHTML = `
@@ -300,5 +314,6 @@
 <%- include('../component/footer.ejs') %>
 
 </body>
+
 
 </html>
