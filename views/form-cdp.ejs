@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
-        .back{
+        .back {
             margin: 30px 0px 0px 30px;
             color: #000000;
-      /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
-      background-color: #FFF0C4;
-      border-radius: 20px;
-      width: 100px;
-      height: 40px;
-      text-align: center;
+            /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
+            background-color: #FFF0C4;
+            border-radius: 20px;
+            width: 100px;
+            height: 40px;
+            text-align: center;
         }
 
-        
+
+
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -30,10 +34,12 @@
             box-sizing: border-box;
         }
 
+
         .head {
             text-align: center;
             margin-top: 50px;
         }
+
 
         .custom-container,
         .custom-container-1 {
@@ -48,12 +54,14 @@
             background-color: #FFF0C4;
         }
 
-        .custom-container-1 > div {
+
+        .custom-container-1>div {
             width: 48%;
             padding: 10px;
             box-sizing: border-box;
             margin-bottom: 20px;
         }
+
 
         .left-content,
         .right-content {
@@ -63,11 +71,13 @@
             margin-left: 50px;
         }
 
+
         form {
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
         }
+
 
         form div {
             display: flex;
@@ -77,6 +87,7 @@
             margin-bottom: 20px;
         }
 
+
         label {
             display: block;
             margin-top: 20px;
@@ -85,6 +96,7 @@
             left: 50%;
             transform: translateX(-50%);
         }
+
 
         select,
         textarea,
@@ -101,12 +113,14 @@
             background-color: #fffbf0;
         }
 
+
         input {
             width: 50%;
             position: relative;
             left: 75%;
             transform: translateX(-50%);
         }
+
 
         button {
             background-color: #C2AF76;
@@ -117,50 +131,171 @@
             margin-top: 20px;
         }
 
+
         button:hover {
             background-color: #C2AF76;
             border-radius: 50px;
         }
 
+
         #fileUpload {
             display: none;
+        }
+
+
+        .right-content ul {
+            list-style-type: none;
+            /* ลบเครื่องหมายหน้ารายการออก */
+            padding: 0;
+            margin: 0;
+        }
+
+
+        .right-content li {
+            border-bottom: 1px solid #ccc;
+            /* เพิ่มเส้นแบ่งระหว่างรายการ */
+            padding: 8px;
+            /* เพิ่มพื้นที่รอบรายการ */
+            margin-bottom: 5px;
+            /* เพิ่มระยะห่างระหว่างรายการ */
+        }
+
+
+        .left-content {
+            padding: 10px;
+            /* เพิ่มพื้นที่รอบข้อมูล */
+            margin: 10px 0;
+            /* เพิ่มระยะห่างด้านบนและล่าง */
+        }
+
+
+        .left-content p {
+            margin: 5px 0;
+            /* ตั้งค่าระยะห่างระหว่างประโยค */
+            padding-left: 20px;
+            /* เพิ่มพื้นที่ด้านซ้าย */
+        }
+
+
+        .left-content p.header {
+            font-weight: bold;
+            /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
+            padding-left: 10px;
+            /* ปรับตำแหน่งของหัวข้อ */
+            color: #444;
+            /* เปลี่ยนสีตัวอักษร */
+        }
+
+
+        /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
+        #submitButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
     </style>
 </head>
 
+
 <body>
 
+
     <%- include('component/navbar.ejs') %>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
-    <div>
-        <button class="back" onclick="goBack()">ย้อนกลับ</button>
-    </div>
-
-    <div class="head">
-        <h5>เมืองอัจฉริยะ</h5>
-    </div>
-
-    <div class="head">
-        <h6>ระบบบริหารข้อมูลเมือง City Data Platform </h6>
-    </div>
-
-    <div class="custom-container">
-        <div class="left-content">
-            <p>ระบบบริหารข้อมูลเมือง City Data Platform</p>
-            <p>แหล่งเงินทุน : </p>
-            <p>เงินทุน (บาท) : </p>
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+        <div>
+            <button class="back" onclick="goBack()">ย้อนกลับ</button>
         </div>
-        <div class="right-content">
-            <p>CDP : </p>
-        </div>
-    </div>
 
-    <div class="custom-container-1">
-        <form action="submit" method="post">
+
+        <div class="head">
+            <% if (formdata && formdata.length> 0 && formdata[0].cityName) { %>
+                <h5>
+                    <%= formdata[0].cityName %>
+                </h5>
+                <% } else { %>
+                    <h5>ไม่พบข้อมูลเมือง</h5>
+                    <% } %>
+        </div>
+
+
+
+
+        <div class="head">
+            <% if (formdata && formdata.length> 0 && formdata[0].solutionName) { %>
+                <h6>ชื่อโครงการ: <%= formdata[0].solutionName %>
+                </h6>
+                <% } else { %>
+                    <h6>ชื่อโครงการ: N/A </h6>
+                    <% } %>
+        </div>
+
+
+
+
+        <div class="custom-container">
+            <div class="left-content">
+                <p class="header">รายละเอียดโครงการ:</p>
+                <p><strong>ชื่อโครงการ:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].solutionName %>
+                                <% } %>
+                </p>
+                <p><strong>รหัสโครงการ:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].solutionID %>
+                                <% } %>
+                </p>
+                <p><strong>Smart:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].smart %>
+                                <% } %>
+                </p>
+                <p><strong>แหล่งเงินทุน:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } %>
+                </p>
+                <p><strong>เงินทุน (บาท):</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].funds %> บาท
+                                <% } %>
+                </p>
+            </div>
+
+
+            <div class="right-content">
+                <p><strong>CDP :</strong></p>
+                <ul>
+                    <% if (formdata && formdata.length> 0) { %>
+                        <% formdata.forEach((item)=> { %>
+                            <li> - <%= item.kpiName %>
+                            </li>
+                            <% }); %>
+                                <% } else { %>
+                                    <li>No data available</li>
+                                    <% } %>
+                </ul>
+            </div>
+
+
+
+
+        </div>
+
+
+        <!-- <div class="custom-container-1">
+        <form action="/sendformcdp/" method="post">
             <div>
                 <label for="status">สถานะ :</label>
                 <select id="status" name="status">
@@ -171,6 +306,7 @@
                     <option value="not_started">ยังไม่ดำเนินโครงการ</option>
                 </select>
             </div>
+
 
             <div>
                 <label for="progress">ความก้าวหน้าโครงการ :</label>
@@ -200,14 +336,17 @@
                 </select>
             </div>
 
+
             <div>
                 <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx">
             </div>
+
 
             <div>
                 <label for="operation">ผลการดำเนินงาน:</label>
                 <textarea id="operation" name="operation" placeholder="กรอกข้อความ...."></textarea>
             </div>
+
 
             <div>
                 <label for="problem_type">ประเภทปัญหา:</label>
@@ -219,30 +358,36 @@
                 </select>
             </div>
 
+
             <div>
                 <label for="result">ผลลัพธ์:</label>
                 <textarea id="result" name="result" placeholder="กรอกข้อความ...."></textarea>
             </div>
+
 
             <div>
                 <label for="problem">ปัญหา/อุปสรรค:</label>
                 <textarea id="problem" name="problem" placeholder="กรอกข้อความ...."></textarea>
             </div>
 
+
             <div>
                 <label for="solution">แนวทางแก้ไข:</label>
                 <textarea id="solution" name="solution" placeholder="กรอกข้อความ...."></textarea>
             </div>
+
 
             <div>
                 <label for="note">หมายเหตุ:</label>
                 <textarea id="note" name="note" placeholder="กรอกข้อความ...."></textarea>
             </div>
 
+
             <button type="button" id="recordButton">บันทึก</button>
             <button type="button" id="submitButton">ส่งรายงาน</button>
         </form>
     </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -252,23 +397,28 @@
             var submitButton = document.getElementById('submitButton');
             var form = document.querySelector('form');
 
+
             statusSelect.addEventListener('change', function() {
                 toggleFileUpload();
                 updateSubmitButtonState();
             });
+
 
             progressSelect.addEventListener('change', function() {
                 toggleFileUpload();
                 updateSubmitButtonState();
             });
 
+
             form.addEventListener('input', function() {
                 updateSubmitButtonState();
             });
 
+
             submitButton.addEventListener('click', function() {
                 form.submit();
             });
+
 
             function toggleFileUpload() {
                 if (statusSelect.value === '100' || progressSelect.value === '100') {
@@ -277,6 +427,7 @@
                     fileUploadInput.style.display = 'none';
                 }
             }
+
 
             function updateSubmitButtonState() {
                 var isFormValid = Array.from(form.elements).every(function(element) {
@@ -295,6 +446,7 @@
                     }
                 });
 
+
                 if (isFormValid) {
                     submitButton.style.backgroundColor = '#C2AF76';
                     submitButton.style.cursor = 'pointer';
@@ -306,21 +458,329 @@
                 }
             }
 
+
             window.addEventListener('load', function() {
                 toggleFileUpload();
                 updateSubmitButtonState();
             });
 
+
             form.addEventListener('input', function() {
                 updateSubmitButtonState();
             });
 
+
             updateSubmitButtonState();
         });
-    </script>
+    </script> -->
 
-    <%- include('component/footer.ejs') %>
+
+   
+        <div class="custom-container-1">
+            <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+                <div>
+                    <label for="status">สถานะ :</label>
+                    <select id="status" name="status" required>
+                        <option value="null" <% if (!dataOld.length || dataOld[0].Q1===null) { %>selected<% } %>>ระบุ
+                                สถานะโครงการ</option>
+                        <option value="delayed" <% if (dataOld.length && dataOld[0].Q1==='delayed' ) { %>selected<% } %>
+                                >ล่าช้ากว่าแผน</option>
+                        <option value="on_schedule" <% if (dataOld.length && dataOld[0].Q1==='on_schedule' ) { %>
+                            selected<% } %>>ตามแผน</option>
+                        <option value="ahead_of_schedule" <% if (dataOld.length && dataOld[0].Q1==='ahead_of_schedule' )
+                            { %>selected<% } %>>เร็วกว่าแผน</option>
+                        <option value="not_started" <% if (dataOld.length && dataOld[0].Q1==='not_started' ) { %>
+                            selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                    </select>
+                </div>
+
+
+                <div>
+                    <label for="progress">ความก้าวหน้าโครงการ :</label>
+                    <select id="progress" name="progress">
+                        <option value="null" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ %
+                                ความก้าวหน้า</option>
+                        <option value="0" <% if (dataOld.length && dataOld[0].Q2===0) { %>selected<% } %>>0%</option>
+                        <option value="5" <% if (dataOld.length && dataOld[0].Q2===5) { %>selected<% } %>>5%</option>
+                        <option value="10" <% if (dataOld.length && dataOld[0].Q2===10) { %>selected<% } %>>10%</option>
+                        <option value="15" <% if (dataOld.length && dataOld[0].Q2===15) { %>selected<% } %>>15%</option>
+                        <option value="20" <% if (dataOld.length && dataOld[0].Q2===20) { %>selected<% } %>>20%</option>
+                        <option value="25" <% if (dataOld.length && dataOld[0].Q2===25) { %>selected<% } %>>25%</option>
+                        <option value="30" <% if (dataOld.length && dataOld[0].Q2===30) { %>selected<% } %>>30%</option>
+                        <option value="35" <% if (dataOld.length && dataOld[0].Q2===35) { %>selected<% } %>>35%</option>
+                        <option value="40" <% if (dataOld.length && dataOld[0].Q2===40) { %>selected<% } %>>40%</option>
+                        <option value="45" <% if (dataOld.length && dataOld[0].Q2===45) { %>selected<% } %>>45%</option>
+                        <option value="50" <% if (dataOld.length && dataOld[0].Q2===50) { %>selected<% } %>>50%</option>
+                        <option value="55" <% if (dataOld.length && dataOld[0].Q2===55) { %>selected<% } %>>55%</option>
+                        <option value="60" <% if (dataOld.length && dataOld[0].Q2===60) { %>selected<% } %>>60%</option>
+                        <option value="65" <% if (dataOld.length && dataOld[0].Q2===65) { %>selected<% } %>>65%</option>
+                        <option value="70" <% if (dataOld.length && dataOld[0].Q2===70) { %>selected<% } %>>70%</option>
+                        <option value="75" <% if (dataOld.length && dataOld[0].Q2===75) { %>selected<% } %>>75%</option>
+                        <option value="80" <% if (dataOld.length && dataOld[0].Q2===80) { %>selected<% } %>>80%</option>
+                        <option value="85" <% if (dataOld.length && dataOld[0].Q2===85) { %>selected<% } %>>85%</option>
+                        <option value="90" <% if (dataOld.length && dataOld[0].Q2===90) { %>selected<% } %>>90%</option>
+                        <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
+                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%</option>
+                    </select>
+                </div>
+<!-- Here -->
+
+                <div>
+                    <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx">
+                </div>
+                
+                
+
+                <div>
+                    <label for="operation">ผลการดำเนินงาน:</label>
+                    <textarea id="operation" name="operation"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
+                </div>
+
+
+                <div>
+                    <label for="problem_type">ประเภทปัญหา:</label>
+                    <select id="problem_type" name="problem_type">
+                        <option value="null" <% if (!dataOld.length || dataOld[0].Q5===null) { %>selected<% } %>>ระบุ
+                                ประเภทปัญหา</option>
+                        <option value="technical" <% if (dataOld.length && dataOld[0].Q5==='technical' ) { %>selected<%
+                                } %>>เทคนิค</option>
+                        <option value="financial" <% if (dataOld.length && dataOld[0].Q5==='financial' ) { %>selected<%
+                                } %>>การเงิน</option>
+                        <option value="management" <% if (dataOld.length && dataOld[0].Q5==='management' ) { %>selected
+                            <% } %>>การจัดการ
+                        </option>
+                    </select>
+                </div>
+
+
+                <div>
+                    <label for="result">ผลลัพธ์:</label>
+                    <textarea id="result" name="result"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
+                </div>
+
+
+                <div>
+                    <label for="problem">ปัญหา/อุปสรรค:</label>
+                    <textarea id="problem" name="problem"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
+                </div>
+
+
+                <div>
+                    <label for="solution">แนวทางแก้ไข:</label>
+                    <textarea id="solution" name="solution"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q8 %><% } %></textarea>
+                </div>
+
+
+                <div>
+                    <label for="note">หมายเหตุ:</label>
+                    <textarea id="note" name="note"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
+                </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
+                <!-- <button type="submit" id="saveButton">บันทึก</button> -->
+                <button id="submitButton" onclick="submitAll()">ส่งรายงาน</button>
+            </form>
+        </div>
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                //checkstatus to alert
+                const urlParams = new URLSearchParams(window.location.search);
+                const successParam = urlParams.get('success');
+                //send timestamp
+                const currentDateTimeField = document.getElementById('currentDateTime');
+                const currentDateTime = new Date().toLocaleString('th-TH', {
+                    timeZone: 'Asia/Bangkok',
+                    hour12: false,
+                });
+                currentDateTimeField.value = currentDateTime;
+                //action button
+                var saveButton = document.getElementById('saveButton');
+                // var submitButton = document.getElementById('submitButton');
+                const reportForm = document.getElementById('reportForm');
+                var statusSelect = document.getElementById('status');
+            var progressSelect = document.getElementById('progress');
+            const fileUploadInput = document.getElementById('fileUpload');
+
+
+              
+
+
+                //sweet alert
+                if (successParam === 'true') {
+                    swal({
+                        title: "Success!",
+                        text: "Data saved successfully",
+                        icon: "success",
+                    })
+                    /*.then(function () {
+                        window.location.href = "/city/follow";
+                    });*/
+                }
+                //file upload
+               
+                function toggleFileUpload() {
+                    if (statusSelect.value === '100' || progressSelect.value === '100') {
+                        fileUploadInput.style.display = 'block';
+                    } else {
+                        fileUploadInput.style.display = 'none';
+                    }
+                }
+
+
+                function updateSubmitButtonState() {
+                    var isFormValid = Array.from(form.elements).every(function(element) {
+                        if (
+                            (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') &&
+                            element.type !== 'file' &&
+                            element.value.trim() !== ''
+                        ) {
+                            return true;
+                        } else if (element.type === 'file') {
+                            return true;
+                        } else if (element.type === 'button') {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+   
+                    if (isFormValid) {
+                        submitButton.style.backgroundColor = '#C2AF76';
+                        submitButton.style.cursor = 'pointer';
+                        submitButton.disabled = false;
+                    } else {
+                        submitButton.style.backgroundColor = '#A9A9A9';
+                        submitButton.style.cursor = 'not-allowed';
+                        submitButton.disabled = true;
+                    }
+                }
+
+
+                statusSelect.addEventListener('change', function() {
+                    toggleFileUpload();
+                    updateSubmitButtonState();
+                });
+   
+                progressSelect.addEventListener('change', function() {
+                    toggleFileUpload();
+                    updateSubmitButtonState();
+                });
+   
+                form.addEventListener('input', function() {
+                    updateSubmitButtonState();
+                });
+   
+                window.addEventListener('load', function() {
+                    toggleFileUpload();
+                    updateSubmitButtonState();
+                });
+   
+                form.addEventListener('input', function() {
+                    updateSubmitButtonState();
+                });
+   
+                updateSubmitButtonState();
+            });
+
+
+            
+
+        </script>
+        <script> 
+            const base64Data=[]
+                    document.getElementById('fileUpload').addEventListener('change', function (e) {
+                            
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                            reader.onload = function (event) {
+                                base64Data.push(event.target.result) 
+                            };
+
+                            reader.readAsDataURL(file);
+                        });
+            // let base64Data 
+            async function submitAll() {
+                // console.log("aghjkl;lkjhgfxghjkl;k;jhgfdsghjkl")
+                try {
+                    const statusValue = document.getElementById("status").value;
+                    const progressValue = document.getElementById("progress").value;
+                    const fileUploadInput = document.getElementById("fileUpload");
+                    const file = fileUploadInput.files[0];
+                    const operationValue = document.getElementById("operation").value;
+                    const problemTypeValue = document.getElementById("problem_type").value;
+                    const resultValue = document.getElementById("result").value;
+                    const problemValue = document.getElementById("problem").value;
+                    const solutionValue = document.getElementById("solution").value;
+                    const noteValue = document.getElementById("note").value;
+                    const csrfTokenValue = document.querySelector('input[name="_csrf"]').value;
+                    const currentDateTimeValue = document.getElementById("currentDateTime").value;
+
+                    if (!file) {
+                        throw new Error("No file selected.");
+                    }
+
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = async function() {
+                        const base64Data = reader.result;
+
+                        const formData = new FormData();
+                        formData.append("status", statusValue);
+                        formData.append("progress", progressValue);
+                        // formData.append("fileUpload", base64Data[1]);
+                        formData.append("operation", operationValue);
+                        formData.append("problemType", problemTypeValue);
+                        formData.append("result", resultValue);
+                        formData.append("problem", problemValue);
+                        formData.append("solution", solutionValue);
+                        formData.append("note", noteValue);
+                        formData.append("_csrf", csrfTokenValue);
+                        formData.append("currentDateTime", currentDateTimeValue);
+
+                        const response = await fetch("/testform", {
+                            method: "POST",
+                            body:JSON.stringify(formData) ,
+                            headers: {
+                                'CSRF-Token': csrfTokenValue // Content-Type header is automatically set by FormData
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+
+                        // const data = await response.json();
+                        // console.log("Response from server:", data);
+                        // Handle successful response from server here
+                    };
+                    reader.onerror = function (error) {
+                        console.error("Error reading the file:", error);
+                    };
+                } catch (error) {
+                    console.error("There was a problem with your fetch operation:", error);
+                    // Handle errors here
+                }
+            }
+
+        
+           
+
+                    </script>
+
+        <%- include('component/footer.ejs') %>
+
 
 </body>
 
+
 </html>
+

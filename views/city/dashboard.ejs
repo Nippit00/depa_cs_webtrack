@@ -115,13 +115,14 @@
             <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
         </div>
     </div>
+    <h1><%=solutionInfo[0].LAT%><%=solutionInfo[0].LNG%></h1>
     <div class="map-container">
         <!-- <img src="/img/mapmap.png" alt="Map Image"> -->
-        <iframe
+          <iframe
             width="600"
             height="450"
             frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=solutionInfo[0].LAT%>,<%=solutionInfo[0].LNG%>&zoom=5" allowfullscreen>
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=solutionInfo[0].LAT%>,<%=solutionInfo[0].LNG%>%>&zoom=5" allowfullscreen>
           </iframe>
     </div>
     </div>

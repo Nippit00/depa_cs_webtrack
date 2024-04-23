@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ'
+        crossorigin='anonymous'>
     <title>upload</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
@@ -209,7 +211,7 @@
         <form action="/upload" method="post" id="uploadForm" onsubmit="return confirmUpload()">
             <div class="titles-container">
                 <!-- CSRF Token -->
-                <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token">
                 <h5>อัปโหลดไฟล์ครบ 2ปี</h5>
                 <!-- ส่วนอัปโหลดไฟล์ -->
                 <div class="upload-container" id="uploadContainer">
@@ -225,7 +227,7 @@
                 <br>
                 <!-- ปุ่ม submit -->
                 <input type="hidden" value="" name="submit" class="upload-btn-n" id="value">
-                <input type="submit" value="Upload Files" name="submit" class="upload-btn-n">
+                <input value="Upload Files" name="submit" class="upload-btn-n" onclick="submitData()">
 
             </div>
         </form>
@@ -233,34 +235,91 @@
 
     <!-- ส่วนสคริปต์ -->
     <script>
-        document.getElementById('fileToUpload').addEventListener('change', function(e) {
+        var submitButton = document.getElementById('submitButton');
+        const reportForm = document.getElementById('reportForm');
+        // const formData = new FormData();
+        const FileData = []
+
+
+        document.getElementById('fileToUpload').addEventListener('change', function (e) {
             const file = e.target.files[0];
             const reader = new FileReader();
-
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 const base64Data = event.target.result;
                 // เขียนค่า base64 ลงใน value ของ input
-                
+
                 document.getElementById("value").value = base64Data;
 
-                const formData = new FormData();
-                formData.append('base64File', base64Data);
 
-                fetch('/upload', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                // formData.append(file.name, base64Data);
+                FileData.push(base64Data);
+                // console.log([...formData.entries()])
+                console.log(FileData)
             };
 
             reader.readAsDataURL(file);
         });
+
+        async function submitData() {
+
+            const csrfToken = document.getElementById('token').value;
+            console.log(csrfToken);
+            console.log(FileData)
+
+            try {
+                // const formDataObj = {};
+                // for (const [key, value] of formData.entries()) {
+                //     formDataObj[key] = value;
+                // }
+
+                const requestBody = {
+                    file: FileData,
+                    CityID: 123 // Your CityID value
+                };
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'CSRF-Token': csrfToken
+                    }
+                })
+                    .then(response => {
+
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        console.log('File uploaded successfully');
+                        // Redirect to /city
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                window.location.href = "/city";
+
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // try {
+        //         const response = await fetch('/upload', {
+        //             method: 'POST',
+        //             body: formData,
+        //             headers: {
+        //                 'CSRF-Token': csrfToken
+        //             }
+        //         });
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         console.log('File uploaded successfully');
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //     }
 
 
         const uploadContainer = document.getElementById('uploadContainer');
@@ -312,15 +371,26 @@
         }
 
         function removeUploadedFile(element) {
-            // ลบไฟล์ที่อัปโหลดออกจาก container
+            // หา index ของ element ที่ต้องการลบออกจาก uploadedFilesContainer
             const uploadedFileElement = element.closest('.uploaded-file');
-            uploadedFileElement.remove();
+            const index = Array.from(uploadedFilesContainer.children).indexOf(uploadedFileElement);
+
+            // ถ้าหาก index ไม่เท่ากับ -1 แสดงว่าเจอ element ที่ต้องการลบ
+            if (index !== -1) {
+                // ลบ element ออกจาก uploadedFilesContainer
+                uploadedFileElement.remove();
+
+                // ลบไฟล์ออกจาก FileData โดยใช้ index ที่เราเจอมาก่อนหน้านี้
+                FileData.splice(index, 1);
+            }
         }
+
 
         function confirmUpload() {
             const userConfirmed = confirm("คุณต้องการอัปโหลดไฟล์ใช่หรือไม่?");
             return userConfirmed;
         }
+
     </script>
 
     <!-- ส่วน Footer -->
