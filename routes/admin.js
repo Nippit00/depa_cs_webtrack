@@ -12,11 +12,12 @@ const router = express.Router();
 // **************************
 router.get('/', isAdmin, adminController.getAdPage);
 
-
+router.get('/adduser', isAdmin, adminController.getAddUserPage);
 // **************************
 // ***     City Page     ***
 // **************************
-router.get('/city', isAuth, isAdmin, adminController.getAdCityP);
-router.get('/city/:cityID', isAuth, isAdmin, adminController.getAdCityDataP);
+//get city
+router.get('/city', isAdmin, adminController.getAdCityP);
+router.get('/city/:cityID', isAdmin, adminController.getAdCityDataP);
 
 module.exports = router;
