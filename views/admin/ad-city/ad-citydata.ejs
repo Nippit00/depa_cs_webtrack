@@ -1,29 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <%- include('../include/ad-head.ejs') %>
-    <title>
-        Admin - <%= pageTitle %>
-    </title>
-</head>
-   
+    <title>Admin - <%= pageTitle %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap" rel="stylesheet">
 
-<body>
+  </head>
+  <style>
+ 
+    *{
+  font-family: "Noto Sans Thai", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Replace with the desired font weight */
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+   </style>
+
+  <body class="bg-gray-50">
     <%- include('../include/ad-navbar.ejs') %>
+  </div>
+    <div class="w-[90%] mx-auto bg-white mt-3 rounded-lg">
+      <div class="flex mx-5 py-4">
+        <div class="w-[50%]">
+          <div>
+            <p class="text-3xl font-medium">
+              ข้อมูลจังหวัด <%=cityData.cityName %>
+            </p>
+          </div>
+          <div>
+            <p class="text-xl font-normal">จังหวัด : <%=cityData.province %></p>
+          </div>
+          <div>
+            <p class="text-xl font-normal">
+              ผู้พัฒนา : <%=cityData.developer %>
+            </p>
+          </div>
+          <div>
+            <p class="text-xl font-normal">
+              ผู้บริหาร : <%=cityData.executive %>
+            </p>
+          </div>
+          <!-- <div><p class="text-xl font-normal">ข้อมูลจังหวัด <%=cityData.executive %></p></div>
+          <div><p class="text-xl font-normal">ข้อมูลจังหวัด <%=cityData.executive %></p></div>
+          <div><p class="text-xl font-normal">ข้อมูลจังหวัด <%=cityData.executive %></p></div>
+          <div><p class="text-xl font-normal">ข้อมูลจังหวัด <%=cityData.executive %></p></div>
+          <div><p class="text-xl font-normal">ข้อมูลจังหวัด <%=cityData.executive %></p></div> -->
+        </div>
+        <div class="w-[50%] item-center justify-items-center justify-center">
+          <iframe
+            width="600"
+            height="450"
+            frameborder="0"
+            style="border: 0"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>%>&zoom=5&maptype=satellite" 
 
-    
+            allowfullscreen=""
+          >
+          </iframe>
 
-    <div class="container-fluid">
-        Test City Data
+        </div>
+      </div>
+      
+      <div class="text-black">
+        
+        <div class="content">
+          <div id="accordion">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne">
+                    โครงสร้างพื้นฐานด้านกายภาพ
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>   
+                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>โครงสร้างพื้นฐานกายภาพ</td>
+                          <td><p><a href="/form">โครงสร้างพื้นฐานกายภาพ</a></p></td>
+                          <td>complete 0/0</td>
+                        </tr>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                    aria-controls="collapseTwo">
+                    โครงสร้างพื้นฐานด้านดิจิทัล
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tbody>
+                        <tr>
+                          <td>โครงสร้างพื้นฐานกายภาพ</td>
+                          <td><p><a href="/form">โครงสร้างพื้นฐานกายภาพ</a></p></td>
+                          <td>complete 0/0</td>
+                        </tr>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingTree">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTree" aria-expanded="true"
+                    aria-controls="collapseTree">
+                    ระบบบริหารข้อมูลเมือง City Data Platform
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTree" class="collapse" aria-labelledby="headingTree" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>City Data Platform</td>
+                        <td><p><a href="/form">โครงสร้างพื้นฐานดิจิทัล</a></p></td>
+                        <td>complete 0/0</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                    aria-controls="collapseFour">
+                    Smart Environment
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Environment</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'ENV') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <!-- <td>
+                            
+                          
+                        </td> -->
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingFive">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+                    aria-controls="collapseFive">
+                    Smart Energy
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Energy</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'ENE') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingsix">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapsesix" aria-expanded="true"
+                    aria-controls="collapsesix">
+                    Smart Economy
+                  </button>
+                </h5>
+              </div>
+              <div id="collapsesix" class="collapse" aria-labelledby="headingsix" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Economy</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'ECO') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>2
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingseven">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseseven" aria-expanded="true"
+                    aria-controls="collapseseven">
+                    Smart Mobility
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseseven" class="collapse" aria-labelledby="headingseven" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Mobility</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'MOB') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingEgg">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEgg" aria-expanded="true"
+                    aria-controls="collapseEgg">
+                    Smart Governance
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseEgg" class="collapse" aria-labelledby="headingEgg" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Governance</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'GOV') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingnine">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapsenine" aria-expanded="true"
+                    aria-controls="collapsenine">
+                    Smart People
+                  </button>
+                </h5>
+              </div>
+              <div id="collapsenine" class="collapse" aria-labelledby="headingnine" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart People</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'PEO') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="headingten">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseten" aria-expanded="true"
+                    aria-controls="collapseten">
+                    Smart Living
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseten" class="collapse" aria-labelledby="headingten" data-parent="#accordion">
+                <div class="card-body">
+                  <table class="table">
+                    <table>
+                      <tr>
+                        <th>โครงสร้าง / Smart</th>
+                        <th>Project</th>
+                        <th>Response</th>
+                      </tr>
+                      <tr>
+                        <td>Smart Living</td>
+                        <td><% solution.forEach((item) => { %>
+                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                            <% if (item.smartKey === 'LIV') { %>
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
+
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                        <td>
+                            
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      </div>
     </div>
-
-    <div>
-       
-    </div>
-
-    
-
     <%- include('../include/ad-footer.ejs') %>
-</body>
-
+  </body>
 </html>
