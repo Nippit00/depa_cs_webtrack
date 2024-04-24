@@ -394,6 +394,74 @@
                     event.preventDefault(); 
                     submitReport();
                 });
+                // เมื่อมีการเลือกไฟล์
+                document.getElementById('fileUpload').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('fileUpload', file);
+                
+                        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+                        const solutionID = '<%=formdata[0].solutionID%>'; // Ensure this is rendered correctly by the server
+                
+                        fetch(`/upload/formcdp/${solutionID}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-Token': csrfToken
+                            },
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Upload successful:', data);
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the upload:', error);
+                        });
+                    }
+                });
+                
+
+               /* document.getElementById('fileUpload').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = function(event) {
+                        const fileContent = event.target.result;
+                        
+                        // ส่งข้อมูลไฟล์ไปยังเซิร์ฟเวอร์
+                        fetch('/upload/formcdp/<formdata[0].solutionID%>', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': document.querySelector('input[name="_csrf"]').value
+                          },
+                          body: JSON.stringify({ fileContent: fileContent })
+                        })
+                        .then(response => {
+                          if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                          }
+                          return response.json();
+                        })
+                        .then(data => {
+                          console.log('Upload successful:', data);
+                        })
+                        .catch(error => {
+                          console.error('There was a problem with the upload:', error);
+                        });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  });*/
+                  
+
+  
 
                 //sweet alert
                 if (successParam === 'true') {
@@ -468,7 +536,9 @@
                 });
     
                 updateSubmitButtonState();
+
             });
+            
 
 
         </script>

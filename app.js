@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const multer = require('multer');
 // const bcrypt = require('bcryptjs');
 
 const session = require('express-session');
@@ -10,7 +11,7 @@ require('dotenv').config();
 
 const app = express();
 const csrfProtection = csrf();
-
+app.use(express.json({ limit: '500mb' }));
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -28,6 +29,13 @@ app.use(session({
 }))
 
 app.use(csrfProtection);
+app.use((err, req, res, next) => {
+  if (err.code === 'EBADCSRFTOKEN') {
+    res.status(403).send('Invalid CSRF token');
+  } else {
+    next(err);
+  }
+});
 
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
@@ -35,17 +43,19 @@ app.use((req, res, next) => {
   res.locals.user = req.session.user;
   next();
 })
-
 const authRoute = require("./routes/auth");
 const mainRoute = require("./routes/main");
 const adminRoute = require("./routes/admin.js");
 const cityRoute = require("./routes/city");
 const formRoute = require("./routes/form.js");
+const uploadroutes = require("./routes/uploadRoutes.js");
+
 app.use(authRoute,csrfProtection);
 app.use(mainRoute);
 app.use(formRoute);
 app.use("/admin", adminRoute);
 app.use("/city", cityRoute);
+app.use("/upload", uploadroutes);
 
 
     app.listen(process.env.PORT, () => {
