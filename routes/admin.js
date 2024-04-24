@@ -19,5 +19,6 @@ router.get('/adduser', isAdmin, adminController.getAddUserPage);
 //get city
 router.get('/city', isAdmin, adminController.getAdCityP);
 router.get('/city/:cityID', isAdmin, adminController.getAdCityDataP);
-
+router.get('/addCity',isAdmin,adminController.getAddCity)
+router.post('/postAddCity',isAdmin,adminController.postAddCity)
 module.exports = router;
