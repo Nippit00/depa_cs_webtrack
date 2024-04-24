@@ -1,10 +1,6 @@
 const db = require("../db.js");
 
-// **************
-// **  Models  **
-// **************
-const city = require("../models/city");
-const CityData = require("../models/cityData");
+
 
 // ****************
 // **  getLogin  **

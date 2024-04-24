@@ -165,109 +165,74 @@
                     <th>%ความคืบหน้า</th>
                     <th>%ความสำเร็จ</th>
                 </tr>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>ภูเก็ตเมืองอัจฉริยะ</td>
-                    <td>ภูเก็ต</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>แม่เมาะเมืองน่าอยู่</td>
-                    <td>ลำปาง</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>ขอนแก่นเมืองอัจฉริยะ</td>
-                    <td>ขอนแก่น</td>
-                    <td>13 ส.ค. 64</td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                </tr>
-            </tbody>
+                <tbody>
+                    <% fechdata.forEach((data, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= data.cityName %></td>
+                            <td><%= data.province %></td>
+                            <td>
+                                <% 
+                                    const date = new Date(data.date);
+                                    const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().substr(-2)}`;
+                                %>
+                                <%= formattedDate %>
+                            </td>
+                            <td>1 ปี 2 เดือน 3 วัน</td>
+                            <td>50%</td>
+                            <td>50%</td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+                
             </thead>
         </table>
         <div id="table-navigation">
             <button onclick="previousPage()">Back</button>
             <button onclick="nextPage()">Next</button>
-        </div>
+        </div>        
     </div>
 
     <%- include('component/footer.ejs') %>
 
     <script>
+        var currentPage = 0; // เพิ่มตัวแปรสำหรับเก็บหน้าปัจจุบัน
+var rowsPerPage = 10; // จำนวนรายการต่อหน้า
+
+function nextPage() {
+    var table = document.querySelector(".table");
+    var tr = table.getElementsByTagName("tr");
+    var totalPages = Math.ceil(tr.length / rowsPerPage);
+
+    if (currentPage < totalPages - 1) {
+        currentPage++;
+        updateTableDisplay();
+    }
+}
+
+function previousPage() {
+    if (currentPage > 0) {
+        currentPage--;
+        updateTableDisplay();
+    }
+}
+
+function updateTableDisplay() {
+    var table = document.querySelector(".table");
+    var tr = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tr.length; i++) {
+        if (i >= currentPage * rowsPerPage && i < (currentPage + 1) * rowsPerPage) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
+document.addEventListener('DOMContentLoaded', function () {
+    updateTableDisplay();
+});
+
 
         document.getElementById('map').addEventListener('click', function(event) {
             // ตำแหน่งที่คลิกบนรูปภาพ
@@ -316,24 +281,31 @@
             filter = input.value.toUpperCase();
             table = document.querySelector(".table");
             tr = table.getElementsByTagName("tr");
-
-            // วนลูปทุกรายการในตารางและซ่อน/แสดงตามการค้นหา
+        
+            if (filter === '') {
+                for (i = 0; i < tr.length; i++) {
+                    if (i < 10) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+                return;
+            }
+        
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1]; // เลือกเฉพาะคอลัมน์ที่ต้องการค้นหา
+                td = tr[i].getElementsByTagName("td")[1]; 
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = ""; // แสดงถ้าพบข้อมูลที่ตรง
+                        tr[i].style.display = ""; 
                     } else {
-                        tr[i].style.display = "none"; // ซ่อนถ้าไม่พบข้อมูลที่ตรง
+                        tr[i].style.display = "none"; 
                     }
                 }
             }
         }
 
-
-
-        
         
     </script>
 

@@ -35,7 +35,6 @@ exports.getformCdp = (req, res, next) => {
 
 exports.postFormCdp = (req, res, next) => {
   try {
-    console.log(req.body);
     const postData = req.body;
     const solutionParam = req.params;
     const qInsert = "INSERT INTO anssolution (solutionID, timestamp, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
@@ -72,7 +71,6 @@ exports.postFormCdp = (req, res, next) => {
 
 exports.submitFormCdp = (req, res, next) => {
   try {
-    console.log(req.body);
     const postData = req.body;
     const solutionParam = req.params;
     const qInsert = "INSERT INTO anssolution (solutionID, timestamp, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
