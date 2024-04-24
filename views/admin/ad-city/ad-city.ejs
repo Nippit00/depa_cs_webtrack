@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../include/ad-head.ejs') %>
+    
     <title>
         Admin - <%= pageTitle %>
     </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap" rel="stylesheet">
 </head>
-   
+   <style>
+ 
+    *{
+  font-family: "Noto Sans Thai", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Replace with the desired font weight */
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+   </style>
 
 <body>
     <%- include('../include/ad-navbar.ejs') %>
 
-    <div class="container-fluid">
-        Test
-    </div>
-
-    <div>
-        <div class="row">
-       
-            <div class="col-sm-12 col-md-12 col-lg-12s pad">
-                <div class="card border-inaction h-100">
-                    <div class="card-header bg-inaction text-white">
-                        City
-                    </div>
-                    <div class="card-body">
-
-
-                        <% if (cities.length == 0) { %>
-                        ไม่พบข้อมูล
-                        <% } else {%>
-
-                        
-                        <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2">
-                            <% cities.forEach(city => { %>
-                                <!-- Card for each city -->
-                            <div class="col mb-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <!-- <div class="container"> -->
-                                        <div class="row">
-                                            <!-- <div class="col-sm-3">
-                                             
-                                                </div> -->
-                                            <div class="col-sm-12"> 
-                                                <b><%= city.cityname%></b>
-                                            </div>
-
-                                        </div>
-                                        <!-- </div> -->
-                                        <p class="card-text">
-                                        </p>
-                                        <a href="" class="btn btn-secondary disabled">
-                                            <b> <i class="fas fa-hashtag"></i><%= city.cityID%></b></a>
-                                        <a href="/admin/city/<%= city.cityID%>" class="btn btn-info">
-                                            <i class="fas fa-info-circle"></i>
-                                            ข้อมูลเมือง</a>
-                                            <a href="" class="btn btn-info">
-                                                <i class="fas fa-tachometer-alt"></i>
-                                                แดชบอร์ด</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <% }); %>
-                           
-
-                        </div>
-                        <% } %>
-
-                    </div>
-                </div>
-            </div>
-            </div>
-    </div>
-
+    <div class="w-[90%] mx-auto mt-5 overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead class="bg-gray-200 ">
+                <tr>
+                  <th class="py-2 px-4">รหัสเมือง</th>
+                  <th class="py-2 px-4">จังหวัด</th>
+                  <th class="py-2 px-4">วันที่</th>
+                  <th class="py-2 px-4">หน่วยงานผู้พัฒนา</th>
+                  <th class="py-2 px-4">ผู้บริหาร</th>
+                  <th class="py-2 px-4">ลงทุนของรัฐ</th>
+                  <th class="py-2 px-4">ลงทุนเอกชน</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% cityData.forEach(city => { %>
+                  <tr onclick="check('<%= city.cityID %>')" class="hover:bg-gray-200 hover:border-[1px] border-black">
+                    <td class="py-2 px-4 border-1 border-r border-l"><%= city.cityID %></td>
+                    <td class="py-2 px-4 border-1 border-r border-l"><%= city.province %></td>
+                    <td class="py-2 px-4 border-1 border-r border-l"><%= city.date.toISOString().slice(0, 10) %></td>
+                    <td class="py-2 px-4 break-words border-1 border-r border-l"><%= city.developer %></td>
+                    <td class="py-2 px-4 break-words border-1 border-r border-l"><%= city.executive %></td>
+                    <td class="py-2 px-4 text-center border-1 border-r border-l">
+                      <% if (city.government_investment === 0) { %>
+                        ❌🧀
+                      <% } else { %>
+                        <%= city.government_investment.toLocaleString() %> บาท
+                      <% } %>
+                    </td>
+                    <td class="py-2 px-4 text-center border-1 border-r border-l">
+                      <% if (city.private_investment === 0) { %>
+                        ❌🥐
+                      <% } else { %>
+                        <%= city.private_investment.toLocaleString() %> บาท
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+      </div>
+      
+      
     
 
     <%- include('../include/ad-footer.ejs') %>
 </body>
+<script>
+    function check(cityID){
+        // href=`/city/${cityID}`
+        window.location.href = `/admin/city/${cityID}`;
+    }
+</script>
 
 </html>
