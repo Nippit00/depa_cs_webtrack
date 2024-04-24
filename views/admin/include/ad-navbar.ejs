@@ -1,60 +1,62 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">ADMIN</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerAdmin" aria-controls="navbarTogglerAdmin" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarTogglerAdmin">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"><i class="fas fa-home"></i> หน้าแรก<span class="sr-only">(current)</span></a>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li> -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user"></i> จัดการผู้ใช้งาน</a>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">เพิ่มผู้ใช้งาน</a>
-            <a class="dropdown-item" href="#">ดูข้อมูลผู้ใช้งาน</a>
-            <!-- <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a> -->
-          </div>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#"><i class="fas fa-user"></i> จัดการผู้ใช้งาน</a>
-        </li> -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-city"></i> จัดการข้อมูลเมือง</a>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">ข้อมูลเมือง</a>
-            <a class="dropdown-item" href="#">เพิ่มรายชื่อเมือง</a>
-            <a class="dropdown-item" href="#">แก้ไขข้อมูลเมือง</a>
-            <!-- <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a> -->
-          </div>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#"><i class="fas fa-city"></i> จัดการข้อมูลเมือง</a>
-        </li> -->
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      <form action="/logout" method="POST" >
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <button class="bg-red-300 p-3 rounded-full hover:bg-red-500 hover:text-white hover:no-underline duration-100">
-            Logout
+<nav class="bg-gray-100 shadow-lg  ">
+  <div class=" mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 my-auto">
+      <div class="flex">
+        <a href="#" class="flex-shrink-0 flex items-center">
+          <span class="font-semibold text-xl">ADMIN</span>
+        </a>
+        <button class="block lg:hidden ml-auto flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-white hover:border-white focus:outline-none focus:text-white focus:border-white">
+          <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+          </svg>
         </button>
-    </form>
+      </div>
+      <div class="hidden lg:flex lg:items-center lg:ml-auto">
+        <div class="flex space-x-4">
+          <a href="/admin" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:text-gray-900 focus:bg-gray-300">หน้าแรก</a>
+          <div class="group inline-block">
+            <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:text-gray-900 focus:bg-gray-300">
+              <svg class="h-5 w-5 text-gray-500 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 2a7 7 0 110 14A7 7 0 019 2zm0 12a5 5 0 100-10 5 5 0 000 10zm5.707-6.293a1 1 0 00-1.414-1.414L11 10.586V7a1 1 0 10-2 0v3.586L6.707 7.293a1 1 0 10-1.414 1.414L9 13.414l3.707-3.707z"/>
+              </svg>
+              จัดการผู้ใช้งาน
+              <svg class="h-5 w-5 ml-2 text-gray-500 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V5a1 1 0 00-1-1H5zm1 1h8v4H6V5zm0 6h8v2H6v-2z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+            <div class="absolute hidden text-gray-700 pt-1 group-hover:block bg-gray-200">
+              <a href="/admin/addUser" class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900">เพิ่มผู้ใช้งาน</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900">ดูข้อมูลผู้ใช้งาน</a>
+            </div>
+          </div>
+          <div class="group inline-block">
+            <button class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:text-gray-900 focus:bg-gray-300">
+              <svg class="h-5 w-5 text-gray-500 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3.293 7.293a1 1 0 00-1.414 1.414L9 15.414V18a1 1 0 102 0v-2.586l7.121-7.121a1 1 0 00-1.414-1.414L11 12.586V9a1 1 0 10-2 0v3.586L3.707 8.293a1 1 0 00-.707-.293z" clip-rule="evenodd"/>
+              </svg>
+              จัดการข้อมูลเมือง
+              <svg class="h-5 w-5 ml-2 text-gray-500 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V5a1 1 0 00-1-1H5zm1 1h8v4H6V5zm0 6h8v2H6v-2z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+            <div class="absolute hidden text-gray-700 pt-1 group-hover:block bg-gray-200">
+              <a href="/admin/city" class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900">ข้อมูลเมือง</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900">เพิ่มรายชื่อเมือง</a>
+              <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900">แก้ไขข้อมูลเมือง</a>
+            </div>
+          </div>
+        </div>
+        <form class="flex ml-6 mr-4">
+          <input class="border border-gray-300 bg-white h-10 px-3 pr-10 rounded-lg text-sm focus:outline-none" type="search" placeholder="Search">
+          <button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 ml-3 rounded-lg">Search</button>
+        </form>
+        <form action="/logout" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg">Logout</button>
+        </form>
+      </div>
     </div>
-  </nav>
+  </div>
+</nav>
