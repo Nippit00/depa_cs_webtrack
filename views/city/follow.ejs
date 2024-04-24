@@ -87,13 +87,18 @@
       }
       
       .not-complete {
-        color: orange;
+        color: rgb(255, 115, 0);
     }
     
     
       
       .incomplete {
           color: red;
+      }
+
+      span.disabled-link {
+        color: #999;
+        cursor: not-allowed;
       }
       
     </style>
@@ -258,8 +263,15 @@
                             <% if (item.smartKey === 'ENV') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
@@ -317,8 +329,15 @@
                             <% if (item.smartKey === 'ENE') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
@@ -375,8 +394,15 @@
                             <% if (item.smartKey === 'ECO') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
@@ -433,8 +459,15 @@
                             <% if (item.smartKey === 'MOB') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
@@ -491,8 +524,15 @@
                             <% if (item.smartKey === 'GOV') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
@@ -549,8 +589,15 @@
                             <% if (item.smartKey === 'PEO') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
@@ -607,8 +654,15 @@
                             <% if (item.smartKey === 'LIV') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>

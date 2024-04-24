@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
@@ -168,8 +170,17 @@
 
         /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
         #submitButton:disabled {
-            background-color: #ccc;
+            opacity: 0.5;
+            /* Reduce opacity */
             cursor: not-allowed;
+            /* Change cursor */
+        }
+
+        #saveButton[disabled] {
+            opacity: 0.5;
+            /* Reduce opacity */
+            cursor: not-allowed;
+            /* Change cursor */
         }
     </style>
 </head>
@@ -305,7 +316,8 @@
                         <option value="85" <% if (dataOld.length && dataOld[0].Q2===85) { %>selected<% } %>>85%</option>
                         <option value="90" <% if (dataOld.length && dataOld[0].Q2===90) { %>selected<% } %>>90%</option>
                         <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
-                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%</option>
+                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%
+                        </option>
                     </select>
                 </div>
 
@@ -360,7 +372,7 @@
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
-                <button type="submit" id="submitButton" >ส่งรายงาน</button>
+                <button type="submit" id="submitButton">ส่งรายงาน</button>
             </form>
         </div>
 
@@ -382,8 +394,18 @@
                 var submitButton = document.getElementById('submitButton');
                 const reportForm = document.getElementById('reportForm');
                 var statusSelect = document.getElementById('status');
-            var progressSelect = document.getElementById('progress');
-            const fileUploadInput = document.getElementById('fileUpload');
+                var progressSelect = document.getElementById('progress');
+                const fileUploadInput = document.getElementById('fileUpload');
+
+                
+                // function submitReport() {
+                //     reportForm.action = "/submitformcdp/<formdata[0].solutionID%>";
+                //     reportForm.submit();
+                // }
+                // document.getElementById("submitButton").addEventListener("click", function (event) {
+                //     event.preventDefault(); 
+                //     submitReport();
+                // });
 
                 //action form button reportForm
                 function submitReport() {
@@ -391,19 +413,69 @@
                     reportForm.submit();
                 }
                 document.getElementById("submitButton").addEventListener("click", function (event) {
-                    event.preventDefault(); 
-                    submitReport();
+                    event.preventDefault();
+                    swal.fire({
+                        title: 'คุณแน่ใจไหม?',
+                        text: 'เมื่อส่งแล้ว คุณจะไม่สามารถยกเลิกการดำเนินการนี้ได้!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            submitReport();
+                            window.location.href = "/city/follow";
+                        }
+                    });
                 });
-                // เมื่อมีการเลือกไฟล์
-                document.getElementById('fileUpload').addEventListener('change', function(event) {
+
+
+
+                //Condition for disabled button
+                function checkFormCompletion() {
+                    const inputs = reportForm.querySelectorAll('input, select, textarea');
+                    let isComplete = true;
+
+                    inputs.forEach(input => {
+                        if (input !== fileUploadInput && ((input.type === 'text' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT') && !input.value)) {
+                            isComplete = false;
+                        }
+                    });
+
+                    if (fileUploadInput && fileUploadInput.files.length === 0) {
+                        isComplete = false;
+                    }
+
+                    return isComplete;
+                }
+
+                function handleFormChange() {
+                    if (checkFormCompletion()) {
+                        submitButton.disabled = false;
+                        saveButton.disabled = true;
+                    } else {
+                        submitButton.disabled = true;
+                        saveButton.disabled = false;
+                    }
+                }
+                reportForm.addEventListener('input', handleFormChange);
+                reportForm.addEventListener('change', handleFormChange);
+                submitButton.disabled = true;
+
+
+
+                // sendUpload file to backend
+                document.getElementById('fileUpload').addEventListener('change', function (event) {
                     const file = event.target.files[0];
                     if (file) {
                         const formData = new FormData();
                         formData.append('fileUpload', file);
-                
+
                         const csrfToken = document.querySelector('input[name="_csrf"]').value;
-                        const solutionID = '<%=formdata[0].solutionID%>'; // Ensure this is rendered correctly by the server
-                
+                        const solutionID = '<%=formdata[0].solutionID%>';
+
                         fetch(`/upload/formcdp/${solutionID}`, {
                             method: 'POST',
                             headers: {
@@ -411,57 +483,21 @@
                             },
                             body: formData
                         })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log('Upload successful:', data);
-                        })
-                        .catch(error => {
-                            console.error('There was a problem with the upload:', error);
-                        });
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log('Upload successful:', data);
+                            })
+                            .catch(error => {
+                                console.error('There was a problem with the upload:', error);
+                            });
                     }
                 });
-                
 
-               /* document.getElementById('fileUpload').addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = function(event) {
-                        const fileContent = event.target.result;
-                        
-                        // ส่งข้อมูลไฟล์ไปยังเซิร์ฟเวอร์
-                        fetch('/upload/formcdp/<formdata[0].solutionID%>', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-Token': document.querySelector('input[name="_csrf"]').value
-                          },
-                          body: JSON.stringify({ fileContent: fileContent })
-                        })
-                        .then(response => {
-                          if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                          }
-                          return response.json();
-                        })
-                        .then(data => {
-                          console.log('Upload successful:', data);
-                        })
-                        .catch(error => {
-                          console.error('There was a problem with the upload:', error);
-                        });
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  });*/
-                  
-
-  
 
                 //sweet alert
                 if (successParam === 'true') {
@@ -470,12 +506,12 @@
                         text: "Data saved successfully",
                         icon: "success",
                     })
-                    .then(function () {
-                        window.location.href = "/city/follow";
-                    });
+                        .then(function () {
+                            window.location.href = "/city/follow";
+                        });
                 }
                 //file upload
-                
+
                 function toggleFileUpload() {
                     if (statusSelect.value === '100' || progressSelect.value === '100') {
                         fileUploadInput.style.display = 'block';
@@ -485,7 +521,7 @@
                 }
 
                 function updateSubmitButtonState() {
-                    var isFormValid = Array.from(form.elements).every(function(element) {
+                    var isFormValid = Array.from(form.elements).every(function (element) {
                         if (
                             (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') &&
                             element.type !== 'file' &&
@@ -500,7 +536,7 @@
                             return false;
                         }
                     });
-    
+
                     if (isFormValid) {
                         submitButton.style.backgroundColor = '#C2AF76';
                         submitButton.style.cursor = 'pointer';
@@ -512,33 +548,33 @@
                     }
                 }
 
-                statusSelect.addEventListener('change', function() {
+                statusSelect.addEventListener('change', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
-    
-                progressSelect.addEventListener('change', function() {
+
+                progressSelect.addEventListener('change', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
-    
-                form.addEventListener('input', function() {
+
+                form.addEventListener('input', function () {
                     updateSubmitButtonState();
                 });
-    
-                window.addEventListener('load', function() {
+
+                window.addEventListener('load', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
-    
-                form.addEventListener('input', function() {
+
+                form.addEventListener('input', function () {
                     updateSubmitButtonState();
                 });
-    
+
                 updateSubmitButtonState();
 
             });
-            
+
 
 
         </script>

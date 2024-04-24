@@ -49,13 +49,11 @@ exports.handleUpload = (req, res) => {
             if (fechData && fechData.length > 0) {
                 db.query(qUpdate, [file_path, solutionParam.solutionID], (err, updateData) => {
                     if (err) return res.status(500).json({ error: "UpdateError", message: err });
-                    console.log('อัปโหลดไฟล์สำเร็จ');
                     res.status(200).json({ message: 'อัปโหลดไฟล์สำเร็จ' });
                 });
             } else {
                 db.query(qInsert, [solutionParam.solutionID, file_path], (err, insertData) => {
                     if (err) return res.status(500).json({ error: "InsertDataError", message: err });
-                    console.log('อัปโหลดไฟล์สำเร็จ');
                     res.status(200).json({ message: 'อัปโหลดไฟล์สำเร็จ' });
                 });
             }
