@@ -29,13 +29,13 @@ app.use(session({
 }))
 
 app.use(csrfProtection);
-app.use((err, req, res, next) => {
-  if (err.code === 'EBADCSRFTOKEN') {
-    res.status(403).send('Invalid CSRF token');
-  } else {
-    next(err);
-  }
-});
+// app.use((err, req, res, next) => {
+//   if (err.code === 'EBADCSRFTOKEN') {
+//     res.status(403).send('Invalid CSRF token');
+//   } else {
+//     next(err);
+//   }
+// });
 
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();

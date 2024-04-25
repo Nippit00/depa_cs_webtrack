@@ -45,7 +45,7 @@ exports.GetCity = (req, res) => {
 
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID WHERE solution.cityID = ?";
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID WHERE solution.cityID = ? GROUP BY solution.solutionName";
   try {
     db.query(q, [cityID], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -77,8 +77,6 @@ exports.getCityFollow = (req, res, next) => {
         followdata: data
       });
     });
-
-
 
   }catch(err){
     console.log(err);

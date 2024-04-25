@@ -382,6 +382,15 @@
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
                 const successParam = urlParams.get('success');
+                if (successParam === 'true') {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Data saved successfully",
+                        icon: "success",
+                    }).then(function () {
+                        window.location.href = "/city/follow";
+                    });
+                }
                 //send timestamp
                 const currentDateTimeField = document.getElementById('currentDateTime');
                 const currentDateTime = new Date().toLocaleString('th-TH', {
@@ -397,23 +406,11 @@
                 var progressSelect = document.getElementById('progress');
                 const fileUploadInput = document.getElementById('fileUpload');
 
-                
-                // function submitReport() {
-                //     reportForm.action = "/submitformcdp/<formdata[0].solutionID%>";
-                //     reportForm.submit();
-                // }
-                // document.getElementById("submitButton").addEventListener("click", function (event) {
-                //     event.preventDefault(); 
-                //     submitReport();
-                // });
 
                 //action form button reportForm
-                function submitReport() {
-                    reportForm.action = "/submitformcdp/<%=formdata[0].solutionID%>";
-                    reportForm.submit();
-                }
                 document.getElementById("submitButton").addEventListener("click", function (event) {
-                    event.preventDefault();
+                    event.preventDefault();  // Prevent the default form submission initially
+                
                     swal.fire({
                         title: 'คุณแน่ใจไหม?',
                         text: 'เมื่อส่งแล้ว คุณจะไม่สามารถยกเลิกการดำเนินการนี้ได้!',
@@ -425,11 +422,12 @@
                         cancelButtonColor: '#d33',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            submitReport();
-                            window.location.href = "/city/follow";
+                            reportForm.action = "/submitformcdp/<%=formdata[0].solutionID%>"; 
+                            reportForm.submit(); 
                         }
                     });
                 });
+                
 
 
 
@@ -498,18 +496,6 @@
                     }
                 });
 
-
-                //sweet alert
-                if (successParam === 'true') {
-                    swal({
-                        title: "Success!",
-                        text: "Data saved successfully",
-                        icon: "success",
-                    })
-                        .then(function () {
-                            window.location.href = "/city/follow";
-                        });
-                }
                 //file upload
 
                 function toggleFileUpload() {
