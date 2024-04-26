@@ -5,6 +5,7 @@
     <title>
         Admin - <%= pageTitle %>
     </title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +26,7 @@
 
 <body>
     <%- include('../include/ad-navbar.ejs') %>
-
+    
     <div class="w-[90%] mx-auto mt-5 overflow-x-auto">
             <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
               <thead class="bg-gray-200 ">
@@ -78,5 +79,69 @@
         window.location.href = `/admin/city/${cityID}`;
     }
 </script>
+<script>
+  const search = document.getElementById('searchInput');
 
+  search.addEventListener("keyup", (event) => {
+      const searchTerm = event.target.value.toLowerCase();
+      console.log(searchTerm)
+      
+      // const filteredData = cityData.filter(city => {
+      //     return (
+      //         city.cityID.toLowerCase().includes(searchTerm) ||
+      //         city.province.toLowerCase().includes(searchTerm) ||
+      //         city.developer.toLowerCase().includes(searchTerm) ||
+      //         city.executive.toLowerCase().includes(searchTerm)
+      //     );
+      // });
+      const cityData=[]
+      <% cityData.forEach(city => { %>
+        
+          if(
+            '<%=city.cityID%>'.toLowerCase().includes(searchTerm) ||
+            '<%=city.province%>'.toLowerCase().includes(searchTerm) ||
+            '<%=city.developer%>'.toLowerCase().includes(searchTerm) ||
+            '<%=city.executive%>'.toLowerCase().includes(searchTerm)){
+                cityData.push('<%=city%>')
+                console.log(cityData[0])
+              }
+        <%})%>
+    
+      // renderTable(cityData);
+  });
+
+  function renderTable(filteredData) {
+      const tableBody = document.querySelector('#cityTable tbody');
+      tableBody.innerHTML = '';
+
+      filteredData.forEach(city => {
+          const row = document.createElement('tr');
+          row.onclick = function() {
+              check(city.cityID);
+          };
+
+          const cells = [
+              city.cityID,
+              city.province,
+              city.date.toISOString().slice(0, 10),
+              city.developer,
+              city.executive,
+              city.government_investment === 0 ? "❌🧀" : `${city.government_investment.toLocaleString()} บาท`,
+              city.private_investment === 0 ? "❌🥐" : `${city.private_investment.toLocaleString()} บาท`
+          ];
+
+          cells.forEach(cellData => {
+              const cell = document.createElement('td');
+              cell.className = "py-2 px-4 break-words border-1 border-r border-l";
+              cell.textContent = cellData;
+              row.appendChild(cell);
+          });
+
+          tableBody.appendChild(row);
+      });
+  }
+
+  // Initial render of the table with all city data
+  // renderTable(cityData);
+</script>
 </html>
