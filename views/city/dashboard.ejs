@@ -126,7 +126,7 @@
           </iframe>
     </div>
     </div>
-
+<!-- Chart -->
     <canvas id="myChart" width="400" height="200"></canvas>
     <!-- table -->
     <div class="mx-36 mb-12 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 box-border">
@@ -211,7 +211,7 @@
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                    '<% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='ENV'){
                         html += `
                         <tr>
@@ -225,13 +225,13 @@
                     else{
                         
                     }
-                <% }) %>
+                '<% }) %>'
                     break;
                     case 3:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                    '<% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='ENE'){
                         html += `
                         <tr>
@@ -245,13 +245,13 @@
                     else{
                         
                     }
-                <% }) %>
+                '<% }) %>'
                     break;
                     case 4:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                   ' <% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='ECO'){
                         html += `
                         <tr>
@@ -265,13 +265,13 @@
                     else{
                         
                     }
-                <% }) %>
+               ' <% }) %>'
                     break;
                     case 5:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                   ' <% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='MOB'){
                         html += `
                         <tr>
@@ -285,13 +285,13 @@
                     else{
                         
                     }
-                <% }) %>
+                '<% }) %>'
                     break;
                     case 6:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                    '<% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='GOV'){
                         html += `
                         <tr>
@@ -305,13 +305,13 @@
                     else{
                         
                     }
-                <% }) %>
+               ' <% }) %>'
                     break;
                     case 7:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                    '<% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='PEO'){
                         html += `
                         <tr>
@@ -325,13 +325,13 @@
                     else{
                         
                     }
-                <% }) %>
+                '<% }) %>'
                     break;
                     case 8:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                    '<% solutionInfo.forEach(data => { %>'
                         if('<%=data.smartKey%>'==='LIV'){
                         html += `
                         <tr>
@@ -345,13 +345,13 @@
                     else{
                         
                     }
-                <% }) %>
+                '<% }) %>'
                     break;
                     case 9:
                      // Clear table body
                      bodyTable.innerHTML = '';
                     // Generate table rows with data
-                    <% solutionInfo.forEach(data => { %>
+                    '<% solutionInfo.forEach(data => { %>'
                        
                         html += `
                         <tr>
@@ -361,7 +361,7 @@
                             <td>-</td>
                             <td><%=data.goal%></td>
                         </tr>`;
-                <% }) %>
+                '<% }) %>'
                     break;
                 default:
                     // Handle default case
