@@ -65,7 +65,14 @@
 
         </div>
       </div>
-      
+      <div class="mb-2 flex justify-end ">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="GoEditPage()">
+          แก้ไขข้อมูลจังหวัด
+      </button>
+      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="GoAddSolution()">
+          เพิ่ม Solution
+      </button>      
+      </div>
       <div class="text-black">
         
         <div class="content">
@@ -450,4 +457,16 @@
     </div>
     <%- include('../include/ad-footer.ejs') %>
   </body>
+  <script>
+    function GoEditPage(){
+      const cityID='<%=cityData.cityID%>'
+      window.location.href = `/admin/city/edit/${cityID}`;
+      console.log("active")
+    }
+    function GoAddSolution(){
+      const cityID='<%=cityData.cityID%>'
+      window.location.href = `/admin/solution/add/${cityID}`;
+      console.log("active")
+    }
+  </script>
 </html>
