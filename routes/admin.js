@@ -16,9 +16,12 @@ router.get('/adduser', isAdmin, adminController.getAddUserPage);
 // **************************
 // ***     City Page     ***
 // **************************
-//get city
 router.get('/city', isAdmin, adminController.getAdCityP);
 router.get('/city/:cityID', isAdmin, adminController.getAdCityDataP);
+router.get('/city/edit/:cityID', isAdmin, adminController.getEditProvince);
+router.post('/city/update/:cityID', isAdmin, adminController.postUpdateProvince);
 router.get('/addCity',isAdmin,adminController.getAddCity)
 router.post('/postAddCity',isAdmin,adminController.postAddCity)
+router.get('/solution/add/:cityID', isAdmin, adminController.getAddSolutionPage);
+router.post('/addSolution',isAdmin,adminController.postAddSolution)
 module.exports = router;
