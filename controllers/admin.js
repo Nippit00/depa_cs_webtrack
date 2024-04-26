@@ -150,8 +150,7 @@ exports.postAddCity = (req, res, next) => {
         }
       );
     });
-  });
-};
+}});
 
 exports.getEditProvince=(req,res,next)=> {
   console.log(req.params);

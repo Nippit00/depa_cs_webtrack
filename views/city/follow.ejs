@@ -82,6 +82,25 @@
             border-radius: 0px;
             font-size: 14px;
         }
+        .complete {
+          color: green;
+      }
+      
+      .not-complete {
+        color: rgb(255, 115, 0);
+    }
+    
+    
+      
+      .incomplete {
+          color: red;
+      }
+
+      span.disabled-link {
+        color: #999;
+        cursor: not-allowed;
+      }
+      
     </style>
      
 </head>
@@ -97,7 +116,20 @@
         });
         return count;
     }
+    function countComplete(data) {
+        let count = 0;
+        followdata.forEach((item) => {
+          if (item.smartKey === data) {
+            if (item.status === 2) {
+                count++;
+              }
+            }
+            
+        });
+        return count;
+    }
     %>
+    
     
 
     <%- include('../component/navbar.ejs') %>
@@ -107,7 +139,7 @@
     </div>
 
     <div class="title-container">
-        <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1>
+        <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1> 
     </div>
 
     <%- include('../component/menu.ejs') %>
@@ -191,7 +223,7 @@
                       <tr>
                         <th>โครงสร้าง / Smart</th>
                         <th>Project</th>
-                        <th>Response</th>
+                        <th></th>
                       </tr>
                       <tr>
                         <td>City Data Platform</td>
@@ -218,8 +250,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const envcountProject = countEcoSolutions("ENV") %>
+                          <%=envcountProject%> โครงการ</th>
+                        <th><% const envcount = countEcoSolutions("ENV") %>
+                          <% const envcountSuccess = countComplete("ENV") %>
+                          complete <%=envcountSuccess%>/<%=envcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Environment</td>
@@ -228,16 +263,37 @@
                             <% if (item.smartKey === 'ENV') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const envcount = countEcoSolutions("ENV") %>
-                            complete 0/<%=envcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'ENV') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        
                         </td>
                       </tr>
                       </tbody>
@@ -260,8 +316,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const enecountProject = countEcoSolutions("ENE") %>
+                          <%=enecountProject%> โครงการ</th>
+                        <th><% const enecount = countEcoSolutions("ENE") %>
+                          <% const enecountSuccess = countComplete("ENE") %>
+                          complete <%=enecountSuccess%>/<%=enecount%></th>
                       </tr>
                       <tr>
                         <td>Smart Energy</td>
@@ -270,16 +329,36 @@
                             <% if (item.smartKey === 'ENE') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const enecount = countEcoSolutions("ENE") %>
-                            complete 0/<%=enecount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'ENE') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -302,8 +381,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const ecocountProject = countEcoSolutions("ECO") %>
+                          <%=ecocountProject%> โครงการ</th>
+                        <th><% const ecocount = countEcoSolutions("ECO") %>
+                          <% const ecocountSuccess = countComplete("ECO") %>
+                          complete <%=ecocountSuccess%>/<%=ecocount%></th>
                       </tr>
                       <tr>
                         <td>Smart Economy</td>
@@ -312,16 +394,36 @@
                             <% if (item.smartKey === 'ECO') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const ecocount = countEcoSolutions("ECO") %>
-                            complete 0/<%=ecocount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'ECO') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -344,8 +446,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const mobcountProject = countEcoSolutions("MOB") %>
+                          <%=mobcountProject%> โครงการ</th>
+                        <th><% const mobcount = countEcoSolutions("MOB") %>
+                          <% const mobcountSuccess = countComplete("MOB") %>
+                          complete <%=mobcountSuccess%>/<%=mobcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Mobility</td>
@@ -354,16 +459,36 @@
                             <% if (item.smartKey === 'MOB') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const mobcount = countEcoSolutions("MOB") %>
-                            complete 0/<%=mobcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'MOB') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -386,8 +511,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const govcountProject = countEcoSolutions("GOV") %>
+                          <%=govcountProject%> โครงการ</th>
+                        <th><% const govcount = countEcoSolutions("GOV") %>
+                          <% const govcountSuccess = countComplete("GOV") %>
+                          complete <%=govcountSuccess%>/<%=govcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Governance</td>
@@ -396,16 +524,36 @@
                             <% if (item.smartKey === 'GOV') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const govcount = countEcoSolutions("GOV") %>
-                            complete 0/<%=govcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'GOV') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -428,8 +576,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const peocountProject = countEcoSolutions("PEO") %>
+                          <%=peocountProject%> โครงการ</th>
+                        <th><% const peocount = countEcoSolutions("PEO") %>
+                          <% const peocountSuccess = countComplete("PEO") %>
+                          complete <%=peocountSuccess%>/<%=peocount%></th>
                       </tr>
                       <tr>
                         <td>Smart People</td>
@@ -438,16 +589,36 @@
                             <% if (item.smartKey === 'PEO') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const peocount = countEcoSolutions("PEO") %>
-                            complete 0/<%=peocount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'PEO') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>
@@ -470,8 +641,11 @@
                     <table>
                       <tr>
                         <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
+                        <th><% const livcountProject = countEcoSolutions("LIV") %>
+                          <%=livcountProject%> โครงการ</th>
+                        <th><% const livcount = countEcoSolutions("LIV") %>
+                          <% const livcountSuccess = countComplete("LIV") %>
+                          complete <%=livcountSuccess%>/<%=livcount%></th>
                       </tr>
                       <tr>
                         <td>Smart Living</td>
@@ -480,16 +654,36 @@
                             <% if (item.smartKey === 'LIV') { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                    <p><a href="/formcdp/<%=item.solutionID%>"><%= item.solutionName %></a></p>
-
+                                  <% if (item.status===2) { %>
+                                    <p><span class="disabled-link">
+                                        <%= item.solutionName %>
+                                      </span></p>
+                                    <% } else { %>
+                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                          <%= item.solutionName %>
+                                        </a></p>
+                                      <% } %>
                                 </div>
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
                     </td>
                         <td>
-                            <% const livcount = countEcoSolutions("LIV") %>
-                            complete 0/<%=livcount%>
+                          <% followdata.forEach((item) => { %>
+                            <% if (item.smartKey === 'LIV') { %>
+                                <div>
+                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                    <% if (item.status === 2) { %>
+                                        - ส่งเเล้ว
+                                    <% } else if (item.status === 1) { %>
+                                        - ฉบับร่าง
+                                    <% } else { %>
+                                        - ยังไม่ได้รายงาน
+                                    <% } %>
+                                </p>
+                                </div>
+                            <% } %>
+                        <% }); %>
                         </td>
                       </tr>
                       </tbody>

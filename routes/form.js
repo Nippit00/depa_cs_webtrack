@@ -8,6 +8,6 @@ const router = express.Router();
 router.get('/form',isAuth,formController.getform);
 router.get('/formcdp/:solutionID',isAuth,formController.getformCdp);
 router.post('/sendformcdp/:solutionID',isAuth,formController.postFormCdp);
-router.post('/sendformcdp',formController.postSubmitCdp)
-// router.get(' /sendformcdp',formController.postFormCdp);
+router.post('/submitformcdp/:solutionID',isAuth,formController.submitFormCdp);
+// router.get('/sendformcdp',formController.postFormCdp);
 module.exports = router;
