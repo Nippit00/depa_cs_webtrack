@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
@@ -26,6 +28,8 @@
         }
 
 
+
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -33,10 +37,12 @@
             box-sizing: border-box;
         }
 
+
         .head {
             text-align: center;
             margin-top: 50px;
         }
+
 
         .custom-container,
         .custom-container-1 {
@@ -51,12 +57,14 @@
             background-color: #FFF0C4;
         }
 
+
         .custom-container-1>div {
             width: 48%;
             padding: 10px;
             box-sizing: border-box;
             margin-bottom: 20px;
         }
+
 
         .left-content,
         .right-content {
@@ -66,11 +74,13 @@
             margin-left: 50px;
         }
 
+
         form {
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
         }
+
 
         form div {
             display: flex;
@@ -80,6 +90,7 @@
             margin-bottom: 20px;
         }
 
+
         label {
             display: block;
             margin-top: 20px;
@@ -88,6 +99,7 @@
             left: 50%;
             transform: translateX(-50%);
         }
+
 
         select,
         textarea,
@@ -104,12 +116,14 @@
             background-color: #fffbf0;
         }
 
+
         input {
             width: 50%;
             position: relative;
             left: 75%;
             transform: translateX(-50%);
         }
+
 
         button {
             background-color: #C2AF76;
@@ -120,14 +134,17 @@
             margin-top: 20px;
         }
 
+
         button:hover {
             background-color: #C2AF76;
             border-radius: 50px;
         }
 
+
         #fileUpload {
             display: none;
         }
+
 
         .right-content ul {
             list-style-type: none;
@@ -135,6 +152,7 @@
             padding: 0;
             margin: 0;
         }
+
 
         .right-content li {
             border-bottom: 1px solid #ccc;
@@ -145,6 +163,7 @@
             /* เพิ่มระยะห่างระหว่างรายการ */
         }
 
+
         .left-content {
             padding: 10px;
             /* เพิ่มพื้นที่รอบข้อมูล */
@@ -152,12 +171,14 @@
             /* เพิ่มระยะห่างด้านบนและล่าง */
         }
 
+
         .left-content p {
             margin: 5px 0;
             /* ตั้งค่าระยะห่างระหว่างประโยค */
             padding-left: 20px;
             /* เพิ่มพื้นที่ด้านซ้าย */
         }
+
 
         .left-content p.header {
             font-weight: bold;
@@ -168,6 +189,7 @@
             /* เปลี่ยนสีตัวอักษร */
         }
 
+
         /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
         #submitButton:disabled {
             opacity: 0.5;
@@ -175,6 +197,7 @@
             cursor: not-allowed;
             /* Change cursor */
         }
+
 
         #saveButton[disabled] {
             opacity: 0.5;
@@ -185,7 +208,9 @@
     </style>
 </head>
 
+
 <body>
+
 
     <%- include('component/navbar.ejs') %>
         <script>
@@ -196,6 +221,7 @@
         <div>
             <button class="back" onclick="goBack()">ย้อนกลับ</button>
         </div>
+
 
         <div class="head">
             <% if (formdata && formdata.length> 0 && formdata[0].cityName) { %>
@@ -208,6 +234,8 @@
         </div>
 
 
+
+
         <div class="head">
             <% if (formdata && formdata.length> 0 && formdata[0].solutionName) { %>
                 <h6>ชื่อโครงการ: <%= formdata[0].solutionName %>
@@ -216,6 +244,8 @@
                     <h6>ชื่อโครงการ: N/A </h6>
                     <% } %>
         </div>
+
+
 
 
         <div class="custom-container">
@@ -256,6 +286,7 @@
                 </p>
             </div>
 
+
             <div class="right-content">
                 <p><strong>CDP :</strong></p>
                 <ul>
@@ -271,21 +302,16 @@
             </div>
 
 
+
+
         </div>
 
+
         <div class="custom-container-1">
-            
             <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
                     <label for="status">สถานะ :</label>
                     <select id="status" name="status" required>
-<<<<<<< HEAD
-                        <option value="null" <% if (!dataOld.length || dataOld[0].Q1 === null) { %>selected<% } %>>ระบุ สถานะโครงการ</option>
-                        <option value="delayed" <% if (dataOld.length && dataOld[0].Q1 === 'delayed') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
-                        <option value="on_schedule" <% if (dataOld.length && dataOld[0].Q1 === 'on_schedule') { %>selected<% } %>>ตามแผน</option>
-                        <option value="ahead_of_schedule" <% if (dataOld.length && dataOld[0].Q1 === 'ahead_of_schedule') { %>selected<% } %>>เร็วกว่าแผน</option>
-                        <option value="not_started" <% if (dataOld.length && dataOld[0].Q1 === 'not_started') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
-=======
                         <option value="null" <% if (!dataOld.length || dataOld[0].Q1===null) { %>selected<% } %>>ระบุ
                                 สถานะโครงการ</option>
                         <option value="delayed" <% if (dataOld.length && dataOld[0].Q1==='delayed' ) { %>selected<% } %>
@@ -296,21 +322,13 @@
                             { %>selected<% } %>>เร็วกว่าแผน</option>
                         <option value="not_started" <% if (dataOld.length && dataOld[0].Q1==='not_started' ) { %>
                             selected<% } %>>ยังไม่ดำเนินโครงการ</option>
->>>>>>> thame
                     </select>
                 </div>
-            
+
+
                 <div>
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
                     <select id="progress" name="progress">
-<<<<<<< HEAD
-                        <option value="null" <% if (!dataOld.length || dataOld[0].Q2 === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                        <option value="0" <% if (dataOld.length && dataOld[0].Q2 === 0) { %>selected<% } %>>0%</option>
-                        <option value="5" <% if (dataOld.length && dataOld[0].Q2 === 5) { %>selected<% } %>>5%</option>
-                        <option value="10" <% if (dataOld.length && dataOld[0].Q2 === 10) { %>selected<% } %>>10%</option>
-                        <option value="20" <% if (dataOld.length && dataOld[0].Q2 === 20) { %>selected<% } %>>20%</option>
-                        <!-- เพิ่มตัวเลือกอื่น ๆ ตามความเหมาะสม -->
-=======
                         <option value="null" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ %
                                 ความก้าวหน้า</option>
                         <option value="0" <% if (dataOld.length && dataOld[0].Q2===0) { %>selected<% } %>>0%</option>
@@ -335,33 +353,25 @@
                         <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
                         <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%
                         </option>
->>>>>>> thame
                     </select>
                 </div>
-            
+
+
                 <div>
                     <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx">
                 </div>
-            
+
+
                 <div>
                     <label for="operation">ผลการดำเนินงาน:</label>
-<<<<<<< HEAD
-                    <textarea id="operation" name="operation" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
-=======
                     <textarea id="operation" name="operation"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
->>>>>>> thame
                 </div>
-            
+
+
                 <div>
                     <label for="problem_type">ประเภทปัญหา:</label>
                     <select id="problem_type" name="problem_type">
-<<<<<<< HEAD
-                        <option value="null" <% if (!dataOld.length || dataOld[0].Q5 === null) { %>selected<% } %>>ระบุ ประเภทปัญหา</option>
-                        <option value="technical" <% if (dataOld.length && dataOld[0].Q5 === 'technical') { %>selected<% } %>>เทคนิค</option>
-                        <option value="financial" <% if (dataOld.length && dataOld[0].Q5 === 'financial') { %>selected<% } %>>การเงิน</option>
-                        <option value="management" <% if (dataOld.length && dataOld[0].Q5 === 'management') { %>selected<% } %>>การจัดการ</option>
-=======
                         <option value="null" <% if (!dataOld.length || dataOld[0].Q5===null) { %>selected<% } %>>ระบุ
                                 ประเภทปัญหา</option>
                         <option value="technical" <% if (dataOld.length && dataOld[0].Q5==='technical' ) { %>selected<%
@@ -371,63 +381,47 @@
                         <option value="management" <% if (dataOld.length && dataOld[0].Q5==='management' ) { %>selected
                             <% } %>>การจัดการ
                         </option>
->>>>>>> thame
                     </select>
                 </div>
-            
+
+
                 <div>
                     <label for="result">ผลลัพธ์:</label>
-<<<<<<< HEAD
-                    <textarea id="result" name="result" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
-=======
                     <textarea id="result" name="result"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
->>>>>>> thame
                 </div>
-            
+
+
                 <div>
                     <label for="problem">ปัญหา/อุปสรรค:</label>
-<<<<<<< HEAD
-                    <textarea id="problem" name="problem" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
-=======
                     <textarea id="problem" name="problem"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
->>>>>>> thame
                 </div>
-            
+
+
                 <div>
                     <label for="solution">แนวทางแก้ไข:</label>
-<<<<<<< HEAD
-                    <textarea id="solution" name="solution" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q8 %><% } %></textarea>
-=======
                     <textarea id="solution" name="solution"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q8 %><% } %></textarea>
->>>>>>> thame
                 </div>
-            
+
+
                 <div>
                     <label for="note">หมายเหตุ:</label>
-<<<<<<< HEAD
-                    <textarea id="note" name="note" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
-=======
                     <textarea id="note" name="note"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
->>>>>>> thame
                 </div>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>" id="token">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
-<<<<<<< HEAD
-                <button type="button" id="submitButton" >ส่งรายงาน</button>
-=======
                 <button type="submit" id="submitButton">ส่งรายงาน</button>
->>>>>>> thame
             </form>
         </div>
 
 
+
+
         <script>
-            
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -457,10 +451,12 @@
                 const fileUploadInput = document.getElementById('fileUpload');
 
 
+
+
                 //action form button reportForm
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
-                
+               
                     swal.fire({
                         title: 'คุณแน่ใจไหม?',
                         text: 'เมื่อส่งแล้ว คุณจะไม่สามารถยกเลิกการดำเนินการนี้ได้!',
@@ -472,71 +468,23 @@
                         cancelButtonColor: '#d33',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            reportForm.action = "/submitformcdp/<%=formdata[0].solutionID%>"; 
-                            reportForm.submit(); 
+                            reportForm.action = "/submitformcdp/<%=formdata[0].solutionID%>";
+                            reportForm.submit();
                         }
                     });
                 });
-<<<<<<< HEAD
-
-                submitButton.addEventListener('click',function(){
-                    csurf=document.getElementById('token').value
-                    // console.log( csurf )
-                    form=document.getElementById('reportForm');
-                    sendDataToAPI(csurf );
-
-                    
-                })
+               
 
 
-                function enableSubmitButton() {
-                    submitButton.disabled = false;
-                }
-                if (successParam === 'true') {
-                    swal("Success!", "Data saved successfully", "success");
-                }
-=======
->>>>>>> thame
-                
-
-                async function sendDataToAPI(csrfToken) {
-                    const form = document.getElementById('reportForm');
-                    const formData = new FormData(); // สร้าง FormData object
-
-<<<<<<< HEAD
-                    // วนลูปผ่านทุกๆองค์ประกอบของฟอร์ม
-                    form.querySelectorAll('input, select, textarea').forEach(field => {
-                        // เพิ่มชื่อฟิลด์และค่าที่ผู้ใช้ป้อนลงในฟิลด์ลงใน FormData object
-                        formData.append(field.name, field.value);
-                    });
-
-                    // แสดงข้อมูลในฟอร์มทั้งหมดใน console.log
-                    // console.log([...formData.entries()]);
-                    console.log("Here",[...formData.entries()])
-                    try {
-                        var response = await fetch('/sendformcdp', {
-                            method: 'POST',
-                            body: [...formData.entries()], // ใช้ FormData object ที่มีข้อมูลจริง ๆ
-                            headers: {
-                                'CSRF-Token': csrfToken
-                            }
-                        });
-
-                        if (!response.ok) {
-                            throw new Error('Failed to send data');
-                        }
-                    } catch (error) {
-                        console.error('Error sending data to API:', error);
-                    }
-                }
 
 
-=======
+
 
                 //Condition for disabled button
                 function checkFormCompletion() {
                     const inputs = reportForm.querySelectorAll('input, select, textarea');
                     let isComplete = true;
+
 
                     inputs.forEach(input => {
                         if (input !== fileUploadInput && ((input.type === 'text' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT') && !input.value)) {
@@ -544,12 +492,15 @@
                         }
                     });
 
+
                     if (fileUploadInput && fileUploadInput.files.length === 0) {
                         isComplete = false;
                     }
 
+
                     return isComplete;
                 }
+
 
                 function handleFormChange() {
                     if (checkFormCompletion()) {
@@ -566,6 +517,9 @@
 
 
 
+
+
+
                 // sendUpload file to backend
                 document.getElementById('fileUpload').addEventListener('change', function (event) {
                     const file = event.target.files[0];
@@ -573,8 +527,10 @@
                         const formData = new FormData();
                         formData.append('fileUpload', file);
 
+
                         const csrfToken = document.querySelector('input[name="_csrf"]').value;
                         const solutionID = '<%=formdata[0].solutionID%>';
+
 
                         fetch(`/upload/formcdp/${solutionID}`, {
                             method: 'POST',
@@ -598,7 +554,9 @@
                     }
                 });
 
+
                 //file upload
+
 
                 function toggleFileUpload() {
                     if (statusSelect.value === '100' || progressSelect.value === '100') {
@@ -607,6 +565,7 @@
                         fileUploadInput.style.display = 'none';
                     }
                 }
+
 
                 function updateSubmitButtonState() {
                     var isFormValid = Array.from(form.elements).every(function (element) {
@@ -625,6 +584,7 @@
                         }
                     });
 
+
                     if (isFormValid) {
                         submitButton.style.backgroundColor = '#C2AF76';
                         submitButton.style.cursor = 'pointer';
@@ -636,40 +596,53 @@
                     }
                 }
 
+
                 statusSelect.addEventListener('change', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
+
 
                 progressSelect.addEventListener('change', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
 
+
                 form.addEventListener('input', function () {
                     updateSubmitButtonState();
                 });
+
 
                 window.addEventListener('load', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
 
+
                 form.addEventListener('input', function () {
                     updateSubmitButtonState();
                 });
 
+
                 updateSubmitButtonState();
->>>>>>> thame
+
 
             });
 
 
 
+
+
+
         </script>
+
 
         <%- include('component/footer.ejs') %>
 
+
 </body>
 
+
 </html>
+

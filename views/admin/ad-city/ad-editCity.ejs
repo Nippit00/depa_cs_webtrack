@@ -19,6 +19,25 @@
       }
     </style>
   </head>
+  <script>
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: <%=cityData.LAT %>, lng: <%=cityData.LNG %> },
+            zoom: 7,
+        });
+        const marker = new google.maps.Marker({
+            map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: { lat: <%=cityData.LAT %>, lng: <%=cityData.LNG %> }
+        });
+
+        google.maps.event.addListener(marker, "dragend", function(event) {
+            document.getElementById("latitude").value = this.getPosition().lat();
+            document.getElementById("longitude").value = this.getPosition().lng();
+        });
+    }
+  </script>
   <body class="bg-gray-100">
     <%- include('../include/ad-navbar.ejs') %>
     <div class="container mx-auto p-4">
@@ -129,25 +148,7 @@
       </form>
     </div>
     <%- include('../include/ad-footer.ejs') %>
-    <script>
-      function initMap() {
-          const map = new google.maps.Map(document.getElementById("map"), {
-              center: { lat: <%=cityData.LAT %>, lng: <%=cityData.LNG %> },
-              zoom: 7,
-          });
-          const marker = new google.maps.Marker({
-              map,
-              draggable: true,
-              animation: google.maps.Animation.DROP,
-              position: { lat: <%=cityData.LAT %>, lng: <%=cityData.LNG %> }
-          });
-
-          google.maps.event.addListener(marker, "dragend", function(event) {
-              document.getElementById("latitude").value = this.getPosition().lat();
-              document.getElementById("longitude").value = this.getPosition().lng();
-          });
-      }
-    </script>
+    
     <script>
       const urlParams = new URLSearchParams(window.location.search);
       const successParam = urlParams.get("success");
