@@ -4,6 +4,10 @@ exports.getform = (req, res, next) => {
   res.render("form", { req, pageTitle: "form" });
 };
 
+exports.getformcheck = (req, res, next) => {
+  res.render("formcheck", { req, pageTitle: "form" });
+};
+
 
 exports.getformCdp = (req, res, next) => {
   const solutionid = req.params.solutionID;

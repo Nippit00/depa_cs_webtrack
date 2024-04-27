@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>form</title>
+    <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .head {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .custom-container,
+        .custom-container-1 {
+            display: flex;
+            justify-content: space-between;
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 50px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background-color: #FFF0C4;
+        }
+
+        .custom-container-1>div {
+            width: 48%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .left-content,
+        .right-content {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-left: 50px;
+        }
+
+        form {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            width: 100%;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        select,
+        textarea,
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 2px solid #C2AF76;
+            border-radius: 4px;
+            resize: vertical;
+            border-radius: 15px;
+            background-color: #fffbf0;
+        }
+
+        input {
+            width: 50%;
+            position: relative;
+            left: 75%;
+            transform: translateX(-50%);
+        }
+
+        button {
+            background-color: #C2AF76;
+            color: white;
+            padding: 10px 15px;
+            border: 2px solid #C2AF76;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+
+        button:last-child {
+            margin-left: 0;
+        }
+
+        button:hover {
+            background-color: #C2AF76;
+            border-radius: 50px;
+        }
+
+        #fileUpload {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <%- include('component/navbar.ejs') %>
+
+        <div class="head">
+            <h5>เมืองอัจฉริยะ</h5>
+        </div>
+
+        <div class="head">
+            <h6>ชื่อโครงการ : </h6>
+        </div>
+
+        <div class="custom-container">
+            <div class="left-content">
+                <!-- เนื้อหาฝั่งซ้าย -->
+                <p>ชื่อโครงการ : </p>
+                <p>รหัสโครงการ : </p>
+                <p>Smart : </p>
+                <p>แหล่งเงินทุน : </p>
+                <p>เงินทุน (บาท) : </p>
+                <br>
+                <br>
+                <p>สถานะ : </p>
+                <p>ความก้าวหน้าโครงการ : </p>
+                <p>ผลการดำเนินงาน: </p>
+                <p>ประเภทปัญหา: </p>
+                <p>ผลลัพธ์: </p>
+                <p>ปัญหา/อุปสรรค: </p>
+                <p>แนวทางแก้ไข: </p>
+                <p>หมายเหตุ: </p>
+            </div>
+            <div class="right-content">
+                <!-- เนื้อหาฝั่งขวา -->
+                <p>ตัวชี้วัด ที่ได้รับอนุมติ : </p>
+            </div>
+        </div>
+
+        <script>
+        </script>
+
+        <%- include('component/footer.ejs') %>
+
+</body>
+
+</html>

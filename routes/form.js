@@ -6,6 +6,7 @@ const isAuth = require('../middlewares/is-auth.js');
 const router = express.Router();
 
 router.get('/form',isAuth,formController.getform);
+router.get('/formcheck',formController.getformcheck);
 router.get('/formcdp/:solutionID',isAuth,formController.getformCdp);
 router.post('/sendformcdp/:solutionID',isAuth,formController.postFormCdp);
 router.post('/submitformcdp/:solutionID',isAuth,formController.submitFormCdp);
