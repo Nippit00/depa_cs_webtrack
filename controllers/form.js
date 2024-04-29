@@ -4,9 +4,31 @@ exports.getform = (req, res, next) => {
   res.render("form", { req, pageTitle: "form" });
 };
 
-exports.getformcheck = (req, res, next) => {
-  res.render("formcheck", { req, pageTitle: "form" });
+exports.postFormcheck = (req, res, next) => {
+  console.log(req.body)
+  const dataCheck = req.body
+  const q = "SELECT * FROM anssolution JOIN solution ON anssolution.solutionID = solution.solutionID JOIN city_home ON solution.cityID = city_home.cityID WHERE anssolution.solutionID = ?"
+  const id = req.params.solutionID
+  db.query(q,id,(err,data)=>{
+    if(err) return res.status(500).json(errformcheck,err)
+    res.render("formcheck", { 
+      req, pageTitle: "form" ,
+      data:data[0],
+      dataCheck:dataCheck
+    });
+  })
 };
+
+exports.comfirmFormcheck = (req, res, next) => {
+  console.log(req.body);
+  try {
+    res.json({ "status": "ok" }); 
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ "err": err }); 
+  }
+};
+
 
 
 exports.getformCdp = (req, res, next) => {
