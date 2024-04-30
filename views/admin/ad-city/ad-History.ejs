@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Log Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <%- include('../include/ad-navbar.ejs') %>
+    <h1 class="text-center text-2xl font-bold my-2">Login Log Page</h1>
+    <div class="container mx-auto">
+        <!-- Search Input -->
+        
+
+        <!-- Table -->
+        <table id="logTable" class="min-w-full">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Login ID</th>
+                    <th class="px-4 py-2">City ID</th>
+                    <th class="px-4 py-2">Login Time</th>
+                    <th class="px-4 py-2">Logout Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(entry => { %>
+                    <tr>
+                        <td class="border px-4 py-2"><%= entry.Login_ID %></td>
+                        <td class="border px-4 py-2"><%= entry.cityID %></td>
+                        <td class="border px-4 py-2"><%= entry.login_time %></td>
+                        <td class="border px-4 py-2"><%= entry.logout_time || 'Not logged out yet' %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <%- include('../include/ad-footer.ejs') %>
+
+    <script>
+        // Function to filter table rows based on city ID
+        function filterTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("logTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1]; // Index 1 for City ID column
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Attach event listener to search input
+        document.getElementById("searchInput").addEventListener("keyup", filterTable);
+    </script>
+</body>
+</html>
