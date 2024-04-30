@@ -1,22 +1,20 @@
 const db = require("../db.js");
 
-
-
 // ****************
 // **  getLogin  **
 // ****************
 exports.getLogin = (req, res, next) => {
   try {
-      // Render the login view with CSRF token and additional details
-      res.render("auth/login", {
-          pageTitle: "Login - Authentication",
-          path: "/login",
-          csrfToken: req.csrfToken()
-      });
+    // Render the login view with CSRF token and additional details
+    res.render("auth/login", {
+      pageTitle: "Login - Authentication",
+      path: "/login",
+      csrfToken: req.csrfToken(),
+    });
   } catch (error) {
-      // Handle errors that may occur during rendering
-      console.error('Error rendering login page:', error);
-      next(error); // Pass errors to Express error handling middleware
+    // Handle errors that may occur during rendering
+    console.error("Error rendering login page:", error);
+    next(error); // Pass errors to Express error handling middleware
   }
 };
 
@@ -27,7 +25,7 @@ exports.getLogin = (req, res, next) => {
 exports.PostLogin = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  
+
   const q = "SELECT * FROM citydata WHERE username = ?";
   db.query(q, [username], (err, data) => {
     try {
@@ -43,15 +41,32 @@ exports.PostLogin = (req, res) => {
             if (adminInfo.AdminPassword === password) {
               req.session.isAdmin = true;
               req.session.userID = adminInfo.AdminUsername;
-              return req.session.save((err) => {
-                if (err) {
-                  console.log(err);
-                  req.flash("alert", "invalid login");
-                  return res.redirect("/admin");
+              // Log admin login
+              const timestamp = new Date()
+                .toISOString()
+                .slice(0, 19)
+                .replace("T", " ");
+              const logQuery =
+                "INSERT INTO `Login_log` (`cityID`, `login_time`) VALUES (?, ?)";
+              db.query(
+                logQuery,
+                [adminInfo.AdminUsername, timestamp],
+                (err, log) => {
+                  if (err) {
+                    console.log("Error logging admin login:", err);
+                  }
+                  return req.session.save((err) => {
+                    if (err) {
+                      console.log(err);
+                      req.flash("alert", "invalid login");
+                      return res.redirect("/admin");
+                    }
+                    req.session.loginID = log.insertId;
+                    console.log("Admin login successful");
+                    res.redirect("/admin");
+                  });
                 }
-                console.log("Admin login successful");
-                res.redirect("/admin");
-              });
+              );
             }
           } catch (error) {
             console.log(error);
@@ -62,14 +77,27 @@ exports.PostLogin = (req, res) => {
         if (cityData.password === password) {
           req.session.isLoggedIn = true;
           req.session.userID = cityData.cityID;
-          return req.session.save((err) => {
+          // Log user login
+          const timestamp = new Date()
+            .toISOString()
+            .slice(0, 19)
+            .replace("T", " ");
+          const logQuery =
+            "INSERT INTO `Login_log` (`cityID`, `login_time`) VALUES (?, ?)";
+          db.query(logQuery, [cityData.cityID, timestamp], (err, log) => {
             if (err) {
-              console.log(err);
-              req.flash("alert", "invalid login");
-              return res.redirect("/login");
+              console.log("Error logging user login:", err);
             }
-            console.log("User login successful");
-            res.redirect("/city");
+            return req.session.save((err) => {
+              if (err) {
+                console.log(err);
+                req.flash("alert", "invalid login");
+                return res.redirect("/login");
+              }
+              req.session.loginID = log.insertId;
+              console.log("User login successful");
+              res.redirect("/city");
+            });
           });
         } else {
           return res.redirect("/login");
@@ -82,13 +110,13 @@ exports.PostLogin = (req, res) => {
   });
 };
 
-
-
-
 // ******************
 // **  postLogout  **
 // ******************
 exports.postLogout = (req, res) => {
+  // Get the login ID from session or wherever you store it during login
+  const loginID = req.session.loginID;
+  console.log(req.session);
   // Destroy the session (as logout)
   req.session.destroy((err) => {
     if (err) {
@@ -96,7 +124,18 @@ exports.postLogout = (req, res) => {
       console.log(err);
       return res.redirect("/");
     }
-    res.redirect("/");
+
+    // Update the logout time in the Login_log table
+    const logoutTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const updateQuery =
+      "UPDATE `Login_log` SET `logout_time`=? WHERE `Login_ID`=?";
+    db.query(updateQuery, [logoutTime, loginID], (err, result) => {
+      if (err) {
+        console.log("Error updating logout time:", err);
+      }
+
+      // Redirect to home page after updating logout time
+      res.redirect("/");
+    });
   });
 };
-
