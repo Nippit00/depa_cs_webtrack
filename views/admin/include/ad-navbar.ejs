@@ -88,12 +88,12 @@
               class="absolute hidden text-gray-700 pt-1 group-hover:block bg-gray-200"
             >
               <a
-                href="/admin/addUser"
+                href="/admin/history"
                 class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900"
-                >เพิ่มผู้ใช้งาน</a
+                >ประวัติการ Login</a
               >
               <a
-                href="#"
+                href="/admin/solution/edit/:solutionID"
                 class="block px-4 py-2 text-sm hover:bg-gray-300 hover:text-gray-900"
                 >ดูข้อมูลผู้ใช้งาน</a
               >
@@ -181,7 +181,7 @@
             </div>
           </div>
         </div>
-        <form class="flex ml-6 mr-4">
+        <div class="flex ml-6 mr-4">
           <input
             class="border border-gray-300 bg-white h-10 px-3 pr-10 rounded-lg text-sm focus:outline-none"
             type="text"
@@ -193,7 +193,7 @@
           >
             Search
           </button>
-        </form>
+        </div>
         <form action="/logout" method="POST">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
           <button
