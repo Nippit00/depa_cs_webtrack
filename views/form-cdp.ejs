@@ -288,7 +288,7 @@
 
 
             <div class="right-content">
-                <p><strong>CDP :</strong></p>
+                <p><strong>ตัวชี้วัด :</strong></p>
                 <ul>
                     <% if (formdata && formdata.length> 0) { %>
                         <% formdata.forEach((item)=> { %>
@@ -368,7 +368,11 @@
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
                 </div>
 
-
+                <div>
+                    <label for="result">ผลลัพธ์:</label>
+                    <textarea id="result" name="result"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
+                </div>
                 <div>
                     <label for="problem_type">ประเภทปัญหา:</label>
                     <select id="problem_type" name="problem_type">
@@ -385,11 +389,7 @@
                 </div>
 
 
-                <div>
-                    <label for="result">ผลลัพธ์:</label>
-                    <textarea id="result" name="result"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
-                </div>
+               
 
 
                 <div>
