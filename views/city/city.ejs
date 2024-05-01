@@ -15,13 +15,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">  
+    <link rel="stylesheet" href="/css/styles.css">
     <!-- Add this in the head section -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Add this before closing </body> tag -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-    <title><%= pageTitle %></title>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <title>
+        <%= pageTitle %>
+    </title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
         .title-container {
@@ -71,11 +74,13 @@
         }
 
         .map-container {
-    text-align: right;
-    position: relative;
-    top: -120px; /* ปรับค่า top ตามที่ต้องการ */
-    margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
-}
+            text-align: right;
+            position: relative;
+            top: -120px;
+            /* ปรับค่า top ตามที่ต้องการ */
+            margin-bottom: 200px;
+            /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+        }
 
         .text-container b.menu-text {
             margin-bottom: 50px;
@@ -170,141 +175,172 @@
 
     <%- include('../component/navbar.ejs') %>
 
-    <div class="banner">
-        <img src="img/bbj.png" alt="Banner Image">
-    </div>
+        <div class="banner">
+            <img src="img/bbj.png" alt="Banner Image">
+        </div>
 
-    <div class="title-container text-3xl">
-        <h1>แผน <span class="citie-text">Smart City </span></h1>
-    </div>
+        <div class="title-container text-3xl">
+            <h1>แผน <span class="citie-text">Smart City </span></h1>
+        </div>
 
-    <%- include('../component/menu.ejs') %>
-    
-    <div class="content-container">
-        <div class="text-container">
-            <h4><span class="cities-text"><%= cityInfo.cityName %></span></h4>
-            <br>
-            <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.cityName %>
-            <br>
-            <br>
-            <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;"><%= cityInfo.province %></b>
-            <br>
-            <br>
-            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%= cityInfo.developer %></b>
-            <br>
-            <br>
-            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;"><%const date = new Date(cityInfo.date);
-                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().substr(-2)}`;%>
-              <%= formattedDate %></b>
-            <br>
-            <br>
-            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;"><%= cityInfo.executive %></b>
-            <br>
-            <br>
-            <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;"><%= (cityInfo.government_investment+cityInfo.private_investment).toLocaleString() %> บาท </b>
-            <br>
-            <br>
-            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;"><%= cityInfo.government_investment.toLocaleString() %> บาท </b>
-            <br>
-            <br>
-            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;"><%= cityInfo.private_investment.toLocaleString() %> บาท </b>
-            <br>
-            <br>
-            <b class="menu-text">7 smart :</b>
-            <div class="custom-rectangle">
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart Environment</h5>
-                        <img src="img/s1.png" alt="Image 1">
-                        <h5><%= smartKeyCounts.ENV %> โครงการ</h5>
-                    </div>
+        <%- include('../component/menu.ejs') %>
+
+            <div class="content-container">
+                <div class="text-container">
+                    <h4><span class="cities-text">
+                            <%= cityInfo.cityName %>
+                        </span></h4>
+                    <br>
+                    <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
+                        <%= cityInfo.cityName %>
+                            <br>
+                            <br>
+                            <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;">
+                                <%= cityInfo.province %>
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
+                                <%= cityInfo.developer %>
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
+                                <%const date=new Date(cityInfo.date); const
+                                    formattedDate=`${date.getDate().toString().padStart(2, '0' )}/${(date.getMonth() +
+                                    1).toString().padStart(2, '0' )}/${date.getFullYear().toString().substr(-2)}`;%>
+                                    <%= formattedDate %>
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;">
+                                <%= cityInfo.executive %>
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;">
+                                <%= (cityInfo.government_investment+cityInfo.private_investment).toLocaleString() %> บาท
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;">
+                                <%= cityInfo.government_investment.toLocaleString() %> บาท
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;">
+                                <%= cityInfo.private_investment.toLocaleString() %> บาท
+                            </b>
+                            <br>
+                            <br>
+                            <b class="menu-text">7 smart :</b>
+                            <div class="custom-rectangle">
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart Environment</h5>
+                                        <img src="img/s1.png" alt="Image 1">
+                                        <h5>
+                                            <%= smartKeyCounts.ENV %> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart Energy</h5>
+                                        <img src="img/se.png" alt="Image 2">
+                                        <h5>
+                                            <%= smartKeyCounts.ENE%> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart Economy</h5>
+                                        <img src="img/sec.png" alt="Image 3">
+                                        <h5>
+                                            <%= smartKeyCounts.ECO%> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart Mobility</h5>
+                                        <img src="img/sm.png" alt="Image 4">
+                                        <h5>
+                                            <%= smartKeyCounts.MOB%> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart Governance</h5>
+                                        <img src="img/sco.png" alt="Image 5">
+                                        <h5>
+                                            <%= smartKeyCounts.GOV%> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart People</h5>
+                                        <img src="img/sp.png" alt="Image 6">
+                                        <h5>
+                                            <%= smartKeyCounts.PEO%> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="image-container">
+                                        <h5>Smart Living</h5>
+                                        <img src="img/sl.png" alt="Image 7">
+                                        <h5>
+                                            <%= smartKeyCounts.LIV%> โครงการ
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
                 </div>
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart Energy</h5>
-                        <img src="img/se.png" alt="Image 2">
-                        <h5><%= smartKeyCounts.ENE%> โครงการ</h5>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart Economy</h5>
-                        <img src="img/sec.png" alt="Image 3">
-                        <h5><%= smartKeyCounts.ECO%>  โครงการ</h5>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart Mobility</h5>
-                        <img src="img/sm.png" alt="Image 4">
-                        <h5><%= smartKeyCounts.MOB%>  โครงการ</h5>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart Governance</h5>
-                        <img src="img/sco.png" alt="Image 5">
-                        <h5><%= smartKeyCounts.GOV%>  โครงการ</h5>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart People</h5>
-                        <img src="img/sp.png" alt="Image 6">
-                        <h5><%= smartKeyCounts.PEO%>  โครงการ</h5>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <div class="image-container">
-                        <h5>Smart Living</h5>
-                        <img src="img/sl.png" alt="Image 7">
-                        <h5><%= smartKeyCounts.LIV%>  โครงการ</h5>
-                    </div>
+                <div class="map-container">
+                    <iframe width="600" height="450" frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityInfo.LAT%>,<%=cityInfo.LNG%>&zoom=5"
+                        allowfullscreen>
+                    </iframe>
+
+
                 </div>
             </div>
-        </div>
-        <div class="map-container">
-            <iframe
-            width="600"
-            height="450"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityInfo.LAT%>,<%=cityInfo.LNG%>&zoom=5" allowfullscreen>
-          </iframe>
-          
+            <h6 class="ml-48 relative top-[-100px]"><span class="text-blue-500">Download</span>
+                เอกสารรายละเอียดของแผนเมือง</h6>
+            <a href="" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a>
+            <br>
+            <a href="" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
+            <br>
+            <a href=""
+                class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
+            <br>
+            <a href="" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
+            <%- include('../component/footer.ejs') %>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        Swal.fire({
+                            title: 'ยินดีต้อนรับ',
+                            text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
+                            imageUrl: "img/favi.png",
+                            imageWidth: 100,
+                            imageHeight: 100,
+                            imageAlt: "Custom image",
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
+                                popup: 'bg-[#F8F9FA] border-none shadow-none',
+                                title: 'text-[#04B2A1]',
+                                text: 'text-[#495057]',
+                                confirmButton: 'bg-green-600 text-white rounded-md'
+                            }
+                        });
+                    });
 
-        </div>
-        </div>
-        <h6 class="ml-48 relative top-[-100px]"><span class="text-blue-500">Download</span> เอกสารรายละเอียดของแผนเมือง</h6>
-    <a href="" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a>
-    <br>
-    <a href="" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
-    <br>
-    <a href="" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
-    <br>
-    <a href="" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
-    <%- include('../component/footer.ejs') %>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            Swal.fire({
-                title: 'ยินดีต้อนรับ',
-                text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
-                imageUrl: "img/favi.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                imageAlt: "Custom image",
-                confirmButtonText: 'OK',
-                customClass: {
-                    container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
-                    popup: 'bg-[#F8F9FA] border-none shadow-none',
-                    title: 'text-[#04B2A1]',
-                    text: 'text-[#495057]',
-                    confirmButton: 'bg-green-600 text-white rounded-md'
-                }
-            });
-        });
-
-    </script>
+                </script>
 </body>
 
 </html>
-
