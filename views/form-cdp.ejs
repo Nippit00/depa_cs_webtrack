@@ -288,7 +288,7 @@
 
 
             <div class="right-content">
-                <p><strong>ตัวชี้วัด :</strong></p>
+                <p><strong>CDP :</strong></p>
                 <ul>
                     <% if (formdata && formdata.length> 0) { %>
                         <% formdata.forEach((item)=> { %>
@@ -311,7 +311,7 @@
             <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
                     <label for="status">สถานะ :</label>
-                    <select id="status" name="status" required>
+                    <select id="status" name="Q1" required>
                         <option value="null" <% if (!dataOld.length || dataOld[0].Q1===null) { %>selected<% } %>>ระบุ
                                 สถานะโครงการ</option>
                         <option value="delayed" <% if (dataOld.length && dataOld[0].Q1==='delayed' ) { %>selected<% } %>
@@ -328,9 +328,8 @@
 
                 <div>
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                    <select id="progress" name="progress">
-                        <option value="null" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ %
-                                ความก้าวหน้า</option>
+                    <select id="progress" name="Q2">
+                        <option value="0" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
                         <option value="0" <% if (dataOld.length && dataOld[0].Q2===0) { %>selected<% } %>>0%</option>
                         <option value="5" <% if (dataOld.length && dataOld[0].Q2===5) { %>selected<% } %>>5%</option>
                         <option value="10" <% if (dataOld.length && dataOld[0].Q2===10) { %>selected<% } %>>10%</option>
@@ -351,31 +350,26 @@
                         <option value="85" <% if (dataOld.length && dataOld[0].Q2===85) { %>selected<% } %>>85%</option>
                         <option value="90" <% if (dataOld.length && dataOld[0].Q2===90) { %>selected<% } %>>90%</option>
                         <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
-                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%
-                        </option>
+                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%</option>
                     </select>
                 </div>
 
 
                 <div>
-                    <input type="file" id="fileUpload" name="fileUpload" accept=".pdf, .doc, .docx">
+                    <input type="file" id="fileUpload" name="Q3" accept=".pdf, .doc, .docx">
                 </div>
 
 
                 <div>
                     <label for="operation">ผลการดำเนินงาน:</label>
-                    <textarea id="operation" name="operation"
+                    <textarea id="operation" name="Q4"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
                 </div>
 
-                <div>
-                    <label for="result">ผลลัพธ์:</label>
-                    <textarea id="result" name="result"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
-                </div>
+
                 <div>
                     <label for="problem_type">ประเภทปัญหา:</label>
-                    <select id="problem_type" name="problem_type">
+                    <select id="problem_type" name="Q5">
                         <option value="null" <% if (!dataOld.length || dataOld[0].Q5===null) { %>selected<% } %>>ระบุ
                                 ประเภทปัญหา</option>
                         <option value="technical" <% if (dataOld.length && dataOld[0].Q5==='technical' ) { %>selected<%
@@ -389,28 +383,50 @@
                 </div>
 
 
-               
+                <div>
+                    <label for="result">ผลลัพธ์:</label>
+                    <textarea id="result" name="Q6"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
+                </div>
 
 
                 <div>
                     <label for="problem">ปัญหา/อุปสรรค:</label>
-                    <textarea id="problem" name="problem"
+                    <textarea id="problem" name="Q7"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
                 </div>
 
 
                 <div>
                     <label for="solution">แนวทางแก้ไข:</label>
-                    <textarea id="solution" name="solution"
+                    <textarea id="solution" name="Q8"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q8 %><% } %></textarea>
                 </div>
 
 
                 <div>
                     <label for="note">หมายเหตุ:</label>
-                    <textarea id="note" name="note"
+                    <textarea id="note" name="Q9"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
                 </div>
+                <div class="display-none">
+                    <label for="note">Q10:</label>
+                    <textarea id="note" name="Q10"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q10 %><% } %></textarea>
+                </div>
+                <% question.forEach(item => { %>
+                    <% if (item.status == 1) { %>
+                        <div class="display-none">
+                            <label for="Q<%= item.questionID %>"><%= item.question %>:</label>
+                            <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
+                            
+                                   </div>
+                    <% } else { %>
+                       
+                    <% } %>
+                <% }); %>
+                
+                
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
@@ -457,21 +473,8 @@
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
                
-                    swal.fire({
-                        title: 'คุณแน่ใจไหม?',
-                        text: 'เมื่อส่งแล้ว คุณจะไม่สามารถยกเลิกการดำเนินการนี้ได้!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'ยืนยัน',
-                        cancelButtonText: 'ยกเลิก',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            reportForm.action = "/submitformcdp/<%=formdata[0].solutionID%>";
-                            reportForm.submit();
-                        }
-                    });
+                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
+                    reportForm.submit();
                 });
                
 
