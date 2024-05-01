@@ -3,6 +3,7 @@
 // **************
 const db = require("../db.js");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 exports.getAdPage = (req, res, next) => {
   res.render("admin/ad-main", {
     pageTitle: "Main",
@@ -10,10 +11,44 @@ exports.getAdPage = (req, res, next) => {
   });
 };
 
-exports.getAddUserPage = (req, res, next) => {
-  res.render("admin/ad-city/ad-addUser", {
-    pageTitle: "add",
-    path: "/",
+exports.testnoti = (req, res, next) => {
+  // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
+  const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
+
+  // ส่วนของข้อความที่ต้องการส่ง
+  const message = "หิวบุฟเฟ่เนื้อย่างข้างล่าง";
+
+  // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
+  const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
+
+  // ส่งข้อความผ่าน Line Notify API
+  axios
+    .post(LINE_NOTIFY_API_URL, `message=${message}`, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
+      },
+    })
+    .then((response) => {
+      console.log("Notification sent:", response.data);
+      res.status(200).json({ message: "Notification sent successfully" });
+    })
+    .catch((error) => {
+      console.error("Error sending notification:", error);
+      res.status(500).json({ error: "Failed to send notification" });
+    });
+};
+
+exports.getHistoryPage = (req, res, next) => {
+  q = "SELECT * FROM `Login_log` WHERE 1";
+  db.query(q, (err, data) => {
+    if (err) return res.status(500).json(err);
+    console.log(data);
+    res.render("admin/ad-city/ad-History", {
+      pageTitle: "History",
+      path: "/",
+      data: data,
+    });
   });
 };
 //get city ad-city
@@ -153,22 +188,21 @@ exports.postAddCity = (req, res, next) => {
   });
 };
 
-
-exports.getEditProvince=(req,res,next)=> {
+exports.getEditProvince = (req, res, next) => {
   console.log(req.params);
-  const q ="SELECT citydata.cityID, citydata.province, citydata.date, citydata.developer, citydata.executive, citydata.government_investment, citydata.private_investment, citydata.LAT, citydata.LNG FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
-    try {
+  const q =
+    "SELECT citydata.cityID, citydata.province, citydata.date, citydata.developer, citydata.executive, citydata.government_investment, citydata.private_investment, citydata.LAT, citydata.LNG FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+  try {
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
       console.log("Data is:", data);
-        res.render("admin/ad-city/ad-editCity", {
-          req,
-          pageTitle: "Dashboard",
-          path: "/city",
-          cityData: data[0],
-          success: false
-        });
-      
+      res.render("admin/ad-city/ad-editCity", {
+        req,
+        pageTitle: "Dashboard",
+        path: "/city",
+        cityData: data[0],
+        success: false,
+      });
     });
   } catch (err) {
     console.log(err);
@@ -181,71 +215,196 @@ exports.postUpdateProvince = (req, res, next) => {
   delete newData._csrf;
   // SQL query for updating data
   const query = "UPDATE citydata SET ? WHERE cityID = ?";
-  
+
   // Execute the query
   db.query(query, [newData, cityID], (err, result) => {
-      if (err) {
-          console.error("Error updating data:", err);
-          return res.status(500).json({ error: "An error occurred while updating data" });
-      }
-      console.log("Data updated successfully");
-      //fix later
-      exports.getAdCityDataP(req, res, next);
+    if (err) {
+      console.error("Error updating data:", err);
+      return res
+        .status(500)
+        .json({ error: "An error occurred while updating data" });
+    }
+    console.log("Data updated successfully");
+    //fix later
+    exports.getAdCityDataP(req, res, next);
   });
 };
 
-exports.getAddSolutionPage=(req,res,next)=>{
-  console.log(req.params)
+exports.getAddSolutionPage = (req, res, next) => {
+  console.log(req.params);
   res.render("admin/ad-city/ad-addsolution", {
     pageTitle: "add",
     path: "/",
     success: true,
-    cityID:req.params.cityID,
+    cityID: req.params.cityID,
   });
-}
+};
 
 exports.postAddSolution = (req, res, next) => {
-  const { cityID, solutionID,solutionName, smart, sourceFunds, funds, startYear, endYear, status } = req.body;
-  
+  const {
+    cityID,
+    solutionID,
+    solutionName,
+    smart,
+    sourceFunds,
+    funds,
+    startYear,
+    endYear,
+    status,
+  } = req.body;
+
   let smartKey;
   switch (smart) {
-      case 'Environment':
-          smartKey = 'ENV'; // สมมติว่า 'ENV' คือค่าที่สมบูรณ์กับ 'Environment'
-          break;
-      case 'Energy':
-          smartKey = 'ENE';
-          break;
-      case 'Economy':
-          smartKey = 'ECO';
-          break;
-      case 'Governance':
-          smartKey = 'GOV';
-          break;
-      case 'Living':
-          smartKey = 'LIV';
-          break;
-      case 'Mobility':
-          smartKey = 'MOB';
-          break;
-      case 'People':
-          smartKey = 'PEO';
-          break;
-      default:
-          smartKey = 'OTH'; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
-          break;
+    case "Environment":
+      smartKey = "ENV"; // สมมติว่า 'ENV' คือค่าที่สมบูรณ์กับ 'Environment'
+      break;
+    case "Energy":
+      smartKey = "ENE";
+      break;
+    case "Economy":
+      smartKey = "ECO";
+      break;
+    case "Governance":
+      smartKey = "GOV";
+      break;
+    case "Living":
+      smartKey = "LIV";
+      break;
+    case "Mobility":
+      smartKey = "MOB";
+      break;
+    case "People":
+      smartKey = "PEO";
+      break;
+    default:
+      smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
+      break;
   }
-  const q="INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-  db.query(q,[cityID, smartKey, solutionID, solutionName, sourceFunds, funds, startYear, endYear, status],
+  const q =
+    "INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  db.query(
+    q,
+    [
+      cityID,
+      smartKey,
+      solutionID,
+      solutionName,
+      sourceFunds,
+      funds,
+      startYear,
+      endYear,
+      status,
+    ],
     (err, result) => {
-        if (err) {
-            console.error("Error adding solution:", err);
-            res.status(500).json({ error: "Error adding solution" });
-        } else {
-            console.log("Solution added successfully");
-            res.status(200).json({ message: "Solution added successfully" });
-        }
+      if (err) {
+        console.error("Error adding solution:", err);
+        res.status(500).json({ error: "Error adding solution" });
+      } else {
+        console.log("Solution added successfully");
+        res.status(200).json({ message: "Solution added successfully" });
+      }
     }
-);
+  );
+};
 
-  
+exports.getEditSolution = (req, res, next) => {
+  console.log(req.params);
+  const q = "SELECT * FROM `solution` WHERE solutionID=?";
+  try {
+    db.query(q, ["6207ENV01"], (err, data) => {
+      if (err) return res.status(500).json(err);
+      console.log("Data is:", data);
+      res.render("admin/ad-city/ad-editSolution", {
+        req,
+        pageTitle: "Edit_Solution",
+        path: "/Edit_Solution",
+        cityData: data[0],
+        success: false,
+      });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+exports.getQuestion = (req, res, next) => {
+  const q = "SELECT * FROM `question` WHERE status=1";
+  try {
+    db.query(q, (err, data) => {
+      if (err) return res.status(500).json(err);
+      // console.log("data:", data);
+      res.render("admin/ad-question/ad-question.ejs", {
+        req,
+        pageTitle: "Question",
+        path: "/Question",
+        data: data,
+        success: false,
+      });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+exports.getAddQuestion = (req, res, next) => {
+  const q = "INSERT INTO `question`(`question`,`status`) VALUES (?,1)";
+  const newQuestion = req.body.New_Question;
+
+  try {
+    db.query(q, [newQuestion], (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json(err);
+      }
+
+      const insertId = result.insertId;
+      const alterQuery = `ALTER TABLE \`anssolution\` ADD \`Q${insertId}\` TEXT NULL AFTER \`Q${
+        insertId - 1
+      }\``;
+
+      db.query(alterQuery, (alterErr) => {
+        if (alterErr) {
+          console.error(alterErr);
+          return res.status(500).json(alterErr);
+        }
+        const q1 = "SELECT * FROM `question` WHERE 1";
+        db.query(q1, (err, data) => {
+          if (err) return res.status(500).json(err);
+          res.render("admin/ad-question/ad-question.ejs", {
+            req,
+            pageTitle: "Question",
+            path: "/Question",
+            data: data,
+            success: true,
+          });
+        });
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+};
+exports.postDeleteQuestion = (req, res, next) => {
+  q = "UPDATE `question` SET `status`=0 WHERE questionID=?";
+  db.query(q, [req.params.QID], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json(err);
+    }
+    const q = "SELECT * FROM `question` WHERE status=1";
+    db.query(q, (err, data) => {
+      if (err) return res.status(500).json(err);
+      console.log("data:", data);
+      res.render("admin/ad-question/ad-question.ejs", {
+        req,
+        pageTitle: "Question",
+        path: "/Question",
+        data: data,
+        success: false,
+      });
+    });
+  });
 };

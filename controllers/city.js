@@ -92,3 +92,17 @@ exports.getCityUpload = (req, res, next) => {
     path: "/city",
   });
 };
+
+exports.getHistory=(req,res,next)=>{
+  q = "SELECT * FROM `Login_log` WHERE cityID = ?";
+  // console.log(req.session.cityID)
+  db.query(q,[req.session.userID], (err, data) => {
+    if (err) return res.status(500).json(err);
+    console.log(data)
+    res.render("city/history-log", {
+      pageTitle: "History",
+      path: "/",
+      data:data,
+    });
+  });
+}

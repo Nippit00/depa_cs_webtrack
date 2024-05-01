@@ -12,7 +12,7 @@ const router = express.Router();
 // **************************
 router.get('/', isAdmin, adminController.getAdPage);
 
-router.get('/adduser', isAdmin, adminController.getAddUserPage);
+router.get('/history', isAdmin, adminController.getHistoryPage);
 // **************************
 // ***     City Page     ***
 // **************************
@@ -24,4 +24,9 @@ router.get('/addCity',isAdmin,adminController.getAddCity)
 router.post('/postAddCity',isAdmin,adminController.postAddCity)
 router.get('/solution/add/:cityID', isAdmin, adminController.getAddSolutionPage);
 router.post('/addSolution',isAdmin,adminController.postAddSolution)
+router.get('/test', isAdmin, adminController.testnoti);
+router.get('/solution/edit/:solutionID', isAdmin, adminController.getEditSolution);
+router.get('/question', isAdmin, adminController.getQuestion);
+router.get('/question/:QID', isAdmin, adminController.postDeleteQuestion);
+router.post('/addQuestion', isAdmin, adminController.getAddQuestion);
 module.exports = router;
