@@ -472,8 +472,8 @@
                 //action form button reportForm
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
-               
-                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
+                
+                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>"; 
                     reportForm.submit();
                 });
                

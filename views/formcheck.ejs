@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>form</title>
+    <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .head {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .custom-container,
+        .custom-container-1 {
+            display: flex;
+            justify-content: space-between;
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 50px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background-color: #FFF0C4;
+        }
+
+        .custom-container-1>div {
+            width: 48%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .left-content,
+        .right-content {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-left: 50px;
+        }
+
+        form {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            width: 100%;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        select,
+        textarea,
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 2px solid #C2AF76;
+            border-radius: 4px;
+            resize: vertical;
+            border-radius: 15px;
+            background-color: #fffbf0;
+        }
+
+        input {
+            width: 50%;
+            position: relative;
+            left: 75%;
+            transform: translateX(-50%);
+        }
+
+        button {
+            background-color: #C2AF76;
+            color: white;
+            padding: 10px 15px;
+            border: 2px solid #C2AF76;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+
+        button:last-child {
+            margin-left: 0;
+        }
+
+        button:hover {
+            background-color: #C2AF76;
+            border-radius: 50px;
+        }
+
+        #fileUpload {
+            display: none;
+        }
+
+        .button-container {
+            text-align: right;
+            margin-top: 20px;
+            /* Adjust margin as needed */
+
+        }
+
+        /* Style for the buttons */
+        .button-container button {
+            margin-left: 10px;
+            /* Adjust margin between buttons */
+        }
+
+        .left-content p {
+            margin-bottom: 20px;
+
+            .custom-container .left-content p {
+                display: inline;
+                margin: 0;
+                /* ลบ margin ที่ถูกกำหนดเอาไว้ */
+            }
+        }
+        .highlight {
+        color: #666; /* Dark gray color */
+    }
+    </style>
+
+</head>
+
+<body>
+
+    <%- include('component/navbar.ejs') %>
+
+        <div class="head">
+            <h5>
+                <%= data.cityName %>
+            </h5>
+        </div>
+
+        <div class="head">
+            <h6>
+                <%= data.solutionName %>
+            </h6>
+        </div>
+
+        <div class="custom-container">
+            <div class="left-content">
+                <!-- เนื้อหาฝั่งซ้าย -->
+                <p>ชื่อโครงการ :
+                <span class="highlight">
+                        <%= data.solutionName %>
+                    </span></p>
+
+                <p>รหัสโครงการ : <span class="highlight">
+                        <%= data.solutionID %>
+                    </span></p>
+
+                <p>Smart : <span class="highlight">
+                        <%= data.smartKey %>
+                    </span></p>
+
+                <p>แหล่งเงินทุน : <span class="highlight">
+                        <%= data.Source_funds %>
+                    </span></p>
+
+                <p>เงินทุน (บาท) : <span class="highlight">
+                        <%= data.funds %>
+                    </span>บาท</p>
+
+                <br>
+                <br>
+
+                <p>สถานะ : <span class="highlight">
+                        <%= dataCheck.status %>
+                    </span></p>
+
+                <p>ความก้าวหน้าโครงการ : <span class="highlight">
+                        <%= dataCheck.progress %>
+                    </span></p>
+
+                <p>ไฟล์อัปโหลด : <span class="highlight">
+                        <%= dataCheck.fileUpload %>
+                    </span></p>
+
+                <p>ผลการดำเนินงาน: <span class="highlight">
+                        <%= dataCheck.operation %>
+                    </span></p>
+
+                <p>ประเภทปัญหา: <span class="highlight">
+                        <%= dataCheck.problem_type %>
+                    </span></p>
+
+                <p>ผลลัพธ์: <span class="highlight">
+                        <%= dataCheck.result %>
+                    </span></p>
+
+                <p>ปัญหา/อุปสรรค: <span class="highlight">
+                        <%= dataCheck.problem %>
+                    </span></p>
+
+                <p>แนวทางแก้ไข: <span class="highlight">
+                        <%= dataCheck.solution %>
+                    </span></p>
+
+                <p>หมายเหตุ: <span class="highlight">
+                        <%= dataCheck.note %>
+                    </span></p>
+                <div class="button-container">
+                    <button type="submit" id="confirmBtn">ยืนยัน</button>
+                    <button type="button" id="cancelBtn">ยกเลิก</button>
+                </div>
+
+            </div>
+            <div class="right-content">
+                <!-- เนื้อหาฝั่งขวา -->
+                <p>ตัวชี้วัด ที่ได้รับอนุมติ : </p>
+            </div>
+
+        </div>
+
+
+        <script>
+            const cancelBtn = document.getElementById('cancelBtn');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const currentDateTime = new Date().toLocaleString('th-TH', {
+                    timeZone: 'Asia/Bangkok',
+                    hour12: false,
+                });
+
+            // send data to backend
+            confirmBtn.addEventListener('click', async () => {
+                try {
+                    // Get the value of data.Q1 (assuming it's a string)
+                    const q1Value = '<%= dataCheck.status %>';
+                    const q2Value = '<%= dataCheck.progress %>';
+                    const q4Value = '<%= dataCheck.operation %>';
+                    const q5Value = '<%= dataCheck.problem_type %>';
+                    const q6Value = '<%= dataCheck.result %>';
+                    const q7Value = '<%= dataCheck.problem %>';
+                    const q8Value = '<%= dataCheck.solution %>';
+                    const q9Value = '<%= dataCheck.note %>';
+                    const csrfToken = '<%= csrfToken %>';
+
+                    // Make a POST request to the /formcheck endpoint with data.Q1
+                    const response = await fetch('/comfirmformcheck/<%= data.solutionID %>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({
+                            Q1: q1Value,
+                            Q2: q2Value,
+                            Q4: q4Value,
+                            Q5: q5Value,
+                            Q6: q6Value,
+                            Q7: q7Value,
+                            Q8: q8Value,
+                            Q9: q9Value,
+                            currentDateTime:currentDateTime
+                        })
+                    });
+                    if (response.ok) {
+                        console.log('Data sent successfully!');
+                    } else {
+                        console.error('Failed to send data.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        </script>
+
+        <%- include('component/footer.ejs') %>
+
+</body>
+
+</html>

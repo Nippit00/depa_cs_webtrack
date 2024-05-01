@@ -375,42 +375,197 @@
     
     
 
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['ต.1', 'ต.2', 'ต.3', 'ต.4'], // ตัวอย่าง label
-                datasets: [{
-                    label: 'จำนวนประชากร',
-                    data: [150, 200, 120, 180], // ตัวอย่างข้อมูล
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // สีพื้นหลัง
-                    borderColor: 'rgba(75, 192, 192, 1)', // สีขอบ
-                    borderWidth: 1 // ความหนาขอบ
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+   <script>
+    function countSmartKeys(solutionInfo) {
+        const counts = {};
+        const statusCounts = {}; // เพิ่ม object เก็บจำนวนของ data.status เท่ากับ 2 สำหรับแต่ละ smartKey
+        solutionInfo.forEach(data => {
+            if (counts[data.smartKey]) {
+                counts[data.smartKey]++;
+            } else {
+                counts[data.smartKey] = 1;
+            }
+            // เพิ่มตรวจสอบ data.status เท่ากับ 2 และเพิ่มจำนวนใน statusCounts
+            if (data.status === 2) {
+                if (statusCounts[data.smartKey]) {
+                    statusCounts[data.smartKey]++;
+                } else {
+                    statusCounts[data.smartKey] = 1;
                 }
             }
         });
-
-        function openTab(tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+    
+        // แปลงจำนวนของ status เป็นเปอร์เซ็นต์ แล้วใส่ใน counts
+        for (const key in counts) {
+            if (statusCounts[key]) {
+                counts[key] = (statusCounts[key] / counts[key]) * 100;
+            } else {
+                counts[key] = 0; // ถ้าไม่มี data.status เท่ากับ 2 ให้เป็น 0 เปอร์เซ็นต์
             }
-            tablinks = document.getElementsByClassName("tablink");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("active");
-            }
-            document.getElementById(tabName).style.display = "block";
-            event.currentTarget.classList.add("active");
         }
+        return counts;
+    }
+    
+ 
+    function show(index){
+        const bodyTable = document.getElementById('body-table');
+        let html = '';
+        const solutionInfo = JSON.parse('<%- JSON.stringify(solutionInfo) %>');
+ 
+        const counts = countSmartKeys(solutionInfo);
+ 
+        switch (index) {
+            case 1:
+                // Example case, adapt as needed
+                break;
+            case 2:
+                bodyTable.innerHTML = '';
+                
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'ENV'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                        
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 3:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'ENE'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['ENE'] !== undefined ? counts['ENE'].toFixed(2) : '-'}%</td>
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['ENE'] !== undefined ? counts['ENE'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 4:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'ECO'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['ECO'] !== undefined ? counts['ECO'].toFixed(2) : '-'}%</td> 
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['ECO'] !== undefined ? counts['ECO'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 4:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'MOB'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['MOB'] !== undefined ? counts['MOB'].toFixed(2) : '-'}%</td>
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['MOB'] !== undefined ? counts['MOB'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 5:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'GOV'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['GOV'] !== undefined ? counts['GOV'].toFixed(2) : '-'}%</td> 
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['GOV'] !== undefined ? counts['GOV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 6:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'PEO'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['PEO'] !== undefined ? counts['PEO'].toFixed(2) : '-'}%</td>
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['PEO'] !== undefined ? counts['PEO'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 7:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'LIV'){
+                        html += `
+                        <tr>
+                            <td>${data.solutionName}</td>
+                            <td>${counts['LIV'] !== undefined ? counts['LIV'].toFixed(2) : '-'}%</td> 
+                            <td>-</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td></td>
+                    <td>${counts['LIV'] !== undefined ? counts['LIV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+            // Repeat for other cases and smartKeys
+            default:
+                // Handle default case
+                break;
+        }
+    }
     </script>
 
 
