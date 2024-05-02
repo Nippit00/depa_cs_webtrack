@@ -24,7 +24,7 @@ router.get('/addCity',isAdmin,adminController.getAddCity)
 router.post('/postAddCity',isAdmin,adminController.postAddCity)
 router.get('/solution/add/:cityID', isAdmin, adminController.getAddSolutionPage);
 router.post('/addSolution',isAdmin,adminController.postAddSolution)
-router.get('/test', isAdmin, adminController.testnoti);
+router.get('/notification/:CityID', isAdmin, adminController.notification);
 router.get('/solution/edit/:solutionID', isAdmin, adminController.getEditSolution);
 router.get('/question', isAdmin, adminController.getQuestion);
 router.get('/question/:QID', isAdmin, adminController.postDeleteQuestion);
