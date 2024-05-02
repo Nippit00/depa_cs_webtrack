@@ -408,11 +408,6 @@
                     <textarea id="note" name="Q9"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
                 </div>
-                <div class="display-none">
-                    <label for="note">Q10:</label>
-                    <textarea id="note" name="Q10"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q10 %><% } %></textarea>
-                </div>
                 <% question.forEach(item => { %>
                     <% if (item.status == 1) { %>
                         <div class="display-none">
