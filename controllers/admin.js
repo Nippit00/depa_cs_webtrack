@@ -382,7 +382,7 @@ exports.getAddQuestion = (req, res, next) => {
           console.error(alterErr);
           return res.status(500).json(alterErr);
         }
-        const q1 = "SELECT * FROM `question` WHERE 1";
+        const q1 = "SELECT * FROM `question` WHERE status=1";
         db.query(q1, (err, data) => {
           if (err) return res.status(500).json(err);
           res.render("admin/ad-question/ad-question.ejs", {
