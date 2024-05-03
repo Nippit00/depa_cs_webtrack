@@ -17,4 +17,5 @@ router.get('/formcdp/:solutionID',isAuth,formController.getformCdp);
 
 //send data form to backebd
 router.post('/sendformcdp/:solutionID',isAuth,formController.postFormCdp);
+router.get('/formcdp2',isAuth,formController.getformCdp2);
 module.exports = router;
