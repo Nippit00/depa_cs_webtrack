@@ -13,10 +13,10 @@ exports.getAdPage = (req, res, next) => {
 
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
-  const CityID = req.params.CityID;
-  // const CityID=456
+  // const CityID = req.params.CityID;
+  const CityID='6201ECO01'
 
-  const q = "SELECT`province` FROM `citydata` WHERE cityID=?";
+  const q = "SELECT citydata.province,solution.solutionName FROM `solution` JOIN citydata ON solution.cityID=citydata.cityID WHERE solution.solutionID=?";
   try{
   db.query(q, [CityID], (err, data) => {
     console.log(data)
@@ -24,7 +24,7 @@ exports.notification = (req, res, next) => {
     const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
 
     // ส่วนของข้อความที่ต้องการส่ง
-    const message = "เมือง" + data[0].province + "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
+    const message = "จังหวัด" + data[0].province +data[0].solutionName +  "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
 
     // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
     const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
@@ -97,7 +97,7 @@ exports.getAdCityDataP = (req, res, next) => {
       console.log("Data is:", data);
       db.query(q2, [req.params.cityID], (errer, solution) => {
         if (err) return res.status(500).json(errer);
-        // console.log("solution is:",solution)
+        console.log("solution is:",solution)
         res.render("admin/ad-city/ad-citydata", {
           req,
           pageTitle: "Dashboard",
