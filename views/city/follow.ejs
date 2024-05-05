@@ -22,7 +22,7 @@
         }
 
         .collapsible {
-            background-color: #FEDC7A;
+            background-color: #dcb432;
             color: white;
             cursor: pointer;
             padding: 18px;
@@ -32,7 +32,7 @@
             font-size: 16px;
             border-radius: 20px;
             margin-bottom: 10px;
-            color: #424242;
+            color: white;
         }
 
         .collapsible:hover {
@@ -60,7 +60,7 @@
             border-radius: 20px;
             /* เพิ่ม overflow: hidden เพื่อป้องกัน input ทับข้อมูลตาราง */
             margin-bottom: 50px;
-            background-color: #FEDC7A;
+            background-color: #dcb432;
         }
 
         table {
@@ -77,7 +77,7 @@
         }
 
         th {
-            background-color: #AABA73;
+            background-color: #00B2A9;
             color: white;
             border-radius: 0px;
             font-size: 14px;
@@ -99,6 +99,22 @@
       span.disabled-link {
         color: #999;
         cursor: not-allowed;
+      }
+      .button-container {
+        margin-bottom: 10px; /* ระยะห่างด้านล่างของปุ่ม */
+      }
+      
+      .report-button {
+        padding: 5px 10px; /* กำหนดขนาดของปุ่ม */
+        background-color: #00B2A9; /* สีพื้นหลังของปุ่ม */
+        color: #fff; /* สีข้อความภายในปุ่ม */
+        border: none; /* ลบเส้นขอบของปุ่ม */
+        border-radius: 5px; /* ทำให้มีมุมโค้งที่ปลายของปุ่ม */
+        cursor: pointer; /* ทำให้เมาส์เป็นรูปขีดตอนชี้ที่ปุ่ม */
+      }
+      
+      .report-button:hover {
+        background-color: #0056b3; /* สีพื้นหลังของปุ่มเมื่อเมาส์ชี้ที่ปุ่ม */
       }
       
     </style>
@@ -148,7 +164,7 @@
     <br>
 
     <div class="table-container">
-        <button class="collapsible"><%=followdata[0].cityName%></button>
+        <button class="collapsible" style="text-align: center;"><%=followdata[0].cityName%></button>
         <div class="content">
           <div id="accordion">
             <div class="card">
@@ -249,15 +265,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const envcountProject = countEcoSolutions("ENV") %>
                           <%=envcountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const envcount = countEcoSolutions("ENV") %>
                           <% const envcountSuccess = countComplete("ENV") %>
                           complete <%=envcountSuccess%>/<%=envcount%></th>
                       </tr>
                       <tr>
-                        <td>Smart Environment</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'ENV') { %>
@@ -276,6 +292,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'ENV') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a> 
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'ENV') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>
@@ -315,15 +349,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const enecountProject = countEcoSolutions("ENE") %>
                           <%=enecountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const enecount = countEcoSolutions("ENE") %>
                           <% const enecountSuccess = countComplete("ENE") %>
                           complete <%=enecountSuccess%>/<%=enecount%></th>
                       </tr>
                       <tr>
-                        <td>Smart Energy</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'ENE') { %>
@@ -342,6 +376,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'ENE') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'ENE') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>
@@ -380,15 +432,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const ecocountProject = countEcoSolutions("ECO") %>
                           <%=ecocountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const ecocount = countEcoSolutions("ECO") %>
                           <% const ecocountSuccess = countComplete("ECO") %>
                           complete <%=ecocountSuccess%>/<%=ecocount%></th>
                       </tr>
                       <tr>
-                        <td>Smart Economy</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'ECO') { %>
@@ -407,6 +459,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'ECO') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a> 
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'ECO') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a> 
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>
@@ -445,15 +515,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const mobcountProject = countEcoSolutions("MOB") %>
                           <%=mobcountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const mobcount = countEcoSolutions("MOB") %>
                           <% const mobcountSuccess = countComplete("MOB") %>
                           complete <%=mobcountSuccess%>/<%=mobcount%></th>
                       </tr>
                       <tr>
-                        <td>Smart Mobility</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'MOB') { %>
@@ -472,6 +542,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'MOB') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'MOB') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a> 
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>
@@ -510,15 +598,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const govcountProject = countEcoSolutions("GOV") %>
                           <%=govcountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const govcount = countEcoSolutions("GOV") %>
                           <% const govcountSuccess = countComplete("GOV") %>
                           complete <%=govcountSuccess%>/<%=govcount%></th>
                       </tr>
                       <tr>
-                        <td>Smart Governance</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'GOV') { %>
@@ -537,6 +625,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'GOV') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'GOV') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>
@@ -575,15 +681,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const peocountProject = countEcoSolutions("PEO") %>
                           <%=peocountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const peocount = countEcoSolutions("PEO") %>
                           <% const peocountSuccess = countComplete("PEO") %>
                           complete <%=peocountSuccess%>/<%=peocount%></th>
                       </tr>
                       <tr>
-                        <td>Smart People</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'PEO') { %>
@@ -602,6 +708,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'PEO') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'PEO') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>
@@ -640,15 +764,15 @@
                   <table class="table">
                     <table>
                       <tr>
-                        <th>โครงสร้าง / Smart</th>
                         <th><% const livcountProject = countEcoSolutions("LIV") %>
                           <%=livcountProject%> โครงการ</th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
                         <th><% const livcount = countEcoSolutions("LIV") %>
                           <% const livcountSuccess = countComplete("LIV") %>
                           complete <%=livcountSuccess%>/<%=livcount%></th>
                       </tr>
                       <tr>
-                        <td>Smart Living</td>
                         <td><% followdata.forEach((item) => { %>
                             <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
                             <% if (item.smartKey === 'LIV') { %>
@@ -667,6 +791,24 @@
                             <% } %>
                         <% }); %>
                         <!-- สิ้นสุดการวนลูป -->
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'LIV') { %>
+                          <div class="button-container">
+                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
+                    </td>
+                    <td>
+                      <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === 'LIV') { %>
+                          <div class="button-container">
+                            <a href=""><button class="report-button">รายงาน</button></a>
+                          </div>
+                        <% } %>
+                    <% }); %>
                     </td>
                         <td>
                           <% followdata.forEach((item) => { %>

@@ -258,6 +258,23 @@
         const bodyTable = document.getElementById('body-table');
         let html = '';
         const solutionInfo = JSON.parse('<%- JSON.stringify(solutionInfo) %>');
+        const valueInfo = JSON.parse('<%- JSON.stringify(valueInfo) %>');
+
+        const calculateAverageQ2 = (smartKey) => {
+            const projectCount = valueInfo.filter(data => data.smartKey === smartKey).length;
+            const sum = valueInfo.reduce((acc, data) => {
+                if (data.smartKey === smartKey) {
+                    return acc + parseFloat(data.Q2);
+                }
+                return acc;
+            }, 0);
+            return projectCount > 0 ? sum / projectCount : 0;
+        };
+
+        const getQ2Value = (project, smartKey) => {
+            const projectInfo = valueInfo.find(data => data.smartKey === smartKey && project.solutionName === data.solutionName);
+            return projectInfo ? projectInfo.Q2 : 0;
+        };
  
         const counts = countSmartKeys(solutionInfo);
  
@@ -267,43 +284,44 @@
                 break;
             case 2:
                 bodyTable.innerHTML = '';
-                
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'ENV'){
+                        const statusPercentageEnv = data.status === 2 ? '100%' : '0%';
                         html += `
                         <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
-                            <td>-</td>
-                            <td>%</td>
+                            <td style="padding: 20px;" >${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageEnv}</td>
+                            <td style="padding: 20px;">${getQ2Value(data, 'ENV')}%</td>
+                            <td></td>
                         </tr>`;
                         
                     }
                 });
-                html += `<tr>
+                html += `<tr >
+                    <td>รวม</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('ENV').toFixed(2)}%</td>
                     <td></td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
                 </tr>`;
                 break;
                 case 3:
                 bodyTable.innerHTML = '';
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'ENE'){
+                        const statusPercentageEne = data.status === 2 ? '100%' : '0%';
                         html += `
                         <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['ENE'] !== undefined ? counts['ENE'].toFixed(2) : '-'}%</td>
-                            <td>-</td>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageEne}</td>
+                            <td>${getQ2Value(data, 'ENE')}%</td>
                             <td>%</td>
                         </tr>`;
                     }
                 });
                 html += `<tr>
-                    <td></td>
+                    <td>รวม</td>
                     <td>${counts['ENE'] !== undefined ? counts['ENE'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('ENE').toFixed(2)}%</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
                 </tr>`;
                 break;
@@ -311,99 +329,104 @@
                 bodyTable.innerHTML = '';
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'ECO'){
+                        const statusPercentageEco = data.status === 2 ? '100%' : '0%';
                         html += `
                         <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['ECO'] !== undefined ? counts['ECO'].toFixed(2) : '-'}%</td> 
-                            <td>-</td>
-                            <td>%</td>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageEco}</td> 
+                            <td>${getQ2Value(data, 'ECO')}%</td>
+                            <td></td>
                         </tr>`;
                     }
                 });
                 html += `<tr>
-                    <td></td>
+                    <td>รวม</td>
                     <td>${counts['ECO'] !== undefined ? counts['ECO'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
-                </tr>`;
-                break;
-                case 4:
-                bodyTable.innerHTML = '';
-                solutionInfo.forEach(data => {
-                    if(data.smartKey === 'MOB'){
-                        html += `
-                        <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['MOB'] !== undefined ? counts['MOB'].toFixed(2) : '-'}%</td>
-                            <td>-</td>
-                            <td>%</td>
-                        </tr>`;
-                    }
-                });
-                html += `<tr>
-                    <td></td>
-                    <td>${counts['MOB'] !== undefined ? counts['MOB'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('ECO').toFixed(2)}%</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
                 </tr>`;
                 break;
                 case 5:
                 bodyTable.innerHTML = '';
                 solutionInfo.forEach(data => {
-                    if(data.smartKey === 'GOV'){
+                    if(data.smartKey === 'MOB'){
+                        const statusPercentageMob = data.status === 2 ? '100%' : '0%';
                         html += `
                         <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['GOV'] !== undefined ? counts['GOV'].toFixed(2) : '-'}%</td> 
-                            <td>-</td>
-                            <td>%</td>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageMob}</td>
+                            <td>${getQ2Value(data, 'MOB')}%</td>
+                            <td></td>
                         </tr>`;
                     }
                 });
                 html += `<tr>
-                    <td></td>
-                    <td>${counts['GOV'] !== undefined ? counts['GOV'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>รวม</td>
+                    <td>${counts['MOB'] !== undefined ? counts['MOB'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('MOB').toFixed(2)}%</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
                 </tr>`;
                 break;
                 case 6:
                 bodyTable.innerHTML = '';
                 solutionInfo.forEach(data => {
-                    if(data.smartKey === 'PEO'){
+                    if(data.smartKey === 'GOV'){
+                        const statusPercentageGov = data.status === 2 ? '100%' : '0%';
                         html += `
                         <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['PEO'] !== undefined ? counts['PEO'].toFixed(2) : '-'}%</td>
-                            <td>-</td>
-                            <td>%</td>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageGov}%</td> 
+                            <td>${getQ2Value(data, 'GOV')}%</td>
+                            <td></td>
                         </tr>`;
                     }
                 });
                 html += `<tr>
-                    <td></td>
-                    <td>${counts['PEO'] !== undefined ? counts['PEO'].toFixed(2) : '-'}%</td>
-                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>รวม</td>
+                    <td>${counts['GOV'] !== undefined ? counts['GOV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('GOV').toFixed(2)}%</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
                 </tr>`;
                 break;
                 case 7:
                 bodyTable.innerHTML = '';
                 solutionInfo.forEach(data => {
-                    if(data.smartKey === 'LIV'){
+                    if(data.smartKey === 'PEO'){
+                        const statusPercentagePeo = data.status === 2 ? '100%' : '0%';
                         html += `
                         <tr>
-                            <td>${data.solutionName}</td>
-                            <td>${counts['LIV'] !== undefined ? counts['LIV'].toFixed(2) : '-'}%</td> 
-                            <td>-</td>
-                            <td>%</td>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentagePeo}</td>
+                            <td>${getQ2Value(data, 'PEO')}%</td>
+                            <td></td>
                         </tr>`;
                     }
                 });
                 html += `<tr>
-                    <td></td>
-                    <td>${counts['LIV'] !== undefined ? counts['LIV'].toFixed(2) : '-'}%</td>
+                    <td>รวม</td>
+                    <td>${counts['PEO'] !== undefined ? counts['PEO'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('PEO').toFixed(2)}%</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 8:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'LIV'){
+                        const statusPercentageLiv = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageLiv}%</td> 
+                            <td>${getQ2Value(data, 'LIV')}%</td>
+                            <td></td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['LIV'] !== undefined ? counts['LIV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('LIV').toFixed(2)}%</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
                 </tr>`;
                 break;

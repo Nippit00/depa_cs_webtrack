@@ -15,7 +15,9 @@ router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormche
 //select form
 router.get('/formcdp/:solutionID',isAuth,formController.getformCdp);
 
-//send data form to backebd
+//send data form to backebd 
 router.post('/sendformcdp/:solutionID',isAuth,formController.postFormCdp);
-router.post('/submitformcdp/:solutionID',isAuth,formController.submitFormCdp);
+
+//formcdp
+router.get('/formcdpfirst',formController.getformGdpFirst);
 module.exports = router;

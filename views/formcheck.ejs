@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/styles.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
@@ -190,39 +192,39 @@
                 <br>
 
                 <p>สถานะ : <span class="highlight">
-                        <%= dataCheck.status %>
+                        <%= dataCheck.Q1%>
                     </span></p>
 
                 <p>ความก้าวหน้าโครงการ : <span class="highlight">
-                        <%= dataCheck.progress %>
-                    </span></p>
+                        <%= dataCheck.Q2 %>
+                    %</span></p>
 
                 <p>ไฟล์อัปโหลด : <span class="highlight">
-                        <%= dataCheck.fileUpload %>
+                        <%= dataCheck.Q3 %>
                     </span></p>
 
                 <p>ผลการดำเนินงาน: <span class="highlight">
-                        <%= dataCheck.operation %>
+                        <%= dataCheck.Q4 %>
                     </span></p>
 
                 <p>ประเภทปัญหา: <span class="highlight">
-                        <%= dataCheck.problem_type %>
+                        <%= dataCheck.Q5 %>
                     </span></p>
 
                 <p>ผลลัพธ์: <span class="highlight">
-                        <%= dataCheck.result %>
+                        <%= dataCheck.Q6 %>
                     </span></p>
 
                 <p>ปัญหา/อุปสรรค: <span class="highlight">
-                        <%= dataCheck.problem %>
+                        <%= dataCheck.Q7 %>
                     </span></p>
 
                 <p>แนวทางแก้ไข: <span class="highlight">
-                        <%= dataCheck.solution %>
+                        <%= dataCheck.Q8 %>
                     </span></p>
 
                 <p>หมายเหตุ: <span class="highlight">
-                        <%= dataCheck.note %>
+                        <%= dataCheck.Q9 %>
                     </span></p>
                 <div class="button-container">
                     <button type="submit" id="confirmBtn">ยืนยัน</button>
@@ -246,47 +248,82 @@
                     hour12: false,
                 });
 
-            // send data to backend
-            confirmBtn.addEventListener('click', async () => {
-                try {
-                    // Get the value of data.Q1 (assuming it's a string)
-                    const q1Value = '<%= dataCheck.status %>';
-                    const q2Value = '<%= dataCheck.progress %>';
-                    const q4Value = '<%= dataCheck.operation %>';
-                    const q5Value = '<%= dataCheck.problem_type %>';
-                    const q6Value = '<%= dataCheck.result %>';
-                    const q7Value = '<%= dataCheck.problem %>';
-                    const q8Value = '<%= dataCheck.solution %>';
-                    const q9Value = '<%= dataCheck.note %>';
-                    const csrfToken = '<%= csrfToken %>';
+            function goBack() {
+                window.location.href = "/city/follow"
+            }
 
-                    // Make a POST request to the /formcheck endpoint with data.Q1
-                    const response = await fetch('/comfirmformcheck/<%= data.solutionID %>', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        body: JSON.stringify({
-                            Q1: q1Value,
-                            Q2: q2Value,
-                            Q4: q4Value,
-                            Q5: q5Value,
-                            Q6: q6Value,
-                            Q7: q7Value,
-                            Q8: q8Value,
-                            Q9: q9Value,
-                            currentDateTime:currentDateTime
-                        })
-                    });
-                    if (response.ok) {
-                        console.log('Data sent successfully!');
-                    } else {
-                        console.error('Failed to send data.');
-                    }
+            cancelBtn.addEventListener('click', () => {
+                try {
+                    goBack()
                 } catch (error) {
                     console.error('Error:', error);
                 }
+            });
+
+            // send data to backend
+            confirmBtn.addEventListener('click', async () => {
+                Swal.fire({
+                    title: 'คุณแน่ใจไหม?',
+                    text: 'เมื่อส่งแล้ว คุณจะไม่สามารถยกเลิกการดำเนินการนี้ได้!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'ยืนยัน',
+                    cancelButtonText: 'ยกเลิก',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            // Get the value of data.Q1 (assuming it's a string)
+                            const q1Value = '<%= dataCheck.Q1 %>';
+                            const q2Value = '<%= dataCheck.Q2 %>';
+                            const q3Value = '<%= dataCheck.Q3 %>';
+                            const q4Value = '<%= dataCheck.Q4 %>';
+                            const q5Value = '<%= dataCheck.Q5 %>';
+                            const q6Value = '<%= dataCheck.Q6 %>';
+                            const q7Value = '<%= dataCheck.Q7 %>';
+                            const q8Value = '<%= dataCheck.Q8 %>';
+                            const q9Value = '<%= dataCheck.Q9 %>';
+                            const csrfToken = '<%= csrfToken %>';
+            
+                            // Make a POST request to the /formcheck endpoint with data.Q1
+                            const response = await fetch('/comfirmformcheck/<%= data.solutionID %>', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken
+                                },
+                                body: JSON.stringify({
+                                    Q1: q1Value,
+                                    Q2: q2Value,
+                                    Q3: q3Value,
+                                    Q4: q4Value,
+                                    Q5: q5Value,
+                                    Q6: q6Value,
+                                    Q7: q7Value,
+                                    Q8: q8Value,
+                                    Q9: q9Value,
+                                    currentDateTime: currentDateTime
+                                })
+                            });
+                            if (response.ok) {
+                                Swal.fire({
+                                    title: 'สำเร็จ!',
+                                    text: 'บันทึกข้อมูลสำเร็จ',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    window.location.href = '/city/follow';
+                                });
+                                console.log('Data sent successfully!');
+                            } else {
+                                console.error('Failed to send data.');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                        }
+                    }
+                });
             });
         </script>
 

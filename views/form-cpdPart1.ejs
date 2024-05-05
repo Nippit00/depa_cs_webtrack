@@ -126,6 +126,12 @@
         #fileUpload {
             display: none;
         }
+        .footer label {
+            font-weight: bold;
+            margin-left: 13rem;
+            margin-top: 5rem;
+            font-size: 17px;
+          }
     </style>
 
 </head>
@@ -218,20 +224,32 @@
                     <textarea id="operation" name="operation" placeholder="กรอกข้อความ...."></textarea>
                 </div>
 
-                <div>
-                    <label for="problem_type">ประเภทปัญหา:</label>
-                    <select id="problem_type" name="problem_type">
-                        <option value="null">ระบุ ประเภทปัญหา</option>
-                        <option value="0">0%</option>
-                        <option value="5">5%</option>
-                        <option value="10">15%</option>
-                    </select> <!-- เพิ่ม tag ปิดที่นี่ -->
-                </div>
-
                 <!-- ตำแหน่ง textarea ที่เพิ่ม id="result" เพื่อให้สอดคล้องกับ label -->
                 <div>
                     <label for="result">ผลลัพธ์:</label>
                     <textarea id="result" name="result" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+
+                <div>
+                    <label for="problem_type">ประเภทปัญหา:</label>
+                    <select id="problem_type" name="problem_type">
+                        <option value="null">ระบุ ประเภทปัญหา</option>
+                        <option value="0">ไม่มีปัญหา/อุปสรรค</option>
+                        <option value="5">ไม่มีงบประมาณ</option>
+                        <option value="10">ขาดแคลนบุคลากร</option>
+                        <option value="15">เปลี่ยนแปลงด้านนโยบาย</option>
+                        <option value="20">ปัญหาด้านการใช้เทคโนโลยี</option>
+                        <option value="25">ข้อจำกัดด้านกฏระเบียบ</option>
+                        <option value="30">ขาดผู้ใช้งาน/ขาดการสร้างความตระหนักรู้แก่ประชาชน</option>
+                        <option value="35">ไม่มีเจ้าภาพในการดำเนินกิจกรรม</option>
+                        <option value="40">Infrastructure ไม่เพียงพอเพื่อรองรับการดำเนินการ</option>
+                        <option value="45">อื่น ๆ</option>
+                    </select> <!-- เพิ่ม tag ปิดที่นี่ -->
+                </div>
+
+                <div>
+                    <label for="elseproblem">ปัญหาอื่นๆ:</label>
+                    <textarea id="elseproblem" name="elseproblem" placeholder="กรอกข้อความ...."></textarea>
                 </div>
 
                 <!-- ตำแหน่ง textarea ที่เพิ่ม id="problem" เพื่อให้สอดคล้องกับ label -->
@@ -250,6 +268,54 @@
                 <div>
                     <label for="note">หมายเหตุ:</label>
                     <textarea id="note" name="note" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+
+                <div>
+                    <label for="budget">งบประมาณที่ใช้ในการดำเนินการ:</label>
+                    <textarea id="budget" name="budget" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+
+                <div class="footer">
+                    <label>รายงานตามตัวชี้วัด</label>
+                </div>
+
+                <div>
+                    <label for="urlPlatform">URL ของ Platform/Website CDP :</label>
+                    <textarea id="urlPlatform" name="urlPlatform" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+                <div>
+                    <label for="urlDatacatalog">URL ของ Data Catalog  :</label>
+                    <textarea id="urlDatacatalog" name="urlDatacatalog" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+                <div>
+                    <label for="urlDatadashboard">URL ของ Data Dashboard   :</label>
+                    <textarea id="urlDatadashboard" name="urlDatadashboard" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+                <div>
+                    <label for="urlElse">URL อื่นๆ    :</label>
+                    <textarea id="urlElse" name="urlElse" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+                <div>
+                    <label for="Investment">รูปแบบการลงทุนจัดทำ CDP:</label>
+                    <select id="Investment" name="Investment">
+                        <option value="null">ระบุ รูปแบบการลงทุน</option>
+                        <option value="0">ภาครัฐ</option>
+                        <option value="5">ภาคเอกชน</option>
+                        <option value="10">ภาครัฐร่วมเอกชน</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="source">แหล่งที่มาของงบประมาณ :</label>
+                    <textarea id="source" name="source" placeholder="กรอกข้อความ...."></textarea>
+                </div>
+                <div>
+                    <label for="Investment">รูปแบบการขับเคลื่อนและกำกับดูแล CDP :</label>
+                    <select id="Investment" name="Investment">
+                        <option value="null">ระบุ รูปแบบการลงทุน</option>
+                        <option value="0">ภาครัฐ</option>
+                        <option value="5">ภาคเอกชน</option>
+                        <option value="10">ภาครัฐร่วมเอกชน</option>
+                    </select>
                 </div>
 
                 <!-- ปุ่มบันทึก -->
