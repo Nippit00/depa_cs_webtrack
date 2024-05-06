@@ -13,10 +13,10 @@ router.post('/formcheck/:solutionID',isAuth,formController.postFormcheck);
 router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormcheck);
 
 //select form
-router.get('/formcdp/:solutionID',isAuth,formController.getformCdp);
+router.get('/formsmart/:solutionID',isAuth,formController.getformSmart);
 
 //send data form to backebd 
-router.post('/sendformcdp/:solutionID',isAuth,formController.postFormCdp);
+router.post('/sendformsmart/:solutionID',isAuth,formController.postFormSmart);
 
 //formcdp
 router.get('/formcdpfirst',formController.getformGdpFirst);

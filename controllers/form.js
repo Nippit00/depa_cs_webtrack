@@ -135,7 +135,7 @@ exports.comfirmFormcheck = (req, res, next) => {
   }
 };
 
-exports.getformCdp = (req, res, next) => {
+exports.getformSmart = (req, res, next) => {
   const solutionid = req.params.solutionID;
   const cityID = req.session.userID;
   const q1 =
@@ -150,7 +150,7 @@ exports.getformCdp = (req, res, next) => {
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
-          res.render("form-cdp", {
+          res.render("form-smart", {
             formdata: data,
             dataOld: dataOld || [],
             csrfToken: req.csrfToken(),
@@ -165,7 +165,7 @@ exports.getformCdp = (req, res, next) => {
   }
 };
 
-exports.postFormCdp = (req, res, next) => {
+exports.postFormSmart = (req, res, next) => {
   try {
     console.log("insertform complete");
 
@@ -213,7 +213,7 @@ exports.postFormCdp = (req, res, next) => {
                   .status(500)
                   .json({ error: "UpdateStatusError", message: err });
               return res.redirect(
-                `/formcdp/${req.params.solutionID}?success=true`
+                `/formsmart/${req.params.solutionID}?success=true`
               );
             }
           );
@@ -254,7 +254,7 @@ exports.postFormCdp = (req, res, next) => {
                   .status(500)
                   .json({ error: "UpdateStatusError", message: err });
               return res.redirect(
-                `/formcdp/${req.params.solutionID}?success=true`
+                `/formsmart/${req.params.solutionID}?success=true`
               );
             }
           );

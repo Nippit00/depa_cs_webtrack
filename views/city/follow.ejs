@@ -116,6 +116,12 @@
       .report-button:hover {
         background-color: #0056b3; /* สีพื้นหลังของปุ่มเมื่อเมาส์ชี้ที่ปุ่ม */
       }
+      .button-container-disable {
+        margin-bottom: 10px; /* ระยะห่างด้านล่างของปุ่ม */
+        opacity: 0.5; /* ตัวอย่างเท่านี้จะทำให้ปุ่มเป็นสีเทาอ่อนเมื่อถูก disable */
+        cursor: not-allowed; /* เพิ่ม cursor style เป็น not-allowed เมื่อปุ่มถูก disable */
+        pointer-events: none; /* ป้องกันการคลิกเมื่อปุ่มถูก disable */
+      }
       
     </style>
      
@@ -284,7 +290,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -296,18 +302,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'ENV') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a> 
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'ENV') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
@@ -368,7 +386,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -380,18 +398,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'ENE') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'ENE') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
@@ -451,7 +481,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -463,18 +493,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'ECO') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a> 
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'ECO') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a> 
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
@@ -534,7 +576,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -546,18 +588,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'MOB') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'MOB') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a> 
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
@@ -617,7 +671,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -629,18 +683,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'GOV') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'GOV') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
@@ -700,7 +766,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -712,18 +778,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'PEO') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'PEO') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
@@ -783,7 +861,7 @@
                                         <%= item.solutionName %>
                                       </span></p>
                                     <% } else { %>
-                                      <p><a href="/formcdp/<%=item.solutionID%>">
+                                      <p><a href="/formsmart/<%=item.solutionID%>">
                                           <%= item.solutionName %>
                                         </a></p>
                                       <% } %>
@@ -795,18 +873,30 @@
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'LIV') { %>
-                          <div class="button-container">
-                            <a href="/formcdp/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
                     <td>
                       <% followdata.forEach((item) => { %>
                         <% if (item.smartKey === 'LIV') { %>
-                          <div class="button-container">
-                            <a href=""><button class="report-button">รายงาน</button></a>
-                          </div>
+                          <% if (item.status===2) { %>
+                            <div class="button-container-disable">
+                              <button class="report-button">รายงาน</button>
+                            </div>
+                            <% } else { %>
+                              <div class="button-container">
+                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
+                              </div>
+                              <% } %>
                         <% } %>
                     <% }); %>
                     </td>
