@@ -5,8 +5,21 @@ exports.getform = (req, res, next) => {
   res.render("form", { req, pageTitle: "form" });
 };
 
-exports.getformGdpFirst = (req, res, next) => {
-  res.render("form-cpdPart1", { req, pageTitle: "form" });
+exports.getformCdp1 = (req, res, next) => {
+  res.render("form-cdpPart1", { req, pageTitle: "form" });
+};
+
+exports.getformCdp2 = (req, res, next) => {
+  
+  res.render("form-cdpPart2", { req, pageTitle: "form" });
+};
+
+exports.getformCdp3 = (req, res, next) => {
+  res.render("form-cdpPart3", { req, pageTitle: "form" });
+};
+
+exports.getformCdp4 = (req, res, next) => {
+  res.render("form-cdpPart4", { req, pageTitle: "form" });
 };
 
 exports.postFormcheck = (req, res, next) => {
@@ -344,32 +357,32 @@ exports.notification = (req, res, next) => {
   }
 };
 
-exports.getformCdp2 = (req, res, next) => {
-  const solutionid = req.params.solutionID;
-  const cityID = req.session.userID;
-  const q1 =
-    "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
-  const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
-  const q3 = "SELECT * FROM `question` WHERE 1";
-  try {
-    db.query(q1, [cityID, solutionid], (err, data) => {
-      if (err) return res.status(500).json(err);
+// exports.getformCdp2 = (req, res, next) => {
+//   const solutionid = req.params.solutionID;
+//   const cityID = req.session.userID;
+//   const q1 =
+//     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
+//   const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
+//   const q3 = "SELECT * FROM `question` WHERE 1";
+//   try {
+//     db.query(q1, [cityID, solutionid], (err, data) => {
+//       if (err) return res.status(500).json(err);
 
-      db.query(q2, [solutionid], (err, dataOld) => {
-        if (err) return res.status(500).json(err);
-        db.query(q3, (err, question) => {
-          if (err) return res.status(500).json(err);
-          res.render("form-cdp2", {
-            formdata: data,
-            dataOld: dataOld || [],
-            csrfToken: req.csrfToken(),
-            question: question,
-          });
-        });
-      });
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-};
+//       db.query(q2, [solutionid], (err, dataOld) => {
+//         if (err) return res.status(500).json(err);
+//         db.query(q3, (err, question) => {
+//           if (err) return res.status(500).json(err);
+//           res.render("form-cdp2", {
+//             formdata: data,
+//             dataOld: dataOld || [],
+//             csrfToken: req.csrfToken(),
+//             question: question,
+//           });
+//         });
+//       });
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//   }
+// };
