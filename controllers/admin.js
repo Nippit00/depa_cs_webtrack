@@ -97,7 +97,7 @@ exports.getAdCityDataP = (req, res, next) => {
       console.log("Data is:", data);
       db.query(q2, [req.params.cityID], (errer, solution) => {
         if (err) return res.status(500).json(errer);
-        console.log("solution is:",solution)
+        // console.log("solution is:",solution)
         res.render("admin/ad-city/ad-citydata", {
           req,
           pageTitle: "Dashboard",

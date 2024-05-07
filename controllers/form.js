@@ -5,6 +5,10 @@ exports.getform = (req, res, next) => {
   res.render("form", { req, pageTitle: "form" });
 };
 
+exports.getformGdpFirst = (req, res, next) => {
+  res.render("form-cpdPart1", { req, pageTitle: "form" });
+};
+
 exports.postFormcheck = (req, res, next) => {
   console.log(req.body);
   const dataCheck = req.body;
@@ -69,7 +73,6 @@ exports.comfirmFormcheck = (req, res, next) => {
             qUpdateStatus,
             [solutionParam.solutionID],
             (err, updateStatusData) => {
-
               if (err)
                 return res
                   .status(500)
@@ -165,7 +168,7 @@ exports.comfirmFormcheck = (req, res, next) => {
   }
 };
 
-exports.getformCdp = (req, res, next) => {
+exports.getformSmart = (req, res, next) => {
   const solutionid = req.params.solutionID;
   const cityID = req.session.userID;
   const q1 =
@@ -180,7 +183,7 @@ exports.getformCdp = (req, res, next) => {
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
-          res.render("form-cdp", {
+          res.render("form-smart", {
             formdata: data,
             dataOld: dataOld || [],
             csrfToken: req.csrfToken(),
@@ -195,7 +198,7 @@ exports.getformCdp = (req, res, next) => {
   }
 };
 
-exports.postFormCdp = (req, res, next) => {
+exports.postFormSmart = (req, res, next) => {
   try {
     console.log("insertform complete");
 
@@ -243,7 +246,7 @@ exports.postFormCdp = (req, res, next) => {
                   .status(500)
                   .json({ error: "UpdateStatusError", message: err });
               return res.redirect(
-                `/formcdp/${req.params.solutionID}?success=true`
+                `/formsmart/${req.params.solutionID}?success=true`
               );
             }
           );
@@ -284,7 +287,7 @@ exports.postFormCdp = (req, res, next) => {
                   .status(500)
                   .json({ error: "UpdateStatusError", message: err });
               return res.redirect(
-                `/formcdp/${req.params.solutionID}?success=true`
+                `/formsmart/${req.params.solutionID}?success=true`
               );
             }
           );
@@ -293,7 +296,7 @@ exports.postFormCdp = (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    res
+    res 
       .status(500)
       .json({ error: "Internal Server Error", message: err.message });
   }
