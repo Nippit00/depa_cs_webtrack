@@ -150,8 +150,6 @@
             /* ลบเครื่องหมายหน้ารายการออก */
             padding: 0;
             margin: 0;
-            display: flex;
-    flex-direction: column;
         }
 
 
@@ -309,7 +307,7 @@
 
 
         <div class="custom-container-1">
-            <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+            <form action="/sendformcdp" method="post" id="reportForm">
                 <div>
                     <label for="status">สถานะ :</label>
                     <select id="status" name="Q1" required>
@@ -367,10 +365,15 @@
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
                 </div>
 
+                <div>
+                    <label for="operation">ผลลัพธ์:</label>
+                    <textarea id="operation" name="Qถ"
+                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
+                </div>
 
                 <div>
                     <label for="problem_type">ประเภทปัญหา:</label>
-                    <select id="problem_type" name="Q5">
+                    <select id="problem_type" name="Q6">
                         <option value="null" <% if (!dataOld.length || dataOld[0].Q5===null) { %>selected<% } %>>ระบุ
                                 ประเภทปัญหา</option>
                         <option value="technical" <% if (dataOld.length && dataOld[0].Q5==='technical' ) { %>selected<%
@@ -384,18 +387,21 @@
                 </div>
 
 
+                
                 <div>
-                    <label for="result">ผลลัพธ์:</label>
-                    <textarea id="result" name="Q6"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
+                    <label for="status">ปัญหา/อุปสรรค :</label>
+                    <select id="status" name="Q7" required>
+                        <option value="null" <% if (!dataOld.length || dataOld[0].Q1===null) { %>selected<% } %>>ไม่มีปัญหา/อุปสรรค</option>
+                        <option value="delayed" <% if (dataOld.length && dataOld[0].Q1==='delayed' ) { %>selected<% } %>>ไม่มีงบประมาณ</option>
+                        <option value="on_schedule" <% if (dataOld.length && dataOld[0].Q1==='on_schedule' ) { %>
+                            selected<% } %>>ตามแผน</option>
+                        <option value="ahead_of_schedule" <% if (dataOld.length && dataOld[0].Q1==='ahead_of_schedule' )
+                            { %>selected<% } %>>เร็วกว่าแผน</option>
+                        <option value="not_started" <% if (dataOld.length && dataOld[0].Q1==='not_started' ) { %>
+                            selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                    </select>
                 </div>
-
-
-                <div>
-                    <label for="problem">ปัญหา/อุปสรรค:</label>
-                    <textarea id="problem" name="Q7"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
-                </div>
+               
 
 
                 <div>

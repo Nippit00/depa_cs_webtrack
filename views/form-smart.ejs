@@ -150,8 +150,6 @@
             /* ลบเครื่องหมายหน้ารายการออก */
             padding: 0;
             margin: 0;
-            display: flex;
-    flex-direction: column;
         }
 
 
@@ -309,7 +307,7 @@
 
 
         <div class="custom-container-1">
-            <form action="/sendformcdp/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+            <form action="/sendformsmart/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
                     <label for="status">สถานะ :</label>
                     <select id="status" name="Q1" required>
@@ -531,7 +529,7 @@
                         const solutionID = '<%=formdata[0].solutionID%>';
 
 
-                        fetch(`/upload/formcdp/${solutionID}`, {
+                        fetch(`/upload/formsmart/${solutionID}`, {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-Token': csrfToken

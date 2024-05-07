@@ -1,422 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .title-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: -300px;
-        }
-
-        .titles-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: 0px;
-        }
-
-        .content-container {
-            width: 80%;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .text-container,
-        .map-container {
-            flex: 1;
-        }
-
-        .text-container {
-            padding: 20px;
-            position: relative;
-            top: -150px;
-            /* ปรับค่า top ตามที่คุณต้องการ */
-
-        }
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/css/styles.css">
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <title>Dashboard</title>
+   <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <style>
+       .title-container {
+           text-align: center;
+           padding: 20px;
+           position: relative;
+           top: -300px;
+       }
 
 
-        .menu-text {
-            color: black;
-        }
-
-        .map-container {
-            text-align: right;
-        }
-
-        .map-container {
-            text-align: left;
-            position: relative;
-            top: -100px;
-            margin-left: 120px;
-            margin-bottom: 150px;
-            /* ปรับค่า margin-left ตามที่ต้องการ */
-        }
+       .titles-container {
+           text-align: center;
+           padding: 20px;
+           position: relative;
+           top: 0px;
+       }
 
 
-        .map-container img {
-            max-width: 100%;
-            height: auto;
-        }
+       .content-container {
+           width: 80%;
+           margin: 0 auto;
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
 
-        .text-container b.menu-text {
-            margin-bottom: 50px;
-            /* ปรับค่า margin-bottom ตามที่ต้องการ */
-        }
 
-        .text-container b.menu-text {
-            margin-bottom: 50px;
-        }
+       .text-container,
+       .map-container {
+           flex: 1;
+       }
 
-        .cities-text {
-            color: #04B2A1;
-            /* รหัสสีของเมืองที่คุณต้องการ */
-        }
 
-        #myChart {
-            display: block;
-            margin-left: 65%;
-            margin-right: auto;
-            margin-top: -500px;
-            margin-bottom: 250px;
-        }
-        
-    </style>
+       .text-container {
+           padding: 20px;
+           position: relative;
+           top: -150px;
+           /* ปรับค่า top ตามที่คุณต้องการ */
+
+
+       }
+
+
+
+
+       .menu-text {
+           color: black;
+       }
+
+
+       .map-container {
+           text-align: right;
+       }
+
+
+       .map-container {
+           text-align: left;
+           position: relative;
+           top: -100px;
+           margin-left: 120px;
+           margin-bottom: 150px;
+           /* ปรับค่า margin-left ตามที่ต้องการ */
+       }
+
+
+
+
+       .map-container img {
+           max-width: 100%;
+           height: auto;
+       }
+
+
+       .text-container b.menu-text {
+           margin-bottom: 50px;
+           /* ปรับค่า margin-bottom ตามที่ต้องการ */
+       }
+
+
+       .text-container b.menu-text {
+           margin-bottom: 50px;
+       }
+
+
+       .cities-text {
+           color: #04B2A1;
+           /* รหัสสีของเมืองที่คุณต้องการ */
+       }
+
+
+       #myChart {
+           display: block;
+           margin-left: 65%;
+           margin-right: auto;
+           margin-top: -500px;
+           margin-bottom: 250px;
+       }
+      
+   </style>
 </head>
+
 
 <body>
 
-    <%- include('../component/navbar.ejs') %>
 
-    <div class="banner">
-        <img src="/img/bbj.png" alt="Banner Image">
-    </div>
-
-    <div class="title-container">
-        <h1>ผลรายงานความคืบหน้า<span class="citie-text">เมืองที่ได้รับตราสัญลักณษ์</span></h1>
-    </div>
-
-    <%- include('../component/menu.ejs') %>
+   <%- include('../component/navbar.ejs') %>
 
 
-    <div class="content-container">
-        <div class="text-container">
-            <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
-        </div>
-    </div>
-    <h1><%=solutionInfo[0].LAT%><%=solutionInfo[0].LNG%></h1>
-    <div class="map-container">
-        <!-- <img src="/img/mapmap.png" alt="Map Image"> -->
-          <iframe
-            width="600"
-            height="450"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=solutionInfo[0].LAT%>,<%=solutionInfo[0].LNG%>%>&zoom=5" allowfullscreen>
-          </iframe>
-    </div>
-    </div>
+   <div class="banner">
+       <img src="/img/bbj.png" alt="Banner Image">
+   </div>
+
+
+   <div class="title-container">
+       <h1>ผลรายงานความคืบหน้า<span class="citie-text">เมืองที่ได้รับตราสัญลักณษ์</span></h1>
+   </div>
+
+
+   <%- include('../component/menu.ejs') %>
+
+
+
+
+   <div class="content-container">
+       <div class="text-container">
+           <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
+       </div>
+   </div>
+  
+   <div class="map-container">
+       <!-- <img src="/img/mapmap.png" alt="Map Image"> -->
+         <iframe
+           width="600"
+           height="450"
+           frameborder="0" style="border:0"
+           src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=solutionInfo[0].LAT%>,<%=solutionInfo[0].LNG%>%>&zoom=5" allowfullscreen>
+         </iframe>
+   </div>
+   
 <!-- Chart -->
-    <canvas id="myChart" width="400" height="200"></canvas>
-    <!-- table -->
-    <div class="mx-36 mb-12 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 box-border">
-        <h2 class="text-white"></h2>
-        <div class="flex justify-between space-x-2 flex-wrap">
-            <div class="mb-2.5 text-center" onclick="show(1)">
-                <img src="/img/favi.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">โครงสร้าง</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(2)">
-                <img src="/img/s1.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart Environment</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(3)">
-                <img src="/img/se.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart Energy</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(4)">
-                <img src="/img/sec.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart Economy</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(5)">
-                <img src="/img/sm.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart Mobility</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(6)">
-                <img src="/img/sco.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart Governance</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(7)">
-                <img src="/img/sp.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart People</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(8)">
-                <img src="/img/sl.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">Smart Living</h5>
-            </div>
-            <div class="mb-2.5 text-center" onclick="show(9)">
-                <img src="/img/all01.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
-                <h5 class="mt-1.5 text-sm text-white">All</h5>
-            </div>
-            <!-- Repeat for other images -->
-        </div>
-        <table class="w-full border-collapse bg-white shadow-lg text-center">
-            <thead>
-                <tr>
-                    <th class="bg-teal-400 p-2.5">Project</th>
-                    <th class="bg-teal-400 p-2.5">Percent ความสำเร็จ</th>
-                    <th class="bg-teal-400 p-2.5">Percent ความคืบหน้า</th>
-                    <th class="bg-teal-400 p-2.5">รอบติดตาม 12 เดือน</th>
-                    <th class="bg-teal-400 p-2.5">รอบติดตาม 24 เดือน</th>
-                    <th class="bg-teal-400 p-2.5">รอบติดตามความคืบหน้าเพื่อต่อตราสัญลักษณ์</th>
-                </tr>
-            </thead>
-            <tbody id="body-table">
-                <tr>
-                    <td>โครงสร้างพื้นฐานกายภาพ</td>
-                    <td>
-                        <div class="flex items-center h-2.5 bg-teal-400 text-white p-2.5 rounded-full" style="width: 50%;">50%</div>
-                    </td>
-                    <td>
-                        <div class="flex items-center h-5 bg-yellow-400 text-white p-2.5 rounded-full" style="width: 50%;">50%</div>
-                    </td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><%=solutionInfo[0].smartKey%></td>
-                </tr>
-                
-            </tbody>
-        </table>
-    </div>
-    
-    <script>
-        function show(index){
-            const bodyTable = document.getElementById('body-table');
-            let html = '';
-            switch (index) {
-                case 1:
-                   
-                    break;
-                case 2:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                    '<% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='ENV'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-                '<% }) %>'
-                    break;
-                    case 3:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                    '<% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='ENE'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-                '<% }) %>'
-                    break;
-                    case 4:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                   ' <% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='ECO'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-               ' <% }) %>'
-                    break;
-                    case 5:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                   ' <% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='MOB'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-                '<% }) %>'
-                    break;
-                    case 6:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                    '<% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='GOV'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-               ' <% }) %>'
-                    break;
-                    case 7:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                    '<% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='PEO'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-                '<% }) %>'
-                    break;
-                    case 8:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                    '<% solutionInfo.forEach(data => { %>'
-                        if('<%=data.smartKey%>'==='LIV'){
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                    }
-                    else{
-                        
-                    }
-                '<% }) %>'
-                    break;
-                    case 9:
-                     // Clear table body
-                     bodyTable.innerHTML = '';
-                    // Generate table rows with data
-                    '<% solutionInfo.forEach(data => { %>'
-                       
-                        html += `
-                        <tr>
-                            <td><%=data.solutionName%></td>
-                            
-                            <td>-</td>
-                            <td>-</td>
-                            <td><%=data.goal%></td>
-                        </tr>`;
-                '<% }) %>'
-                    break;
-                default:
-                    // Handle default case
-                    break;
-            }
-            // Insert generated HTML into table body
-            bodyTable.innerHTML = html;
-        }
-    </script>
-    
-    
-    
+   <canvas id="myChart" width="400" height="200"></canvas>
+   <!-- table -->
+   <div class="mx-36 mb-12 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 box-border">
+       <h2 class="text-white"></h2>
+       <div class="flex justify-between space-x-2 flex-wrap">
+           <div class="mb-2.5 text-center" onclick="show(1)">
+               <img src="/img/favi.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">โครงสร้าง</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(2)">
+               <img src="/img/s1.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart Environment</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(3)">
+               <img src="/img/se.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart Energy</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(4)">
+               <img src="/img/sec.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart Economy</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(5)">
+               <img src="/img/sm.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart Mobility</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(6)">
+               <img src="/img/sco.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart Governance</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(7)">
+               <img src="/img/sp.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart People</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(8)">
+               <img src="/img/sl.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">Smart Living</h5>
+           </div>
+           <div class="mb-2.5 text-center" onclick="show(9)">
+               <img src="/img/all01.png" alt="Image 0" class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl">
+               <h5 class="mt-1.5 text-sm text-white">All</h5>
+           </div>
+           <!-- Repeat for other images -->
+       </div>
+       <table class="w-full border-collapse bg-white shadow-lg text-center">
+           <thead>
+               <tr>
+                   <th class="bg-teal-400 p-2.5">Project</th>
+                   <th class="bg-teal-400 p-2.5">Percent ความสำเร็จ</th>
+                   <th class="bg-teal-400 p-2.5">Percent ความคืบหน้า</th>
+                   <th class="bg-teal-400 p-2.5">รอบติดตาม 12 เดือน</th>
+                   <th class="bg-teal-400 p-2.5">รอบติดตาม 24 เดือน</th>
+                   <th class="bg-teal-400 p-2.5">รอบติดตามความคืบหน้าเพื่อต่อตราสัญลักษณ์</th>
+               </tr>
+           </thead>
+           <tbody id="body-table">
+               <tr>
+                   <td>โครงสร้างพื้นฐานกายภาพ</td>
+                   <td>
+                       <div class="flex items-center h-2.5 bg-teal-400 text-white p-2.5 rounded-full" style="width: 50%;">50%</div>
+                   </td>
+                   <td>
+                       <div class="flex items-center h-5 bg-yellow-400 text-white p-2.5 rounded-full" style="width: 50%;">50%</div>
+                   </td>
+                   <td>-</td>
+                   <td>-</td>
+                   <td><%=solutionInfo[0].smartKey%></td>
+               </tr>
+              
+           </tbody>
+       </table>
+   </div>
 
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['ต.1', 'ต.2', 'ต.3', 'ต.4'], // ตัวอย่าง label
-                datasets: [{
-                    label: 'จำนวนประชากร',
-                    data: [150, 200, 120, 180], // ตัวอย่างข้อมูล
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // สีพื้นหลัง
-                    borderColor: 'rgba(75, 192, 192, 1)', // สีขอบ
-                    borderWidth: 1 // ความหนาขอบ
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+   <script>
+    function countSmartKeys(solutionInfo) {
+        const counts = {};
+        const statusCounts = {}; // เพิ่ม object เก็บจำนวนของ data.status เท่ากับ 2 สำหรับแต่ละ smartKey
+        solutionInfo.forEach(data => {
+            if (counts[data.smartKey]) {
+                counts[data.smartKey]++;
+            } else {
+                counts[data.smartKey] = 1;
+            }
+            // เพิ่มตรวจสอบ data.status เท่ากับ 2 และเพิ่มจำนวนใน statusCounts
+            if (data.status === 2) {
+                if (statusCounts[data.smartKey]) {
+                    statusCounts[data.smartKey]++;
+                } else {
+                    statusCounts[data.smartKey] = 1;
                 }
             }
         });
-
-        function openTab(tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+    
+        // แปลงจำนวนของ status เป็นเปอร์เซ็นต์ แล้วใส่ใน counts
+        for (const key in counts) {
+            if (statusCounts[key]) {
+                counts[key] = (statusCounts[key] / counts[key]) * 100;
+            } else {
+                counts[key] = 0; // ถ้าไม่มี data.status เท่ากับ 2 ให้เป็น 0 เปอร์เซ็นต์
             }
-            tablinks = document.getElementsByClassName("tablink");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("active");
-            }
-            document.getElementById(tabName).style.display = "block";
-            event.currentTarget.classList.add("active");
         }
-    </script>
+        return counts;
+    }
+    
+ 
+    function show(index){
+        const bodyTable = document.getElementById('body-table');
+        let html = '';
+        const solutionInfo = JSON.parse('<%- JSON.stringify(solutionInfo) %>');
+        const valueInfo = JSON.parse('<%- JSON.stringify(valueInfo) %>');
+
+        const calculateAverageQ2 = (smartKey) => {
+            const projectCount = valueInfo.filter(data => data.smartKey === smartKey).length;
+            const sum = valueInfo.reduce((acc, data) => {
+                if (data.smartKey === smartKey) {
+                    return acc + parseFloat(data.Q2);
+                }
+                return acc;
+            }, 0);
+            return projectCount > 0 ? sum / projectCount : 0;
+        };
+
+        const getQ2Value = (project, smartKey) => {
+            const projectInfo = valueInfo.find(data => data.smartKey === smartKey && project.solutionName === data.solutionName);
+            return projectInfo ? projectInfo.Q2 : 0;
+        };
+ 
+        const counts = countSmartKeys(solutionInfo);
+ 
+        switch (index) {
+            case 1:
+                // Example case, adapt as needed
+                break;
+            case 2:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'ENV'){
+                        const statusPercentageEnv = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;" >${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageEnv}</td>
+                            <td style="padding: 20px;">${getQ2Value(data, 'ENV')}%</td>
+                            <td></td>
+                        </tr>`;
+                        
+                    }
+                });
+                html += `<tr >
+                    <td>รวม</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('ENV').toFixed(2)}%</td>
+                    <td></td>
+                </tr>`;
+                break;
+                case 3:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'ENE'){
+                        const statusPercentageEne = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageEne}</td>
+                            <td>${getQ2Value(data, 'ENE')}%</td>
+                            <td>%</td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['ENE'] !== undefined ? counts['ENE'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('ENE').toFixed(2)}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 4:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'ECO'){
+                        const statusPercentageEco = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageEco}</td> 
+                            <td>${getQ2Value(data, 'ECO')}%</td>
+                            <td></td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['ECO'] !== undefined ? counts['ECO'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('ECO').toFixed(2)}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 5:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'MOB'){
+                        const statusPercentageMob = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageMob}</td>
+                            <td>${getQ2Value(data, 'MOB')}%</td>
+                            <td></td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['MOB'] !== undefined ? counts['MOB'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('MOB').toFixed(2)}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 6:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'GOV'){
+                        const statusPercentageGov = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageGov}%</td> 
+                            <td>${getQ2Value(data, 'GOV')}%</td>
+                            <td></td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['GOV'] !== undefined ? counts['GOV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('GOV').toFixed(2)}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 7:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'PEO'){
+                        const statusPercentagePeo = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentagePeo}</td>
+                            <td>${getQ2Value(data, 'PEO')}%</td>
+                            <td></td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['PEO'] !== undefined ? counts['PEO'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('PEO').toFixed(2)}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+                case 8:
+                bodyTable.innerHTML = '';
+                solutionInfo.forEach(data => {
+                    if(data.smartKey === 'LIV'){
+                        const statusPercentageLiv = data.status === 2 ? '100%' : '0%';
+                        html += `
+                        <tr>
+                            <td style="padding: 20px;">${data.solutionName}</td>
+                            <td style="padding: 20px;">${statusPercentageLiv}%</td> 
+                            <td>${getQ2Value(data, 'LIV')}%</td>
+                            <td></td>
+                        </tr>`;
+                    }
+                });
+                html += `<tr>
+                    <td>รวม</td>
+                    <td>${counts['LIV'] !== undefined ? counts['LIV'].toFixed(2) : '-'}%</td>
+                    <td>${calculateAverageQ2('LIV').toFixed(2)}%</td>
+                    <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
+                </tr>`;
+                break;
+            // Repeat for other cases and smartKeys
+            default:
+                // Handle default case
+                break;
+        }
+        bodyTable.innerHTML = html;
+    }
+
+
+       
+   </script>
+  
+  
+  
+
+
+   <script>
+       var ctx = document.getElementById('myChart').getContext('2d');
+       var myChart = new Chart(ctx, {
+           type: 'bar',
+           data: {
+               labels: ['ต.1', 'ต.2', 'ต.3', 'ต.4'], // ตัวอย่าง label
+               datasets: [{
+                   label: 'จำนวนประชากร',
+                   data: [150, 200, 120, 180], // ตัวอย่างข้อมูล
+                   backgroundColor: 'rgba(75, 192, 192, 0.2)', // สีพื้นหลัง
+                   borderColor: 'rgba(75, 192, 192, 1)', // สีขอบ
+                   borderWidth: 1 // ความหนาขอบ
+               }]
+           },
+           options: {
+               scales: {
+                   y: {
+                       beginAtZero: true
+                   }
+               }
+           }
+       });
+
+
+       function openTab(tabName) {
+           var i, tabcontent, tablinks;
+           tabcontent = document.getElementsByClassName("tabcontent");
+           for (i = 0; i < tabcontent.length; i++) {
+               tabcontent[i].style.display = "none";
+           }
+           tablinks = document.getElementsByClassName("tablink");
+           for (i = 0; i < tablinks.length; i++) {
+               tablinks[i].classList.remove("active");
+           }
+           document.getElementById(tabName).style.display = "block";
+           event.currentTarget.classList.add("active");
+       }
+
+       
+    
+   </script>
+
+
+
 
 
 
 <%- include('../component/footer.ejs') %>
 
+
 </body>
 
+
 </html>
+
+

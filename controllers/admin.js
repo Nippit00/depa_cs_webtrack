@@ -11,32 +11,45 @@ exports.getAdPage = (req, res, next) => {
   });
 };
 
-exports.testnoti = (req, res, next) => {
+exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
-  const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
+  // const CityID = req.params.CityID;
+  const CityID='6201ECO01'
 
-  // ส่วนของข้อความที่ต้องการส่ง
-  const message = "หิวบุฟเฟ่เนื้อย่างข้างล่าง";
+  const q = "SELECT citydata.province,solution.solutionName FROM `solution` JOIN citydata ON solution.cityID=citydata.cityID WHERE solution.solutionID=?";
+  try{
+  db.query(q, [CityID], (err, data) => {
+    console.log(data)
+    if (err) return res.status(500).json(err);
+    const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
 
-  // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
-  const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
+    // ส่วนของข้อความที่ต้องการส่ง
+    const message = "จังหวัด" + data[0].province +data[0].solutionName +  "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
 
-  // ส่งข้อความผ่าน Line Notify API
-  axios
-    .post(LINE_NOTIFY_API_URL, `message=${message}`, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
-      },
-    })
-    .then((response) => {
-      console.log("Notification sent:", response.data);
-      res.status(200).json({ message: "Notification sent successfully" });
-    })
-    .catch((error) => {
-      console.error("Error sending notification:", error);
-      res.status(500).json({ error: "Failed to send notification" });
-    });
+    // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
+    const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
+
+    // ส่งข้อความผ่าน Line Notify API
+    axios
+      .post(LINE_NOTIFY_API_URL, `message=${message}`, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
+        },
+      })
+      .then((response) => {
+        console.log("Notification sent:", response.data);
+        res.status(200).json({ message: "Notification sent successfully" });
+      })
+      .catch((error) => {
+        console.error("Error sending notification:", error);
+        res.status(500).json({ error: "Failed to send notification" });
+      });
+  });}
+  catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 };
 
 exports.getHistoryPage = (req, res, next) => {
@@ -369,7 +382,7 @@ exports.getAddQuestion = (req, res, next) => {
           console.error(alterErr);
           return res.status(500).json(alterErr);
         }
-        const q1 = "SELECT * FROM `question` WHERE 1";
+        const q1 = "SELECT * FROM `question` WHERE status=1";
         db.query(q1, (err, data) => {
           if (err) return res.status(500).json(err);
           res.render("admin/ad-question/ad-question.ejs", {

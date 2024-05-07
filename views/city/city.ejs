@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <!-- <script>
+    <script>
         // Redirect away from the login page if user is already logged in
         if (sessionStorage.getItem('isLoggedIn')) {
             window.location.href = '/city'; // Redirect to city page
@@ -11,20 +11,17 @@
         window.onpopstate = function(event) {
             history.go(1);
         };
-    </script> -->
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">  
     <!-- Add this in the head section -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Add this before closing </body> tag -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
-        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-    <title>
-        <%= pageTitle %>
-    </title>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <title><%= pageTitle %></title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
         .title-container {
@@ -76,10 +73,8 @@
         .map-container {
             text-align: right;
             position: relative;
-            top: -120px;
-            /* ปรับค่า top ตามที่ต้องการ */
-            margin-bottom: 200px;
-            /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+            top: -120px; /* ปรับค่า top ตามที่ต้องการ */
+            margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
         }
 
         .text-container b.menu-text {
@@ -311,33 +306,97 @@
             </div>
             <h6 class="ml-48 relative top-[-100px]"><span class="text-blue-500">Download</span>
                 เอกสารรายละเอียดของแผนเมือง</h6>
-            <a href="" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a>
-            <br>
-            <a href="" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a>
-            <br>
-            <a href=""
-                class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a>
-            <br>
-            <a href="" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
+                <% datafile.forEach(data => {
+                    if (data.fileID === "F1") { %>
+                        <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a> <br>
+                    <% } else if (data.fileID === "F2") { %>
+                        <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a> <br>
+                    <% } else if (data.fileID === "F3") { %>
+                        <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a> <br>
+                    <% } else { %>
+                        <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
+                    <% }
+                }) %>
+                
             <%- include('../component/footer.ejs') %>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
+                        let currentDate = new Date();
+                        let targetDate = new Date(2027, 11, 2); // เวลาที่ต้องการคำนวณถึง
+                        let timeDiff = Math.abs(targetDate.getTime() - currentDate.getTime());
+                        let remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // หาจำนวนวันที่เหลือ
+                        let remainingMonths = Math.floor(remainingDays / 30); // หาจำนวนเดือนที่เหลือ
+                        let remainingDaysInMonth = remainingDays % 30; // หาจำนวนวันที่เหลือในเดือน
+                        let currentDay = currentDate.getDate();
+                        let currentMonth = currentDate.getMonth() + 1;
+                        let currentYear = currentDate.getFullYear();
+                        let event = false
+
+                        let form1StartDay = 23;
+                        let form1EndDay = 30;
+                        let form1StartMonth = 5;
+                        let form1EndMonth = 5;
+                        let form1Year = 2025;                          
+
+                        let form2StartDay = 11;
+                        let form2EndDay = 15;
+                        let form2StartMonth = 9;
+                        let form2EndMonth = 9;
+                        let form2Year = 2026;
+
+                        let reportStartDay = 2;
+                        let reportEndDay = 5;
+                        let reportStartMonth = 12;
+                        let reportEndMonth = 12;
+                        let reportYear = 2027;
+
+                        let message = '';
+
+                        if (currentYear === form1Year && currentMonth === form1StartMonth && currentDay >= form1StartDay && currentDay <= form1EndDay) {
+                            message = '<br><span class="highlight">กรอกแบบฟอร์มครั้งที่1 ช่วงเวลา 3-5 พ.ค. 2024</span><br><br><br>';
+                            event = true;
+                        } else {
+                            message = '<br><span>กรอกแบบฟอร์มครั้งที่1 ช่วงเวลา 3-5 พ.ค. 2024</span><br><br><br>';
+                        }
+
+                            if (currentYear === form2Year && currentMonth === form2StartMonth && currentDay >= form2StartDay && currentDay <= form2EndDay) {
+                            message += '<br><span class="highlight">กรอกแบบฟอร์มครั้งที่2 ช่วงเวลา 11-15 ก.ย. 2026</span><br><br><br>';
+                            event = true;
+                            } else {
+                            message += '<br><span>กรอกแบบฟอร์มครั้งที่2 ช่วงเวลา 11-15 ก.ย. 2026</span><br><br><br>';
+                            }
+
+                            if (
+                            (currentYear === reportYear && currentMonth === reportStartMonth && currentDay >= reportStartDay && currentDay <= reportEndDay) ||
+                            (currentYear === reportYear && currentMonth === reportEndMonth && currentDay <= reportEndDay)
+                            ) {
+                            message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ ช่วงเวลา 2-5 ธ.ค. 2027</span><br><br>';
+                            event = true;
+                            }else if(event === true){
+                            message += '<br><span>คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก ';
+                            message += remainingMonths + ' เดือน ' + remainingDaysInMonth + ' วัน</span><br><br>';
+                            }else{
+                            message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก ';
+                            message += remainingMonths + ' เดือน ' + remainingDaysInMonth + ' วัน</span><br><br>';
+                            }
+
                         Swal.fire({
-                            title: 'ยินดีต้อนรับ',
-                            text: 'คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก 0 วัน 0 เดือน',
+                            title: 'ช่วงเวลากรอกฟอร์ม / อัพโหลดไฟล์',
+                            html: '<style>.highlight { color: red; }</style>' +
+                              message,
                             imageUrl: "img/favi.png",
                             imageWidth: 100,
                             imageHeight: 100,
                             imageAlt: "Custom image",
                             confirmButtonText: 'OK',
                             customClass: {
-                                container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
-                                popup: 'bg-[#F8F9FA] border-none shadow-none',
-                                title: 'text-[#04B2A1]',
-                                text: 'text-[#495057]',
-                                confirmButton: 'bg-green-600 text-white rounded-md'
+                              container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
+                              popup: 'bg-[#F8F9FA] border-none shadow-none',
+                              title: 'text-[#04B2A1]',
+                              text: 'text-[#495057]',
+                              confirmButton: 'bg-green-600 text-white rounded-md'
                             }
-                        });
+                          }); 
                     });
 
                 </script>
