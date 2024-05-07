@@ -324,7 +324,7 @@ exports.getEditSolution = (req, res, next) => {
   console.log(req.params);
   const q = "SELECT * FROM `solution` WHERE solutionID=?";
   try {
-    db.query(q, ["6207ENV01"], (err, data) => {
+    db.query(q, [req.params.solutionID], (err, data) => {
       if (err) return res.status(500).json(err);
       console.log("Data is:", data);
       res.render("admin/ad-city/ad-editSolution", {
