@@ -161,20 +161,32 @@
     });
     return count;
     }
+
+    function countCompleteRound2(data) {
+    let count = 0;
+    followdata.forEach((item) => {
+    if (item.smartKey === data) {
+    if (item.status_round2 === 2) {
+    count++;
+    }
+    }
+
+    });
+    return count;
+    }
+
     var currentDate = new Date();
     var currentDay = currentDate.getDate();
     var currentMonth = currentDate.getMonth() + 1;
     var currentYear = currentDate.getFullYear();
 
     var form1StartDay = 8;
-    //var form1EndDay = 4;
     var form1StartMonth = 5;
-    //var form1EndMonth = 5;
     var form1Year = 2024;
 
-    var form2StartDay = 11;
-    var form2StartMonth = 9;
-    var form2Year = 2026;
+    var form2StartDay = 8;
+    var form2StartMonth = 5;
+    var form2Year = 2025;
 
     %>
 
@@ -316,7 +328,14 @@
                           <th>
                             <% const envcount=countEcoSolutions("ENV") %>
                               <% const envcountSuccess=countComplete("ENV") %>
-                                complete <%=envcountSuccess%>/<%=envcount%>
+                                <% const envcountSuccessRound2=countCompleteRound2("ENV") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=envcountSuccess%>/<%=envcount%>
+                                        <% } else { %>
+                                          complete <%=envcountSuccessRound2%>/<%=envcount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -326,15 +345,29 @@
                               <% if (item.smartKey==='ENV' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -363,8 +396,8 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ENV' ) { %>
-                                <% if (item.status===2 || (currentYear < form2Year) || (currentYear===form2Year &&
-                                  currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
                                   currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
                                     <button class="report-button" disabled>รายงาน</button>
@@ -381,20 +414,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ENV' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
 
                           </td>
                         </tr>
@@ -426,7 +476,14 @@
                           <th>
                             <% const enecount=countEcoSolutions("ENE") %>
                               <% const enecountSuccess=countComplete("ENE") %>
-                                complete <%=enecountSuccess%>/<%=enecount%>
+                                <% const enecountSuccessRound2=countCompleteRound2("ENE") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=enecountSuccess%>/<%=enecount%>
+                                        <% } else { %>
+                                          complete <%=enecountSuccessRound2%>/<%=enecount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -436,15 +493,29 @@
                               <% if (item.smartKey==='ENE' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -471,9 +542,11 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ENE' ) { %>
-                                <% if (item.status===2) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button">รายงาน</button>
+                                    <button class="report-button" disabled>รายงาน</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
@@ -487,20 +560,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ENE' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
                           </td>
                         </tr>
                         </tbody>
@@ -531,7 +621,14 @@
                           <th>
                             <% const ecocount=countEcoSolutions("ECO") %>
                               <% const ecocountSuccess=countComplete("ECO") %>
-                                complete <%=ecocountSuccess%>/<%=ecocount%>
+                                <% const ecocountSuccessRound2=countCompleteRound2("ECO") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=ecocountSuccess%>/<%=ecocount%>
+                                        <% } else { %>
+                                          complete <%=ecocountSuccessRound2%>/<%=ecocount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -541,15 +638,29 @@
                               <% if (item.smartKey==='ECO' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -576,9 +687,11 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ECO' ) { %>
-                                <% if (item.status===2) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button">รายงาน</button>
+                                    <button class="report-button" disabled>รายงาน</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
@@ -592,20 +705,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ECO' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
                           </td>
                         </tr>
                         </tbody>
@@ -636,7 +766,14 @@
                           <th>
                             <% const mobcount=countEcoSolutions("MOB") %>
                               <% const mobcountSuccess=countComplete("MOB") %>
-                                complete <%=mobcountSuccess%>/<%=mobcount%>
+                                <% const mobcountSuccessRound2=countCompleteRound2("MOB") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=mobcountSuccess%>/<%=mobcount%>
+                                        <% } else { %>
+                                          complete <%=mobcountSuccessRound2%>/<%=mobcount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -646,15 +783,29 @@
                               <% if (item.smartKey==='MOB' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -681,9 +832,11 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='MOB' ) { %>
-                                <% if (item.status===2) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button">รายงาน</button>
+                                    <button class="report-button" disabled>รายงาน</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
@@ -697,20 +850,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='MOB' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
                           </td>
                         </tr>
                         </tbody>
@@ -741,7 +911,14 @@
                           <th>
                             <% const govcount=countEcoSolutions("GOV") %>
                               <% const govcountSuccess=countComplete("GOV") %>
-                                complete <%=govcountSuccess%>/<%=govcount%>
+                                <% const govcountSuccessRound2=countCompleteRound2("GOV") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=govcountSuccess%>/<%=govcount%>
+                                        <% } else { %>
+                                          complete <%=govcountSuccessRound2%>/<%=govcount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -751,15 +928,29 @@
                               <% if (item.smartKey==='GOV' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -786,9 +977,9 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='GOV' ) { %>
-                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
-                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
-                                  form1StartDay)) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
                                     <button class="report-button" disabled>รายงาน</button>
                                   </div>
@@ -804,20 +995,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='GOV' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
                           </td>
                         </tr>
                         </tbody>
@@ -848,7 +1056,14 @@
                           <th>
                             <% const peocount=countEcoSolutions("PEO") %>
                               <% const peocountSuccess=countComplete("PEO") %>
-                                complete <%=peocountSuccess%>/<%=peocount%>
+                                <% const peocountSuccessRound2=countCompleteRound2("PEO") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=peocountSuccess%>/<%=peocount%>
+                                        <% } else { %>
+                                          complete <%=peocountSuccessRound2%>/<%=peocount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -858,15 +1073,29 @@
                               <% if (item.smartKey==='PEO' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -893,9 +1122,11 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='PEO' ) { %>
-                                <% if (item.status===2) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button">รายงาน</button>
+                                    <button class="report-button" disabled>รายงาน</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
@@ -909,20 +1140,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='PEO' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
                           </td>
                         </tr>
                         </tbody>
@@ -953,7 +1201,14 @@
                           <th>
                             <% const livcount=countEcoSolutions("LIV") %>
                               <% const livcountSuccess=countComplete("LIV") %>
-                                complete <%=livcountSuccess%>/<%=livcount%>
+                                <% const livcountSuccessRound2=countCompleteRound2("LIV") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=livcountSuccess%>/<%=livcount%>
+                                        <% } else { %>
+                                          complete <%=livcountSuccessRound2%>/<%=livcount%>
+                                              <% } %>
                           </th>
                         </tr>
                         <tr>
@@ -963,15 +1218,29 @@
                               <% if (item.smartKey==='LIV' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p>
-                                        <%= item.solutionName %>
-                                      </p>
-                                      <% } %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
                                 <% } %>
                                   <% }); %>
@@ -998,9 +1267,11 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='LIV' ) { %>
-                                <% if (item.status===2) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button">รายงาน</button>
+                                    <button class="report-button" disabled>รายงาน</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
@@ -1014,20 +1285,37 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='LIV' ) { %>
-                                <div>
-                                  <p
-                                    class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status===2) { %>
-                                      - ส่งเเล้ว
-                                      <% } else if (item.status===1) { %>
-                                        - ฉบับร่าง
-                                        <% } else { %>
-                                          - ยังไม่ได้รายงาน
-                                          <% } %>
-                                  </p>
-                                </div>
-                                <% } %>
-                                  <% }); %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
                           </td>
                         </tr>
                         </tbody>
