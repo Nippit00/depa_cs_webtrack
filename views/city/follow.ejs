@@ -3,963 +3,1348 @@
 
 <head>
   <%- include('../include/head.ejs') %>
-  <title>
-          <%= pageTitle %>
-  </title>
+    <title>
+      <%= pageTitle %>
+    </title>
     <style>
-        .title-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: -300px;
-        }
-
-        .titles-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: 0px;
-        }
-
-        .collapsible {
-            background-color: #dcb432;
-            color: white;
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            text-align: left;
-            outline: none;
-            font-size: 16px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .collapsible:hover {
-            background-color: #C2AF76;
-            color: white;
-        }
-
-        .content {
-            display: none;
-            padding: 10px;
-            /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
-            overflow: hidden;
-            background-color: #f1f1f1;
-            margin-bottom: 10px;
-            margin-left: 10px;
-            margin-right: 10px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
-
-        .table-container {
-            width: 80%;
-            margin: 0 auto;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            /* เพิ่ม overflow: hidden เพื่อป้องกัน input ทับข้อมูลตาราง */
-            margin-bottom: 50px;
-            background-color: #dcb432;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        th {
-            background-color: #00B2A9;
-            color: white;
-            border-radius: 0px;
-            font-size: 14px;
-        }
-        .complete {
-          color: green;
+      .title-container {
+        text-align: center;
+        padding: 20px;
+        position: relative;
+        top: -300px;
       }
-      
+
+      .titles-container {
+        text-align: center;
+        padding: 20px;
+        position: relative;
+        top: 0px;
+      }
+
+      .collapsible {
+        background-color: #dcb432;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        text-align: left;
+        outline: none;
+        font-size: 16px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        color: white;
+      }
+
+      .collapsible:hover {
+        background-color: #C2AF76;
+        color: white;
+      }
+
+      .content {
+        display: none;
+        padding: 10px;
+        /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
+        overflow: hidden;
+        background-color: #f1f1f1;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+      }
+
+      .table-container {
+        width: 80%;
+        margin: 0 auto;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+        /* เพิ่ม overflow: hidden เพื่อป้องกัน input ทับข้อมูลตาราง */
+        margin-bottom: 50px;
+        background-color: #dcb432;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      th {
+        background-color: #00B2A9;
+        color: white;
+        border-radius: 0px;
+        font-size: 14px;
+      }
+
+      .complete {
+        color: green;
+      }
+
       .not-complete {
         color: rgb(255, 115, 0);
-    }
-    
-    
-      
+      }
+
+
+
       .incomplete {
-          color: red;
+        color: red;
       }
 
       span.disabled-link {
         color: #999;
         cursor: not-allowed;
       }
+
       .button-container {
-        margin-bottom: 10px; /* ระยะห่างด้านล่างของปุ่ม */
+        margin-bottom: 10px;
+        /* ระยะห่างด้านล่างของปุ่ม */
       }
-      
+
       .report-button {
-        padding: 5px 10px; /* กำหนดขนาดของปุ่ม */
-        background-color: #00B2A9; /* สีพื้นหลังของปุ่ม */
-        color: #fff; /* สีข้อความภายในปุ่ม */
-        border: none; /* ลบเส้นขอบของปุ่ม */
-        border-radius: 5px; /* ทำให้มีมุมโค้งที่ปลายของปุ่ม */
-        cursor: pointer; /* ทำให้เมาส์เป็นรูปขีดตอนชี้ที่ปุ่ม */
+        padding: 5px 10px;
+        /* กำหนดขนาดของปุ่ม */
+        background-color: #00B2A9;
+        /* สีพื้นหลังของปุ่ม */
+        color: #fff;
+        /* สีข้อความภายในปุ่ม */
+        border: none;
+        /* ลบเส้นขอบของปุ่ม */
+        border-radius: 5px;
+        /* ทำให้มีมุมโค้งที่ปลายของปุ่ม */
+        cursor: pointer;
+        /* ทำให้เมาส์เป็นรูปขีดตอนชี้ที่ปุ่ม */
       }
-      
+
       .report-button:hover {
-        background-color: #0056b3; /* สีพื้นหลังของปุ่มเมื่อเมาส์ชี้ที่ปุ่ม */
+        background-color: #0056b3;
+        /* สีพื้นหลังของปุ่มเมื่อเมาส์ชี้ที่ปุ่ม */
       }
+
       .button-container-disable {
-        margin-bottom: 10px; /* ระยะห่างด้านล่างของปุ่ม */
-        opacity: 0.5; /* ตัวอย่างเท่านี้จะทำให้ปุ่มเป็นสีเทาอ่อนเมื่อถูก disable */
-        cursor: not-allowed; /* เพิ่ม cursor style เป็น not-allowed เมื่อปุ่มถูก disable */
-        pointer-events: none; /* ป้องกันการคลิกเมื่อปุ่มถูก disable */
+        margin-bottom: 10px;
+        /* ระยะห่างด้านล่างของปุ่ม */
+        opacity: 0.5;
+        /* ตัวอย่างเท่านี้จะทำให้ปุ่มเป็นสีเทาอ่อนเมื่อถูก disable */
+        cursor: not-allowed;
+        /* เพิ่ม cursor style เป็น not-allowed เมื่อปุ่มถูก disable */
+        pointer-events: none;
+        /* ป้องกันการคลิกเมื่อปุ่มถูก disable */
       }
-      
     </style>
-     
+
 </head>
 
 <body>
-    <%
-    function countEcoSolutions(data) {
-        let count = 0;
-        followdata.forEach((item) => {
-            if (item.smartKey === data) {
-                count++;
-            }
-        });
-        return count;
+  <% function countEcoSolutions(data) { let count=0; followdata.forEach((item)=> {
+    if (item.smartKey === data) {
+    count++;
+    }
+    });
+    return count;
     }
     function countComplete(data) {
-        let count = 0;
-        followdata.forEach((item) => {
-          if (item.smartKey === data) {
-            if (item.status === 2) {
-                count++;
-              }
-            }
-            
-        });
-        return count;
+    let count = 0;
+    followdata.forEach((item) => {
+    if (item.smartKey === data) {
+    if (item.status === 2) {
+    count++;
     }
+    }
+
+    });
+    return count;
+    }
+
+    function countCompleteRound2(data) {
+    let count = 0;
+    followdata.forEach((item) => {
+    if (item.smartKey === data) {
+    if (item.status_round2 === 2) {
+    count++;
+    }
+    }
+
+    });
+    return count;
+    }
+
+    var currentDate = new Date();
+    var currentDay = currentDate.getDate();
+    var currentMonth = currentDate.getMonth() + 1;
+    var currentYear = currentDate.getFullYear();
+
+    var form1StartDay = 8;
+    var form1StartMonth = 5;
+    var form1Year = 2024;
+
+    var form2StartDay = 8;
+    var form2StartMonth = 5;
+    var form2Year = 2025;
+
     %>
-    
-    
+
+
 
     <%- include('../component/navbar.ejs') %>
 
-    <div class="banner">
+      <div class="banner">
         <img src="/img/bbj.png" alt="Banner Image">
-    </div>
+      </div>
 
-    <div class="title-container">
-        <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1> 
-    </div>
+      <div class="title-container">
+        <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1>
+      </div>
 
-    <%- include('../component/menu.ejs') %>
+      <%- include('../component/menu.ejs') %>
 
-    <h4 style="text-align: center; color:#04B2A1"><%=followdata[0].cityName%></h4>
-    <br>
+        <h4 style="text-align: center; color:#04B2A1">
+          <%=followdata[0].cityName%>
+        </h4>
+        <br>
 
-    <div class="table-container">
-        <button class="collapsible" style="text-align: center;"><%=followdata[0].cityName%></button>
-        <div class="content">
-          <div id="accordion">
-            <div class="card">
-              <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                    aria-controls="collapseOne">
-                    โครงสร้างพื้นฐานด้านกายภาพ
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>   
-                      </tr>
-                      <tbody>
+        <div class="table-container">
+          <button class="collapsible" style="text-align: center;">
+            <%=followdata[0].cityName%>
+          </button>
+          <div class="content">
+            <div id="accordion">
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                      aria-controls="collapseOne">
+                      โครงสร้างพื้นฐานด้านกายภาพ
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
                         <tr>
-                          <td>โครงสร้างพื้นฐานกายภาพ</td>
-                          <td><p><a href="/form">โครงสร้างพื้นฐานกายภาพ</a></p></td>
+                          <th>โครงสร้าง / Smart</th>
+                          <th>Project</th>
+                          <th>Response</th>
+                        </tr>
+                        <tbody>
+                          <tr>
+                            <td>โครงสร้างพื้นฐานกายภาพ</td>
+                            <td>
+                              <p><a href="/form">โครงสร้างพื้นฐานกายภาพ</a></p>
+                            </td>
+                            <td>complete 0/0</td>
+                          </tr>
+                      </table>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingTwo">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+                      aria-controls="collapseTwo">
+                      โครงสร้างพื้นฐานด้านดิจิทัล
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>โครงสร้าง / Smart</th>
+                          <th>Project</th>
+                          <th>Response</th>
+                        </tr>
+                        <tbody>
+                          <tr>
+                            <td>โครงสร้างพื้นฐานกายภาพ</td>
+                            <td>
+                              <p><a href="/form">โครงสร้างพื้นฐานกายภาพ</a></p>
+                            </td>
+                            <td>complete 0/0</td>
+                          </tr>
+                      </table>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header" id="headingTree">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTree" aria-expanded="true"
+                      aria-controls="collapseTree">
+                      ระบบบริหารข้อมูลเมือง City Data Platform
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseTree" class="collapse" aria-labelledby="headingTree" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>โครงสร้าง / Smart</th>
+                          <th>Project</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <td>City Data Platform</td>
+                          <td>
+                            <p><a href="/form">โครงสร้างพื้นฐานดิจิทัล</a></p>
+                          </td>
                           <td>complete 0/0</td>
                         </tr>
-                    </table>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                    aria-controls="collapseTwo">
-                    โครงสร้างพื้นฐานด้านดิจิทัล
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th>โครงสร้าง / Smart</th>
-                        <th>Project</th>
-                        <th>Response</th>
-                      </tr>
-                      <tbody>
+              <div class="card">
+                <div class="card-header" id="headingFour">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                      aria-controls="collapseFour">
+                      Smart Environment
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
                         <tr>
-                          <td>โครงสร้างพื้นฐานกายภาพ</td>
-                          <td><p><a href="/form">โครงสร้างพื้นฐานกายภาพ</a></p></td>
-                          <td>complete 0/0</td>
+                          <th>
+                            <% const envcountProject=countEcoSolutions("ENV") %>
+                              <%=envcountProject%> โครงการ
+                          </th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
+                          <th>
+                            <% const envcount=countEcoSolutions("ENV") %>
+                              <% const envcountSuccess=countComplete("ENV") %>
+                                <% const envcountSuccessRound2=countCompleteRound2("ENV") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=envcountSuccess%>/<%=envcount%>
+                                        <% } else { %>
+                                          complete <%=envcountSuccessRound2%>/<%=envcount%>
+                                              <% } %>
+                          </th>
                         </tr>
-                    </table>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingTree">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTree" aria-expanded="true"
-                    aria-controls="collapseTree">
-                    ระบบบริหารข้อมูลเมือง City Data Platform
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseTree" class="collapse" aria-labelledby="headingTree" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th>โครงสร้าง</th>
-                        <th>รอบที่1</th>
-                        <th>รอบที่2</th>
-                      </tr>
-                      <tr>
-                        <td>City Data Platform1</td>
-                        <td><a href="/formcdp1">รายงาน</a></td>
-                        <td><a href="/form">รายงาน</a></td>
-                      </tr>
-                      <tr>
-                        <td>City Data Platform2</td>
-                        <td><a href="/formcdp2">รายงาน</a></td>
-                        <td><a href="/form">รายงาน</a></td>
-                      </tr>
-                      <tr>
-                        <td>City Data Platform3</td>
-                        <td><a href="/formcdp3">รายงาน</a></td>
-                        <td><a href="/form">รายงาน</a></td>
-                      </tr>
-                      <tr>
-                        <td>City Data Platform4</td>
-                        <td><a href="/formcdp4">รายงาน</a></td>
-                        <td><a href="/form">รายงาน</a></td>
-                      </tr>
-                      </tbody>
-                    </table>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingFour">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
-                    aria-controls="collapseFour">
-                    Smart Environment
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const envcountProject = countEcoSolutions("ENV") %>
-                          <%=envcountProject%> โครงการ</th>
-                          <th>รอบที่ 1</th>
-                          <th>รอบที่ 2</th>
-                        <th><% const envcount = countEcoSolutions("ENV") %>
-                          <% const envcountSuccess = countComplete("ENV") %>
-                          complete <%=envcountSuccess%>/<%=envcount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'ENV') { %>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='ENV' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'ENV') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'ENV') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'ENV') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ENV' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+
+
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ENV' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ENV' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingFive">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
-                    aria-controls="collapseFive">
-                    Smart Energy
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const enecountProject = countEcoSolutions("ENE") %>
-                          <%=enecountProject%> โครงการ</th>
+              <div class="card">
+                <div class="card-header" id="headingFive">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+                      aria-controls="collapseFive">
+                      Smart Energy
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>
+                            <% const enecountProject=countEcoSolutions("ENE") %>
+                              <%=enecountProject%> โครงการ
+                          </th>
                           <th>รอบที่ 1</th>
                           <th>รอบที่ 2</th>
-                        <th><% const enecount = countEcoSolutions("ENE") %>
-                          <% const enecountSuccess = countComplete("ENE") %>
-                          complete <%=enecountSuccess%>/<%=enecount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'ENE') { %>
+                          <th>
+                            <% const enecount=countEcoSolutions("ENE") %>
+                              <% const enecountSuccess=countComplete("ENE") %>
+                                <% const enecountSuccessRound2=countCompleteRound2("ENE") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=enecountSuccess%>/<%=enecount%>
+                                        <% } else { %>
+                                          complete <%=enecountSuccessRound2%>/<%=enecount%>
+                                              <% } %>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='ENE' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'ENE') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'ENE') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'ENE') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ENE' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ENE' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ENE' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingsix">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapsesix" aria-expanded="true"
-                    aria-controls="collapsesix">
-                    Smart Economy
-                  </button>
-                </h5>
-              </div>
-              <div id="collapsesix" class="collapse" aria-labelledby="headingsix" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const ecocountProject = countEcoSolutions("ECO") %>
-                          <%=ecocountProject%> โครงการ</th>
+              <div class="card">
+                <div class="card-header" id="headingsix">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapsesix" aria-expanded="true"
+                      aria-controls="collapsesix">
+                      Smart Economy
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapsesix" class="collapse" aria-labelledby="headingsix" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>
+                            <% const ecocountProject=countEcoSolutions("ECO") %>
+                              <%=ecocountProject%> โครงการ
+                          </th>
                           <th>รอบที่ 1</th>
                           <th>รอบที่ 2</th>
-                        <th><% const ecocount = countEcoSolutions("ECO") %>
-                          <% const ecocountSuccess = countComplete("ECO") %>
-                          complete <%=ecocountSuccess%>/<%=ecocount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'ECO') { %>
+                          <th>
+                            <% const ecocount=countEcoSolutions("ECO") %>
+                              <% const ecocountSuccess=countComplete("ECO") %>
+                                <% const ecocountSuccessRound2=countCompleteRound2("ECO") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=ecocountSuccess%>/<%=ecocount%>
+                                        <% } else { %>
+                                          complete <%=ecocountSuccessRound2%>/<%=ecocount%>
+                                              <% } %>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='ECO' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'ECO') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'ECO') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'ECO') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ECO' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ECO' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='ECO' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingseven">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseseven" aria-expanded="true"
-                    aria-controls="collapseseven">
-                    Smart Mobility
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseseven" class="collapse" aria-labelledby="headingseven" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const mobcountProject = countEcoSolutions("MOB") %>
-                          <%=mobcountProject%> โครงการ</th>
+              <div class="card">
+                <div class="card-header" id="headingseven">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseseven"
+                      aria-expanded="true" aria-controls="collapseseven">
+                      Smart Mobility
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseseven" class="collapse" aria-labelledby="headingseven" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>
+                            <% const mobcountProject=countEcoSolutions("MOB") %>
+                              <%=mobcountProject%> โครงการ
+                          </th>
                           <th>รอบที่ 1</th>
                           <th>รอบที่ 2</th>
-                        <th><% const mobcount = countEcoSolutions("MOB") %>
-                          <% const mobcountSuccess = countComplete("MOB") %>
-                          complete <%=mobcountSuccess%>/<%=mobcount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'MOB') { %>
+                          <th>
+                            <% const mobcount=countEcoSolutions("MOB") %>
+                              <% const mobcountSuccess=countComplete("MOB") %>
+                                <% const mobcountSuccessRound2=countCompleteRound2("MOB") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=mobcountSuccess%>/<%=mobcount%>
+                                        <% } else { %>
+                                          complete <%=mobcountSuccessRound2%>/<%=mobcount%>
+                                              <% } %>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='MOB' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'MOB') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'MOB') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'MOB') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='MOB' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='MOB' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='MOB' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingEgg">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEgg" aria-expanded="true"
-                    aria-controls="collapseEgg">
-                    Smart Governance
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseEgg" class="collapse" aria-labelledby="headingEgg" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const govcountProject = countEcoSolutions("GOV") %>
-                          <%=govcountProject%> โครงการ</th>
+              <div class="card">
+                <div class="card-header" id="headingEgg">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEgg" aria-expanded="true"
+                      aria-controls="collapseEgg">
+                      Smart Governance
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseEgg" class="collapse" aria-labelledby="headingEgg" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>
+                            <% const govcountProject=countEcoSolutions("GOV") %>
+                              <%=govcountProject%> โครงการ
+                          </th>
                           <th>รอบที่ 1</th>
                           <th>รอบที่ 2</th>
-                        <th><% const govcount = countEcoSolutions("GOV") %>
-                          <% const govcountSuccess = countComplete("GOV") %>
-                          complete <%=govcountSuccess%>/<%=govcount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'GOV') { %>
+                          <th>
+                            <% const govcount=countEcoSolutions("GOV") %>
+                              <% const govcountSuccess=countComplete("GOV") %>
+                                <% const govcountSuccessRound2=countCompleteRound2("GOV") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=govcountSuccess%>/<%=govcount%>
+                                        <% } else { %>
+                                          complete <%=govcountSuccessRound2%>/<%=govcount%>
+                                              <% } %>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='GOV' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'GOV') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'GOV') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'GOV') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='GOV' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='GOV' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='GOV' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingnine">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapsenine" aria-expanded="true"
-                    aria-controls="collapsenine">
-                    Smart People
-                  </button>
-                </h5>
-              </div>
-              <div id="collapsenine" class="collapse" aria-labelledby="headingnine" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const peocountProject = countEcoSolutions("PEO") %>
-                          <%=peocountProject%> โครงการ</th>
+              <div class="card">
+                <div class="card-header" id="headingnine">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapsenine" aria-expanded="true"
+                      aria-controls="collapsenine">
+                      Smart People
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapsenine" class="collapse" aria-labelledby="headingnine" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>
+                            <% const peocountProject=countEcoSolutions("PEO") %>
+                              <%=peocountProject%> โครงการ
+                          </th>
                           <th>รอบที่ 1</th>
                           <th>รอบที่ 2</th>
-                        <th><% const peocount = countEcoSolutions("PEO") %>
-                          <% const peocountSuccess = countComplete("PEO") %>
-                          complete <%=peocountSuccess%>/<%=peocount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'PEO') { %>
+                          <th>
+                            <% const peocount=countEcoSolutions("PEO") %>
+                              <% const peocountSuccess=countComplete("PEO") %>
+                                <% const peocountSuccessRound2=countCompleteRound2("PEO") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=peocountSuccess%>/<%=peocount%>
+                                        <% } else { %>
+                                          complete <%=peocountSuccessRound2%>/<%=peocount%>
+                                              <% } %>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='PEO' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'PEO') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'PEO') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'PEO') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='PEO' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='PEO' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='PEO' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingten">
-                <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseten" aria-expanded="true"
-                    aria-controls="collapseten">
-                    Smart Living
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseten" class="collapse" aria-labelledby="headingten" data-parent="#accordion">
-                <div class="card-body">
-                  <table class="table">
-                    <table>
-                      <tr>
-                        <th><% const livcountProject = countEcoSolutions("LIV") %>
-                          <%=livcountProject%> โครงการ</th>
+              <div class="card">
+                <div class="card-header" id="headingten">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseten" aria-expanded="true"
+                      aria-controls="collapseten">
+                      Smart Living
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseten" class="collapse" aria-labelledby="headingten" data-parent="#accordion">
+                  <div class="card-body">
+                    <table class="table">
+                      <table>
+                        <tr>
+                          <th>
+                            <% const livcountProject=countEcoSolutions("LIV") %>
+                              <%=livcountProject%> โครงการ
+                          </th>
                           <th>รอบที่ 1</th>
                           <th>รอบที่ 2</th>
-                        <th><% const livcount = countEcoSolutions("LIV") %>
-                          <% const livcountSuccess = countComplete("LIV") %>
-                          complete <%=livcountSuccess%>/<%=livcount%></th>
-                      </tr>
-                      <tr>
-                        <td><% followdata.forEach((item) => { %>
-                            <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                            <% if (item.smartKey === 'LIV') { %>
+                          <th>
+                            <% const livcount=countEcoSolutions("LIV") %>
+                              <% const livcountSuccess=countComplete("LIV") %>
+                                <% const livcountSuccessRound2=countCompleteRound2("LIV") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=livcountSuccess%>/<%=livcount%>
+                                        <% } else { %>
+                                          complete <%=livcountSuccessRound2%>/<%=livcount%>
+                                              <% } %>
+                          </th>
+                        </tr>
+                        <tr>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='LIV' ) { %>
                                 <!-- แสดงข้อมูลของแต่ละ object -->
                                 <div>
-                                  <% if (item.status===2) { %>
-                                    <p><span class="disabled-link">
-                                        <%= item.solutionName %>
-                                      </span></p>
-                                    <% } else { %>
-                                      <p><a href="/formsmart/<%=item.solutionID%>">
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
                                           <%= item.solutionName %>
-                                        </a></p>
-                                      <% } %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
                                 </div>
-                            <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'LIV') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                    <td>
-                      <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === 'LIV') { %>
-                          <% if (item.status===2) { %>
-                            <div class="button-container-disable">
-                              <button class="report-button">รายงาน</button>
-                            </div>
-                            <% } else { %>
-                              <div class="button-container">
-                                <a href="/formsmart/<%=item.solutionID%>"><button class="report-button">รายงาน</button></a>
-                              </div>
-                              <% } %>
-                        <% } %>
-                    <% }); %>
-                    </td>
-                        <td>
-                          <% followdata.forEach((item) => { %>
-                            <% if (item.smartKey === 'LIV') { %>
-                                <div>
-                                  <p class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                    <% if (item.status === 2) { %>
-                                        - ส่งเเล้ว
-                                    <% } else if (item.status === 1) { %>
-                                        - ฉบับร่าง
-                                    <% } else { %>
-                                        - ยังไม่ได้รายงาน
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='LIV' ) { %>
+                                <% if (item.status===2 || (currentYear===form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
+                                  form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
                                     <% } %>
-                                </p>
-                                </div>
-                            <% } %>
-                        <% }); %>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='LIV' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รายงาน</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">รายงาน</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='LIV' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-            
-    </div>
 
-    <br>
-    <br>
-    <br>
-    <%- include('../component/footer.ejs') %>
+        </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var coll = document.querySelector('.collapsible');
-            var content = document.querySelector('.content');
+        <br>
+        <br>
+        <br>
+        <%- include('../component/footer.ejs') %>
 
-            coll.addEventListener('click', function() {
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              var coll = document.querySelector('.collapsible');
+              var content = document.querySelector('.content');
+
+              coll.addEventListener('click', function () {
                 content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+              });
             });
-        });
-    </script>
+          </script>
 
 </body>
 
