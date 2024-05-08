@@ -6,6 +6,7 @@ const isAuth = require('../middlewares/is-auth.js');
 const router = express.Router();
 
 router.post('/formsmart/:solutionID',isAuth, uploadController.uploadFile, uploadController.handleUpload);
+router.post('/formsmart_round2/:solutionID',isAuth, uploadController.uploadFile, uploadController.handleUpload);
 
 
 module.exports = router;

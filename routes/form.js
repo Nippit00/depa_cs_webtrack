@@ -15,8 +15,12 @@ router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormche
 //select form
 router.get('/formsmart/:solutionID',isAuth,formController.getformSmart);
 
+//select form round 2
+router.get('/formsmart_round2/:solutionID',isAuth,formController.getformSmartRound2);
+
 //send data form to backebd 
 router.post('/sendformsmart/:solutionID',isAuth,formController.postFormSmart);
+router.post('/sendformsmart_round2/:solutionID',isAuth,formController.postFormSmartRound2);
 
 //formcdp
 router.get('/formcdpfirst',formController.getformGdpFirst);
