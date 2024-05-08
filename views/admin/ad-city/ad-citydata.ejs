@@ -3,9 +3,12 @@
   <head>
     <% include('../include/ad-head.ejs') %>
     <title>Admin - <%= pageTitle %></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
     <style>
       * {
         font-family: "Noto Sans Thai", sans-serif;
@@ -19,7 +22,7 @@
   <body class="bg-gray-50">
     <%- include('../include/ad-navbar.ejs') %>
     <div class="w-[90%] mx-auto bg-white mt-3 rounded-lg">
-      <div class="flex mx-20 py-5 ">
+      <div class="flex mx-20 py-5">
         <div class="w-[50%]">
           <div>
             <p class="text-3xl font-medium">
@@ -27,8 +30,7 @@
             </p>
           </div>
           <div>
-            <p class="text-xl font-normal">จังหวัด : <%=cityData.province %>
-            </p>
+            <p class="text-xl font-normal">จังหวัด : <%=cityData.province %></p>
           </div>
           <div>
             <p class="text-xl font-normal">
@@ -47,19 +49,24 @@
             height="450"
             frameborder="0"
             style="border: 0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>%>&zoom=5&maptype=satellite" 
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>%>&zoom=5&maptype=satellite"
             allowfullscreen=""
           ></iframe>
         </div>
       </div>
-      <div class="mb-2 flex justify-end ">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-          onclick="GoEditPage()">
+      <div class="mb-2 flex justify-end">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+          onclick="GoEditPage()"
+        >
           แก้ไขข้อมูลจังหวัด
         </button>
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-24" onclick="GoAddSolution()">
+        <button
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-24"
+          onclick="GoAddSolution()"
+        >
           เพิ่ม Solution
-        </button>      
+        </button>
       </div>
       <div class="text-black">
         <div class="content">
@@ -69,61 +76,76 @@
                 <tr>
                   <th class="px-4 py-2">โครงสร้าง / Smart</th>
                   <th class="px-4 py-2">Project</th>
-                  
                 </tr>
               </thead>
-              <tbody >
+              <tbody>
                 <% solution.forEach((smartItem) => { %>
-                  <tr class="hover:bg-gray-50">
-                    <td class="border px-4 py-2">Smart <%= smartItem.smart %></td>
-                    <td class="border px-4 py-2"><p><%= smartItem.solutionName %></p></td>
-                  </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border px-4 py-2">Smart <%= smartItem.smart %></td>
+                  <td class="border px-4 py-2">
+                    <p><%= smartItem.solutionName %></p>
+                  </td>
+                  <td
+                    class="border px-4 py-2 hover:bg-slate-200 hover:font-bold"
+                  >
+                    <div>
+                      <a
+                        class=""
+                        href="/admin/solution/edit/<%=smartItem.solutionID  %>"
+                        >Edit</a
+                      >
+                    </div>
+                  </td>
+                </tr>
                 <% }); %>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      
     </div>
     <%- include('../include/ad-footer.ejs') %>
   </body>
   <script>
-    function GoEditPage(){
-      const cityID='<%=cityData.cityID%>'
+    function GoEditPage() {
+      const cityID = "<%=cityData.cityID%>";
       window.location.href = `/admin/city/edit/${cityID}`;
-      console.log("active")
+      console.log("active");
     }
-    function GoAddSolution(){
-      const cityID='<%=cityData.cityID%>'
+    function GoAddSolution() {
+      const cityID = "<%=cityData.cityID%>";
       window.location.href = `/admin/solution/add/${cityID}`;
-      console.log("active")
+      console.log("active");
     }
   </script>
   <script>
     function handleSearch() {
       // รับค่าที่ใส่ใน input field
-      const searchText = document.getElementById('searchInput').value.toLowerCase();
+      const searchText = document
+        .getElementById("searchInput")
+        .value.toLowerCase();
 
       // หาข้อมูลที่ตรงกับคำค้นหา
-      const rows = document.querySelectorAll('table tbody tr');
-      rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
+      const rows = document.querySelectorAll("table tbody tr");
+      rows.forEach((row) => {
+        const cells = row.querySelectorAll("td");
         let found = false;
-        cells.forEach(cell => {
+        cells.forEach((cell) => {
           if (cell.textContent.toLowerCase().includes(searchText)) {
             found = true;
           }
         });
         if (found) {
-          row.style.display = ''; // แสดงแถวที่ตรงกับคำค้นหา
+          row.style.display = ""; // แสดงแถวที่ตรงกับคำค้นหา
         } else {
-          row.style.display = 'none'; // ซ่อนแถวที่ไม่ตรงกับคำค้นหา
+          row.style.display = "none"; // ซ่อนแถวที่ไม่ตรงกับคำค้นหา
         }
       });
     }
-    document.getElementById('searchInput').addEventListener('keyup', function(event) {
-      handleSearch()
-    });
+    document
+      .getElementById("searchInput")
+      .addEventListener("keyup", function (event) {
+        handleSearch();
+      });
   </script>
 </html>
