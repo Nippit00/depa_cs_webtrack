@@ -149,7 +149,7 @@
         </div>
 
         <div class="head">
-            <h5>เมืองอัจฉริยะ</h5>
+            <h5>เมืองอัจฉริยะ </h5>
         </div>
 
         <div class="head">
@@ -172,7 +172,7 @@
         </div>
 
         <div class="custom-container-1">
-            <form action="submit" method="post">
+            <form action="/saveForm/<%=formdata[0].solutionID%>" method="post">
 
                 <!-- ช่องเลือก (รายการแบบเลื่อน) -->
                 <div>
@@ -321,8 +321,9 @@
                     <label for="usecdp">การนำ CDP ไปใช้ให้เกิดประโยชน์ :</label>
                     <textarea id="usecdp" name="usecdp" placeholder="กรอกข้อความ...."></textarea>
                 </div>
-
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <!-- ปุ่มบันทึก -->
+                <input type="submit" value="test">
                 <button type="button" id="recordButton">บันทึก</button>
 
                 <!-- ปุ่มส่งรายงาน -->
@@ -330,7 +331,7 @@
             </form>
         </div>
 
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 var statusSelect = document.getElementById('status');
                 var progressSelect = document.getElementById('progress');
@@ -405,7 +406,7 @@
                 // Call the function updateSubmitButtonState when the web page loads
                 updateSubmitButtonState();
             });
-        </script>
+        </script> -->
 
         <%- include('component/footer.ejs') %>
 

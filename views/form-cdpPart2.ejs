@@ -142,6 +142,7 @@
 
   <body>
     <%- include('component/navbar.ejs') %>
+    
     <script>
       function goBack() {
         window.history.back();
@@ -157,6 +158,7 @@
 
     <div class="head">
       <h6>ชื่อโครงการ :</h6>
+     
     </div>
 
     <div class="custom-container">
@@ -173,9 +175,9 @@
         <p>ตัวชี้วัด ที่ได้รับอนุมติ :</p>
       </div>
     </div>
-
+    
     <div class="custom-container-1">
-      <form action="submit" method="post">
+      <form action="/saveForm/<%= formdata.solutionID %>" method="post">
         <!-- ช่องเลือก (รายการแบบเลื่อน) -->
         <div>
           <label for="status">สถานะ :</label>
