@@ -172,6 +172,7 @@ exports.getformSmartRound2 = (req, res, next) => {
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
   const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
   const q3 = "SELECT * FROM `question` WHERE 1";
+  const q4 = "SELECT * FROM anssolution_round2 WHERE solutionID = ?;";
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -180,12 +181,17 @@ exports.getformSmartRound2 = (req, res, next) => {
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
-          res.render("form-smart-round2", {
-            formdata: data,
-            dataOld: dataOld || [],
-            csrfToken: req.csrfToken(),
-            question: question,
-          });
+          db.query(q4,[solutionid],(err,dataOldRound2)=>{
+            if(err) return res.status(500).json(err);
+            console.log(data)
+            res.render("form-smart-round2", {
+              formdata: data,
+              dataOld: dataOld || [],
+              dataOldRound2: dataOldRound2 || [],
+              csrfToken: req.csrfToken(),
+              question: question,
+            });
+          })
         });
       });
     });
@@ -305,10 +311,10 @@ exports.postFormSmartRound2 = (req, res, next) => {
 
     const postData = req.body;
     const solutionParam = req.params;
-    const qUpdateStatus = "UPDATE solution SET status = 1 WHERE solutionID = ?";
+    const qUpdateStatus = "UPDATE solution SET status_round2 = 1 WHERE solutionID = ?";
     let qInsert;
     let qUpdate;
-    const qFetchData = "SELECT * FROM anssolution WHERE solutionID = ?";
+    const qFetchData = "SELECT * FROM anssolution_round2 WHERE solutionID = ?";
 
     db.query(qFetchData, [solutionParam.solutionID], (err, fetchData) => {
       if (err)
@@ -321,7 +327,7 @@ exports.postFormSmartRound2 = (req, res, next) => {
       // console.log("จำนวนQ:",numberOfQuestions)
       if (fetchData && fetchData.length > 0) {
         // Update existing data
-        qUpdate = `UPDATE anssolution SET timestamp = ?`;
+        qUpdate = `UPDATE anssolution_round2 SET timestamp = ?`;
         for (let i = 1; i <= numberOfQuestions; i++) {
           qUpdate += `, Q${i}=?`;
         }
@@ -347,7 +353,7 @@ exports.postFormSmartRound2 = (req, res, next) => {
                   .status(500)
                   .json({ error: "UpdateStatusError", message: err });
               return res.redirect(
-                `/formsmart/${req.params.solutionID}?success=true`
+                `/formsmart_round2/${req.params.solutionID}?success=true`
               );
             }
           );
@@ -355,7 +361,7 @@ exports.postFormSmartRound2 = (req, res, next) => {
         //ถ้าไม่เจอ
       } else {
         // Insert new data
-        qInsert = `INSERT INTO anssolution (solutionID, timestamp`;
+        qInsert = `INSERT INTO anssolution_round2 (solutionID, timestamp`;
         for (let i = 1; i <= numberOfQuestions; i++) {
           qInsert += `, Q${i}`;
         }
@@ -388,7 +394,7 @@ exports.postFormSmartRound2 = (req, res, next) => {
                   .status(500)
                   .json({ error: "UpdateStatusError", message: err });
               return res.redirect(
-                `/formsmart/${req.params.solutionID}?success=true`
+                `/formsmart_round2/${req.params.solutionID}?success=true`
               );
             }
           );

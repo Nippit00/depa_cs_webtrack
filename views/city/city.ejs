@@ -338,16 +338,17 @@
            <h6 class="ml-48 relative top-[-100px]"><span class="text-blue-500">Download</span>
                เอกสารรายละเอียดของแผนเมือง</h6>
                <% datafile.forEach(data => {
-                   if (data.fileID === "F1") { %>
-                       <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a> <br>
-                   <% } else if (data.fileID === "F2") { %>
-                       <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a> <br>
-                   <% } else if (data.fileID === "F3") { %>
-                       <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a> <br>
-                   <% } else { %>
-                       <a href="<%= data.link %>" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
-                   <% }
-               }) %>
+                if (data.fileID === "F1") { %>
+                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a> <br>
+                <% } else if (data.fileID === "F2") { %>
+                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a> <br>
+                <% } else if (data.fileID === "F3") { %>
+                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a> <br>
+                <% } else { %>
+                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
+                <% }
+            }) %>
+            
               
            <%- include('../component/footer.ejs') %>
                <script>
