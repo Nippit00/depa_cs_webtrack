@@ -5,10 +5,14 @@ const multer = require('multer');
 
 // ตำแหน่งที่เก็บไฟล์
 const uploadDir = path.join(__dirname, '../public/uploads');
+const uploadDirRound2 = path.join(__dirname, '../public/uploadsRound2');
 
 // ตรวจสอบว่าโฟลเดอร์มีอยู่หรือไม่ ถ้าไม่มีก็สร้างใหม่
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
+}
+if (!fs.existsSync(uploadDirRound2)) {
+    fs.mkdirSync(uploadDirRound2, { recursive: true });
 }
 
 const storage = multer.diskStorage({
@@ -29,9 +33,29 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+const storageRound2 = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, uploadDirRound2);
+    },
+    filename: function(req, file, cb) {
+        // ตรวจสอบว่าชื่อไฟล์ที่อัปโหลดขึ้นมีคำนำหน้าด้วย req.params.solutionID หรือไม่
+        if (file.originalname.startsWith(req.params.solutionID)) {
+            const filePath = path.join(uploadDirRound2, file.originalname);
+            // ถ้าใช่ ให้ลบไฟล์เก่าก่อนที่จะเขียนทับ
+            fs.unlinkSync(filePath);
+            cb(null, file.originalname);
+        } else {
+            // ถ้าไม่ใช่ ให้สร้างชื่อไฟล์ใหม่
+            cb(null, req.params.solutionID + path.extname(file.originalname));
+        }
+    }
+});
+
+const upload = multer({ storage: storage});
+const uploadRound2 = multer({ storage: storageRound2 });
 
 exports.uploadFile = upload.single('fileUpload');
+exports.uploadFileRound2 = uploadRound2.single('fileUploadRound2');
 
 
 exports.handleUpload = (req, res) => {
