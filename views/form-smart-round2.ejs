@@ -202,7 +202,15 @@
             opacity: 0.5;
             /* Reduce opacity */
             cursor: not-allowed;
-            /* Change cursor */
+            /* 
+            Change cursor */
+        }
+        #alert{
+            margin-top: 3rem;
+            color: red;
+        }
+        #alert2{
+            color: red;
         }
     </style>
 </head>
@@ -541,6 +549,8 @@
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
                 <button type="submit" id="submitButton">ส่งรายงาน</button>
+                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
+                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
             </form>
         </div>
 
@@ -554,8 +564,8 @@
                 const successParam = urlParams.get('success');
                 if (successParam === 'true') {
                     Swal.fire({
-                        title: "Success!",
-                        text: "Data saved successfully",
+                        title: "บันทึกข้อมูลสำเร็จ!",
+                        text: "บันทึกข้อมูลสำเร็จ",
                         icon: "success",
                     }).then(function () {
                         window.location.href = "/city/follow";
@@ -583,7 +593,7 @@
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
                 
-                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>"; 
+                    reportForm.action = "/formcheck_round2/<%=formdata[0].solutionID%>"; 
                     reportForm.submit();
                 });
                

@@ -3,11 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 
-// ตำแหน่งที่เก็บไฟล์
+// Directory paths for uploads
 const uploadDir = path.join(__dirname, '../public/uploads');
 const uploadDirRound2 = path.join(__dirname, '../public/uploadsRound2');
 
-// ตรวจสอบว่าโฟลเดอร์มีอยู่หรือไม่ ถ้าไม่มีก็สร้างใหม่
+// Create directories if they don't exist
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -16,61 +16,53 @@ if (!fs.existsSync(uploadDirRound2)) {
 }
 
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, uploadDir);
     },
-    filename: function(req, file, cb) {
-        // ตรวจสอบว่าชื่อไฟล์ที่อัปโหลดขึ้นมีคำนำหน้าด้วย req.params.solutionID หรือไม่
+    filename: function (req, file, cb) {
         if (file.originalname.startsWith(req.params.solutionID)) {
             const filePath = path.join(uploadDir, file.originalname);
-            // ถ้าใช่ ให้ลบไฟล์เก่าก่อนที่จะเขียนทับ
             fs.unlinkSync(filePath);
             cb(null, file.originalname);
         } else {
-            // ถ้าไม่ใช่ ให้สร้างชื่อไฟล์ใหม่
             cb(null, req.params.solutionID + path.extname(file.originalname));
         }
     }
 });
 
 const storageRound2 = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, uploadDirRound2);
     },
-    filename: function(req, file, cb) {
-        // ตรวจสอบว่าชื่อไฟล์ที่อัปโหลดขึ้นมีคำนำหน้าด้วย req.params.solutionID หรือไม่
+    filename: function (req, file, cb) {
         if (file.originalname.startsWith(req.params.solutionID)) {
             const filePath = path.join(uploadDirRound2, file.originalname);
-            // ถ้าใช่ ให้ลบไฟล์เก่าก่อนที่จะเขียนทับ
             fs.unlinkSync(filePath);
             cb(null, file.originalname);
         } else {
-            // ถ้าไม่ใช่ ให้สร้างชื่อไฟล์ใหม่
             cb(null, req.params.solutionID + path.extname(file.originalname));
         }
     }
 });
 
-const upload = multer({ storage: storage});
+const upload = multer({ storage: storage });
 const uploadRound2 = multer({ storage: storageRound2 });
 
 exports.uploadFile = upload.single('fileUpload');
-exports.uploadFileRound2 = uploadRound2.single('fileUploadRound2');
-
+exports.uploadFileRound2 = uploadRound2.single('fileUpload');
 
 exports.handleUpload = (req, res) => {
-    try{
+    try {
         const solutionParam = req.params;
-        // const file_path = path.relative(uploadDir, req.file.path);
         const file_path = path.join('/public/uploads/', path.basename(req.file.path));
         const qInsert = "INSERT INTO anssolution (solutionID, Q3) VALUES (?, ?)";
         const qFetchData = "SELECT * FROM anssolution WHERE solutionID = ?";
         const qUpdate = "UPDATE anssolution SET Q3=? WHERE solutionID=?;";
 
-        db.query(qFetchData, [solutionParam.solutionID], (err, fechData) => {
+        db.query(qFetchData, [solutionParam.solutionID], (err, fetchData) => {
             if (err) return res.status(500).json({ error: "FetchDataError", message: err });
 
-            if (fechData && fechData.length > 0) {
+            if (fetchData && fetchData.length > 0) {
                 db.query(qUpdate, [file_path, solutionParam.solutionID], (err, updateData) => {
                     if (err) return res.status(500).json({ error: "UpdateError", message: err });
                     res.status(200).json({ message: 'อัปโหลดไฟล์สำเร็จ' });
@@ -82,25 +74,24 @@ exports.handleUpload = (req, res) => {
                 });
             }
         });
-    }catch(err){
-        console.log(err)
+    } catch (err) {
+        console.log(err);
         res.status(500).json({ error: "CatchError", message: err });
     }
 };
 
 exports.handleUploadRound2 = (req, res) => {
-    try{
+    try {
         const solutionParam = req.params;
-        // const file_path = path.relative(uploadDir, req.file.path);
         const file_path = path.join('/public/uploadsRound2/', path.basename(req.file.path));
-        const qInsert = "INSERT INTO anssolution (solutionID, Q3) VALUES (?, ?)";
-        const qFetchData = "SELECT * FROM anssolution WHERE solutionID = ?";
-        const qUpdate = "UPDATE anssolution SET Q3=? WHERE solutionID=?;";
+        const qInsert = "INSERT INTO anssolution_round2 (solutionID, Q3) VALUES (?, ?)";
+        const qFetchData = "SELECT * FROM anssolution_round2 WHERE solutionID = ?";
+        const qUpdate = "UPDATE anssolution_round2 SET Q3=? WHERE solutionID=?;";
 
-        db.query(qFetchData, [solutionParam.solutionID], (err, fechData) => {
+        db.query(qFetchData, [solutionParam.solutionID], (err, fetchData) => {
             if (err) return res.status(500).json({ error: "FetchDataError", message: err });
 
-            if (fechData && fechData.length > 0) {
+            if (fetchData && fetchData.length > 0) {
                 db.query(qUpdate, [file_path, solutionParam.solutionID], (err, updateData) => {
                     if (err) return res.status(500).json({ error: "UpdateError", message: err });
                     res.status(200).json({ message: 'อัปโหลดไฟล์สำเร็จ' });
@@ -112,8 +103,8 @@ exports.handleUploadRound2 = (req, res) => {
                 });
             }
         });
-    }catch(err){
-        console.log(err)
+    } catch (err) {
+        console.log(err);
         res.status(500).json({ error: "CatchError", message: err });
     }
 };
