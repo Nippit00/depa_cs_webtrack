@@ -6,27 +6,32 @@ exports.getform = (req, res, next) => {
 };
 
 exports.getformCdp1 = (req, res, next) => {
-  console.log(req.params)
   const solutionid = req.params.solutionID;
   const cityID = req.session.userID;
   const q1 =
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
-  const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
+  const q2 = "SELECT * FROM anssolution2 WHERE solutionID = ?;";
   const q3 = "SELECT * FROM `question` WHERE 1";
+  const q4 = "SELECT * FROM `anskpi` WHERE solutionID=?"
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
-
+      // console.log(data)
       db.query(q2, [solutionid], (err, dataOld) => {
+      // console.log(dataOld)
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
-          console.log(data)
-          res.render("form-cdpPart1", {
-            formdata: data,
-            dataOld: dataOld || [],
-            csrfToken: req.csrfToken(),
-            question: question,
+          db.query(q4,[solutionid], (err, kpiOld) => {
+            console.log(kpiOld)
+            if (err) return res.status(500).json(err);
+            res.render("form-cdpPart1", {
+              formdata: data,
+              datakpi:kpiOld|| [],
+              dataOld: dataOld || [],
+              csrfToken: req.csrfToken(),
+              question: question,
+            });
           });
         });
       });
@@ -216,6 +221,7 @@ exports.getformSmart = (req, res, next) => {
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
   const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
   const q3 = "SELECT * FROM `question` WHERE 1";
+  const q4 = "SELECT * FROM `kpi` WHERE solutionID=? ";
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -224,12 +230,16 @@ exports.getformSmart = (req, res, next) => {
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
-          res.render("form-smart", {
-            formdata: data,
-            dataOld: dataOld || [],
-            csrfToken: req.csrfToken(),
-            question: question,
-          });
+          db.query(q4,[solutionid],(err,kpi)=>{
+            console.log("Here"+kpi)
+            res.render("form-smart", {
+              kpiQ:kpi,
+              formdata: data,
+              dataOld: dataOld || [],
+              csrfToken: req.csrfToken(),
+              question: question,
+            });
+          })
         });
       });
     });
@@ -385,9 +395,97 @@ exports.notification = (req, res, next) => {
   }
 };
 
-exports.saveAnsObj=(req,res,next)=>{
-  console.log("Active")
-  console.log(req.params)
-  console.log(req.body)
+exports.saveAnsObj = (req, res, next) => {
+  const dataArray = [];
+  const kpiArray = [];
+  const solutionID = req.params.solutionID;
+  console.log(req.body);
   
-}
+  // Loop through request body to extract question-answer pairs
+  for (const key in req.body) {
+    if (key.startsWith('Q')) {
+      const qKey = key;
+      const aKey = 'A' + key.substring(1);
+      const questionObj = {};
+      questionObj['Question'] = req.body[qKey];
+      questionObj['Answer'] = req.body[aKey];
+      dataArray.push(questionObj);
+    }
+    // Extract KPI data
+    if (key.startsWith(solutionID)) {
+      const kpiKey = key.substring(solutionID.length + 1); // Extract KPI ID
+      const kpiAnswer = req.body[key];
+      const kpiID = kpiKey.split('-')[0]; // Extract the part before the dash
+      kpiArray.push({ kpiID, kpiAnswer });
+    }
+  }
+  const checkKPI="SELECT * FROM `anskpi` WHERE solutionID=?"
+  db.query(checkKPI,[solutionID],(err,result)=>{
+    if (err) {
+            console.error("Error inserting/updating KPI data:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+    if(result.length>0){
+      const kpiQuery = "UPDATE `anskpi` SET `solutionID`=?,`kpiID`=?,`timestamp`=?,`ans`=? WHERE kpiID=?";
+      kpiArray.forEach(kpi => {
+        db.query(kpiQuery, [solutionID, solutionID+"-"+kpi.kpiID, new Date(), kpi.kpiAnswer,solutionID+"-"+kpi.kpiID], (err, result) => {
+          if (err) {
+            console.error("Error inserting/updating KPI data:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          console.log("KPI updated successfully");
+        });
+      });
+    }
+    else{
+      const kpiQuery = "INSERT INTO `anskpi`(`solutionID`, `kpiID`, `timestamp`, `ans`) VALUES (?,?,?,?)";
+      kpiArray.forEach(kpi => {
+        db.query(kpiQuery, [solutionID, solutionID+"-"+kpi.kpiID, new Date(), kpi.kpiAnswer], (err, result) => {
+          if (err) {
+            console.error("Error inserting/updating KPI data:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          console.log("KPI data inserted successfully");
+        });
+      });
+    }
+  })
+  
+
+  // Check if the solutionID exists in the database
+  const checkQuery = "SELECT * FROM `anssolution2` WHERE `solutionID` = ?";
+  db.query(checkQuery, [solutionID], (err, rows) => {
+    if (err) {
+      console.error("Error checking existing data:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // If solutionID exists, update the row; otherwise, insert a new row
+    if (rows.length > 0) {
+      const updateQuery = "UPDATE `anssolution2` SET `timestamp` = ?, `ans` = ? WHERE `solutionID` = ?";
+      db.query(updateQuery, [new Date(), JSON.stringify(dataArray), solutionID], (err, result) => {
+        if (err) {
+          console.error("Error updating data:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+        console.log("Data updated successfully");
+        res.status(200).json({ message: "Data updated successfully" });
+      });
+    } else {
+      const insertQuery = "INSERT INTO `anssolution2`(`solutionID`, `timestamp`, `ans`) VALUES (?,?,?)";
+      db.query(insertQuery, [solutionID, new Date(), JSON.stringify(dataArray)], (err, result) => {
+        if (err) {
+          console.error("Error inserting data:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+        console.log("Data inserted successfully");
+        res.status(200).json({ message: "Data inserted successfully" });
+      });
+    }
+  });
+};
+
+
+
+
+
