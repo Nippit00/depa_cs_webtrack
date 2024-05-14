@@ -221,7 +221,8 @@ exports.getformSmart = (req, res, next) => {
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
   const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
   const q3 = "SELECT * FROM `question` WHERE 1";
-  const q4 = "SELECT * FROM `kpi` WHERE solutionID=? ";
+  const q4 = "SELECT * FROM `kpi`JOIN anskpi ON kpi.kpiID= anskpi.kpiID WHERE kpi.solutionID=? ";
+  const q5 = "SELECT * FROM `anskpi` WHERE solutionID=?";
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -231,14 +232,20 @@ exports.getformSmart = (req, res, next) => {
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
           db.query(q4,[solutionid],(err,kpi)=>{
-            console.log("Here"+kpi)
-            res.render("form-smart", {
-              kpiQ:kpi,
-              formdata: data,
-              dataOld: dataOld || [],
-              csrfToken: req.csrfToken(),
-              question: question,
-            });
+            if(err) return res.status(500).json(err);
+            db.query(q5,[solutionid],(err,kpiOld)=>{
+              if(err) return res.status(500).json(err);
+              console.log(kpi)
+              res.render("form-smart", {
+                kpiOld:kpiOld,
+                kpiQ:kpi,
+                formdata: data,
+                dataOld: dataOld || [],
+                csrfToken: req.csrfToken(),
+                question: question,
+              });
+            })
+              
           })
         });
       });
