@@ -347,7 +347,6 @@
                                     <!-- สิ้นสุดการวนลูป -->
                           </td>
                           <td>
-                            <% let count = 1; %>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey === 'CDP') { %>
                                 <% if (item.status === 2 || (currentYear === form1Year && currentMonth < form1StartMonth) ||
@@ -361,7 +360,6 @@
                                   </div>
                                 <% } %>
                               <% } %>
-                              <% count++; %>
                             <% }); %>
 
                           </td>
@@ -1456,14 +1454,11 @@
         <%- include('../component/footer.ejs') %>
 
           <script>
-            document.addEventListener('DOMContentLoaded', function () {
               var coll = document.querySelector('.collapsible');
-              var content = document.querySelector('.content');
-
-              coll.addEventListener('click', function () {
+              var content = document.querySelector('.content');            
                 content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-              });
-            });
+              
+            
           </script>
 
 </body>
