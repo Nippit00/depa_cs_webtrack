@@ -327,7 +327,7 @@
 </body>
 <script>
     // เรียกใช้ข้อมูลจาก statusCounts.status ที่ส่งมาจาก backend
-    const statusCounts = <%= JSON.stringify(statusCounts.status) %>;
+    const statusCounts = '<%= JSON.stringify(statusCounts.status) %>';
 
     // เข้าถึง canvas element ใน HTML
     const ctx = document.getElementById('myPieChart').getContext('2d');
