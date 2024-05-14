@@ -41,7 +41,7 @@
       }
 
       .content {
-        display: none;
+        /* display: none; */
         padding: 10px;
         /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
         overflow: hidden;
@@ -1453,13 +1453,7 @@
         <br>
         <%- include('../component/footer.ejs') %>
 
-          <script>
-              var coll = document.querySelector('.collapsible');
-              var content = document.querySelector('.content');            
-                content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-              
-            
-          </script>
+          
 
 </body>
 
