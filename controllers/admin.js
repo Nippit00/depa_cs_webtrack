@@ -5,11 +5,53 @@ const db = require("../db.js");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 exports.getAdPage = (req, res, next) => {
-  res.render("admin/ad-main", {
-    pageTitle: "Main",
-    path: "/",
+  const q = "SELECT `cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`, `status_round2` FROM `solution` WHERE 1";
+  db.query(q, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json(err);
+    }
+
+    // สร้างอาร์เรย์เพื่อเก็บค่าจำนวนของแต่ละสถานะของ status และ status_round2
+    let statusCounts = {
+      status: {
+        0: 0,
+        1: 0,
+        2: 0
+      },
+      status_round2: {
+        0: 0,
+        1: 0,
+        2: 0
+      }
+    };
+
+    // วนลูปผ่านข้อมูลที่ได้จากการ query
+    data.forEach(element => {
+      // นับจำนวนของแต่ละสถานะของ status
+      statusCounts.status[element.status]++;
+
+      // นับจำนวนของแต่ละสถานะของ status_round2
+      statusCounts.status_round2[element.status_round2]++;
+    });
+
+    // แสดงผลลัพธ์ในคอนโซล
+    console.log("จำนวน status:", statusCounts.status);
+    console.log("จำนวน status_round2:", statusCounts.status_round2);
+
+    // ส่งข้อมูลไปยังหน้าแสดงผล
+    res.render("admin/ad-main", {
+      pageTitle: "Main",
+      path: "/",
+      data: data,
+      statusCounts: statusCounts
+    });
   });
 };
+
+
+
+
 
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
