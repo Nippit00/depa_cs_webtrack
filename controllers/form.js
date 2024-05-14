@@ -343,7 +343,7 @@ exports.getformSmart = (req, res, next) => {
   const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
   const q3 = "SELECT * FROM `question` WHERE 1";
   const q4 = "SELECT * FROM `kpi`JOIN anskpi ON kpi.kpiID= anskpi.kpiID WHERE kpi.solutionID=? ";
-  const q5 = "SELECT * FROM `anskpi` WHERE solutionID=?";
+  
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -354,18 +354,41 @@ exports.getformSmart = (req, res, next) => {
           if (err) return res.status(500).json(err);
           db.query(q4,[solutionid],(err,kpi)=>{
             if(err) return res.status(500).json(err);
-            db.query(q5,[solutionid],(err,kpiOld)=>{
-              if(err) return res.status(500).json(err);
-              console.log(kpi)
-              res.render("form-smart", {
-                kpiOld:kpiOld,
+            if(kpi.length>0){
+                res.render("form-smart", {
                 kpiQ:kpi,
                 formdata: data,
                 dataOld: dataOld || [],
                 csrfToken: req.csrfToken(),
                 question: question,
               });
-            })
+            }
+            else{
+              const q5 = "SELECT * FROM `kpi` WHERE solutionID=?";
+              db.query(q5, [solutionid], (err, kpi) => {
+                if(err) return res.status(500).json(err);
+                res.render("form-smart", {
+                  kpiQ:kpi,
+                  formdata: data,
+                  dataOld: dataOld || [],
+                  csrfToken: req.csrfToken(),
+                  question: question,
+                });
+                
+              });
+            }
+            // db.query(q5,[solutionid],(err,kpiOld)=>{
+            //   if(err) return res.status(500).json(err);
+            //   console.log(kpi)
+            //   res.render("form-smart", {
+            //     kpiOld:kpiOld,
+            //     kpiQ:kpi,
+            //     formdata: data,
+            //     dataOld: dataOld || [],
+            //     csrfToken: req.csrfToken(),
+            //     question: question,
+            //   });
+            // })
               
           })
         });
