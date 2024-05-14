@@ -422,24 +422,19 @@
                 <% }); %>
                 <!-- KPI -->
                 <% kpiQ.forEach(item => { %>
-                  
-                        <div class="display-none">
-                            <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
-                            <% if(item.goal==0){ %>
-                                <label>Yes</label>
-                                <input type="radio"  name="<%= item.kpiID %>" value="Yes">
-                                <label>No</label>
-                                <input type="radio"  name="<%= item.kpiID %>" value="No">
-                                <% } 
-                                else{ %>
-                                
-                                <textarea id="note" name=<%= item.kpiID %> placeholder="กรอกข้อความ...."></textarea>    
-                                <% } %>
-                        </div>
-                    
-                       
-                   
+                    <div class="display-none">
+                        <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                        <% if(item.goal == 0) { %>
+                            <label>Yes</label>
+                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
+                            <label>No</label>
+                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
+                        <% } else { %>
+                            <textarea id="note" name="<%= item.kpiID %>" placeholder="กรอกข้อความ...."><% if(item.ans !== ''){%><%= item.ans %><%}%></textarea>
+                        <% } %>
+                    </div>
                 <% }); %>
+                
                 
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
@@ -453,7 +448,7 @@
 
 
 
-         <script>
+         <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -678,7 +673,7 @@
 
 
 
-        </script> 
+        </script>  -->
 
 
         <%- include('component/footer.ejs') %>
