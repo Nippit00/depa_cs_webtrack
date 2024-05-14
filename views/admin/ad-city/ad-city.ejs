@@ -42,14 +42,14 @@
                     <td class="py-2 px-4 break-words border-1 border-r border-l"><%= city.executive %></td>
                     <td class="py-2 px-4 text-center border-1 border-r border-l">
                         <% if (city.government_investment === 0) { %>
-                            ❌🧀
+                            0 บาท
                         <% } else { %>
                             <%= city.government_investment.toLocaleString() %> บาท
                         <% } %>
                     </td>
                     <td class="py-2 px-4 text-center border-1 border-r border-l">
                         <% if (city.private_investment === 0) { %>
-                            🍻
+                            0 บาท
                         <% } else { %>
                             <%= city.private_investment.toLocaleString() %> บาท
                         <% } %>
