@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Admin - <%= pageTitle %></title>
+    <title>Admin - <%= pageTitle %>
+    </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap"
+        rel="stylesheet">
     <style>
-        *{
+        body {
+            margin: 0px;
+            height: 100%;
+        }
+
+        * {
             font-family: "Noto Sans Thai", sans-serif;
             font-optical-sizing: auto;
-            font-weight: 400; /* Replace with the desired font weight */
+            font-weight: 400;
+            /* Replace with the desired font weight */
             font-style: normal;
             font-variation-settings: "wdth" 100;
         }
     </style>
 </head>
+
 <body>
     <%- include('../include/ad-navbar.ejs') %>
     <div class="w-[90%] mx-auto mt-5 overflow-x-auto">
@@ -62,7 +72,7 @@
     <%- include('../include/ad-footer.ejs') %>
 </body>
 <script>
-    function check(cityID){
+    function check(cityID) {
         window.location.href = `/admin/city/${cityID}`;
     }
 
@@ -70,29 +80,30 @@
     var searchInput = document.getElementById("searchInput");
 
     // Add event listener for keyup event
-    searchInput.addEventListener("keyup", function() {
+    searchInput.addEventListener("keyup", function () {
         filterSearchTable();
     });
 
     function filterSearchTable() {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    table = document.querySelector("tbody");
-    tr = table.getElementsByTagName("tr");
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.querySelector("tbody");
+        tr = table.getElementsByTagName("tr");
 
-    // Loop through each row and hide those that do not match the search query
-    for (i = 0; i < tr.length; i++) {
-        // Combine text content of all td elements within the row
-        txtValue = tr[i].textContent || tr[i].innerText;
-        // Check if the combined text content contains the search query
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = ""; // Show the row if it matches the search query
-        } else {
-            tr[i].style.display = "none"; // Hide the row if it does not match the search query
+        // Loop through each row and hide those that do not match the search query
+        for (i = 0; i < tr.length; i++) {
+            // Combine text content of all td elements within the row
+            txtValue = tr[i].textContent || tr[i].innerText;
+            // Check if the combined text content contains the search query
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = ""; // Show the row if it matches the search query
+            } else {
+                tr[i].style.display = "none"; // Hide the row if it does not match the search query
+            }
         }
     }
-}
 
 </script>
+
 </html>
