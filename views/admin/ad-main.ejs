@@ -6,6 +6,7 @@
     <title>
         Admin - <%= pageTitle %>
     </title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html {
@@ -231,7 +232,7 @@
 
 <body>
     <%- include('include/ad-navbar.ejs') %>
-
+    <canvas id="myPieChart"></canvas>
         <div class="wrapper">
             <div class="side-menu">
                 <div class="logo">
@@ -277,17 +278,63 @@
                     <div class="card">
                         <div class="status-red"></div>
                         <div class="card-content">
-                            This is one of the card subjects 3
-                        </div>
+                            <ul>
+                              <% Object.keys(statusCounts.status).forEach(key => { %>
+                                <li>status <%= key %>: <%= statusCounts.status[key] %></li>
+                              <% }); %>
+                            </ul>
+                          </div>
+                          
                         <div class="author"><i class="fa fa-user-circle-o" aria-hidden="true"></i></div>
                     </div>
                 </div>
             </div>
         </div>
+        <div>
+           
+        </div>
+        
 
         <%- include('include/ad-footer.ejs') %>
 
 
 </body>
+<script>
+    // เรียกใช้ข้อมูลจาก statusCounts.status ที่ส่งมาจาก backend
+    const statusCounts = <%= JSON.stringify(statusCounts.status) %>;
+
+    // เข้าถึง canvas element ใน HTML
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+
+    // สร้าง Pie Chart
+    const myPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        // ระบุข้อมูลสำหรับแต่ละส่วนของ Pie Chart
+        labels: Object.keys(statusCounts),
+        datasets: [{
+          label: 'Status Distribution',
+          data: Object.values(statusCounts),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(255, 206, 86, 0.5)'
+            // เพิ่มสีอื่น ๆ ตามความต้องการ
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)'
+            // เพิ่มสีอื่น ๆ ตามความต้องการ
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        // ตั้งค่าต่าง ๆ สำหรับ Pie Chart ตามความต้องการ
+        // เช่น เพิ่ม title, legend, tooltips, etc.
+      }
+    });
+  </script>
 
 </html>
