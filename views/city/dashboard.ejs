@@ -287,16 +287,34 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'ENV'){
                         const statusPercentageEnv = data.status === 2 ? '100%' : '0%';
+
+                        //Circle check status form round1
+                        const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                          data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                          `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status form round2
+                        const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status upload
+                        const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;" >${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentageEnv}</td>
-                            <td style="padding: 20px;">${getQ2Value(data, 'ENV')}%</td>
-                            <td></td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentageEnv}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'ENV')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
-                        
                     }
                 });
+                
+                
                 html += `<tr >
                     <td>รวม</td>
                     <td>${counts['ENV'] !== undefined ? counts['ENV'].toFixed(2) : '-'}%</td>
@@ -309,12 +327,28 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'ENE'){
                         const statusPercentageEne = data.status === 2 ? '100%' : '0%';
+                        //Circle check status form round1
+                        const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                          data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                          `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status form round2
+                        const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status upload
+                        const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;">${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentageEne}</td>
-                            <td>${getQ2Value(data, 'ENE')}%</td>
-                            <td>%</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentageEne}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'ENE')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
                     }
                 });
@@ -330,12 +364,28 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'ECO'){
                         const statusPercentageEco = data.status === 2 ? '100%' : '0%';
+                        //Circle check status form round1
+                        const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                          data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                          `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status form round2
+                        const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status upload
+                        const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;">${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentageEco}</td> 
-                            <td>${getQ2Value(data, 'ECO')}%</td>
-                            <td></td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentageEco}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'ECO')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
                     }
                 });
@@ -351,12 +401,28 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'MOB'){
                         const statusPercentageMob = data.status === 2 ? '100%' : '0%';
+                        //Circle check status form round1
+                        const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                          data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                          `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status form round2
+                        const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status upload
+                        const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;">${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentageMob}</td>
-                            <td>${getQ2Value(data, 'MOB')}%</td>
-                            <td></td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentageMob}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'MOB')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
                     }
                 });
@@ -372,12 +438,28 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'GOV'){
                         const statusPercentageGov = data.status === 2 ? '100%' : '0%';
+                       //Circle check status form round1
+                       const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                       data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                       `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                     //Circle check status form round2
+                     const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                     data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                     `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                     //Circle check status upload
+                     const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                     data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                     `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;">${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentageGov}%</td> 
-                            <td>${getQ2Value(data, 'GOV')}%</td>
-                            <td></td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentageGov}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'GOV')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
                     }
                 });
@@ -393,12 +475,28 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'PEO'){
                         const statusPercentagePeo = data.status === 2 ? '100%' : '0%';
+                        //Circle check status form round1
+                        const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                          data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                          `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status form round2
+                        const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status upload
+                        const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;">${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentagePeo}</td>
-                            <td>${getQ2Value(data, 'PEO')}%</td>
-                            <td></td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentagePeo}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'PEO')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
                     }
                 });
@@ -414,12 +512,28 @@
                 solutionInfo.forEach(data => {
                     if(data.smartKey === 'LIV'){
                         const statusPercentageLiv = data.status === 2 ? '100%' : '0%';
+                        //Circle check status form round1
+                        const statusForm1Circle = data.status === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                          data.status === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                          `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status form round2
+                        const statusForm2Circle = data.status_round2 === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_round2 === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                        //Circle check status upload
+                        const statusUpload = data.status_upload === 2 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` :
+                        data.status_upload === 1 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` :
+                        `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
                         html += `
                         <tr>
-                            <td style="padding: 20px;">${data.solutionName}</td>
-                            <td style="padding: 20px;">${statusPercentageLiv}%</td> 
-                            <td>${getQ2Value(data, 'LIV')}%</td>
-                            <td></td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;">${statusPercentageLiv}</td>
+                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, 'LIV')}%</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
+                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
                         </tr>`;
                     }
                 });

@@ -131,6 +131,78 @@
         #fileUpload {
             display: none;
         }
+
+
+        .right-content ul {
+            list-style-type: none;
+            /* ลบเครื่องหมายหน้ารายการออก */
+            padding: 0;
+            margin: 0;
+        }
+
+
+        .right-content li {
+            border-bottom: 1px solid #ccc;
+            /* เพิ่มเส้นแบ่งระหว่างรายการ */
+            padding: 8px;
+            /* เพิ่มพื้นที่รอบรายการ */
+            margin-bottom: 5px;
+            /* เพิ่มระยะห่างระหว่างรายการ */
+        }
+
+
+        .left-content {
+            padding: 10px;
+            /* เพิ่มพื้นที่รอบข้อมูล */
+            margin: 10px 0;
+            /* เพิ่มระยะห่างด้านบนและล่าง */
+        }
+
+
+        .left-content p {
+            margin: 5px 0;
+            /* ตั้งค่าระยะห่างระหว่างประโยค */
+            padding-left: 20px;
+            /* เพิ่มพื้นที่ด้านซ้าย */
+        }
+
+
+        .left-content p.header {
+            font-weight: bold;
+            /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
+            padding-left: 10px;
+            /* ปรับตำแหน่งของหัวข้อ */
+            color: #444;
+            /* เปลี่ยนสีตัวอักษร */
+        }
+
+
+        /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
+        #submitButton:disabled {
+            opacity: 0.5;
+            /* Reduce opacity */
+            cursor: not-allowed;
+            /* Change cursor */
+        }
+
+
+        #saveButton[disabled] {
+            opacity: 0.5;
+            /* Reduce opacity */
+            cursor: not-allowed;
+            /* Change cursor */
+        }
+        #alert{
+            margin-top: 3rem;
+            color: red;
+        }
+        #alert2{
+            color: red;
+        }
+        /*.button-container {
+            position: relative;
+            display: inline-block; /* or 'block' based on your layout 
+        }*/
     </style>
 </head>
 
@@ -372,7 +444,9 @@
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
-                <!-- <button type="submit" id="submitButton">ส่งรายงาน</button> -->
+                <button type="submit" id="submitButton">ส่งรายงาน</button>
+                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
+                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
             </form>
         </div>
 
@@ -407,6 +481,9 @@
                 var statusSelect = document.getElementById('status');
                 var progressSelect = document.getElementById('progress');
                 const fileUploadInput = document.getElementById('fileUpload');
+                /*submitButton.style.display = 'none';*/
+
+
 
 
 
@@ -426,6 +503,27 @@
 
 
                 //Condition for disabled button
+
+                /*function checkFormCompletion() {
+                    let isComplete = true;
+                    const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'problem', 'solution', 'note'];
+    
+                    requiredFields.forEach(fieldId => {
+                        const field = document.getElementById(fieldId);
+                        if (field && !field.value.trim()) {
+                            isComplete = false;
+                        }
+                    });
+    
+                    if (isComplete) {
+                        submitButton.style.display = 'block';
+                    } else {
+                        submitButton.style.display = 'none';
+                    }
+                }
+    
+                reportForm.addEventListener('input', checkFormCompletion);*/
+
                 function checkFormCompletion() {
                     const inputs = reportForm.querySelectorAll('input, select, textarea');
                     let isComplete = true;
