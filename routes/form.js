@@ -23,7 +23,7 @@ router.get('/formsmart_round2/:solutionID',isAuth,formController.getformSmartRou
 
 //send data form to backebd 
 router.post('/sendformsmart/:solutionID',isAuth,formController.postFormSmart);
-router.post('/sendformsmart_round2/:solutionID',isAuth,formController.postFormSmartRound2);
+// router.post('/sendformsmart_round2/:solutionID',isAuth,formController.postFormSmartRound2);
 
 //formcdp
 router.get('/formcdp1/:solutionID',isAuth,formController.getformCdp1);
