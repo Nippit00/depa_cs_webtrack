@@ -307,7 +307,7 @@
 
 
         <div class="custom-container-1">
-            <form action="/sendformsmart/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+            <form action="/saveForm/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
                     <label for="status">สถานะ :</label>
                     <select id="status" name="Q1" required>
@@ -415,11 +415,30 @@
                             <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
                             
                                    </div>
-                    <% } else { %>
+                    <% } else{}  %>
                        
-                    <% } %>
+                   
                 <% }); %>
-                
+                <!-- KPI -->
+                <% kpiQ.forEach(item => { %>
+                  
+                        <div class="display-none">
+                            <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                            <% if(item.goal==0){ %>
+                                <label>Yes</label>
+                                <input type="radio"  name="<%= item.kpiID %>" value="Yes">
+                                <label>No</label>
+                                <input type="radio"  name="<%= item.kpiID %>" value="No">
+                                <% } 
+                                else{ %>
+                                
+                                <textarea id="note" name=<%= item.kpiID %> placeholder="กรอกข้อความ...."></textarea>    
+                                <% } %>
+                        </div>
+                    
+                       
+                   
+                <% }); %>
                 
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
@@ -431,7 +450,7 @@
 
 
 
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -632,7 +651,7 @@
 
 
 
-        </script>
+        </script> -->
 
 
         <%- include('component/footer.ejs') %>
