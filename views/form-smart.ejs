@@ -27,7 +27,6 @@
             text-align: center;
         }
 
-
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -35,12 +34,10 @@
             box-sizing: border-box;
         }
 
-
         .head {
             text-align: center;
             margin-top: 50px;
         }
-
 
         .custom-container,
         .custom-container-1 {
@@ -55,7 +52,6 @@
             background-color: #FFF0C4;
         }
 
-
         .custom-container-1>div {
             width: 48%;
             padding: 10px;
@@ -63,23 +59,18 @@
             margin-bottom: 20px;
         }
 
-
         .left-content,
         .right-content {
             width: 50%;
             padding: 10px;
             box-sizing: border-box;
             margin-left: 50px;
-            margin-bottom: 20px;
         }
-
 
         form {
             width: 100%;
-            padding: 20px;
             box-sizing: border-box;
         }
-
 
         form div {
             display: flex;
@@ -89,7 +80,6 @@
             margin-bottom: 20px;
         }
 
-
         label {
             display: block;
             margin-top: 20px;
@@ -98,7 +88,6 @@
             left: 50%;
             transform: translateX(-50%);
         }
-
 
         select,
         textarea,
@@ -115,7 +104,6 @@
             background-color: #fffbf0;
         }
 
-
         input {
             width: 50%;
             position: relative;
@@ -123,86 +111,25 @@
             transform: translateX(-50%);
         }
 
-
         button {
             background-color: #C2AF76;
             color: white;
             padding: 10px 15px;
-            border: none;
+            border: 2px solid #C2AF76;
             border-radius: 50px;
-            margin-top: 20px;
         }
 
+        button:last-child {
+            margin-left: 0;
+        }
 
         button:hover {
             background-color: #C2AF76;
             border-radius: 50px;
         }
 
-
         #fileUpload {
             display: none;
-        }
-
-
-        .right-content ul {
-            list-style-type: none;
-            /* ลบเครื่องหมายหน้ารายการออก */
-            padding: 0;
-            margin: 0;
-        }
-
-
-        .right-content li {
-            border-bottom: 1px solid #ccc;
-            /* เพิ่มเส้นแบ่งระหว่างรายการ */
-            padding: 8px;
-            /* เพิ่มพื้นที่รอบรายการ */
-            margin-bottom: 5px;
-            /* เพิ่มระยะห่างระหว่างรายการ */
-        }
-
-
-        .left-content {
-            padding: 10px;
-            /* เพิ่มพื้นที่รอบข้อมูล */
-            margin: 10px 0;
-            /* เพิ่มระยะห่างด้านบนและล่าง */
-        }
-
-
-        .left-content p {
-            margin: 5px 0;
-            /* ตั้งค่าระยะห่างระหว่างประโยค */
-            padding-left: 20px;
-            /* เพิ่มพื้นที่ด้านซ้าย */
-        }
-
-
-        .left-content p.header {
-            font-weight: bold;
-            /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
-            padding-left: 10px;
-            /* ปรับตำแหน่งของหัวข้อ */
-            color: #444;
-            /* เปลี่ยนสีตัวอักษร */
-        }
-
-
-        /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
-        #submitButton:disabled {
-            opacity: 0.5;
-            /* Reduce opacity */
-            cursor: not-allowed;
-            /* Change cursor */
-        }
-
-
-        #saveButton[disabled] {
-            opacity: 0.5;
-            /* Reduce opacity */
-            cursor: not-allowed;
-            /* Change cursor */
         }
     </style>
 </head>
@@ -328,7 +255,8 @@
                 <div>
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
                     <select id="progress" name="Q2">
-                        <option value="0" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
+                        <option value="0" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ %
+                                ความก้าวหน้า</option>
                         <option value="0" <% if (dataOld.length && dataOld[0].Q2===0) { %>selected<% } %>>0%</option>
                         <option value="5" <% if (dataOld.length && dataOld[0].Q2===5) { %>selected<% } %>>5%</option>
                         <option value="10" <% if (dataOld.length && dataOld[0].Q2===10) { %>selected<% } %>>10%</option>
@@ -349,7 +277,8 @@
                         <option value="85" <% if (dataOld.length && dataOld[0].Q2===85) { %>selected<% } %>>85%</option>
                         <option value="90" <% if (dataOld.length && dataOld[0].Q2===90) { %>selected<% } %>>90%</option>
                         <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
-                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%</option>
+                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%
+                        </option>
                     </select>
                 </div>
 
@@ -408,23 +337,26 @@
                     <textarea id="note" name="Q9"
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
                 </div>
-                <% question.forEach(item => { %>
-                    <% if (item.status == 1) { %>
+                <% question.forEach(item=> { %>
+                    <% if (item.status==1) { %>
                         <div class="display-none">
-                            <label for="Q<%= item.questionID %>"><%= item.question %>:</label>
-                            <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
-                            
-                                   </div>
-                    <% } else { %>
-                       
-                    <% } %>
-                <% }); %>
-                
-                
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
-                <button type="submit" id="saveButton">บันทึก</button>
-                <button type="submit" id="submitButton">ส่งรายงาน</button>
+                            <label for="Q<%= item.questionID %>">
+                                <%= item.question %>:
+                            </label>
+                            <textarea id="note" name="Q<%= item.questionID %>"
+                                placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
+
+                        </div>
+                        <% } else { %>
+
+                            <% } %>
+                                <% }); %>
+
+
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
+                                    <button type="submit" id="saveButton">บันทึก</button>
+                                    <button type="submit" id="submitButton">ส่งรายงาน</button>
             </form>
         </div>
 
@@ -466,11 +398,11 @@
                 //action form button reportForm
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
-                
-                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>"; 
+
+                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
                     reportForm.submit();
                 });
-               
+
 
 
 
@@ -642,4 +574,3 @@
 
 
 </html>
-
