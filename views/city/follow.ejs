@@ -347,6 +347,7 @@
                                     <!-- สิ้นสุดการวนลูป -->
                           </td>
                           <td>
+                            <% let count = 1; %>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey === 'CDP') { %>
                                 <% if (item.status === 2 || (currentYear === form1Year && currentMonth < form1StartMonth) ||
@@ -356,10 +357,15 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
+                                    <% if(count==1){ %> 
+                                      <a href="/formcdp1/<%= item.solutionID %>"><button class="report-button">รายงาน</button></a>
+                                      <% } else{%>
                                     <a href="/formsmart/<%= item.solutionID %>"><button class="report-button">รายงาน</button></a>
+                                  <% } %>
                                   </div>
                                 <% } %>
                               <% } %>
+                              <% count++; %>
                             <% }); %>
 
                           </td>
