@@ -36,8 +36,8 @@ exports.getAdPage = (req, res, next) => {
     });
 
     // แสดงผลลัพธ์ในคอนโซล
-    console.log("จำนวน status:", statusCounts.status);
-    console.log("จำนวน status_round2:", statusCounts.status_round2);
+    // console.log("จำนวน status:", statusCounts.status);
+    // console.log("จำนวน status_round2:", statusCounts.status_round2);
 
     // ส่งข้อมูลไปยังหน้าแสดงผล
     res.render("admin/ad-main", {
@@ -61,7 +61,7 @@ exports.notification = (req, res, next) => {
   const q = "SELECT citydata.province,solution.solutionName FROM `solution` JOIN citydata ON solution.cityID=citydata.cityID WHERE solution.solutionID=?";
   try{
   db.query(q, [CityID], (err, data) => {
-    console.log(data)
+    // console.log(data)
     if (err) return res.status(500).json(err);
     const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
 
@@ -80,7 +80,7 @@ exports.notification = (req, res, next) => {
         },
       })
       .then((response) => {
-        console.log("Notification sent:", response.data);
+        // console.log("Notification sent:", response.data);
         res.status(200).json({ message: "Notification sent successfully" });
       })
       .catch((error) => {
@@ -98,7 +98,7 @@ exports.getHistoryPage = (req, res, next) => {
   q = "SELECT * FROM `Login_log` WHERE 1";
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
-    console.log(data);
+    // console.log(data);
     res.render("admin/ad-city/ad-History", {
       pageTitle: "History",
       path: "/",
@@ -113,7 +113,7 @@ exports.getAdCityP = (req, res, next) => {
   try {
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log(data);
+      // console.log(data);
       res.render("admin/ad-city/ad-city", {
         req,
         pageTitle: "Dashboard",
@@ -128,7 +128,7 @@ exports.getAdCityP = (req, res, next) => {
 };
 
 exports.getAdCityDataP = (req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
   const q =
     "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   const q2 =
@@ -136,7 +136,7 @@ exports.getAdCityDataP = (req, res, next) => {
   try {
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log("Data is:", data);
+      // console.log("Data is:", data);
       db.query(q2, [req.params.cityID], (errer, solution) => {
         if (err) return res.status(500).json(errer);
         // console.log("solution is:",solution)
@@ -187,7 +187,7 @@ exports.postAddCity = (req, res, next) => {
     }
 
     // ทำสิ่งที่ต้องการด้วย hashedPassword ที่เข้ารหัสแล้ว
-    console.log("Hashed Password:", hashedPassword);
+    // console.log("Hashed Password:", hashedPassword);
 
     // เตรียมข้อมูลสำหรับการเพิ่มเข้าฐานข้อมูล
     const cityData = {
@@ -244,13 +244,13 @@ exports.postAddCity = (req, res, next) => {
 };
 
 exports.getEditProvince = (req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
   const q =
     "SELECT citydata.cityID, citydata.province, citydata.date, citydata.developer, citydata.executive, citydata.government_investment, citydata.private_investment, citydata.LAT, citydata.LNG FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   try {
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log("Data is:", data);
+      // console.log("Data is:", data);
       res.render("admin/ad-city/ad-editCity", {
         req,
         pageTitle: "Dashboard",
@@ -286,7 +286,7 @@ exports.postUpdateProvince = (req, res, next) => {
 };
 
 exports.getAddSolutionPage = (req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
   res.render("admin/ad-city/ad-addsolution", {
     pageTitle: "add",
     path: "/",
@@ -363,12 +363,12 @@ exports.postAddSolution = (req, res, next) => {
 };
 
 exports.getEditSolution = (req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
   const q = "SELECT * FROM `solution` WHERE solutionID=?";
   try {
     db.query(q, [req.params.solutionID], (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log("Data is:", data);
+      // console.log("Data is:", data);
       res.render("admin/ad-city/ad-editSolution", {
         req,
         pageTitle: "Edit_Solution",
@@ -442,7 +442,7 @@ exports.postDeleteQuestion = (req, res, next) => {
     const q = "SELECT * FROM `question` WHERE 1";
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log("data:", data);
+      // console.log("data:", data);
       res.render("admin/ad-question/ad-question.ejs", {
         req,
         pageTitle: "Question",
@@ -459,7 +459,7 @@ exports.getkpi=(req,res,next)=>{
   const q1="SELECT * FROM `kpi` WHERE solutionID=?"
   db.query(q1,[solutionID],(err,kpi)=>{
     if (err) return res.status(500).json(err);
-    console.log(kpi)
+    // console.log(kpi)
     res.render("admin/ad-city/ad-kpi.ejs", {
       req,
       solutionID:solutionID,
@@ -471,3 +471,47 @@ exports.getkpi=(req,res,next)=>{
   })
   
 }
+exports.postkpi = (req, res, next) => {
+  // ดึงข้อมูลจาก req.body
+  const data = req.body;
+  
+  // ดึงข้อมูล solutionID จาก req.params
+  const solutionID = req.params.solutionID;
+
+  // ตรวจสอบว่าข้อมูลถูกส่งมาให้หรือไม่
+  if (!data || !solutionID) {
+    return res.status(400).json({ message: 'ข้อมูลไม่ครบถ้วน' });
+  }
+
+  const q = "UPDATE kpi SET kpiName=?, goal=?, unit=? WHERE kpiID=?";
+
+  // วนลูปเพื่ออัปเดตข้อมูล KPI ในฐานข้อมูล
+  Object.keys(data).forEach((key) => {
+    if (key.startsWith('type')) {
+      const kpiID = key.replace('type_', ''); // ดึง kpiID จากชื่อ key
+      const kpiName = data[`name${kpiID}`]; // ดึงชื่อ KPI จาก data
+      const unit = data[`unit${kpiID}`]; // ดึงหน่วยนับของ KPI จาก data
+      const goal = data[`goal_${kpiID}`] || 0; // หากไม่มี goal ให้ใช้ค่าเริ่มต้นเป็น 0
+      console.log("kpiID:"+kpiID)
+      console.log("kpiName:"+kpiName)
+      console.log("unit:"+unit)
+      console.log("goal:"+goal)
+
+      // Execute the SQL query
+      db.query(q, [kpiName, goal, unit, kpiID], (err, result) => {
+        // console.log(result)
+       
+        if (err) {
+          console.error(`Error updating KPI ${kpiID}:`, err);
+        } else {
+          // console.log(`Updated KPI ${kpiID} with solutionID ${solutionID}:`, { kpiID, kpiName, goal, unit });
+        }
+      });
+    }
+  });
+
+  // ส่งคำตอบกลับ
+  // res.status(200).json({ message: 'อัปเดตข้อมูล KPI สำเร็จ' });
+  res.redirect('/admin/city');
+};
+
