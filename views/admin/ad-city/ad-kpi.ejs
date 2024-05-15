@@ -6,27 +6,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>แก้ไข KPI</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body class="bg-gray-100 p-4">
+    <%- include('../include/ad-navbar.ejs') %>
+
   <div class="max-w-lg mx-auto">
     <h1 class="text-3xl mb-4 text-center">แก้ไข KPI</h1>
-    <form action="/admin/saveKpi/<%=solutionID %>" class="space-y-4" method="POST">
+    <form action="/admin/saveKpi/<%=solutionID %>" class="space-y-4" method="POST" id="kpiForm">
       <% kpi.forEach(function(item) { %>
         <div>
-          <label for="<%= item.kpiID %>" class="block text-gray-700">
-            <%= item.kpiName %>
-          </label>
-          <input type="text" id="<%= item.kpiID %>" name="<%= item.kpiID %>" value="<%= item.kpiName %>"
-            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <input type="text" id="<%= item.kpiID %>" name="name<%= item.kpiID %>" value="<%= item.kpiName %>" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <input type="hidden" name="type_<%= item.kpiID %>" value="0">
+            
+            <input id="YesNo_<%= item.kpiID %>" name="type_<%= item.kpiID %>" type="radio" value="0" <% if(item.goal == 0) { %>checked<% } %> onclick="showGoalInput(this)">
+            <label for="YesNo_<%= item.kpiID %>">Yes No</label>
+            <input id="Int_<%= item.kpiID %>"  name="type_<%= item.kpiID %>" type="radio" value="1" <% if(item.goal > 0) { %>checked<% } %> onclick="showGoalInput(this)">           
+            <label for="Int_<%= item.kpiID %>">Number</label>
+            
+            <input type="number" name="goal_<%= item.kpiID %>" onchange="checkNum('goal_<%= item.kpiID %>')" value="<%= item.goal >= 0 ? item.goal : '' %>" placeholder="กรุณาใส่ค่ามากกว่า 0" id="goal_<%= item.kpiID %>" name="goal_<%= item.kpiID %>" class="<%= item.goal > 0 ? '' : 'hidden' %> w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" >
+            <input placeholder="Unit" type="text" id="<%= item.kpiID %>" name="unit<%= item.kpiID %>" value="<%= item.unit %>" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            
         </div>
+
         <% }); %>
-          <div class="text-center">
-            <input type="submit" value="บันทึกการแก้ไข"
-              class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer">
-          </div>
+      <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token" />
+
+      <div class="text-center">
+        <button type="button" onclick="confirmSave()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer">บันทึกการแก้ไข</button>
+      </div>
     </form>
+    <%- include('../include/ad-footer.ejs') %>
+
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var radios = document.querySelectorAll('input[type="radio"]');
+      radios.forEach(function(radio) {
+        showGoalInput(radio);
+      });
+    });
+
+    function showGoalInput(radio) {
+  var goalInput = radio.parentNode.querySelector('[id^="goal_"]');
+  var kpiID = radio.id.split('_')[1]; // ดึงค่า kpiID จาก ID ของ radio button
+  var goalInputID = 'goal_' + kpiID;
+
+  if (radio.value === '1' && radio.checked) {
+    goalInput.classList.remove('hidden');
+  } else {
+    goalInput.classList.add('hidden');
+  }
+}
+
+function checkNum(inputId) {
+  var input = document.getElementById(inputId);
+  var value = parseFloat(input.value);
+  
+  if (value <= 0 || isNaN(value)) {
+    alert("กรุณาใส่ค่าที่มากกว่า 0");
+    input.value = ''; // Clear the input value
+  }
+}
+
+
+function confirmSave() {
+  Swal.fire({
+    title: 'ยืนยันการบันทึก',
+    text: 'คุณแน่ใจหรือไม่ว่าต้องการที่จะบันทึกการแก้ไข?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'ใช่, บันทึก',
+    cancelButtonText: 'ยกเลิก'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById("kpiForm").submit();
+    }
+  });
+}
+  </script>
 </body>
 
 </html>
