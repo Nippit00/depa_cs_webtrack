@@ -17,9 +17,8 @@
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
         .back {
-            margin: 30px 0px 0px 30px;
-            color: #000000;
-            /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
+            margin: 30px 0 0 30px;
+            color: #000;
             background-color: #FFF0C4;
             border-radius: 20px;
             width: 100px;
@@ -44,11 +43,9 @@
             display: flex;
             justify-content: space-between;
             width: 70%;
-            margin: 0 auto;
+            margin: 50px auto;
             padding: 20px;
             border-radius: 50px;
-            margin-top: 50px;
-            margin-bottom: 50px;
             background-color: #FFF0C4;
         }
 
@@ -65,6 +62,15 @@
             padding: 10px;
             box-sizing: border-box;
             margin-left: 50px;
+            flex-direction: column;
+        }
+
+        .right-content ul {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* จัดให้ชิดด้านซ้าย */
+            /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
         }
 
         form {
@@ -84,9 +90,7 @@
             display: block;
             margin-top: 20px;
             width: 100%;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
+            text-align: center;
         }
 
         select,
@@ -94,21 +98,15 @@
         input {
             width: 100%;
             padding: 8px;
-            margin-top: 5px;
-            margin-bottom: 15px;
+            margin: 5px 0 15px;
             box-sizing: border-box;
             border: 2px solid #C2AF76;
-            border-radius: 4px;
-            resize: vertical;
             border-radius: 15px;
             background-color: #fffbf0;
         }
 
-        input {
-            width: 50%;
-            position: relative;
-            left: 75%;
-            transform: translateX(-50%);
+        input[type="file"] {
+            display: none;
         }
 
         button {
@@ -117,92 +115,22 @@
             padding: 10px 15px;
             border: 2px solid #C2AF76;
             border-radius: 50px;
-        }
-
-        button:last-child {
-            margin-left: 0;
+            cursor: pointer;
         }
 
         button:hover {
-            background-color: #C2AF76;
-            border-radius: 50px;
+            background-color: #A9A9A9;
+        }
+
+        button:disabled {
+            background-color: #A9A9A9;
+            cursor: not-allowed;
         }
 
         #fileUpload {
             display: none;
         }
 
-
-        .right-content ul {
-            list-style-type: none;
-            /* ลบเครื่องหมายหน้ารายการออก */
-            padding: 0;
-            margin: 0;
-        }
-
-
-        .right-content li {
-            border-bottom: 1px solid #ccc;
-            /* เพิ่มเส้นแบ่งระหว่างรายการ */
-            padding: 8px;
-            /* เพิ่มพื้นที่รอบรายการ */
-            margin-bottom: 5px;
-            /* เพิ่มระยะห่างระหว่างรายการ */
-        }
-
-
-        .left-content {
-            padding: 10px;
-            /* เพิ่มพื้นที่รอบข้อมูล */
-            margin: 10px 0;
-            /* เพิ่มระยะห่างด้านบนและล่าง */
-        }
-
-
-        .left-content p {
-            margin: 5px 0;
-            /* ตั้งค่าระยะห่างระหว่างประโยค */
-            padding-left: 20px;
-            /* เพิ่มพื้นที่ด้านซ้าย */
-        }
-
-
-        .left-content p.header {
-            font-weight: bold;
-            /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
-            padding-left: 10px;
-            /* ปรับตำแหน่งของหัวข้อ */
-            color: #444;
-            /* เปลี่ยนสีตัวอักษร */
-        }
-
-
-        /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
-        #submitButton:disabled {
-            opacity: 0.5;
-            /* Reduce opacity */
-            cursor: not-allowed;
-            /* Change cursor */
-        }
-
-
-        #saveButton[disabled] {
-            opacity: 0.5;
-            /* Reduce opacity */
-            cursor: not-allowed;
-            /* Change cursor */
-        }
-        #alert{
-            margin-top: 3rem;
-            color: red;
-        }
-        #alert2{
-            color: red;
-        }
-        /*.button-container {
-            position: relative;
-            display: inline-block; /* or 'block' based on your layout 
-        }*/
     </style>
 </head>
 
@@ -285,7 +213,7 @@
             </div>
 
 
-            <div class="right-content">
+            <div class="right-content" \88++>
                 <p><strong>CDP :</strong></p>
                 <ul class="flex flex-col ">
                     <% if (formdata && formdata.length> 0) { %>
