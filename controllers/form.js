@@ -327,7 +327,7 @@ exports.getformSmart = (req, res, next) => {
   const cityID = req.session.userID;
   const q1 =
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
-  const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
+  const q2 = "SELECT * FROM anssolution2 WHERE solutionID = ?;";
   const q3 = "SELECT * FROM `question` WHERE 1";
   const q4 = "SELECT * FROM `kpi`JOIN anskpi ON kpi.kpiID= anskpi.kpiID WHERE kpi.solutionID=? ";
   
@@ -343,11 +343,11 @@ exports.getformSmart = (req, res, next) => {
             if(err) return res.status(500).json(err);
             if(kpi.length>0){
                 res.render("form-smart", {
-                kpiQ:kpi,
-                formdata: data,
-                dataOld: dataOld || [],
+                kpiQ:kpi,//ok
+                formdata: data,//may be ok
+                dataOld: dataOld || [],//chnage structure
                 csrfToken: req.csrfToken(),
-                question: question,
+                question: question,//ok
               });
             }
             else{
