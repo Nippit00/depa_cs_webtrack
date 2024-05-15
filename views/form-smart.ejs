@@ -91,6 +91,7 @@
             margin-top: 20px;
             width: 100%;
             text-align: center;
+            align-items: flex-start;
         }
 
         select,
@@ -116,6 +117,7 @@
             border: 2px solid #C2AF76;
             border-radius: 50px;
             cursor: pointer;
+            align-items: flex-start;
         }
 
         button:hover {
@@ -350,8 +352,12 @@
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
                 <button type="submit" id="submitButton">ส่งรายงาน</button>
-                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
-                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <center><p id="alert">*** <span style="color: red;">โปรดอ่าน:</span> เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p></center>
+                <center><p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p></center>
             </form>
         </div>
 
