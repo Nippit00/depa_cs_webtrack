@@ -278,6 +278,35 @@
                     <label for="budget">งบประมาณที่ใช้ในการดำเนินการ:</label>
                     <textarea id="budget" name="A11" placeholder="กรอกข้อความ...."><% if(dataOld.length){ %><%= JSON.parse(dataOld[0].ans)[10].Answer %><% } %></textarea>
                 </div>
+                <% question.forEach(item => { %>
+                    <div class="display-none">
+                        <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
+                        <label for="A<%= item.questionID %>"><%= item.question %>:</label>
+                        <% 
+                            let oldAnswer = ''; 
+                            if (dataOld.length && dataOld[0].ans) {
+                                const ansArray = JSON.parse(dataOld[0].ans);
+                                ansArray.forEach(old => {
+                                    if (old.Question === item.question) {
+                                    
+                                        oldAnswer = old.Answer;  // Use single equals for assignment
+                                    }
+                                });
+                            }
+                        %>
+                        <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                    </div>
+                <% }); %>
+
+
+
+
+
+
+
+
+
+
 
                 <div class="footer">
                     <label>รายงานตามตัวชี้วัด</label>
@@ -333,6 +362,18 @@
                     <label for="usecdp"><%=formdata[7].kpiName  %>:</label>
                     <textarea id="usecdp" name="<%=formdata[7].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[7].ans %><% } %></textarea>
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <!-- ปุ่มบันทึก -->
                 <input type="submit" value="test">
@@ -342,7 +383,7 @@
                 <button type="button" id="submitButton">ส่งรายงาน</button>
             </form>
         </div>
-
+        
         <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 var statusSelect = document.getElementById('status');

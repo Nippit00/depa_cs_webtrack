@@ -217,7 +217,7 @@
 
             <div class="right-content" \88++>
                 <p><strong>CDP :</strong></p>
-                <ul>
+                <ul class="flex flex-col ">
                     <% if (formdata && formdata.length> 0) { %>
                         <% formdata.forEach((item)=> { %>
                             <li> - <%= item.kpiName %>
@@ -238,29 +238,33 @@
         <div class="custom-container-1">
             <form action="/saveForm/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
+                    
+                    <input type="hidden" name="Q1" value="สถานะ">
                     <label for="status">สถานะ :</label>
-                    <select id="status" name="Q1" required>
-                        <option value="null" <% if (!dataOld.length || dataOld[0].Q1===null) { %>selected<% } %>>ระบุ
-                                สถานะโครงการ</option>
-                        <option value="delayed" <% if (dataOld.length && dataOld[0].Q1==='delayed' ) { %>selected<% } %>
-                                >ล่าช้ากว่าแผน</option>
-                        <option value="on_schedule" <% if (dataOld.length && dataOld[0].Q1==='on_schedule' ) { %>
-                            selected<% } %>>ตามแผน</option>
-                        <option value="ahead_of_schedule" <% if (dataOld.length && dataOld[0].Q1==='ahead_of_schedule' )
-                            { %>selected<% } %>>เร็วกว่าแผน</option>
-                        <option value="not_started" <% if (dataOld.length && dataOld[0].Q1==='not_started' ) { %>
-                            selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                    <select id="status" name="A1" required>
+                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[0].Answer === null) { %>selected<% } %>>ระบุสถานะโครงการ</option>
+                        <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ล่าช้ากว่าแผน') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
+                        <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ตามแผน') { %>selected<% } %>>ตามแผน</option>
+                        <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
+                        <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
                     </select>
+                    
                 </div>
 
 
                 <div>
+                    <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                    <input type="hidden" value="ความก้าวหน้าโครงการ" name="Q2">
+                    
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
-                        <option value="0" <% if (!dataOld.length || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                        <% for (let i = 0; i <= 100; i += 1) { %>
-                            <option value="<%= i %>" <% if (dataOld.length && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>selected<% } %>><%= i %>%</option>
+                        <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
+                        <% for (let i = 0; i <= 100; i += 5) { %>
+                            <option value="<%= i %>" 
+                                <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
+                                    selected
+                                <% } %>>
+                                <%= i %>%
+                            </option>
                         <% } %>
                     </select>
                     
@@ -268,70 +272,86 @@
 
 
                 <div>
-                    <input type="file" id="fileUpload" name="Q3" accept=".pdf, .doc, .docx">
+                    <input type="hidden" name="Q3" value="FileUpload">
+                    <input type="file" id="fileUpload" name="A3" accept=".pdf, .doc, .docx">
                 </div>
 
 
                 <div>
+                    <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
                     <label for="operation">ผลการดำเนินงาน:</label>
-                    <textarea id="operation" name="Q4"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
+                    <textarea id="operation" name="A4"
+                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[3].Answer : '' %></textarea>
                 </div>
 
 
                 <div>
+                    <input type="hidden" name="Q5" value="ประเภทปัญหา">
                     <label for="problem_type">ประเภทปัญหา:</label>
-                    <select id="problem_type" name="Q5">
-                        <option value="null" <% if (!dataOld.length || dataOld[0].Q5===null) { %>selected<% } %>>ระบุ
-                                ประเภทปัญหา</option>
-                        <option value="technical" <% if (dataOld.length && dataOld[0].Q5==='technical' ) { %>selected<%
-                                } %>>เทคนิค</option>
-                        <option value="financial" <% if (dataOld.length && dataOld[0].Q5==='financial' ) { %>selected<%
-                                } %>>การเงิน</option>
-                        <option value="management" <% if (dataOld.length && dataOld[0].Q5==='management' ) { %>selected
-                            <% } %>>การจัดการ
-                        </option>
+                    <select id="problem_type" name="A5">
+                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[4].Answer === null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
+                        <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'เทคนิค') { %>selected<% } %>>เทคนิค</option>
+                        <option value="การเงิน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การเงิน') { %>selected<% } %>>การเงิน</option>
+                        <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
                     </select>
                 </div>
+                
 
 
                 <div>
+                    <input type="hidden" name="Q6" value="ผลลัพธ์">
+
                     <label for="result">ผลลัพธ์:</label>
-                    <textarea id="result" name="Q6"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
+                    <textarea id="result" name="A6"
+                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[5].Answer : '' %></textarea>
                 </div>
 
 
                 <div>
+                    <input type="hidden" name="Q7" value="ปัญหา/อุปสรรค">
+
                     <label for="problem">ปัญหา/อุปสรรค:</label>
-                    <textarea id="problem" name="Q7"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
+                    <textarea id="problem" name="A7"
+                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[6].Answer : '' %></textarea>
                 </div>
 
 
                 <div>
+                    <input type="hidden" name="Q8" value="แนวทางแก้ไข">
                     <label for="solution">แนวทางแก้ไข:</label>
-                    <textarea id="solution" name="Q8"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q8 %><% } %></textarea>
+                    <textarea id="solution" name="A8"
+                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[7].Answer : '' %></textarea>
                 </div>
 
 
                 <div>
+                    <input type="hidden" name="Q9" value="หมายเหตุ">
                     <label for="note">หมายเหตุ:</label>
-                    <textarea id="note" name="Q9"
-                        placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
+                    <textarea id="note" name="A9"
+                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[8].Answer : '' %></textarea>
                 </div>
-                <% question.forEach(item=> { %>
-                    
-                        <div class="display-none">
-                            <label for="Q<%= item.questionID %>"><%= item.question %>:</label>
-                            <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
-                            
-                                   </div>
-                 
-                       
-                   
+                <% question.forEach(item => { %>
+                    <div class="display-none">
+                        <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
+                        <label for="A<%= item.questionID %>"><%= item.question %>:</label>
+                        <% 
+                            let oldAnswer = ''; 
+                            if (dataOld.length && dataOld[0].ans) {
+                                const ansArray = JSON.parse(dataOld[0].ans);
+                                ansArray.forEach(old => {
+                                    if (old.Question === item.question) {
+                                    
+                                        oldAnswer = old.Answer;  // Use single equals for assignment
+                                    }
+                                });
+                            }
+                        %>
+                        <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                    </div>
                 <% }); %>
+                
+                
+                <h1> KPI Question</h1>
                 <!-- KPI -->
                 <% kpiQ.forEach(item => { %>
                     <div class="display-none">
@@ -342,7 +362,8 @@
                             <label>No</label>
                             <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
                         <% } else { %>
-                            <textarea id="note" name="<%= item.kpiID %>" placeholder="กรอกข้อความ...."><% if(item.ans !== ''){%><%= item.ans %><%}%></textarea>
+                            <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
+                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
                         <% } %>
                     </div>
                 <% }); %>
@@ -362,9 +383,23 @@
         </div>
 
 
+        <script>
+            function check(id){
+                
+                const A=document.getElementById("A"+id).value
+                const C=parseFloat(document.getElementById("C"+id).value)
+                
+                console.log("A:"+A)
+                console.log("C:"+C)
+                if(A>C){
+                    document.getElementById("A"+id).value=C
+                }
+                
+            }
+        </script>
 
 
-          <script>
+          <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -589,7 +624,7 @@
 
 
 
-        </script>  
+        </script>   -->
 
 
         <%- include('component/footer.ejs') %>

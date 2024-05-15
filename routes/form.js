@@ -27,8 +27,6 @@ router.post('/sendformsmart/:solutionID',isAuth,formController.postFormSmart);
 
 //formcdp
 router.get('/formcdp1/:solutionID',isAuth,formController.getformCdp1);
-router.get('/formcdp2/:solutionID',isAuth,formController.getformCdp2);
-router.get('/formcdp3/:solutionID',isAuth,formController.getformCdp3);
-router.get('/formcdp4/:solutionID',isAuth,formController.getformCdp4);
+
 router.post('/saveForm/:solutionID',isAuth,formController.saveAnsObj);
 module.exports = router;
