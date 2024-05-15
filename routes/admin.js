@@ -29,4 +29,5 @@ router.get('/solution/edit/:solutionID', isAdmin, adminController.getEditSolutio
 router.get('/question', isAdmin, adminController.getQuestion);
 router.get('/question/:QID', isAdmin, adminController.postDeleteQuestion);
 router.post('/addQuestion', isAdmin, adminController.getAddQuestion);
+router.get('/kpi/:solutionID', isAdmin, adminController.getkpi);
 module.exports = router;

@@ -453,3 +453,21 @@ exports.postDeleteQuestion = (req, res, next) => {
     });
   });
 };
+
+exports.getkpi=(req,res,next)=>{
+  const solutionID=req.params.solutionID
+  const q1="SELECT * FROM `kpi` WHERE solutionID=?"
+  db.query(q1,[solutionID],(err,kpi)=>{
+    if (err) return res.status(500).json(err);
+    console.log(kpi)
+    res.render("admin/ad-city/ad-kpi.ejs", {
+      req,
+      solutionID:solutionID,
+      kpi:kpi,
+      pageTitle: "KPI",
+      path: "/KPI",
+    
+    });
+  })
+  
+}
