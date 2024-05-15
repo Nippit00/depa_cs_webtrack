@@ -287,7 +287,7 @@
 
             <div class="right-content">
                 <p><strong>CDP :</strong></p>
-                <ul>
+                <ul class="flex flex-col ">
                     <% if (formdata && formdata.length> 0) { %>
                         <% formdata.forEach((item)=> { %>
                             <li> - <%= item.kpiName %>
@@ -328,9 +328,19 @@
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
                     <input type="hidden" value="ความก้าวหน้าโครงการ" name="Q2">
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
-                        <option value="0" <% if (!dataOld.length || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                        <% for (let i = 0; i <= 100; i += 1) { %>
-                            <option value="<%= i %>" <% if (dataOld.length && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>selected<% } %>><%= i %>%</option>
+                        <option value="0" 
+                            <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>
+                                selected
+                            <% } %>>
+                            ระบุ % ความก้าวหน้า
+                        </option>
+                        <% for (let i = 0; i <= 100; i += 5) { %>
+                            <option value="<%= i %>" 
+                                <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
+                                    selected
+                                <% } %>>
+                                <%= i %>%
+                            </option>
                         <% } %>
                     </select>
                     
