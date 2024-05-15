@@ -254,32 +254,14 @@
 
                 <div>
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                    <select id="progress" name="Q2">
-                        <option value="0" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ %
-                                ความก้าวหน้า</option>
-                        <option value="0" <% if (dataOld.length && dataOld[0].Q2===0) { %>selected<% } %>>0%</option>
-                        <option value="5" <% if (dataOld.length && dataOld[0].Q2===5) { %>selected<% } %>>5%</option>
-                        <option value="10" <% if (dataOld.length && dataOld[0].Q2===10) { %>selected<% } %>>10%</option>
-                        <option value="15" <% if (dataOld.length && dataOld[0].Q2===15) { %>selected<% } %>>15%</option>
-                        <option value="20" <% if (dataOld.length && dataOld[0].Q2===20) { %>selected<% } %>>20%</option>
-                        <option value="25" <% if (dataOld.length && dataOld[0].Q2===25) { %>selected<% } %>>25%</option>
-                        <option value="30" <% if (dataOld.length && dataOld[0].Q2===30) { %>selected<% } %>>30%</option>
-                        <option value="35" <% if (dataOld.length && dataOld[0].Q2===35) { %>selected<% } %>>35%</option>
-                        <option value="40" <% if (dataOld.length && dataOld[0].Q2===40) { %>selected<% } %>>40%</option>
-                        <option value="45" <% if (dataOld.length && dataOld[0].Q2===45) { %>selected<% } %>>45%</option>
-                        <option value="50" <% if (dataOld.length && dataOld[0].Q2===50) { %>selected<% } %>>50%</option>
-                        <option value="55" <% if (dataOld.length && dataOld[0].Q2===55) { %>selected<% } %>>55%</option>
-                        <option value="60" <% if (dataOld.length && dataOld[0].Q2===60) { %>selected<% } %>>60%</option>
-                        <option value="65" <% if (dataOld.length && dataOld[0].Q2===65) { %>selected<% } %>>65%</option>
-                        <option value="70" <% if (dataOld.length && dataOld[0].Q2===70) { %>selected<% } %>>70%</option>
-                        <option value="75" <% if (dataOld.length && dataOld[0].Q2===75) { %>selected<% } %>>75%</option>
-                        <option value="80" <% if (dataOld.length && dataOld[0].Q2===80) { %>selected<% } %>>80%</option>
-                        <option value="85" <% if (dataOld.length && dataOld[0].Q2===85) { %>selected<% } %>>85%</option>
-                        <option value="90" <% if (dataOld.length && dataOld[0].Q2===90) { %>selected<% } %>>90%</option>
-                        <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
-                        <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%
-                        </option>
+                    <input type="hidden" value="ความก้าวหน้าโครงการ" name="Q2">
+                    <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
+                        <option value="0" <% if (!dataOld.length || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
+                        <% for (let i = 0; i <= 100; i += 1) { %>
+                            <option value="<%= i %>" <% if (dataOld.length && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>selected<% } %>><%= i %>%</option>
+                        <% } %>
                     </select>
+                    
                 </div>
 
 
@@ -338,53 +320,45 @@
                         placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
                 </div>
                 <% question.forEach(item=> { %>
-                    <% if (item.status==1) { %>
+                    
                         <div class="display-none">
-                            <label for="Q<%= item.questionID %>">
-                                <%= item.question %>:
-                            </label>
-                            <textarea id="note" name="Q<%= item.questionID %>"
-                                placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
-
-                        </div>
-                        <% } else{} %>
-
-
-                            <% }); %>
-                                <!-- KPI -->
-                                <% kpiQ.forEach(item=> { %>
-
-                                    <div class="display-none">
-                                        <label for="<%= item.kpiID %>">
-                                            <%= item.kpiName %>:
-                                        </label>
-                                        <% if(item.goal==0){ %>
-                                            <label>Yes</label>
-                                            <input type="radio" name="<%= item.kpiID %>" value="Yes">
-                                            <label>No</label>
-                                            <input type="radio" name="<%= item.kpiID %>" value="No">
-                                            <% } else{ %>
-
-                                                <textarea id="note" name=<%=item.kpiID
-                                                    %> placeholder="กรอกข้อความ...."></textarea>
-                                                <% } %>
-                                    </div>
-
-
-
-                                    <% }); %>
-
-                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                        <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
-                                        <button type="submit" id="saveButton">บันทึก</button>
-                                        <button type="submit" id="submitButton">ส่งรายงาน</button>
+                            <label for="Q<%= item.questionID %>"><%= item.question %>:</label>
+                            <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
+                            
+                                   </div>
+                 
+                       
+                   
+                <% }); %>
+                <!-- KPI -->
+                <% kpiQ.forEach(item => { %>
+                    <div class="display-none">
+                        <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                        <% if(item.goal == 0) { %>
+                            <label>Yes</label>
+                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
+                            <label>No</label>
+                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
+                        <% } else { %>
+                            <textarea id="note" name="<%= item.kpiID %>" placeholder="กรอกข้อความ...."><% if(item.ans !== ''){%><%= item.ans %><%}%></textarea>
+                        <% } %>
+                    </div>
+                <% }); %>
+                
+                
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
+                <button type="submit" id="saveButton">บันทึก</button>
+                <button type="submit" id="submitButton">ส่งรายงาน</button>
+                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
+                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
             </form>
         </div>
 
 
 
 
-        <!-- <script>
+          <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -412,6 +386,9 @@
                 var statusSelect = document.getElementById('status');
                 var progressSelect = document.getElementById('progress');
                 const fileUploadInput = document.getElementById('fileUpload');
+                /*submitButton.style.display = 'none';*/
+
+
 
 
 
@@ -431,6 +408,27 @@
 
 
                 //Condition for disabled button
+
+                /*function checkFormCompletion() {
+                    let isComplete = true;
+                    const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'problem', 'solution', 'note'];
+    
+                    requiredFields.forEach(fieldId => {
+                        const field = document.getElementById(fieldId);
+                        if (field && !field.value.trim()) {
+                            isComplete = false;
+                        }
+                    });
+    
+                    if (isComplete) {
+                        submitButton.style.display = 'block';
+                    } else {
+                        submitButton.style.display = 'none';
+                    }
+                }
+    
+                reportForm.addEventListener('input', checkFormCompletion);*/
+
                 function checkFormCompletion() {
                     const inputs = reportForm.querySelectorAll('input, select, textarea');
                     let isComplete = true;
@@ -585,7 +583,7 @@
 
 
 
-        </script> -->
+        </script>  
 
 
         <%- include('component/footer.ejs') %>

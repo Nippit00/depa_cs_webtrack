@@ -41,7 +41,7 @@
       }
 
       .content {
-        display: none;
+        /* display: none; */
         padding: 10px;
         /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
         overflow: hidden;
@@ -186,7 +186,7 @@
 
     var form2StartDay = 8;
     var form2StartMonth = 5;
-    var form2Year = 2025;
+    var form2Year = 2024;
 
     %>
 
@@ -357,7 +357,11 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
+                                    <% if(count==1){ %> 
+                                      <a href="/formcdp1/<%= item.solutionID %>"><button class="report-button">รายงาน</button></a>
+                                      <% } else{%>
                                     <a href="/formsmart/<%= item.solutionID %>"><button class="report-button">รายงาน</button></a>
+                                  <% } %>
                                   </div>
                                 <% } %>
                               <% } %>
@@ -524,7 +528,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -670,7 +674,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -815,7 +819,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -960,7 +964,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -1105,7 +1109,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -1250,7 +1254,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -1395,7 +1399,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
                                           class="report-button">รายงาน</button></a>
                                     </div>
                                     <% } %>
@@ -1455,16 +1459,7 @@
         <br>
         <%- include('../component/footer.ejs') %>
 
-          <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              var coll = document.querySelector('.collapsible');
-              var content = document.querySelector('.content');
-
-              coll.addEventListener('click', function () {
-                content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-              });
-            });
-          </script>
+          
 
 </body>
 

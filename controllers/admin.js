@@ -384,7 +384,7 @@ exports.getEditSolution = (req, res, next) => {
 };
 
 exports.getQuestion = (req, res, next) => {
-  const q = "SELECT * FROM `question` WHERE status=1";
+  const q = "SELECT * FROM `question` WHERE 1";
   try {
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -404,7 +404,7 @@ exports.getQuestion = (req, res, next) => {
 };
 
 exports.getAddQuestion = (req, res, next) => {
-  const q = "INSERT INTO `question`(`question`,`status`) VALUES (?,1)";
+  const q = "INSERT INTO `question`(`question`) VALUES (?)";
   const newQuestion = req.body.New_Question;
 
   try {
@@ -414,17 +414,7 @@ exports.getAddQuestion = (req, res, next) => {
         return res.status(500).json(err);
       }
 
-      const insertId = result.insertId;
-      const alterQuery = `ALTER TABLE \`anssolution\` ADD \`Q${insertId}\` TEXT NULL AFTER \`Q${
-        insertId - 1
-      }\``;
-
-      db.query(alterQuery, (alterErr) => {
-        if (alterErr) {
-          console.error(alterErr);
-          return res.status(500).json(alterErr);
-        }
-        const q1 = "SELECT * FROM `question` WHERE status=1";
+        const q1 = "SELECT * FROM `question` WHERE 1";
         db.query(q1, (err, data) => {
           if (err) return res.status(500).json(err);
           res.render("admin/ad-question/ad-question.ejs", {
@@ -435,7 +425,7 @@ exports.getAddQuestion = (req, res, next) => {
             success: true,
           });
         });
-      });
+      
     });
   } catch (err) {
     console.error(err);
@@ -443,13 +433,13 @@ exports.getAddQuestion = (req, res, next) => {
   }
 };
 exports.postDeleteQuestion = (req, res, next) => {
-  q = "UPDATE `question` SET `status`=0 WHERE questionID=?";
+  q = "DELETE FROM `question` WHERE questionID=?";
   db.query(q, [req.params.QID], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).json(err);
     }
-    const q = "SELECT * FROM `question` WHERE status=1";
+    const q = "SELECT * FROM `question` WHERE 1";
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
       console.log("data:", data);
