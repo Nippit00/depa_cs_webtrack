@@ -42,19 +42,6 @@ exports.getformCdp1 = (req, res, next) => {
   }
 };
 
-exports.getformCdp2 = (req, res, next) => {
-  
-  res.render("form-cdpPart2", { req, pageTitle: "form" });
-};
-
-exports.getformCdp3 = (req, res, next) => {
-  res.render("form-cdpPart3", { req, pageTitle: "form" });
-};
-
-exports.getformCdp4 = (req, res, next) => {
-  res.render("form-cdpPart4", { req, pageTitle: "form" });
-};
-
 exports.postFormcheck = (req, res, next) => {
   const dataCheck = req.body;
   const q =
