@@ -361,8 +361,8 @@
                             <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
                         <% } else { %>
                             <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
-                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
-                        <% } %>
+                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')" placeholder="<%= item.unit %>">
+                            <% } %>
                     </div>
                 <% }); %>
                 
