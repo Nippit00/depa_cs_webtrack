@@ -86,7 +86,7 @@
                     <a href="/admin/kpi/<%=smartItem.solutionID%>"><p><%= smartItem.solutionName %></p></a>
                   </td>
                   <td
-                    class="border px-4 py-2 hover:bg-slate-200 hover:font-bold"
+                    class="border bg-yellow-300 px-4 py-2 hover:bg-yellow-500 hover:font-bold"
                   >
                     <div>
                       <a
@@ -96,6 +96,15 @@
                       >
                     </div>
                   </td>
+                  <td class="border px-4 text-white bg-red-600 py-2  hover:font-bold hover:bg-red-500">
+                  <div>
+                    <a
+                      class=""
+                      href="/admin/solution/delete/<%=smartItem.solutionID  %>/<%=smartItem.cityID  %>"
+                      >Delete</a
+                    >
+                  </div>
+                </td>
                 </tr>
                 <% }); %>
               </tbody>
