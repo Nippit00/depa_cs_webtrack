@@ -95,7 +95,7 @@ exports.notification = (req, res, next) => {
 };
 
 exports.getHistoryPage = (req, res, next) => {
-  q = "SELECT * FROM `Login_log` WHERE 1";
+  q = "SELECT * FROM `Login_log` ORDER BY `Login_ID` DESC;"
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
     // console.log(data);
@@ -368,12 +368,13 @@ exports.getEditSolution = (req, res, next) => {
   try {
     db.query(q, [req.params.solutionID], (err, data) => {
       if (err) return res.status(500).json(err);
-      // console.log("Data is:", data);
+      console.log("Data is:", data);
       res.render("admin/ad-city/ad-editSolution", {
         req,
         pageTitle: "Edit_Solution",
         path: "/Edit_Solution",
         cityData: data[0],
+        solutionID:req.params.solutionID,
         success: false,
       });
     });
@@ -542,6 +543,69 @@ exports.deleteSolution = (req, res, next) => {
         });
       });
     })
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+exports.updateSolution = (req, res, next) => {
+  console.log(req.body);
+
+  const { cityID, smart, solutionName, sourceFunds, funds, startYear, endYear, _csrf } = req.body;
+  const solutionID = req.params.solutionID; // Assumes you have solutionID in the params
+
+  let smartKey;
+  switch (smart) {
+    case "Environment":
+      smartKey = "ENV"; // สมมติว่า 'ENV' คือค่าที่สมบูรณ์กับ 'Environment'
+      break;
+    case "Energy":
+      smartKey = "ENE";
+      break;
+    case "Economy":
+      smartKey = "ECO";
+      break;
+    case "Governance":
+      smartKey = "GOV";
+      break;
+    case "Living":
+      smartKey = "LIV";
+      break;
+    case "Mobility":
+      smartKey = "MOB";
+      break;
+    case "People":
+      smartKey = "PEO";
+      break;
+    default:
+      smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
+      break;
+  }
+
+  const q3 = "UPDATE `solution` SET `smartKey`=?, `solutionName`=?, `Source_funds`=?, `funds`=?, `start_year`=?, `end_year`=?, `status_solution`='1' WHERE `solutionID`=?";
+  const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+  const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? AND solution.status_solution=1 GROUP BY solution.solutionName";
+
+  try {
+    db.query(q3, [smartKey, solutionName, sourceFunds, funds, startYear, endYear, solutionID], (err, result) => {
+      if (err) return res.status(500).json(err);
+
+      db.query(q, [cityID], (err, data) => {
+        if (err) return res.status(500).json(err);
+
+        db.query(q2, [cityID], (errer, solution) => {
+          if (errer) return res.status(500).json(errer);
+
+          res.render("admin/ad-city/ad-citydata", {
+            req,
+            pageTitle: "Dashboard",
+            path: "/city",
+            cityData: data[0],
+            solution: solution,
+          });
+        });
+      });
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
