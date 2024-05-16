@@ -15,29 +15,29 @@
       <div class="m-10 mx-20 ">
         
         <form
-          action="/update"
+          action="/admin/updateSolution/<%=solutionID%>"
           method="POST"
           class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 "
         >
+        <input type="hidden"  name="cityID" value="<%=cityData.cityID%>">
         <h2 class="text-2xl font-bold mb-4 text-center">Edit Solution Data</h2>
-          <div class="mb-4">
-            <label for="smartKey" class="block text-gray-700 font-bold mb-2"
-              >Smart Key:</label
-            >
-            <select
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="solutionType"
-              name="smart"
-            >
-              <option value="Environment">Environment</option>
-              <option value="Energy">Energy</option>
-              <option value="Economy">Economy</option>
-              <option value="Governance">Governance</option>
-              <option value="Living">Living</option>
-              <option value="Mobility">Mobility</option>
-              <option value="People">People</option>
-            </select>
-          </div>
+        <div class="mb-4">
+          <label for="smartKey" class="block text-gray-700 font-bold mb-2">Smart Key:</label>
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="solutionType"
+            name="smart"
+          >
+            <option value="Environment" <% if(cityData.smart === 'ENV'){ %>selected<% } %>>Environment</option>
+            <option value="Energy" <% if(cityData.smart === 'ENE'){ %>selected<% } %>>Energy</option>
+            <option value="Economy" <% if(cityData.smart === 'ECO'){ %>selected<% } %>>Economy</option>
+            <option value="Governance" <% if(cityData.smart === 'GOV'){ %>selected<% } %>>Governance</option>
+            <option value="Living" <% if(cityData.smart === 'LIV'){ %>selected<% } %>>Living</option>
+            <option value="Mobility" <% if(cityData.smart === 'MOB'){ %>selected<% } %>>Mobility</option>
+            <option value="People" <% if(cityData.smart === 'PEO'){ %>selected<% } %>>People</option>
+          </select>
+        </div>
+        
 
           <div class="mb-4">
             <label for="solutionName" class="block text-gray-700 font-bold mb-2"
@@ -109,7 +109,7 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <div class="flex items-center justify-between">
             <input
               type="submit"
