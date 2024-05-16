@@ -79,9 +79,12 @@
                 </tr>
               </thead>
               <tbody>
-                <% solution.forEach((smartItem) => { %>
+                <% solution.forEach((smartItem, index) => { %>
+                  <% if (index !== 0) { %>
                 <tr class="hover:bg-gray-50">
-                  <td class="border px-4 py-2">Smart <%= smartItem.smart %></td>
+                  <td class="border px-4 py-2">
+                    <%= smartItem.smart === 'City Data Platform' ? smartItem.smart : 'smart ' + smartItem.smart %>
+                  </td>
                   <td class="border px-4 py-2">
                     <a href="/admin/kpi/<%=smartItem.solutionID%>"><p><%= smartItem.solutionName %></p></a>
                   </td>
@@ -106,6 +109,7 @@
                   </div>
                 </td>
                 </tr>
+                <% } %>
                 <% }); %>
               </tbody>
             </table>
