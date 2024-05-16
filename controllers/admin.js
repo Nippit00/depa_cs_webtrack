@@ -132,7 +132,7 @@ exports.getAdCityDataP = (req, res, next) => {
   const q =
     "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   const q2 =
-    "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? GROUP BY solution.solutionName";
+    "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? AND solution.status_solution=1  GROUP BY solution.solutionName";
   try {
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -515,3 +515,35 @@ exports.postkpi = (req, res, next) => {
   res.redirect('/admin/city');
 };
 
+
+exports.deleteSolution = (req, res, next) => {
+  // console.log(req.params);
+  const q =
+    "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+  const q2 =
+    "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? AND solution.status_solution=1  GROUP BY solution.solutionName";
+  try {
+    const q3="UPDATE `solution` SET `status_solution`='0' WHERE solutionID=?"
+    db.query(q3,[req.params.solutionID],(err,deletedata)=>{
+      if (err) return res.status(500).json(err);
+      db.query(q, [req.params.cityID], (err, data) => {
+        if (err) return res.status(500).json(err);
+        // console.log("Data is:", data);
+        db.query(q2, [req.params.cityID], (errer, solution) => {
+          if (err) return res.status(500).json(errer);
+          // console.log("solution is:",solution)
+          res.render("admin/ad-city/ad-citydata", {
+            req,
+            pageTitle: "Dashboard",
+            path: "/city",
+            cityData: data[0],
+            solution: solution,
+          });
+        });
+      });
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
