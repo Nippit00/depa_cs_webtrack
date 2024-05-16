@@ -51,6 +51,7 @@
             <input placeholder="Unit" type="text" id="<%= item.kpiID %>" name="unit<%= item.kpiID %>"
               value="<%= item.unit %>"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+            <button onclick="" class="bg-red-600 hover:bg-red-700 text-white rounded-md px-2">Delete</button>
           </div>
           <% }); %>
             <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token" />
@@ -92,7 +93,9 @@
           input.value = ''; // Clear the input value
         }
       }
-
+      function deleteKpi(){
+        console.log()
+      }
 
       function confirmSave() {
         Swal.fire({
