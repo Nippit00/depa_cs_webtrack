@@ -78,7 +78,7 @@ exports.getCityDashboard = (req, res, next) => {
 
 exports.getCityFollow = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? GROUP BY solution.solutionName";
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.status_solution=1 GROUP BY solution.solutionName";
   try{
     db.query(q, [cityID], (err, data) => {
       console.log("Check follow data :",data)
@@ -86,7 +86,7 @@ exports.getCityFollow = (req, res, next) => {
       res.render("city/follow", {
         pageTitle: "Follow",
         path: "/city",
-        followdata: data
+        followdata: data ||[]
       });
     });
 
