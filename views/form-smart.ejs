@@ -2,6 +2,8 @@
 <html lang="en">
 
 
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
 
 
     <title>form</title>
@@ -26,6 +30,7 @@
             text-align: center;
         }
 
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -33,10 +38,12 @@
             box-sizing: border-box;
         }
 
+
         .head {
             text-align: center;
             margin-top: 50px;
         }
+
 
         .custom-container,
         .custom-container-1 {
@@ -49,12 +56,14 @@
             background-color: #FFF0C4;
         }
 
+
         .custom-container-1>div {
             width: 48%;
             padding: 10px;
             box-sizing: border-box;
             margin-bottom: 20px;
         }
+
 
         .left-content,
         .right-content {
@@ -65,6 +74,7 @@
             flex-direction: column;
         }
 
+
         .right-content ul {
             display: flex;
             flex-direction: column;
@@ -73,10 +83,12 @@
             /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
         }
 
+
         form {
             width: 100%;
             box-sizing: border-box;
         }
+
 
         form div {
             display: flex;
@@ -86,13 +98,14 @@
             margin-bottom: 20px;
         }
 
+
         label {
             display: block;
             margin-top: 20px;
             width: 100%;
             text-align: center;
-            align-items: flex-start;
         }
+
 
         select,
         textarea,
@@ -106,9 +119,11 @@
             background-color: #fffbf0;
         }
 
+
         input[type="file"] {
             display: none;
         }
+
 
         button {
             background-color: #C2AF76;
@@ -117,27 +132,42 @@
             border: 2px solid #C2AF76;
             border-radius: 50px;
             cursor: pointer;
-            align-items: flex-start;
         }
+
 
         button:hover {
             background-color: #A9A9A9;
         }
+
 
         button:disabled {
             background-color: #A9A9A9;
             cursor: not-allowed;
         }
 
+
         #fileUpload {
             display: none;
         }
+        #alert{
+            color: red;
+            margin-top: 2rem;
+        }
+        #alert2{
+            color: red;
+           
+        }
+
 
     </style>
 </head>
 
 
+
+
 <body>
+
+
 
 
     <%- include('component/navbar.ejs') %>
@@ -149,6 +179,8 @@
         <div>
             <button class="back" onclick="goBack()">ย้อนกลับ</button>
         </div>
+
+
 
 
         <div class="head">
@@ -164,6 +196,10 @@
 
 
 
+
+
+
+
         <div class="head">
             <% if (formdata && formdata.length> 0 && formdata[0].solutionName) { %>
                 <h6>ชื่อโครงการ: <%= formdata[0].solutionName %>
@@ -172,6 +208,10 @@
                     <h6>ชื่อโครงการ: N/A </h6>
                     <% } %>
         </div>
+
+
+
+
 
 
 
@@ -215,14 +255,15 @@
             </div>
 
 
+
+
             <div class="right-content" \88++>
                 <p><strong>CDP :</strong></p>
                 <ul class="flex flex-col ">
                     <% if (formdata && formdata.length> 0) { %>
                         <% formdata.forEach((item)=> { %>
-                            <li> <span style="color: red;">-</span> <%= item.kpiName %>
+                            <li> - <%= item.kpiName %>
                             </li>
-                            <br>
                             <% }); %>
                                 <% } else { %>
                                     <li>No data available</li>
@@ -233,13 +274,19 @@
 
 
 
+
+
+
+
         </div>
+
+
 
 
         <div class="custom-container-1">
             <form action="/saveForm/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
-                    
+                   
                     <input type="hidden" name="Q1" value="สถานะ">
                     <label for="status">สถานะ :</label>
                     <select id="status" name="A1" required>
@@ -249,18 +296,20 @@
                         <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
                         <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
                     </select>
-                    
+                   
                 </div>
+
+
 
 
                 <div>
                     <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                    
+                   
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
                         <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
                         <% for (let i = 0; i <= 100; i += 5) { %>
-                            <option value="<%= i %>" 
+                            <option value="<%= i %>"
                                 <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
                                     selected
                                 <% } %>>
@@ -268,8 +317,10 @@
                             </option>
                         <% } %>
                     </select>
-                    
+                   
                 </div>
+
+
 
 
                 <div>
@@ -278,12 +329,16 @@
                 </div>
 
 
+
+
                 <div>
                     <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
                     <label for="operation">ผลการดำเนินงาน:</label>
                     <textarea id="operation" name="A4"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[3].Answer : '' %></textarea>
                 </div>
+
+
 
 
                 <div>
@@ -296,11 +351,14 @@
                         <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
                     </select>
                 </div>
-                
+               
+
+
 
 
                 <div>
                     <input type="hidden" name="Q6" value="ผลลัพธ์">
+
 
                     <label for="result">ผลลัพธ์:</label>
                     <textarea id="result" name="A6"
@@ -308,13 +366,18 @@
                 </div>
 
 
+
+
                 <div>
                     <input type="hidden" name="Q7" value="ปัญหา/อุปสรรค">
+
 
                     <label for="problem">ปัญหา/อุปสรรค:</label>
                     <textarea id="problem" name="A7"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[6].Answer : '' %></textarea>
                 </div>
+
+
 
 
                 <div>
@@ -323,6 +386,8 @@
                     <textarea id="solution" name="A8"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[7].Answer : '' %></textarea>
                 </div>
+
+
 
 
                 <div>
@@ -335,13 +400,13 @@
                     <div class="display-none">
                         <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
                         <label for="A<%= item.questionID %>"><%= item.question %>:</label>
-                        <% 
-                            let oldAnswer = ''; 
+                        <%
+                            let oldAnswer = '';
                             if (dataOld.length && dataOld[0].ans) {
                                 const ansArray = JSON.parse(dataOld[0].ans);
                                 ansArray.forEach(old => {
                                     if (old.Question === item.question) {
-                                    
+                                   
                                         oldAnswer = old.Answer;  // Use single equals for assignment
                                     }
                                 });
@@ -350,8 +415,8 @@
                         <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
                     </div>
                 <% }); %>
-                
-                
+               
+               
                 <h1> KPI Question</h1>
                 <!-- KPI -->
                 <% kpiQ.forEach(item => { %>
@@ -364,43 +429,43 @@
                             <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
                         <% } else { %>
                             <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
-                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')" placeholder="<%= item.unit %>">
-                            <% } %>
+                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
+                        <% } %>
                     </div>
                 <% }); %>
-                
-                
+               
+               
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <button type="submit" id="saveButton">บันทึก</button>
                 <button type="submit" id="submitButton">ส่งรายงาน</button>
-                <br>
-                <br>
-                <br>
-                <br>
-                <center><p id="alert">*** <span style="color: red;">โปรดอ่าน:</span> เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p></center>
-                <center><p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p></center>
+                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
+                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
             </form>
         </div>
 
 
+
+
         <script>
             function check(id){
-                
+               
                 const A=document.getElementById("A"+id).value
                 const C=parseFloat(document.getElementById("C"+id).value)
-                
+               
                 console.log("A:"+A)
                 console.log("C:"+C)
                 if(A>C){
                     document.getElementById("A"+id).value=C
                 }
-                
+               
             }
         </script>
 
 
-          <!-- <script>
+
+
+           <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -435,9 +500,16 @@
 
 
 
+
+
+
+
+
+
                 //action form button reportForm
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
+
 
                     reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
                     reportForm.submit();
@@ -449,31 +521,42 @@
 
 
 
+
+
+
+
+
+
+
                 //Condition for disabled button
+
 
                 /*function checkFormCompletion() {
                     let isComplete = true;
                     const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'problem', 'solution', 'note'];
-    
+   
                     requiredFields.forEach(fieldId => {
                         const field = document.getElementById(fieldId);
                         if (field && !field.value.trim()) {
                             isComplete = false;
                         }
                     });
-    
+   
                     if (isComplete) {
                         submitButton.style.display = 'block';
                     } else {
                         submitButton.style.display = 'none';
                     }
                 }
-    
+   
                 reportForm.addEventListener('input', checkFormCompletion);*/
+
 
                 function checkFormCompletion() {
                     const inputs = reportForm.querySelectorAll('input, select, textarea');
                     let isComplete = true;
+
+
 
 
                     inputs.forEach(input => {
@@ -483,13 +566,19 @@
                     });
 
 
+
+
                     if (fileUploadInput && fileUploadInput.files.length === 0) {
                         isComplete = false;
                     }
 
 
+
+
                     return isComplete;
                 }
+
+
 
 
                 function handleFormChange() {
@@ -510,6 +599,12 @@
 
 
 
+
+
+
+
+
+
                 // sendUpload file to backend
                 document.getElementById('fileUpload').addEventListener('change', function (event) {
                     const file = event.target.files[0];
@@ -518,8 +613,12 @@
                         formData.append('fileUpload', file);
 
 
+
+
                         const csrfToken = document.querySelector('input[name="_csrf"]').value;
                         const solutionID = '<%=formdata[0].solutionID%>';
+
+
 
 
                         fetch(`/upload/formsmart/${solutionID}`, {
@@ -545,7 +644,11 @@
                 });
 
 
+
+
                 //file upload
+
+
 
 
                 function toggleFileUpload() {
@@ -555,6 +658,8 @@
                         fileUploadInput.style.display = 'none';
                     }
                 }
+
+
 
 
                 function updateSubmitButtonState() {
@@ -575,6 +680,8 @@
                     });
 
 
+
+
                     if (isFormValid) {
                         submitButton.style.backgroundColor = '#C2AF76';
                         submitButton.style.cursor = 'pointer';
@@ -587,10 +694,14 @@
                 }
 
 
+
+
                 statusSelect.addEventListener('change', function () {
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
+
+
 
 
                 progressSelect.addEventListener('change', function () {
@@ -599,9 +710,13 @@
                 });
 
 
+
+
                 form.addEventListener('input', function () {
                     updateSubmitButtonState();
                 });
+
+
 
 
                 window.addEventListener('load', function () {
@@ -610,12 +725,18 @@
                 });
 
 
+
+
                 form.addEventListener('input', function () {
                     updateSubmitButtonState();
                 });
 
 
+
+
                 updateSubmitButtonState();
+
+
 
 
             });
@@ -625,13 +746,26 @@
 
 
 
-        </script>   -->
+
+
+
+
+
+
+        </script>  
+
+
 
 
         <%- include('component/footer.ejs') %>
 
 
+
+
 </body>
 
 
+
+
 </html>
+
