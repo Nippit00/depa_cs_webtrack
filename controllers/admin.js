@@ -129,17 +129,18 @@ exports.getAdCityP = (req, res, next) => {
 
 exports.getAdCityDataP = (req, res, next) => {
   // console.log(req.params);
-  const q =
+  try {
+    const q =
     "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   const q2 =
-    "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? AND solution.status_solution=1  GROUP BY solution.solutionName";
-  try {
+    "SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
+
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
       // console.log("Data is:", data);
       db.query(q2, [req.params.cityID], (errer, solution) => {
         if (err) return res.status(500).json(errer);
-        // console.log("solution is:",solution)
+        console.log("solution is:",solution)
         res.render("admin/ad-city/ad-citydata", {
           req,
           pageTitle: "Dashboard",
@@ -178,7 +179,26 @@ exports.postAddCity = (req, res, next) => {
     LAT,
     LNG,
   } = req.body;
-
+  db.query("SELECT * FROM admininfo WHERE AdminUsername = ?", [username], (adminUsernameError, adminUsernameResult) => {
+    if (adminUsernameError) {
+      console.error("Error checking admin username:", adminUsernameError);
+      return res.status(500).send("Internal Server Error");
+    }
+    
+    if (adminUsernameResult.length > 0) {
+      // Admin username already exists
+      return res.status(400).send("Admin username already exists");
+    }
+  db.query("SELECT * FROM citydata WHERE username = ?", [username], (usernameError, usernameResult) => {
+    if (usernameError) {
+      console.error("Error checking username:", usernameError);
+      return res.status(500).send("Internal Server Error");
+    }
+    
+    if (usernameResult.length > 0) {
+      // Username already exists
+      return res.status(400).send("Username already exists");
+    }
   // ใช้ bcrypt เพื่อเข้ารหัส password
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
@@ -241,6 +261,8 @@ exports.postAddCity = (req, res, next) => {
       );
     });
   });
+  });
+});
 };
 
 exports.getEditProvince = (req, res, next) => {
@@ -335,28 +357,33 @@ exports.postAddSolution = (req, res, next) => {
       smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
       break;
   }
-  const q =
-    "INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  db.query(
-    q,
-    [
-      cityID,
-      smartKey,
-      solutionID,
-      solutionName,
-      sourceFunds,
-      funds,
-      startYear,
-      endYear,
-      status,
-    ],
-    (err, result) => {
+  const q ="INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`,`status_round2`,`status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'0','1')";
+  db.query(q,[cityID,smartKey,solutionID,solutionName,sourceFunds,funds,startYear,endYear,status,],(err, result) => {
       if (err) {
         console.error("Error adding solution:", err);
         res.status(500).json({ error: "Error adding solution" });
       } else {
-        console.log("Solution added successfully");
-        res.status(200).json({ message: "Solution added successfully" });
+        // console.log("Solution added successfully");
+        // res.status(200).json({ message: "Solution added successfully" });
+          const q1 ="SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+          const q2 ="SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
+
+          db.query(q1, [cityID], (err, data) => {
+            if (err) return res.status(500).json(err);
+            // console.log("Data is:", data);
+            db.query(q2, [cityID], (errer, solution) => {
+              if (err) return res.status(500).json(errer);
+              console.log("solution is:",solution)
+              res.render("admin/ad-city/ad-citydata", {
+                req,
+                pageTitle: "Dashboard",
+                path: "/city",
+                cityData: data[0],
+                solution: solution,
+              });
+            });
+          });
+        //here
       }
     }
   );
@@ -368,7 +395,7 @@ exports.getEditSolution = (req, res, next) => {
   try {
     db.query(q, [req.params.solutionID], (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log("Data is:", data);
+      // console.log("Data is:", data);
       res.render("admin/ad-city/ad-editSolution", {
         req,
         pageTitle: "Edit_Solution",
@@ -493,10 +520,10 @@ exports.postkpi = (req, res, next) => {
       const kpiName = data[`name${kpiID}`]; // ดึงชื่อ KPI จาก data
       const unit = data[`unit${kpiID}`]; // ดึงหน่วยนับของ KPI จาก data
       const goal = data[`goal_${kpiID}`] || 0; // หากไม่มี goal ให้ใช้ค่าเริ่มต้นเป็น 0
-      console.log("kpiID:"+kpiID)
-      console.log("kpiName:"+kpiName)
-      console.log("unit:"+unit)
-      console.log("goal:"+goal)
+      // console.log("kpiID:"+kpiID)
+      // console.log("kpiName:"+kpiName)
+      // console.log("unit:"+unit)
+      // console.log("goal:"+goal)
 
       // Execute the SQL query
       db.query(q, [kpiName, goal, unit, kpiID], (err, result) => {
@@ -519,29 +546,12 @@ exports.postkpi = (req, res, next) => {
 
 exports.deleteSolution = (req, res, next) => {
   // console.log(req.params);
-  const q =
-    "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
-  const q2 =
-    "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? AND solution.status_solution=1  GROUP BY solution.solutionName";
+  
   try {
-    const q3="UPDATE `solution` SET `status_solution`='0' WHERE solutionID=?"
+    const q3="UPDATE `solution` SET `status_solution`='0' WHERE solutionID=? ORDER BY `solution`.`smartKey` ASC"
     db.query(q3,[req.params.solutionID],(err,deletedata)=>{
       if (err) return res.status(500).json(err);
-      db.query(q, [req.params.cityID], (err, data) => {
-        if (err) return res.status(500).json(err);
-        // console.log("Data is:", data);
-        db.query(q2, [req.params.cityID], (errer, solution) => {
-          if (err) return res.status(500).json(errer);
-          // console.log("solution is:",solution)
-          res.render("admin/ad-city/ad-citydata", {
-            req,
-            pageTitle: "Dashboard",
-            path: "/city",
-            cityData: data[0],
-            solution: solution,
-          });
-        });
-      });
+      res.redirect(`/admin/city/${req.params.cityID}`);
     })
   } catch (err) {
     console.log(err);
@@ -549,7 +559,7 @@ exports.deleteSolution = (req, res, next) => {
   }
 };
 exports.updateSolution = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const { cityID, smart, solutionName, sourceFunds, funds, startYear, endYear, _csrf } = req.body;
   const solutionID = req.params.solutionID; // Assumes you have solutionID in the params
@@ -584,7 +594,7 @@ exports.updateSolution = (req, res, next) => {
 
   const q3 = "UPDATE `solution` SET `smartKey`=?, `solutionName`=?, `Source_funds`=?, `funds`=?, `start_year`=?, `end_year`=?, `status_solution`='1' WHERE `solutionID`=?";
   const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
-  const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi on kpi.solutionID=solution.solutionID WHERE solution.cityID=? AND solution.status_solution=1 GROUP BY solution.solutionName";
+  const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey=smart.smartKey WHERE cityID=? AND status_solution=1 ORDER BY `solution`.`smartKey` ASC";
 
   try {
     db.query(q3, [smartKey, solutionName, sourceFunds, funds, startYear, endYear, solutionID], (err, result) => {
@@ -595,7 +605,7 @@ exports.updateSolution = (req, res, next) => {
 
         db.query(q2, [cityID], (errer, solution) => {
           if (errer) return res.status(500).json(errer);
-
+          // console.log(solution)
           res.render("admin/ad-city/ad-citydata", {
             req,
             pageTitle: "Dashboard",
