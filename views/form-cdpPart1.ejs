@@ -149,26 +149,87 @@
         </div>
 
         <div class="head">
-            <h5>เมืองอัจฉริยะ </h5>
+            <% if (formdata && formdata.length> 0 && formdata[0].cityName) { %>
+                <h5>
+                    <%= formdata[0].cityName %>
+                </h5>
+                <% } else { %>
+                    <h5>ไม่พบข้อมูลเมือง</h5>
+                    <% } %>
         </div>
 
+
+
+
         <div class="head">
-            <h6>ชื่อโครงการ : </h6>
+            <% if (formdata && formdata.length> 0 && formdata[0].solutionName) { %>
+                <h6>ชื่อโครงการ: <%= formdata[0].solutionName %>
+                </h6>
+                <% } else { %>
+                    <h6>ชื่อโครงการ: N/A </h6>
+                    <% } %>
         </div>
+
+
+
 
         <div class="custom-container">
             <div class="left-content">
-                <!-- เนื้อหาฝั่งซ้าย -->
-                <p>ชื่อโครงการ : </p>
-                <p>รหัสโครงการ : </p>
-                <p>Smart : </p>
-                <p>แหล่งเงินทุน : </p>
-                <p>เงินทุน (บาท) : </p>
+                <p class="header">รายละเอียดโครงการ:</p>
+                <p><strong>ชื่อโครงการ:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].solutionName %>
+                                <% } %>
+                </p>
+                <p><strong>รหัสโครงการ:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].solutionID %>
+                                <% } %>
+                </p>
+                <p><strong>Smart:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].smart %>
+                                <% } %>
+                </p>
+                <p><strong>แหล่งเงินทุน:</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } %>
+                </p>
+                <p><strong>เงินทุน (บาท):</strong>
+                    <% if (!formdata || formdata.length===0) { %>
+                        <p>ไม่พบข้อมูล</p>
+                        <% } else { %>
+                            <%= formdata[0].funds %> บาท
+                                <% } %>
+                </p>
             </div>
-            <div class="right-content">
-                <!-- เนื้อหาฝั่งขวา -->
-                <p>ตัวชี้วัด ที่ได้รับอนุมติ : </p>
+
+
+            <div class="right-content" \88++>
+                <p><strong>CDP :</strong></p>
+                <ul class="flex flex-col ">
+                    <% if (formdata && formdata.length> 0) { %>
+                        <% formdata.forEach((item)=> { %>
+                            <li> <span style="color: red;">-</span> <%= item.kpiName %>
+                            </li>
+                            <br>
+                            <% }); %>
+                                <% } else { %>
+                                    <li>No data available</li>
+                                    <% } %>
+                </ul>
             </div>
+
+
+
+
         </div>
 
         <div class="custom-container-1">
