@@ -44,10 +44,11 @@ exports.PostLogin = (req, res) => {
              req.session.isAdmin = true;
              req.session.userID = adminInfo.AdminUsername;
              // Log admin login
-             const timestamp = new Date()
-               .toISOString()
-               .slice(0, 19)
-               .replace("T", " ");
+             const timestamp = new Date().toLocaleString('th-TH', {
+              timeZone: 'Asia/Bangkok',
+              hour12: false,
+          });
+              
              const logQuery =
                "INSERT INTO `Login_log` (`cityID`, `login_time`) VALUES (?, ?)";
              db.query(
