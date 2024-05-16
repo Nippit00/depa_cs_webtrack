@@ -91,7 +91,7 @@
 
 
         .custom-rectangle {
-            width: 150%;
+            width: 185%;
             /* ปรับขนาดตามที่คุณต้องการ */
             height: 150px;
             /* ปรับขนาดตามที่คุณต้องการ */
@@ -150,31 +150,13 @@
        }
 
 
-       .custom-rectangle {
-           width: 100%;
-           /* ปรับขนาดตามที่คุณต้องการ */
-           height: 150px;
-           /* ปรับขนาดตามที่คุณต้องการ */
-           background-color: #e0f4ec;
-           /* สีพื้นหลังของกรอบ */
-           margin-top: 20px;
-           /* ปรับตำแหน่งตามที่คุณต้องการ */
-           border-radius: 50px;
-           display: flex;
-           justify-content: space-around;
-           align-items: center;
-           overflow: hidden;
-           box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
-       }
-
-
        .image-container {
            text-align: center;
        }
 
 
        .custom-rectangle img {
-           max-width: 100%;
+           max-width: 120%;
            height: auto;
            border-radius: 10px;
            /* ปรับขอบรูป */
@@ -192,7 +174,7 @@
            margin-left: 190px;
            /* ปรับค่าตามที่คุณต้องการ */
            position: relative;
-           top: -100px;
+           top: 0px;
            /* ปรับค่าตามที่คุณต้องการ */
        }
 
@@ -201,7 +183,7 @@
            margin-left: 190px;
            /* ปรับค่าตามที่คุณต้องการ */
            position: relative;
-           top: -100px;
+           top: 0px;
            /* ปรับค่าตามที่คุณต้องการ */
        }
 
@@ -386,17 +368,17 @@
 
                </div>
            </div>
-           <h6 class="ml-48 relative top-[-100px]"><span class="text-blue-500">Download</span>
+           <h6 class="ml-48 relative top-[-150px]"><span class="text-blue-500">Download</span>
                เอกสารรายละเอียดของแผนเมือง</h6>
                <% datafile.forEach(data => {
                 if (data.fileID === "F1") { %>
-                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a> <br>
+                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a> <br>
                 <% } else if (data.fileID === "F2") { %>
-                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a> <br>
+                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a> <br>
                 <% } else if (data.fileID === "F3") { %>
-                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a> <br>
+                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a> <br>
                 <% } else { %>
-                    <a href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
+                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
                 <% }
             }) %>
             

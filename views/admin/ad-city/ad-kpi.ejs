@@ -8,9 +8,24 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <style>
+    body {
+      margin: 0px;
+      height: 100%;
+    }
+
     /* เพิ่มสไตล์เพื่อปรับแต่งหน้าแบบฟอร์ม */
     .input-wrapper {
       margin-bottom: 1.5rem;
+      border: 2px solid #cbd5e0;
+      /* สีของกรอบ */
+      border-radius: 8px;
+      /* ความโค้งมนของกรอบ */
+      padding: 1rem;
+      /* ระยะห่างภายในกรอบ */
+      background-color: #ffffff;
+      /* สีพื้นหลังของกรอบ */
+      position: relative;
+      /* สำหรับการจัดตำแหน่งปุ่มลบ */
     }
 
     .radio-wrapper {
@@ -22,6 +37,40 @@
     .hidden {
       display: none;
     }
+
+    /* เพิ่มสไตล์เพื่อเพิ่มขนาดของ input */
+    input[type="text"],
+    input[type="number"],
+    input[type="radio"]+label {
+      font-size: 1.25rem;
+      /* เพิ่มขนาดฟอนต์ */
+      padding: 0.5rem;
+      /* เพิ่ม padding */
+    }
+
+    input[type="radio"] {
+      transform: scale(1.5);
+      /* ขยายขนาดของ radio buttons */
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background-color: #e53e3e;
+      /* สีพื้นหลังของปุ่มลบ */
+      color: #ffffff;
+      /* สีของตัวอักษรบนปุ่มลบ */
+      border: none;
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 
@@ -29,11 +78,12 @@
   <!-- แทรก Navbar -->
   <%- include('../include/ad-navbar.ejs') %>
 
-    <div class="max-w-lg mx-auto">
+    <div class="max-w-lg mx-auto mt-10 ">
       <h1 class="text-3xl mb-4 text-center">แก้ไข KPI</h1>
       <form action="/admin/saveKpi/<%=solutionID %>" class="space-y-4" method="POST" id="kpiForm">
         <% kpi.forEach(function(item) { %>
-          <div class="input-wrapper">
+          <div class="input-wrapper mt-5" id="input-wrapper-<%= item.kpiID %>">
+            <button type="button" class="delete-button" onclick="deleteKpi('<%= item.kpiID %>')">&times;</button>
             <input type="text" id="<%= item.kpiID %>" name="name<%= item.kpiID %>" value="<%= item.kpiName %>"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             <div class="radio-wrapper">
@@ -55,6 +105,9 @@
           <% }); %>
             <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token" />
             <div class="text-center">
+              <button type="button" onclick="addNewKpi()"
+                class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 cursor-pointer">เพิ่ม
+                KPI</button>
               <button type="button" onclick="confirmSave()"
                 class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer">บันทึกการแก้ไข</button>
             </div>
@@ -93,6 +146,10 @@
         }
       }
 
+      function deleteKpi(kpiID) {
+        const element = document.getElementById(`input-wrapper-${kpiID}`);
+        element.remove();
+      }
 
       function confirmSave() {
         Swal.fire({
@@ -108,6 +165,31 @@
           }
         });
       }
+
+      function addNewKpi() {
+        var newKpiDiv = document.createElement('div');
+        newKpiDiv.classList.add('input-wrapper', 'mt-5');
+
+        newKpiDiv.innerHTML = `
+    <button type="button" class="delete-button" onclick="deleteNewKpi(this)">&times;</button>
+    <input type="text" name="newKpiName" placeholder="ชื่อ KPI" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+    <div class="radio-wrapper">
+      <input id="YesNo_new" name="newKpiType" type="radio" value="0" onclick="showNewGoalInput(this)">
+      <label for="YesNo_new">Yes No</label>
+      <input id="Int_new" name="newKpiType" type="radio" value="1" onclick="showNewGoalInput(this)">
+      <label for="Int_new">Number</label>
+    </div>
+    <input type="number" name="newKpiGoal" placeholder="เป้าหมาย" class="hidden w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+    <input placeholder="หน่วย" type="text" name="newKpiUnit" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+  `;
+
+        document.getElementById('kpiForm').appendChild(newKpiDiv);
+      }
+
+      function deleteNewKpi(button) {
+        button.parentNode.remove();
+      }
+
     </script>
 </body>
 
