@@ -433,22 +433,7 @@
                 <% }); %>
                
                
-                <h1> KPI Question</h1>
-                <!-- KPI -->
-                <% kpiQ.forEach(item => { %>
-                    <div class="display-none">
-                        <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
-                        <% if(item.goal == 0) { %>
-                            <label>มีตามตัวชี้วัด </label>
-                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
-                            <label>ไม่มี</label>
-                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
-                        <% } else { %>
-                            <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
-                            <input placeholder="ใส่ได้ไม่เกิน <%= item.goal %>" type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
-                        <% } %>
-                    </div>
-                <% }); %>
+               
                
                
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">

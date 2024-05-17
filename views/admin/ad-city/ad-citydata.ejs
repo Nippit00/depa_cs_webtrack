@@ -1,76 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <% include('../include/ad-head.ejs') %>
-    <title>Admin - <%= pageTitle %></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  * {
-    font-family: "Noto Sans Thai", sans-serif;
-    font-weight: 400; /* จะใช้รูปแบบตัวหนาเมื่อต้องการ */
-    font-style: normal;
-  }
-</style>
-
-  </head>
-  <body class="bg-teal-500">
-    <%- include('../include/ad-navbar.ejs') %>
-    <div class="w-[90%] mx-auto bg-white mt-3 rounded-lg">
-      <div class="flex mx-20 py-5">
-        <div class="w-[50%]">
-          <div>
-            <p class="text-3xl font-medium">
-              ข้อมูลจังหวัด <%=cityData.cityName %>
-            </p>
-          </div>
-          <div>
-            <p class="text-xl font-normal">จังหวัด : <%=cityData.province %></p>
-          </div>
-          <div>
-            <p class="text-xl font-normal">
-              ผู้พัฒนา : <%=cityData.developer %>
-            </p>
-          </div>
-          <div>
-            <p class="text-xl font-normal">
-              ผู้บริหาร : <%=cityData.executive %>
-            </p>
-          </div>
-         
-              <% if (cityData.government_investment === 0) { %>
-                
-              <% } else { %>
-                <div>
-                  <p class="text-xl font-normal">
-                ลงทุนโดยรัฐบาล : <%= cityData.government_investment.toLocaleString() %> บาท
-              </p>
-            </div>
-              <% } %>
-              
-           
-              <% if (cityData.private_investment === 0) { %>
-                
-                <% } else { %>
-                  <div>
-                    <p class="text-xl font-normal">
-                  ลงทุนโดยเอกชน : <%= cityData.private_investment.toLocaleString() %> บาท
-                </p>
-              </div>
-                <% } %>
-        </div>
-        <div class="w-[50%] item-center justify-items-center justify-center">
-          <iframe
-            width="600"
-            height="450"
-            frameborder="0"
-            style="border: 0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>%>&zoom=5&maptype=satellite"
-            allowfullscreen=""
-          ></iframe>
+<head>
+  <% include('../include/ad-head.ejs') %>
+  <title>Admin - <%= pageTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    * {
+      font-family: "Noto Sans Thai", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400; /* Replace with the desired font weight */
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+  </style>
+</head>
+<body class="bg-teal-500">
+  <%- include('../include/ad-navbar.ejs') %>
+  <div class="container mx-auto p-6 bg-white mt-6 rounded-lg shadow-lg">
+    <div class="flex flex-col lg:flex-row lg:space-x-6">
+      <div class="lg:w-1/2">
+        <h1 class="text-3xl font-medium mb-4">ข้อมูลเมือง <%= cityData.cityName %></h1>
+        <p class="text-xl mb-2">จังหวัด : <%= cityData.province %></p>
+        <p class="text-xl mb-2">ผู้พัฒนา : <%= cityData.developer %></p>
+        <p class="text-xl mb-2">ผู้บริหาร : <%= cityData.executive %></p>
+      
+        <!-- ย้ายปุ่มมาที่นี่ -->
+        <div class="flex justify-strat space-x-4 mt-6">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            แก้ไขข้อมูลจังหวัด
+          </button>
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            เพิ่ม Solution
+          </button>
         </div>
       </div>
       <div class="lg:w-1/2 flex justify-center items-center">
