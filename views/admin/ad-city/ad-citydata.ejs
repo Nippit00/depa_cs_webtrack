@@ -1,144 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <% include('../include/ad-head.ejs') %>
-    <title>Admin - <%= pageTitle %></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        font-family: "Noto Sans Thai", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 400; /* Replace with the desired font weight */
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-      }
-    </style>
-  </head>
-  <body class="bg-teal-500">
-    <%- include('../include/ad-navbar.ejs') %>
-    <div class="w-[90%] mx-auto bg-white mt-3 rounded-lg">
-      <div class="flex mx-20 py-5">
-        <div class="w-[50%]">
-          <div>
-            <p class="text-3xl font-medium">
-              ข้อมูลจังหวัด <%=cityData.cityName %>
-            </p>
-          </div>
-          <div>
-            <p class="text-xl font-normal">จังหวัด : <%=cityData.province %></p>
-          </div>
-          <div>
-            <p class="text-xl font-normal">
-              ผู้พัฒนา : <%=cityData.developer %>
-            </p>
-          </div>
-          <div>
-            <p class="text-xl font-normal">
-              ผู้บริหาร : <%=cityData.executive %>
-            </p>
-          </div>
-        </div>
-        <div class="w-[50%] item-center justify-items-center justify-center">
-          <iframe
-            width="600"
-            height="450"
-            frameborder="0"
-            style="border: 0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>%>&zoom=5&maptype=satellite"
-            allowfullscreen=""
-          ></iframe>
+<head>
+  <% include('../include/ad-head.ejs') %>
+  <title>Admin - <%= pageTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    * {
+      font-family: "Noto Sans Thai", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400; /* Replace with the desired font weight */
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+  </style>
+</head>
+<body class="bg-teal-500">
+  <%- include('../include/ad-navbar.ejs') %>
+  <div class="container mx-auto p-6 bg-white mt-6 rounded-lg shadow-lg">
+    <div class="flex flex-col lg:flex-row lg:space-x-6">
+      <div class="lg:w-1/2">
+        <h1 class="text-3xl font-medium mb-4">ข้อมูลเมือง <%= cityData.cityName %></h1>
+        <p class="text-xl mb-2">จังหวัด : <%= cityData.province %></p>
+        <p class="text-xl mb-2">ผู้พัฒนา : <%= cityData.developer %></p>
+        <p class="text-xl mb-2">ผู้บริหาร : <%= cityData.executive %></p>
+      
+        <!-- ย้ายปุ่มมาที่นี่ -->
+        <div class="flex justify-strat space-x-4 mt-6">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            แก้ไขข้อมูลจังหวัด
+          </button>
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            เพิ่ม Solution
+          </button>
         </div>
       </div>
-      <div class="mb-2 flex justify-end">
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-          onclick="GoEditPage()"
-        >
-          แก้ไขข้อมูลจังหวัด
-        </button>
-        <button
-          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-24"
-          onclick="GoAddSolution()"
-        >
-          เพิ่ม Solution
-        </button>
-      </div>
-      <div class="text-black">
-        <div class="content">
-          <div>
-            <table class="table mx-auto">
-              <thead class="bg-yellow-300">
-                <tr>
-                  <th class="px-4 py-2">โครงสร้าง / Smart</th>
-                  <th class="px-4 py-2">Project</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% solution.forEach((smartItem, index) => { %>
-                  <% if (index !== 0) { %>
-                <tr class="hover:bg-gray-50">
-                  <td class="border px-4 py-2">
-                    <%= smartItem.smart === 'City Data Platform' ? smartItem.smart : 'smart ' + smartItem.smart %>
-                  </td>
-                  <td class="border px-4 py-2">
-                    <a href="/admin/kpi/<%=smartItem.solutionID%>"><p><%= smartItem.solutionName %></p></a>
-                  </td>
-                  <td
-                    class="border bg-yellow-300 px-4 py-2 hover:bg-yellow-500 hover:font-bold"
-                  >
-                    <div>
-                      <a
-                        class=""
-                        href="/admin/solution/edit/<%=smartItem.solutionID  %>"
-                        >Edit</a
-                      >
-                    </div>
-                  </td>
-                  <td class="border px-4 text-white bg-red-600 py-2  hover:font-bold hover:bg-red-500">
-                  <div>
-                    <a
-                      class=""
-                      href="/admin/solution/delete/<%=smartItem.solutionID  %>/<%=smartItem.cityID  %>"
-                      >Delete</a
-                    >
-                  </div>
-                </td>
-                </tr>
-                <% } %>
-                <% }); %>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="lg:w-1/2 flex justify-center items-center">
+        <iframe
+          class="w-full h-64 lg:h-96"
+          frameborder="0"
+          style="border: 0"
+          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>&zoom=5&maptype=satellite"
+          allowfullscreen=""
+        ></iframe>
       </div>
     </div>
-    <%- include('../include/ad-footer.ejs') %>
-  </body>
+    <div class="mt-6">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-yellow-300 rounded-xl">
+          <tr>
+            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">โครงสร้าง / Smart</th>
+            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Project</th>
+            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% solution.forEach((smartItem, index) => { %>
+            <% if (index !== 0) { %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-4 py-2">
+                  <%= smartItem.smart === 'City Data Platform' ? smartItem.smart : 'smart ' + smartItem.smart %>
+                </td>
+                <td class="px-4 py-2">
+                  <a href="" class="text-blue-500 h/admin/kpi/<%=smartItem.solutionID%>ne"><%= smartItem.solutionName %></a>
+                </td>
+                <td class="px-4 py-2">
+                  <div class="flex space-x-2">
+                    <a href="/admin/kpi/<%=smartItem.solutionID%>" class="bg-green-400 px-4 py-2 rounded hover:bg-yellow-500">แก้ไข KPI</a>
+                    <a href="/admin/solution/edit/<%=smartItem.solutionID %>" class="bg-yellow-300 px-4 py-2 rounded hover:bg-yellow-500">แก้ไข Solution</a>
+                    <a href="/admin/solution/delete/<%=smartItem.solutionID %>/<%=smartItem.cityID %>" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500">ลบ</a>
+                  </div>
+                </td>
+              </tr>
+            <% } %>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%- include('../include/ad-footer.ejs') %>
   <script>
     function GoEditPage() {
-      const cityID = "<%=cityData.cityID%>";
+      const cityID = "<%= cityData.cityID %>";
       window.location.href = `/admin/city/edit/${cityID}`;
       console.log("active");
     }
     function GoAddSolution() {
-      const cityID = "<%=cityData.cityID%>";
+      const cityID = "<%= cityData.cityID %>";
       window.location.href = `/admin/solution/add/${cityID}`;
       console.log("active");
     }
   </script>
   <script>
     function handleSearch() {
-      // รับค่าที่ใส่ใน input field
-      const searchText = document
-        .getElementById("searchInput")
-        .value.toLowerCase();
-
-      // หาข้อมูลที่ตรงกับคำค้นหา
+      const searchText = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll("table tbody tr");
       rows.forEach((row) => {
         const cells = row.querySelectorAll("td");
@@ -148,17 +105,12 @@
             found = true;
           }
         });
-        if (found) {
-          row.style.display = ""; // แสดงแถวที่ตรงกับคำค้นหา
-        } else {
-          row.style.display = "none"; // ซ่อนแถวที่ไม่ตรงกับคำค้นหา
-        }
+        row.style.display = found ? "" : "none";
       });
     }
-    document
-      .getElementById("searchInput")
-      .addEventListener("keyup", function (event) {
-        handleSearch();
-      });
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+      handleSearch();
+    });
   </script>
+</body>
 </html>
