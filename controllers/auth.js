@@ -79,10 +79,10 @@ exports.PostLogin = (req, res) => {
           req.session.isLoggedIn = true;
           req.session.userID = cityData.cityID;
           // Log user login
-          const timestamp = new Date()
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " ");
+          const timestamp = new Date().toLocaleString('th-TH', {
+            timeZone: 'Asia/Bangkok',
+            hour12: false,
+        });
           const logQuery =
             "INSERT INTO `Login_log` (`cityID`, `login_time`) VALUES (?, ?)";
           db.query(logQuery, [cityData.cityID, timestamp], (err, log) => {
@@ -118,7 +118,10 @@ exports.postLogout = (req, res) => {
     }
 
     // Update the logout time in the Login_log table
-    const logoutTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const logoutTime =  new Date().toLocaleString('th-TH', {
+      timeZone: 'Asia/Bangkok',
+      hour12: false,
+  });
     const updateQuery =
       "UPDATE `Login_log` SET `logout_time`=? WHERE `Login_ID`=?";
     db.query(updateQuery, [logoutTime, loginID], (err, result) => {
