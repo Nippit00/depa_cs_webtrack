@@ -1,22 +1,24 @@
 const db = require("../db.js");
 
+
 // ****************
 // **  getLogin  **
 // ****************
 exports.getLogin = (req, res, next) => {
-  try {
-    // Render the login view with CSRF token and additional details
-    res.render("auth/login", {
-      pageTitle: "Login - Authentication",
-      path: "/login",
-      csrfToken: req.csrfToken(),
-    });
-  } catch (error) {
-    // Handle errors that may occur during rendering
-    console.error("Error rendering login page:", error);
-    next(error); // Pass errors to Express error handling middleware
-  }
+ try {
+   // Render the login view with CSRF token and additional details
+   res.render("auth/login", {
+     pageTitle: "Login - Authentication",
+     path: "/login",
+     csrfToken: req.csrfToken(),
+   });
+ } catch (error) {
+   // Handle errors that may occur during rendering
+   console.error("Error rendering login page:", error);
+   next(error); // Pass errors to Express error handling middleware
+ }
 };
+
 
 // *****************
 // **  postLogin  **
@@ -101,6 +103,7 @@ exports.PostLogin = (req, res) => {
     }
   });
 };
+
 
 // ******************
 // **  postLogout  **
