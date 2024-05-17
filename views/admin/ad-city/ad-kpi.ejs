@@ -76,6 +76,8 @@
   <!-- แทรก Navbar -->
   <%- include('../include/ad-navbar.ejs') %>
 
+
+
   <div class="max-w-lg mx-auto mt-10">
     <h1 class="text-4xl font-bold mb-6 text-center text-gray-700">แก้ไข KPI</h1>
     <form action="/admin/saveKpi/<%= solutionID %>" class="space-y-4" method="POST" id="kpiForm">
@@ -87,9 +89,9 @@
           <div class="radio-wrapper mt-4">
             <label class="font-medium text-gray-600">รูปแบบการตอบข้อมูล:</label>
             <input id="YesNo_<%= item.kpiID %>" name="type_<%= item.kpiID %>" type="radio" value="0" <%= item.goal == 0 ? 'checked' : '' %> onclick="showGoalInput(this)">
-            <label for="YesNo_<%= item.kpiID %>">Yes No</label>
+            <label for="YesNo_<%= item.kpiID %>">เชิงคุณภาพ</label>
             <input id="Int_<%= item.kpiID %>" name="type_<%= item.kpiID %>" type="radio" value="1" <%= item.goal > 0 ? 'checked' : '' %> onclick="showGoalInput(this)">
-            <label for="Int_<%= item.kpiID %>">Number</label>
+            <label for="Int_<%= item.kpiID %>">เชิงปริมาณ</label>
           </div>
           <input type="number" name="goal_<%= item.kpiID %>" onchange="checkNum('goal_<%= item.kpiID %>')"
             value="<%= item.goal >= 0 ? item.goal : '' %>" placeholder="กรุณาใส่ค่ามากกว่า 0"

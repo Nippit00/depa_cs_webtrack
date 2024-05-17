@@ -44,7 +44,7 @@ exports.getformCdp1 = (req, res, next) => {
 exports.postFormcheck = (req, res, next) => {
   const dataCheck = req.body;
   const q =
-    "SELECT * FROM anssolution2 JOIN solution ON anssolution2.solutionID = solution.solutionID JOIN city_home ON solution.cityID = city_home.cityID WHERE anssolution2.solutionID = ?";
+    "SELECT * FROM solution JOIN city_home ON solution.cityID = city_home.cityID WHERE solution.solutionID = ?";
   const qKpi = "SELECT anskpi.kpiID,anskpi.solutionID,anskpi.ans,kpi.kpiID,kpi.solutionID,kpi.kpiName FROM anskpi JOIN kpi ON anskpi.solutionID = kpi.solutionID WHERE anskpi.solutionID = ? GROUP BY kpi.kpiName"
   const id = req.params.solutionID;
   db.query(q, id, (err, data) => {
@@ -65,7 +65,7 @@ exports.postFormcheck = (req, res, next) => {
 exports.postFormcheck2 = (req, res, next) => {
   const dataCheck = req.body;
   const q =
-    "SELECT * FROM anssolution2_round2 JOIN solution ON anssolution2_round2.solutionID = solution.solutionID JOIN city_home ON solution.cityID = city_home.cityID WHERE anssolution2_round2.solutionID = ?";
+    "SELECT * FROM solution JOIN city_home ON solution.cityID = city_home.cityID WHERE solution.solutionID = ?";
   const qKpi = "SELECT anskpi.kpiID,anskpi.solutionID,anskpi.ans,kpi.kpiID,kpi.solutionID,kpi.kpiName FROM anskpi JOIN kpi ON anskpi.solutionID = kpi.solutionID WHERE anskpi.solutionID = ? GROUP BY kpi.kpiName"
   const id = req.params.solutionID;
   db.query(q, id, (err, data) => {
