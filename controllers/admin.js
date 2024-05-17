@@ -5,18 +5,60 @@ const db = require("../db.js");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 exports.getAdPage = (req, res, next) => {
-  res.render("admin/ad-main", {
-    pageTitle: "Main",
-    path: "/",
+  const q = "SELECT `cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`, `status_round2` FROM `solution` WHERE 1";
+  db.query(q, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json(err);
+    }
+
+    // สร้างอาร์เรย์เพื่อเก็บค่าจำนวนของแต่ละสถานะของ status และ status_round2
+    let statusCounts = {
+      status: {
+        0: 0,
+        1: 0,
+        2: 0
+      },
+      status_round2: {
+        0: 0,
+        1: 0,
+        2: 0
+      }
+    };
+
+    // วนลูปผ่านข้อมูลที่ได้จากการ query
+    data.forEach(element => {
+      // นับจำนวนของแต่ละสถานะของ status
+      statusCounts.status[element.status]++;
+
+      // นับจำนวนของแต่ละสถานะของ status_round2
+      statusCounts.status_round2[element.status_round2]++;
+    });
+
+    // แสดงผลลัพธ์ในคอนโซล
+    console.log("จำนวน status:", statusCounts.status);
+    console.log("จำนวน status_round2:", statusCounts.status_round2);
+
+    // ส่งข้อมูลไปยังหน้าแสดงผล
+    res.render("admin/ad-main", {
+      pageTitle: "Main",
+      path: "/",
+      data: data,
+      statusCounts: statusCounts
+    });
   });
 };
 
+
+
+
+
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
-  const CityID = req.params.CityID;
-  // const CityID=456
+  // const CityID = req.params.CityID;
+  const CityID='6201ECO01'
 
-  const q = "SELECT`province` FROM `citydata` WHERE cityID=?";
+  const q = "SELECT citydata.province,solution.solutionName FROM `solution` JOIN citydata ON solution.cityID=citydata.cityID WHERE solution.solutionID=?";
   try{
   db.query(q, [CityID], (err, data) => {
     console.log(data)
@@ -24,7 +66,7 @@ exports.notification = (req, res, next) => {
     const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
 
     // ส่วนของข้อความที่ต้องการส่ง
-    const message = "เมือง" + data[0].province + "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
+    const message = "จังหวัด" + data[0].province +data[0].solutionName +  "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
 
     // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
     const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
@@ -324,7 +366,7 @@ exports.getEditSolution = (req, res, next) => {
   console.log(req.params);
   const q = "SELECT * FROM `solution` WHERE solutionID=?";
   try {
-    db.query(q, ["6207ENV01"], (err, data) => {
+    db.query(q, [req.params.solutionID], (err, data) => {
       if (err) return res.status(500).json(err);
       console.log("Data is:", data);
       res.render("admin/ad-city/ad-editSolution", {
@@ -342,7 +384,7 @@ exports.getEditSolution = (req, res, next) => {
 };
 
 exports.getQuestion = (req, res, next) => {
-  const q = "SELECT * FROM `question` WHERE status=1";
+  const q = "SELECT * FROM `question` WHERE 1";
   try {
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -362,7 +404,7 @@ exports.getQuestion = (req, res, next) => {
 };
 
 exports.getAddQuestion = (req, res, next) => {
-  const q = "INSERT INTO `question`(`question`,`status`) VALUES (?,1)";
+  const q = "INSERT INTO `question`(`question`) VALUES (?)";
   const newQuestion = req.body.New_Question;
 
   try {
@@ -372,16 +414,6 @@ exports.getAddQuestion = (req, res, next) => {
         return res.status(500).json(err);
       }
 
-      const insertId = result.insertId;
-      const alterQuery = `ALTER TABLE \`anssolution\` ADD \`Q${insertId}\` TEXT NULL AFTER \`Q${
-        insertId - 1
-      }\``;
-
-      db.query(alterQuery, (alterErr) => {
-        if (alterErr) {
-          console.error(alterErr);
-          return res.status(500).json(alterErr);
-        }
         const q1 = "SELECT * FROM `question` WHERE 1";
         db.query(q1, (err, data) => {
           if (err) return res.status(500).json(err);
@@ -393,7 +425,7 @@ exports.getAddQuestion = (req, res, next) => {
             success: true,
           });
         });
-      });
+      
     });
   } catch (err) {
     console.error(err);
@@ -401,13 +433,13 @@ exports.getAddQuestion = (req, res, next) => {
   }
 };
 exports.postDeleteQuestion = (req, res, next) => {
-  q = "UPDATE `question` SET `status`=0 WHERE questionID=?";
+  q = "DELETE FROM `question` WHERE questionID=?";
   db.query(q, [req.params.QID], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).json(err);
     }
-    const q = "SELECT * FROM `question` WHERE status=1";
+    const q = "SELECT * FROM `question` WHERE 1";
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
       console.log("data:", data);

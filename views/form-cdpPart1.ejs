@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,16 +8,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
         .back {
-            margin: 30px 0 0 30px;
-            color: #000;
+            margin: 30px 0px 0px 30px;
+            color: #000000;
+            /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
             background-color: #FFF0C4;
             border-radius: 20px;
             width: 100px;
@@ -43,9 +39,11 @@
             display: flex;
             justify-content: space-between;
             width: 70%;
-            margin: 50px auto;
+            margin: 0 auto;
             padding: 20px;
             border-radius: 50px;
+            margin-top: 50px;
+            margin-bottom: 50px;
             background-color: #FFF0C4;
         }
 
@@ -62,15 +60,6 @@
             padding: 10px;
             box-sizing: border-box;
             margin-left: 50px;
-            flex-direction: column;
-        }
-
-        .right-content ul {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            /* จัดให้ชิดด้านซ้าย */
-            /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
         }
 
         form {
@@ -90,7 +79,9 @@
             display: block;
             margin-top: 20px;
             width: 100%;
-            text-align: center;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         select,
@@ -98,15 +89,21 @@
         input {
             width: 100%;
             padding: 8px;
-            margin: 5px 0 15px;
+            margin-top: 5px;
+            margin-bottom: 15px;
             box-sizing: border-box;
             border: 2px solid #C2AF76;
+            border-radius: 4px;
+            resize: vertical;
             border-radius: 15px;
             background-color: #fffbf0;
         }
 
-        input[type="file"] {
-            display: none;
+        input {
+            width: 50%;
+            position: relative;
+            left: 75%;
+            transform: translateX(-50%);
         }
 
         button {
@@ -115,36 +112,31 @@
             padding: 10px 15px;
             border: 2px solid #C2AF76;
             border-radius: 50px;
-            cursor: pointer;
+        }
+
+        button:last-child {
+            margin-left: 0;
         }
 
         button:hover {
-            background-color: #A9A9A9;
-        }
-
-        button:disabled {
-            background-color: #A9A9A9;
-            cursor: not-allowed;
+            background-color: #C2AF76;
+            border-radius: 50px;
         }
 
         #fileUpload {
             display: none;
         }
-        #alert{
-            color: red;
-            margin-top: 2rem;
-        }
-        #alert2{
-            color: red;
-            
-        }
-
+        .footer label {
+            font-weight: bold;
+            margin-left: 13rem;
+            margin-top: 5rem;
+            font-size: 17px;
+          }
     </style>
+
 </head>
 
-
 <body>
-
 
     <%- include('component/navbar.ejs') %>
         <script>
@@ -156,93 +148,32 @@
             <button class="back" onclick="goBack()">ย้อนกลับ</button>
         </div>
 
-
         <div class="head">
-            <% if (formdata && formdata.length> 0 && formdata[0].cityName) { %>
-                <h5>
-                    <%= formdata[0].cityName %>
-                </h5>
-                <% } else { %>
-                    <h5>ไม่พบข้อมูลเมือง</h5>
-                    <% } %>
+            <h5>เมืองอัจฉริยะ </h5>
         </div>
 
-
-
-
         <div class="head">
-            <% if (formdata && formdata.length> 0 && formdata[0].solutionName) { %>
-                <h6>ชื่อโครงการ: <%= formdata[0].solutionName %>
-                </h6>
-                <% } else { %>
-                    <h6>ชื่อโครงการ: N/A </h6>
-                    <% } %>
+            <h6>ชื่อโครงการ : </h6>
         </div>
-
-
-
 
         <div class="custom-container">
             <div class="left-content">
-                <p class="header">รายละเอียดโครงการ:</p>
-                <p><strong>ชื่อโครงการ:</strong>
-                    <% if (!formdata || formdata.length===0) { %>
-                        <p>ไม่พบข้อมูล</p>
-                        <% } else { %>
-                            <%= formdata[0].solutionName %>
-                                <% } %>
-                </p>
-                <p><strong>รหัสโครงการ:</strong>
-                    <% if (!formdata || formdata.length===0) { %>
-                        <p>ไม่พบข้อมูล</p>
-                        <% } else { %>
-                            <%= formdata[0].solutionID %>
-                                <% } %>
-                </p>
-                <p><strong>Smart:</strong>
-                    <% if (!formdata || formdata.length===0) { %>
-                        <p>ไม่พบข้อมูล</p>
-                        <% } else { %>
-                            <%= formdata[0].smart %>
-                                <% } %>
-                </p>
-                <p><strong>แหล่งเงินทุน:</strong>
-                    <% if (!formdata || formdata.length===0) { %>
-                        <p>ไม่พบข้อมูล</p>
-                        <% } %>
-                </p>
-                <p><strong>เงินทุน (บาท):</strong>
-                    <% if (!formdata || formdata.length===0) { %>
-                        <p>ไม่พบข้อมูล</p>
-                        <% } else { %>
-                            <%= formdata[0].funds %> บาท
-                                <% } %>
-                </p>
+                <!-- เนื้อหาฝั่งซ้าย -->
+                <p>ชื่อโครงการ : </p>
+                <p>รหัสโครงการ : </p>
+                <p>Smart : </p>
+                <p>แหล่งเงินทุน : </p>
+                <p>เงินทุน (บาท) : </p>
             </div>
-
-
-            <div class="right-content" \88++>
-                <p><strong>CDP :</strong></p>
-                <ul class="flex flex-col ">
-                    <% if (formdata && formdata.length> 0) { %>
-                        <% formdata.forEach((item)=> { %>
-                            <li> - <%= item.kpiName %>
-                            </li>
-                            <% }); %>
-                                <% } else { %>
-                                    <li>No data available</li>
-                                    <% } %>
-                </ul>
+            <div class="right-content">
+                <!-- เนื้อหาฝั่งขวา -->
+                <p>ตัวชี้วัด ที่ได้รับอนุมติ : </p>
             </div>
-
-
-
-
         </div>
 
-
         <div class="custom-container-1">
-            <form action="/saveForm/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+            <form action="/saveForm/<%=formdata[0].solutionID%>" method="post">
+
                 <div>
                     
                     <input type="hidden" name="Q1" value="สถานะ">
@@ -355,53 +286,93 @@
                         <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
                     </div>
                 <% }); %>
-                
-                
-                <h1> KPI Question</h1>
-                <!-- KPI -->
-                <% kpiQ.forEach(item => { %>
-                    <div class="display-none">
-                        <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
-                        <% if(item.goal == 0) { %>
-                            <label>Yes</label>
-                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
-                            <label>No</label>
-                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
-                        <% } else { %>
-                            <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
-                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
-                        <% } %>
-                    </div>
-                <% }); %>
-                
-                
+
+
+
+
+
+
+
+
+
+
+
+                <div class="footer">
+                    <label>รายงานตามตัวชี้วัด</label>
+                </div>
+
+                <div>
+                    <!-- <input type="hidden" value="URL ของ Platform/Website CDP" name="KPI1"> -->
+                    <label for="urlPlatform"><%=formdata[0].kpiName  %>:</label>
+                    <textarea id="urlPlatform" name="<%=formdata[0].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[0].ans %><% } %></textarea>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="URL ของ Data Catalog" name="KPI2"> -->
+                    <label for="urlDatacatalog"><%=formdata[1].kpiName  %>:</label>
+                    <textarea id="urlDatacatalog" name="<%=formdata[1].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[1].ans %><% } %></textarea>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="URL ของ Data Dashboard" name="KPI3"> -->
+                    <label for="urlDatadashboard"><%=formdata[2].kpiName  %>:</label>
+                    <textarea id="urlDatadashboard" name="<%=formdata[2].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[2].ans %><% } %></textarea>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="URL อื่นๆ" name="KPI4"> -->
+                    <label for="urlElse"><%=formdata[3].kpiName  %>:</label>
+                    <textarea id="urlElse" name="<%=formdata[3].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[3].ans %><% } %></textarea>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="รูปแบบการลงทุนจัดทำ CDP" name="KPI5"> -->
+                    <label for="Investment"><%=formdata[4].kpiName  %>:</label>
+                    <select id="Investment" name="<%=formdata[4].kpiID  %>">
+                        <option value="null"<% if (!datakpi.length || datakpi[4].ans === "null") { %>selected<% } %>>ระบุ รูปแบบการลงทุน</option>
+                        <option value="ภาครัฐ" <% if (datakpi.length && datakpi[4].ans === "ภาครัฐ") { %>selected<% } %>>ภาครัฐ</option>
+                        <option value="ภาคเอกชน"<% if (datakpi.length && datakpi[4].ans === "ภาคเอกชน") { %>selected<% } %>>ภาคเอกชน</option>
+                        <option value="ภาครัฐร่วมเอกชน"<% if (datakpi.length && datakpi[4].ans === "ภาครัฐร่วมเอกชน") { %>selected<% } %>>ภาครัฐร่วมเอกชน</option>
+                    </select>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="แหล่งที่มาของงบประมาณ" name="KPI6"> -->
+                    <label for="source"><%=formdata[5].kpiName  %>:</label>
+                    <textarea id="source" name="<%=formdata[5].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[5].ans %><% } %></textarea>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="รูปแบบการขับเคลื่อนและกำกับดูแล CDP" name="KPI7"> -->
+                    <label for="Investment"><%=formdata[6].kpiName  %> :</label>
+                    <select id="Investment" name="<%=formdata[6].kpiID  %>">
+                        <option value="null">ระบุ รูปแบบการลงทุน</option>
+                        <option value="ภาครัฐ" <% if (datakpi.length && datakpi[6].ans === "ภาครัฐ") { %>selected<% } %>>ภาครัฐ</option>
+                        <option value="ภาคเอกชน" <% if (datakpi.length && datakpi[6].ans === "ภาคเอกชน") { %>selected<% } %>>ภาคเอกชน</option>
+                        <option value="ภาครัฐร่วมเอกชน" <% if (datakpi.length && datakpi[6].ans === "ภาครัฐร่วมเอกชน") { %>selected<% } %>>ภาครัฐร่วมเอกชน</option>
+                    </select>
+                </div>
+                <div>
+                    <!-- <input type="hidden" value="การนำ CDP ไปใช้ให้เกิดประโยชน์" name="KPI8"> -->
+                    <label for="usecdp"><%=formdata[7].kpiName  %>:</label>
+                    <textarea id="usecdp" name="<%=formdata[7].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[7].ans %><% } %></textarea>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
-                <button type="submit" id="saveButton">บันทึก</button>
-                <button type="submit" id="submitButton">ส่งรายงาน</button>
-                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
-                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
+                <!-- ปุ่มบันทึก -->
+                <button type="button" id="recordButton">บันทึก</button>
+
+                <!-- ปุ่มส่งรายงาน -->
+                <button type="button" id="submitButton">ส่งรายงาน</button>
             </form>
         </div>
-
-
+        
         <script>
-            function check(id){
-                
-                const A=document.getElementById("A"+id).value
-                const C=parseFloat(document.getElementById("C"+id).value)
-                
-                console.log("A:"+A)
-                console.log("C:"+C)
-                if(A>C){
-                    document.getElementById("A"+id).value=C
-                }
-                
-            }
-        </script>
-
-
-           <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -444,34 +415,6 @@
                     reportForm.submit();
                 });
 
-
-
-
-
-
-
-                //Condition for disabled button
-
-                /*function checkFormCompletion() {
-                    let isComplete = true;
-                    const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'problem', 'solution', 'note'];
-    
-                    requiredFields.forEach(fieldId => {
-                        const field = document.getElementById(fieldId);
-                        if (field && !field.value.trim()) {
-                            isComplete = false;
-                        }
-                    });
-    
-                    if (isComplete) {
-                        submitButton.style.display = 'block';
-                    } else {
-                        submitButton.style.display = 'none';
-                    }
-                }
-    
-                reportForm.addEventListener('input', checkFormCompletion);*/
-
                 function checkFormCompletion() {
                     const inputs = reportForm.querySelectorAll('input, select, textarea');
                     let isComplete = true;
@@ -505,9 +448,6 @@
                 reportForm.addEventListener('input', handleFormChange);
                 reportForm.addEventListener('change', handleFormChange);
                 submitButton.disabled = true;
-
-
-
 
 
 
@@ -547,10 +487,8 @@
 
 
                 //file upload
-
-
                 function toggleFileUpload() {
-                    if (statusSelect.value === '100' || progressSelect.value === '100') {
+                    if (1) {
                         fileUploadInput.style.display = 'block';
                     } else {
                         fileUploadInput.style.display = 'none';
@@ -595,6 +533,7 @@
 
 
                 progressSelect.addEventListener('change', function () {
+                    
                     toggleFileUpload();
                     updateSubmitButtonState();
                 });
@@ -626,13 +565,11 @@
 
 
 
-        </script>   
-
+        </script>
+        
 
         <%- include('component/footer.ejs') %>
 
-
 </body>
-
 
 </html>

@@ -108,7 +108,6 @@ exports.getHistory=(req,res,next)=>{
   // console.log(req.session.cityID)
   db.query(q,[req.session.userID], (err, data) => {
     if (err) return res.status(500).json(err);
-    console.log(data)
     res.render("city/history-log", {
       pageTitle: "History",
       path: "/",

@@ -41,7 +41,7 @@
       }
 
       .content {
-        display: none;
+        /* display: none; */
         padding: 10px;
         /* ปรับ padding เพื่อให้มีพื้นที่ของตาราง */
         overflow: hidden;
@@ -186,7 +186,7 @@
 
     var form2StartDay = 8;
     var form2StartMonth = 5;
-    var form2Year = 2024;
+    var form2Year = 2025;
 
     %>
 
@@ -275,30 +275,154 @@
                   </div>
                 </div>
               </div>
+              <!-- CDP BUG -->
               <div class="card">
-                <div class="card-header" id="headingTree">
+                <div class="card-header" id="headingThree">
                   <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTree" aria-expanded="true"
-                      aria-controls="collapseTree">
-                      ระบบบริหารข้อมูลเมือง City Data Platform
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+                      aria-controls="collapseThree">
+                      CDP
                     </button>
                   </h5>
                 </div>
-                <div id="collapseTree" class="collapse" aria-labelledby="headingTree" data-parent="#accordion">
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                   <div class="card-body">
                     <table class="table">
                       <table>
                         <tr>
-                          <th>โครงสร้าง / Smart</th>
-                          <th>Project</th>
-                          <th></th>
+                          <th>
+                            <% const cdpcountProject=countEcoSolutions("CDP") %>
+                              <%=cdpcountProject%> โครงการ
+                          </th>
+                          <th>รอบที่ 1</th>
+                          <th>รอบที่ 2</th>
+                          <th>
+                            <% const cdpcount=countEcoSolutions("CDP") %>
+                              <% const cdpcountSuccess=countComplete("CDP") %>
+                                <% const cdpcountSuccessRound2=countCompleteRound2("CDP") %>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    complete <%=cdpcountSuccess%>/<%=cdpcount%>
+                                        <% } else { %>
+                                          complete <%=cdpcountSuccessRound2%>/<%=cdpcount%>
+                                              <% } %>
+                          </th>
                         </tr>
                         <tr>
-                          <td>City Data Platform</td>
                           <td>
-                            <p><a href="/form">โครงสร้างพื้นฐานดิจิทัล</a></p>
+                            <% followdata.forEach((item)=> { %>
+                              <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                              <% if (item.smartKey==='CDP' ) { %>
+                            
+
+                                <!-- แสดงข้อมูลของแต่ละ object -->
+                                <div>
+                                  <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                    form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                    currentDay < form2StartDay)) { %>
+                                    <% if (item.status===2) { %>
+                                      <p><span class="disabled-link">
+                                          <%= item.solutionName %>
+                                        </span></p>
+                                      <% } else { %>
+                                        <p>
+                                          <%= item.solutionName %>
+                                        </p>
+                                        <% } %>
+                                          <% } else { %>
+                                            <% if (item.status_round2===2) { %>
+                                              <p><span class="disabled-link">
+                                                  <%= item.solutionName %>
+                                                </span></p>
+                                              <% } else { %>
+                                                <p>
+                                                  <%= item.solutionName %>
+                                                </p>
+                                                <% } %>
+                                                  <% } %>
+                                </div>
+                                <% } %>
+                                  <% }); %>
+                                    <!-- สิ้นสุดการวนลูป -->
                           </td>
-                          <td>complete 0/0</td>
+                          <td>
+                            <% let count = 1; %>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey === 'CDP') { %>
+                                <% if (item.status === 2 || (currentYear === form1Year && currentMonth < form1StartMonth) ||
+                                  (currentYear === form1Year && currentMonth === form1StartMonth && currentDay < form1StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>กรอกฟอร์ม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <% if(count==1){ %> 
+                                      <a href="/formcdp1/<%= item.solutionID %>"><button class="report-button">กรอกฟอร์ม</button></a>
+                                      <% } else{%>
+                                    <a href="/formsmart/<%= item.solutionID %>"><button class="report-button">กรอกฟอร์ม</button></a>
+                                  <% } %>
+                                  </div>
+                                <% } %>
+                              <% } %>
+                              <% count++; %>
+                            <% }); %>
+
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='CDP' ) { %>
+                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
+                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
+                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>กรอกฟอร์ม</button>
+                                  </div>
+                                  <% } else { %>
+                                    <div class="button-container">
+                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                          class="report-button">กรอกฟอร์ม</button></a>
+                                    </div>
+                                    <% } %>
+                                      <% } %>
+                                        <% }); %>
+                          </td>
+                          <td>
+                            <% followdata.forEach((item)=> { %>
+                              <% if (item.smartKey==='CDP' ) { %>
+                                <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
+                                  form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
+                                  currentDay < form2StartDay)) { %>
+                                  <div>
+                                    <p
+                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
+                                      <% if (item.status===2) { %>
+                                        - ส่งเเล้ว
+                                        <% } else if (item.status===1) { %>
+                                          - ฉบับร่าง
+                                          <% } else { %>
+                                            - ยังไม่ได้รายงาน ครั้งที่1
+                                            <% } %>
+                                    </p>
+                                  </div>
+                                  <% } else { %>
+                                    <div>
+                                      <p
+                                        class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
+                                        <% if (item.status_round2===2) { %>
+                                          - ส่งเเล้ว
+                                          <% } else if (item.status_round2===1) { %>
+                                            - ฉบับร่าง
+                                            <% } else { %>
+                                              - ยังไม่ได้รายงาน ครั้งที่2
+                                              <% } %>
+                                                <% } %>
+                                      </p>
+                                    </div>
+                                    <% } %>
+                                      <% }); %>
+
+                          </td>
                         </tr>
                         </tbody>
                       </table>
@@ -380,12 +504,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
 
@@ -396,18 +520,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ENV' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
-                                  <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
-                                  </div>
+                                  <% if (item.status_round2 === 2) { %>
+                                    <div class="button-container-disable">
+                                      <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
+                                    </div>
+                                  <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                    <div class="button-container-disable">
+                                      <button class="report-button" disabled>รอติดตาม</button>
+                                    </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                      <a href="/formsmart_round2/<%= item.solutionID %>">
+                                        <button class="report-button">กรอกฟอร์ม</button>
+                                      </a>
                                     </div>
-                                    <% } %>
+                                  <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -528,12 +655,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
                                       <% } %>
@@ -542,18 +669,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ENE' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                <% if (item.status_round2 === 2) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
-                                  <% } else { %>
-                                    <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
-                                    </div>
-                                    <% } %>
+                                <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รอติดตาม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <button class="report-button">กรอกฟอร์ม</button>
+                                    </a>
+                                  </div>
+                                <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -673,12 +803,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
                                       <% } %>
@@ -687,18 +817,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='ECO' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                <% if (item.status_round2 === 2) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
-                                  <% } else { %>
-                                    <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
-                                    </div>
-                                    <% } %>
+                                <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รอติดตาม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <button class="report-button">กรอกฟอร์ม</button>
+                                    </a>
+                                  </div>
+                                <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -818,12 +951,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
                                       <% } %>
@@ -832,18 +965,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='MOB' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                <% if (item.status_round2 === 2) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
-                                  <% } else { %>
-                                    <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
-                                    </div>
-                                    <% } %>
+                                <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รอติดตาม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <button class="report-button">กรอกฟอร์ม</button>
+                                    </a>
+                                  </div>
+                                <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -963,12 +1099,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
                                       <% } %>
@@ -977,18 +1113,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='GOV' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                <% if (item.status_round2 === 2) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
-                                  <% } else { %>
-                                    <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
-                                    </div>
-                                    <% } %>
+                                <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รอติดตาม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <button class="report-button">กรอกฟอร์ม</button>
+                                    </a>
+                                  </div>
+                                <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -1108,12 +1247,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
                                       <% } %>
@@ -1122,18 +1261,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='PEO' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                <% if (item.status_round2 === 2) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
-                                  <% } else { %>
-                                    <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
-                                    </div>
-                                    <% } %>
+                                <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รอติดตาม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <button class="report-button">กรอกฟอร์ม</button>
+                                    </a>
+                                  </div>
+                                <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -1253,12 +1395,12 @@
                                   (currentYear===form1Year && currentMonth===form1StartMonth && currentDay <
                                   form1StartDay)) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
                                       <a href="/formsmart/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
+                                          class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
                                       <% } %>
@@ -1267,18 +1409,21 @@
                           <td>
                             <% followdata.forEach((item)=> { %>
                               <% if (item.smartKey==='LIV' ) { %>
-                                <% if (item.status_round2===2 || (currentYear < form2Year) || (currentYear===form2Year
-                                  && currentMonth < form2StartMonth) || (currentYear===form2Year &&
-                                  currentMonth===form2StartMonth && currentDay < form2StartDay)) { %>
+                                <% if (item.status_round2 === 2) { %>
                                   <div class="button-container-disable">
-                                    <button class="report-button" disabled>รายงาน</button>
+                                    <button class="report-button" disabled>ส่งฟอร์มเเล้ว</button>
                                   </div>
-                                  <% } else { %>
-                                    <div class="button-container">
-                                      <a href="/formsmart_round2/<%=item.solutionID%>"><button
-                                          class="report-button">รายงาน</button></a>
-                                    </div>
-                                    <% } %>
+                                <% } else if (currentYear < form2Year || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                                  <div class="button-container-disable">
+                                    <button class="report-button" disabled>รอติดตาม</button>
+                                  </div>
+                                <% } else { %>
+                                  <div class="button-container">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <button class="report-button">กรอกฟอร์ม</button>
+                                    </a>
+                                  </div>
+                                <% } %>
                                       <% } %>
                                         <% }); %>
                           </td>
@@ -1335,17 +1480,9 @@
         <br>
         <%- include('../component/footer.ejs') %>
 
-          <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              var coll = document.querySelector('.collapsible');
-              var content = document.querySelector('.content');
-
-              coll.addEventListener('click', function () {
-                content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-              });
-            });
-          </script>
+          
 
 </body>
 
 </html>
+

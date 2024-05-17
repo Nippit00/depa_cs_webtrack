@@ -13,5 +13,4 @@ router.get('/dashboard', isAuth, cityController.getCityDashboard);
 router.get('/follow', isAuth, cityController.getCityFollow);
 router.get('/upload', isAuth, cityController.getCityUpload);
 router.get('/history', isAuth, cityController.getHistory);
-
 module.exports = router;

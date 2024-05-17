@@ -23,8 +23,13 @@ router.get('/formsmart_round2/:solutionID',isAuth,formController.getformSmartRou
 
 //send data form to backebd 
 router.post('/sendformsmart/:solutionID',isAuth,formController.postFormSmart);
-router.post('/sendformsmart_round2/:solutionID',isAuth,formController.postFormSmartRound2);
+
 
 //formcdp
-router.get('/formcdpfirst',formController.getformGdpFirst);
+router.get('/formcdp1/:solutionID',isAuth,formController.getformCdp1);
+
+
+//saveform
+router.post('/saveForm/:solutionID',isAuth,formController.saveAnsObj);
+router.post('/saveformsmart_round2/:solutionID',isAuth,formController.saveFormRound2);
 module.exports = router;

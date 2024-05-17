@@ -3,34 +3,71 @@
 
 
 <head>
-   <script>
-       // Redirect away from the login page if user is already logged in
-       if (sessionStorage.getItem('isLoggedIn')) {
-           window.location.href = '/city'; // Redirect to city page
-       }
-       history.pushState(null, null, location.href);
-       window.onpopstate = function(event) {
-           history.go(1);
-       };
-   </script>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-   <link rel="stylesheet" href="/css/styles.css"> 
-   <!-- Add this in the head section -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-   <!-- Add this before closing </body> tag -->
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-   <title><%= pageTitle %></title>
-   <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
-   <style>
-       .title-container {
-           text-align: center;
-           padding: 20px;
-           position: relative;
-           top: -300px;
-       }
+    <script>
+        // Redirect away from the login page if user is already logged in
+        if (sessionStorage.getItem('isLoggedIn')) {
+            window.location.href = '/city'; // Redirect to city page
+        }
+        history.pushState(null, null, location.href);
+        window.onpopstate = function (event) {
+            history.go(1);
+        };
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Add this in the head section -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Add this before closing </body> tag -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
+    <style>
+        .title-container {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            top: -300px;
+        }
+
+        .citie-text {
+            color: #C2AF76;
+            /* รหัสสีของเมืองที่คุณต้องการ */
+        }
+
+        .cities-text {
+            color: #04B2A1;
+            /* รหัสสีของเมืองที่คุณต้องการ */
+        }
+
+        .content-container {
+            width: 80%;
+            /* กำหนดความกว้างของ content-container */
+            margin: 0 auto;
+            /* ทำให้ content-container อยู่กึ่งกลางตามแนวนอน */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* ทำให้ text และรูปภาพอยู่กึ่งกลางตามแนวตั้ง */
+        }
+
+        .text-container,
+        .map-container {
+            flex: 1;
+        }
+
+        .text-container {
+            padding: 20px;
+            position: relative;
+            top: -150px;
+            /* ปรับค่า top ตามที่คุณต้องการ */
+
+        }
 
 
        .citie-text {
@@ -38,6 +75,14 @@
            /* รหัสสีของเมืองที่คุณต้องการ */
        }
 
+        .map-container {
+            text-align: right;
+            position: relative;
+            top: -120px;
+            /* ปรับค่า top ตามที่ต้องการ */
+            margin-bottom: 200px;
+            /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+        }
 
        .cities-text {
            color: #04B2A1;
@@ -45,16 +90,22 @@
        }
 
 
-       .content-container {
-           width: 80%;
-           /* กำหนดความกว้างของ content-container */
-           margin: 0 auto;
-           /* ทำให้ content-container อยู่กึ่งกลางตามแนวนอน */
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-           /* ทำให้ text และรูปภาพอยู่กึ่งกลางตามแนวตั้ง */
-       }
+        .custom-rectangle {
+            width: 150%;
+            /* ปรับขนาดตามที่คุณต้องการ */
+            height: 150px;
+            /* ปรับขนาดตามที่คุณต้องการ */
+            background-color: #e0f4ec;
+            /* สีพื้นหลังของกรอบ */
+            margin-top: 20px;
+            /* ปรับตำแหน่งตามที่คุณต้องการ */
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
+        }
 
 
        .text-container,
