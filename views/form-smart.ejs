@@ -149,16 +149,16 @@
         #fileUpload {
             display: none;
         }
-        #alert{
+
+        #alert {
             color: red;
             margin-top: 2rem;
         }
-        #alert2{
+
+        #alert2 {
             color: red;
-           
+
         }
-
-
     </style>
 </head>
 
@@ -286,17 +286,25 @@
         <div class="custom-container-1">
             <form action="/saveForm/<%=formdata[0].solutionID%>" method="post" id="reportForm">
                 <div>
-                   
+
                     <input type="hidden" name="Q1" value="สถานะ">
                     <label for="status">สถานะ :</label>
                     <select id="status" name="A1" required>
-                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[0].Answer === null) { %>selected<% } %>>ระบุสถานะโครงการ</option>
-                        <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ล่าช้ากว่าแผน') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
-                        <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ตามแผน') { %>selected<% } %>>ตามแผน</option>
-                        <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
-                        <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans ||
+                            JSON.parse(dataOld[0].ans)[0].Answer===null) { %>selected<% } %>>ระบุสถานะโครงการ</option>
+                        <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ล่าช้ากว่าแผน' ) { %>selected<% } %>>ล่าช้ากว่าแผน
+                        </option>
+                        <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ตามแผน' ) { %>selected<% } %>>ตามแผน</option>
+                        <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='เร็วกว่าแผน' ) { %>selected<% } %>>เร็วกว่าแผน
+                        </option>
+                        <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ยังไม่ดำเนินโครงการ' ) { %>selected<% } %>
+                                >ยังไม่ดำเนินโครงการ</option>
                     </select>
-                   
+
                 </div>
 
 
@@ -305,19 +313,21 @@
                 <div>
                     <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                   
+
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
-                        <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                        <% for (let i = 0; i <= 100; i += 5) { %>
-                            <option value="<%= i %>"
-                                <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
-                                    selected
+                        <option value="0" <% if (!dataOld.length || !dataOld[0].ans ||
+                            JSON.parse(dataOld[0].ans)[1].Answer===null) { %>selected<% } %>>ระบุ % ความก้าวหน้า
+                        </option>
+                        <% for (let i=0; i <=100; i +=5) { %>
+                            <option value="<%= i %>" <% if (dataOld.length && dataOld[0].ans &&
+                                JSON.parse(dataOld[0].ans)[1].Answer==i) { %>
+                                selected
                                 <% } %>>
-                                <%= i %>%
+                                    <%= i %>%
                             </option>
-                        <% } %>
+                            <% } %>
                     </select>
-                   
+
                 </div>
 
 
@@ -345,13 +355,17 @@
                     <input type="hidden" name="Q5" value="ประเภทปัญหา">
                     <label for="problem_type">ประเภทปัญหา:</label>
                     <select id="problem_type" name="A5">
-                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[4].Answer === null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
-                        <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'เทคนิค') { %>selected<% } %>>เทคนิค</option>
-                        <option value="การเงิน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การเงิน') { %>selected<% } %>>การเงิน</option>
-                        <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
+                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans ||
+                            JSON.parse(dataOld[0].ans)[4].Answer===null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
+                        <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[4].Answer==='เทคนิค' ) { %>selected<% } %>>เทคนิค</option>
+                        <option value="การเงิน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[4].Answer==='การเงิน' ) { %>selected<% } %>>การเงิน</option>
+                        <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[4].Answer==='การจัดการ' ) { %>selected<% } %>>การจัดการ</option>
                     </select>
                 </div>
-               
+
 
 
 
@@ -396,51 +410,62 @@
                     <textarea id="note" name="A9"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[8].Answer : '' %></textarea>
                 </div>
-                <% question.forEach(item => { %>
+                <% question.forEach(item=> { %>
                     <div class="display-none">
                         <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
-                        <label for="A<%= item.questionID %>"><%= item.question %>:</label>
-                        <%
-                            let oldAnswer = '';
-                            if (dataOld.length && dataOld[0].ans) {
-                                const ansArray = JSON.parse(dataOld[0].ans);
-                                ansArray.forEach(old => {
-                                    if (old.Question === item.question) {
-                                   
-                                        oldAnswer = old.Answer;  // Use single equals for assignment
-                                    }
-                                });
+                        <label for="A<%= item.questionID %>">
+                            <%= item.question %>:
+                        </label>
+                        <% let oldAnswer='' ; if (dataOld.length && dataOld[0].ans) { const
+                            ansArray=JSON.parse(dataOld[0].ans); ansArray.forEach(old=> {
+                            if (old.Question === item.question) {
+
+                            oldAnswer = old.Answer; // Use single equals for assignment
                             }
-                        %>
-                        <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                            });
+                            }
+                            %>
+                            <textarea id="note" name="A<%= item.questionID %>"
+                                placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
                     </div>
-                <% }); %>
-               
-               
-                <h1> KPI Question</h1>
-                <!-- KPI -->
-                <% kpiQ.forEach(item => { %>
-                    <div class="display-none">
-                        <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
-                        <% if(item.goal == 0) { %>
-                            <label>มีตามตัวชี้วัด </label>
-                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
-                            <label>ไม่มี</label>
-                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
-                        <% } else { %>
-                            <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
-                            <input placeholder="ใส่ได้ไม่เกิน <%= item.goal %>" type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
-                        <% } %>
-                    </div>
-                <% }); %>
-               
-               
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
-                <button type="submit" id="saveButton">บันทึก</button>
-                <button type="submit" id="submitButton">ส่งรายงาน</button>
-                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
-                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
+                    <% }); %>
+
+
+                        <h1> KPI Question</h1>
+                        <!-- KPI -->
+                        <% kpiQ.forEach(item=> { %>
+                            <div class="display-none">
+                                <label for="<%= item.kpiID %>">
+                                    <%= item.kpiName %>:
+                                </label>
+                                <% if(item.goal==0) { %>
+                                    <label>มีตามตัวชี้วัด </label>
+                                    <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes' ){%>
+                                    checked<%} %>>
+                                        <label>ไม่มี</label>
+                                        <input type="radio" name="<%= item.kpiID %>" value="No" <%
+                                            if(!item.ans||item.ans==="" ||item.ans==='No' ){%> checked<%} %>>
+                                            <% } else { %>
+                                                <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
+                                                <input placeholder="ใส่ได้ไม่เกิน <%= item.goal %>" type="number"
+                                                    id="A<%= item.kpiID %>" name="<%= item.kpiID %>" step="0.01"
+                                                    value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"
+                                                    onchange="check('<%= item.kpiID %>')">
+                                                <% } %>
+                            </div>
+                            <% }); %>
+
+
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
+                                <div style="justify-content: center;">
+                                    <button type="submit" id="saveButton">บันทึก</button>
+                                    <button type="submit" id="submitButton">ส่งรายงาน</button>
+                                </div>
+                                <center><p id="alert">*** โปรดอ่าน:
+                                    เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น
+                                    ยังไม่ทำการส่งฟอร์ม ***</p>
+                                <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p></center>
             </form>
         </div>
 
@@ -448,27 +473,27 @@
 
 
         <script>
-            function check(id){
-               
-                const A=document.getElementById("A"+id).value
-                const C=parseFloat(document.getElementById("C"+id).value)
-               
-                console.log("A:"+A)
-                console.log("C:"+C)
-                if(A>C){
-                    document.getElementById("A"+id).value=C
+            function check(id) {
+
+                const A = document.getElementById("A" + id).value
+                const C = parseFloat(document.getElementById("C" + id).value)
+
+                console.log("A:" + A)
+                console.log("C:" + C)
+                if (A > C) {
+                    document.getElementById("A" + id).value = C
                 }
-                if(A<0){
-                    document.getElementById("A"+id).value=0
+                if (A < 0) {
+                    document.getElementById("A" + id).value = 0
                 }
-               
+
             }
         </script>
 
 
 
 
-           <script>
+        <script>
             document.addEventListener('DOMContentLoaded', function () {
                 //checkstatus to alert
                 const urlParams = new URLSearchParams(window.location.search);
@@ -755,7 +780,7 @@
 
 
 
-        </script>  
+        </script>
 
 
 
@@ -771,4 +796,3 @@
 
 
 </html>
-
