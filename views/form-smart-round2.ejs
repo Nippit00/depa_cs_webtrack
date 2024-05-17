@@ -17,9 +17,8 @@
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
         .back {
-            margin: 30px 0px 0px 30px;
-            color: #000000;
-            /* ตั้งค่าสีข้อความในลิงก์เป็นสีขาว */
+            margin: 30px 0 0 30px;
+            color: #000;
             background-color: #FFF0C4;
             border-radius: 20px;
             width: 100px;
@@ -47,11 +46,9 @@
             display: flex;
             justify-content: space-between;
             width: 70%;
-            margin: 0 auto;
+            margin: 50px auto;
             padding: 20px;
             border-radius: 50px;
-            margin-top: 50px;
-            margin-bottom: 50px;
             background-color: #FFF0C4;
         }
 
@@ -70,13 +67,21 @@
             padding: 10px;
             box-sizing: border-box;
             margin-left: 50px;
-            margin-bottom: 20px;
+            flex-direction: column;
+        }
+
+
+        .right-content ul {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* จัดให้ชิดด้านซ้าย */
+            /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
         }
 
 
         form {
             width: 100%;
-            padding: 20px;
             box-sizing: border-box;
         }
 
@@ -94,9 +99,7 @@
             display: block;
             margin-top: 20px;
             width: 100%;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
+            text-align: center;
         }
 
 
@@ -105,22 +108,16 @@
         input {
             width: 100%;
             padding: 8px;
-            margin-top: 5px;
-            margin-bottom: 15px;
+            margin: 5px 0 15px;
             box-sizing: border-box;
             border: 2px solid #C2AF76;
-            border-radius: 4px;
-            resize: vertical;
             border-radius: 15px;
             background-color: #fffbf0;
         }
 
 
-        input {
-            width: 50%;
-            position: relative;
-            left: 75%;
-            transform: translateX(-50%);
+        input[type="file"] {
+            display: none;
         }
 
 
@@ -128,89 +125,33 @@
             background-color: #C2AF76;
             color: white;
             padding: 10px 15px;
-            border: none;
+            border: 2px solid #C2AF76;
             border-radius: 50px;
-            margin-top: 20px;
+            cursor: pointer;
         }
 
 
         button:hover {
-            background-color: #C2AF76;
-            border-radius: 50px;
+            background-color: #A9A9A9;
+        }
+
+
+        button:disabled {
+            background-color: #A9A9A9;
+            cursor: not-allowed;
         }
 
 
         #fileUpload {
             display: none;
         }
-
-
-        .right-content ul {
-            list-style-type: none;
-            /* ลบเครื่องหมายหน้ารายการออก */
-            padding: 0;
-            margin: 0;
-        }
-
-
-        .right-content li {
-            border-bottom: 1px solid #ccc;
-            /* เพิ่มเส้นแบ่งระหว่างรายการ */
-            padding: 8px;
-            /* เพิ่มพื้นที่รอบรายการ */
-            margin-bottom: 5px;
-            /* เพิ่มระยะห่างระหว่างรายการ */
-        }
-
-
-        .left-content {
-            padding: 10px;
-            /* เพิ่มพื้นที่รอบข้อมูล */
-            margin: 10px 0;
-            /* เพิ่มระยะห่างด้านบนและล่าง */
-        }
-
-
-        .left-content p {
-            margin: 5px 0;
-            /* ตั้งค่าระยะห่างระหว่างประโยค */
-            padding-left: 20px;
-            /* เพิ่มพื้นที่ด้านซ้าย */
-        }
-
-
-        .left-content p.header {
-            font-weight: bold;
-            /* เพิ่มความหนาของตัวอักษรสำหรับหัวข้อ */
-            padding-left: 10px;
-            /* ปรับตำแหน่งของหัวข้อ */
-            color: #444;
-            /* เปลี่ยนสีตัวอักษร */
-        }
-
-
-        /* เพิ่มสไตล์สำหรับ input ที่ถูก disabled */
-        #submitButton:disabled {
-            opacity: 0.5;
-            /* Reduce opacity */
-            cursor: not-allowed;
-            /* Change cursor */
-        }
-
-
-        #saveButton[disabled] {
-            opacity: 0.5;
-            /* Reduce opacity */
-            cursor: not-allowed;
-            /* 
-            Change cursor */
-        }
         #alert{
-            margin-top: 3rem;
             color: red;
+            margin-top: 2rem;
         }
         #alert2{
             color: red;
+           
         }
     </style>
 </head>
@@ -315,231 +256,268 @@
 
 
         <div class="custom-container-1">
-            <form action="/sendformsmart_round2/<%=formdata[0].solutionID%>" method="post" id="reportForm">
-                <% if (formdata[0].status !== 2) { %>
+            <form action="/saveformsmart_round2/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+                <% if (formdata[0].status !== 2 && formdata[0].status_round2 === 0) { %>
                     <div>
+                    
+                        <input type="hidden" name="Q1" value="สถานะ">
                         <label for="status">สถานะ :</label>
-                        <select id="status" name="Q1" required>
-                            <option value="null" <% if (!dataOld.length || dataOld[0].Q1===null) { %>selected<% } %>>ระบุ
-                                    สถานะโครงการ</option>
-                            <option value="delayed" <% if (dataOld.length && dataOld[0].Q1==='delayed' ) { %>selected<% } %>
-                                    >ล่าช้ากว่าแผน</option>
-                            <option value="on_schedule" <% if (dataOld.length && dataOld[0].Q1==='on_schedule' ) { %>
-                                selected<% } %>>ตามแผน</option>
-                            <option value="ahead_of_schedule" <% if (dataOld.length && dataOld[0].Q1==='ahead_of_schedule' )
-                                { %>selected<% } %>>เร็วกว่าแผน</option>
-                            <option value="not_started" <% if (dataOld.length && dataOld[0].Q1==='not_started' ) { %>
-                                selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                        <select id="status" name="A1" required>
+                            <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[0].Answer === null) { %>selected<% } %>>ระบุสถานะโครงการ</option>
+                            <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ล่าช้ากว่าแผน') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
+                            <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ตามแผน') { %>selected<% } %>>ตามแผน</option>
+                            <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
+                            <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
                         </select>
+                        
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                         <label for="progress">ความก้าวหน้าโครงการ :</label>
-                        <select id="progress" name="Q2">
-                            <option value="0" <% if (!dataOld.length || dataOld[0].Q2===null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                            <option value="0" <% if (dataOld.length && dataOld[0].Q2===0) { %>selected<% } %>>0%</option>
-                            <option value="5" <% if (dataOld.length && dataOld[0].Q2===5) { %>selected<% } %>>5%</option>
-                            <option value="10" <% if (dataOld.length && dataOld[0].Q2===10) { %>selected<% } %>>10%</option>
-                            <option value="15" <% if (dataOld.length && dataOld[0].Q2===15) { %>selected<% } %>>15%</option>
-                            <option value="20" <% if (dataOld.length && dataOld[0].Q2===20) { %>selected<% } %>>20%</option>
-                            <option value="25" <% if (dataOld.length && dataOld[0].Q2===25) { %>selected<% } %>>25%</option>
-                            <option value="30" <% if (dataOld.length && dataOld[0].Q2===30) { %>selected<% } %>>30%</option>
-                            <option value="35" <% if (dataOld.length && dataOld[0].Q2===35) { %>selected<% } %>>35%</option>
-                            <option value="40" <% if (dataOld.length && dataOld[0].Q2===40) { %>selected<% } %>>40%</option>
-                            <option value="45" <% if (dataOld.length && dataOld[0].Q2===45) { %>selected<% } %>>45%</option>
-                            <option value="50" <% if (dataOld.length && dataOld[0].Q2===50) { %>selected<% } %>>50%</option>
-                            <option value="55" <% if (dataOld.length && dataOld[0].Q2===55) { %>selected<% } %>>55%</option>
-                            <option value="60" <% if (dataOld.length && dataOld[0].Q2===60) { %>selected<% } %>>60%</option>
-                            <option value="65" <% if (dataOld.length && dataOld[0].Q2===65) { %>selected<% } %>>65%</option>
-                            <option value="70" <% if (dataOld.length && dataOld[0].Q2===70) { %>selected<% } %>>70%</option>
-                            <option value="75" <% if (dataOld.length && dataOld[0].Q2===75) { %>selected<% } %>>75%</option>
-                            <option value="80" <% if (dataOld.length && dataOld[0].Q2===80) { %>selected<% } %>>80%</option>
-                            <option value="85" <% if (dataOld.length && dataOld[0].Q2===85) { %>selected<% } %>>85%</option>
-                            <option value="90" <% if (dataOld.length && dataOld[0].Q2===90) { %>selected<% } %>>90%</option>
-                            <option value="95" <% if (dataOld.length && dataOld[0].Q2===95) { %>selected<% } %>>95%</option>
-                            <option value="100" <% if (dataOld.length && dataOld[0].Q2===100) { %>selected<% } %>>100%</option>
+                        
+                        <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
+                            <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
+                            <% for (let i = 0; i <= 100; i += 5) { %>
+                                <option value="<%= i %>" 
+                                    <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
+                                        selected
+                                    <% } %>>
+                                    <%= i %>%
+                                </option>
+                            <% } %>
                         </select>
+                        
                     </div>
     
     
                     <div>
-                        <input type="file" id="fileUpload" name="Q3" accept=".pdf, .doc, .docx">
+                        <input type="hidden" name="Q3" value="FileUpload">
+                        <input type="file" id="fileUpload" name="A3" accept=".pdf, .doc, .docx">
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
                         <label for="operation">ผลการดำเนินงาน:</label>
-                        <textarea id="operation" name="Q4"
-                            placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q4 %><% } %></textarea>
+                        <textarea id="operation" name="A4"
+                            placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[3].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q5" value="ประเภทปัญหา">
                         <label for="problem_type">ประเภทปัญหา:</label>
-                        <select id="problem_type" name="Q5">
-                            <option value="null" <% if (!dataOld.length || dataOld[0].Q5===null) { %>selected<% } %>>ระบุ
-                                    ประเภทปัญหา</option>
-                            <option value="technical" <% if (dataOld.length && dataOld[0].Q5==='technical' ) { %>selected<%
-                                    } %>>เทคนิค</option>
-                            <option value="financial" <% if (dataOld.length && dataOld[0].Q5==='financial' ) { %>selected<%
-                                    } %>>การเงิน</option>
-                            <option value="management" <% if (dataOld.length && dataOld[0].Q5==='management' ) { %>selected
-                                <% } %>>การจัดการ
-                            </option>
+                        <select id="problem_type" name="A5">
+                            <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[4].Answer === null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
+                            <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'เทคนิค') { %>selected<% } %>>เทคนิค</option>
+                            <option value="การเงิน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การเงิน') { %>selected<% } %>>การเงิน</option>
+                            <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
                         </select>
                     </div>
+                    
     
     
                     <div>
+                        <input type="hidden" name="Q6" value="ผลลัพธ์">
+    
                         <label for="result">ผลลัพธ์:</label>
-                        <textarea id="result" name="Q6"
-                            placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q6 %><% } %></textarea>
+                        <textarea id="result" name="A6"
+                            placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[5].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q7" value="ปัญหา/อุปสรรค">
+    
                         <label for="problem">ปัญหา/อุปสรรค:</label>
-                        <textarea id="problem" name="Q7"
-                            placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q7 %><% } %></textarea>
+                        <textarea id="problem" name="A7"
+                            placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[6].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q8" value="แนวทางแก้ไข">
                         <label for="solution">แนวทางแก้ไข:</label>
-                        <textarea id="solution" name="Q8"
-                            placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q8 %><% } %></textarea>
+                        <textarea id="solution" name="A8"
+                            placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[7].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q9" value="หมายเหตุ">
                         <label for="note">หมายเหตุ:</label>
-                        <textarea id="note" name="Q9"
-                            placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0].Q9 %><% } %></textarea>
+                        <textarea id="note" name="A9"
+                            placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[8].Answer : '' %></textarea>
                     </div>
                     <% question.forEach(item => { %>
-                        <% if (item.status == 1) { %>
-                            <div class="display-none">
-                                <label for="Q<%= item.questionID %>"><%= item.question %>:</label>
-                                <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOld.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
-                                
-                                       </div>
-                        <% } else { %>
-                           
-                        <% } %>
-                    <% }); %>                   
-            
+                        <div class="display-none">
+                            <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
+                            <label for="A<%= item.questionID %>"><%= item.question %>:</label>
+                            <% 
+                                let oldAnswer = ''; 
+                                if (dataOld.length && dataOld[0].ans) {
+                                    const ansArray = JSON.parse(dataOld[0].ans);
+                                    ansArray.forEach(old => {
+                                        if (old.Question === item.question) {
+                                        
+                                            oldAnswer = old.Answer;  // Use single equals for assignment
+                                        }
+                                    });
+                                }
+                            %>
+                            <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                        </div>
+                    <% }); %>
+                    
+                    
+                    <h1> KPI Question</h1>
+                    <!-- KPI -->
+                    <% kpiQ.forEach(item => { %>
+                        <div class="display-none">
+                            <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                            <% if(item.goal == 0) { %>
+                                <label>Yes</label>
+                                <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
+                                <label>No</label>
+                                <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
+                            <% } else { %>
+                                <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
+                                <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
+                            <% } %>
+                        </div>
+                    <% }); %>                  
                 <% } else { %>
                     <div>
+                    
+                        <input type="hidden" name="Q1" value="สถานะ">
                         <label for="status">สถานะ :</label>
-                        <select id="status" name="Q1" required>
-                            <option value="null" <% if (!dataOldRound2.length || dataOldRound2[0].Q1===null) { %>selected<% } %>>ระบุ
-                                    สถานะโครงการ</option>
-                            <option value="delayed" <% if (dataOldRound2.length && dataOldRound2[0].Q1==='delayed' ) { %>selected<% } %>
-                                    >ล่าช้ากว่าแผน</option>
-                            <option value="on_schedule" <% if (dataOldRound2.length && dataOldRound2[0].Q1==='on_schedule' ) { %>
-                                selected<% } %>>ตามแผน</option>
-                            <option value="ahead_of_schedule" <% if (dataOldRound2.length && dataOldRound2[0].Q1==='ahead_of_schedule' )
-                                { %>selected<% } %>>เร็วกว่าแผน</option>
-                            <option value="not_started" <% if (dataOldRound2.length && dataOldRound2[0].Q1==='not_started' ) { %>
-                                selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                        <select id="status" name="A1" required>
+                            <option value="null" <% if (!dataOldRound2.length || !dataOldRound2[0].ans || JSON.parse(dataOldRound2[0].ans)[0].Answer === null) { %>selected<% } %>>ระบุสถานะโครงการ</option>
+                            <option value="ล่าช้ากว่าแผน" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[0].Answer === 'ล่าช้ากว่าแผน') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
+                            <option value="ตามแผน" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[0].Answer === 'ตามแผน') { %>selected<% } %>>ตามแผน</option>
+                            <option value="เร็วกว่าแผน" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
+                            <option value="ยังไม่ดำเนินโครงการ" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
                         </select>
+                        
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                         <label for="progress">ความก้าวหน้าโครงการ :</label>
-                        <select id="progress" name="Q2">
-                            <option value="0" <% if (!dataOldRound2.length || dataOldRound2[0].Q2===null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                            <option value="0" <% if (dataOldRound2.length && dataOldRound2[0].Q2===0) { %>selected<% } %>>0%</option>
-                            <option value="5" <% if (dataOldRound2.length && dataOldRound2[0].Q2===5) { %>selected<% } %>>5%</option>
-                            <option value="10" <% if (dataOldRound2.length && dataOldRound2[0].Q2===10) { %>selected<% } %>>10%</option>
-                            <option value="15" <% if (dataOldRound2.length && dataOldRound2[0].Q2===15) { %>selected<% } %>>15%</option>
-                            <option value="20" <% if (dataOldRound2.length && dataOldRound2[0].Q2===20) { %>selected<% } %>>20%</option>
-                            <option value="25" <% if (dataOldRound2.length && dataOldRound2[0].Q2===25) { %>selected<% } %>>25%</option>
-                            <option value="30" <% if (dataOldRound2.length && dataOldRound2[0].Q2===30) { %>selected<% } %>>30%</option>
-                            <option value="35" <% if (dataOldRound2.length && dataOldRound2[0].Q2===35) { %>selected<% } %>>35%</option>
-                            <option value="40" <% if (dataOldRound2.length && dataOldRound2[0].Q2===40) { %>selected<% } %>>40%</option>
-                            <option value="45" <% if (dataOldRound2.length && dataOldRound2[0].Q2===45) { %>selected<% } %>>45%</option>
-                            <option value="50" <% if (dataOldRound2.length && dataOldRound2[0].Q2===50) { %>selected<% } %>>50%</option>
-                            <option value="55" <% if (dataOldRound2.length && dataOldRound2[0].Q2===55) { %>selected<% } %>>55%</option>
-                            <option value="60" <% if (dataOldRound2.length && dataOldRound2[0].Q2===60) { %>selected<% } %>>60%</option>
-                            <option value="65" <% if (dataOldRound2.length && dataOldRound2[0].Q2===65) { %>selected<% } %>>65%</option>
-                            <option value="70" <% if (dataOldRound2.length && dataOldRound2[0].Q2===70) { %>selected<% } %>>70%</option>
-                            <option value="75" <% if (dataOldRound2.length && dataOldRound2[0].Q2===75) { %>selected<% } %>>75%</option>
-                            <option value="80" <% if (dataOldRound2.length && dataOldRound2[0].Q2===80) { %>selected<% } %>>80%</option>
-                            <option value="85" <% if (dataOldRound2.length && dataOldRound2[0].Q2===85) { %>selected<% } %>>85%</option>
-                            <option value="90" <% if (dataOldRound2.length && dataOldRound2[0].Q2===90) { %>selected<% } %>>90%</option>
-                            <option value="95" <% if (dataOldRound2.length && dataOldRound2[0].Q2===95) { %>selected<% } %>>95%</option>
-                            <option value="100" <% if (dataOldRound2.length && dataOldRound2[0].Q2===100) { %>selected<% } %>>100%</option>
+                        
+                        <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
+                            <option value="0" <% if (!dataOldRound2.length || !dataOldRound2[0].ans || JSON.parse(dataOldRound2[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
+                            <% for (let i = 0; i <= 100; i += 5) { %>
+                                <option value="<%= i %>" 
+                                    <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[1].Answer == i) { %>
+                                        selected
+                                    <% } %>>
+                                    <%= i %>%
+                                </option>
+                            <% } %>
                         </select>
+                        
                     </div>
     
     
                     <div>
-                        <input type="file" id="fileUpload" name="Q3" accept=".pdf, .doc, .docx">
+                        <input type="hidden" name="Q3" value="FileUpload">
+                        <input type="file" id="fileUpload" name="A3" accept=".pdf, .doc, .docx">
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
                         <label for="operation">ผลการดำเนินงาน:</label>
-                        <textarea id="operation" name="Q4"
-                            placeholder="กรอกข้อความ...."><% if (dataOldRound2.length) { %><%= dataOldRound2[0].Q4 %><% } %></textarea>
+                        <textarea id="operation" name="A4"
+                            placeholder="กรอกข้อความ...."><%= dataOldRound2.length && dataOldRound2[0].ans ? JSON.parse(dataOldRound2[0].ans)[3].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q5" value="ประเภทปัญหา">
                         <label for="problem_type">ประเภทปัญหา:</label>
-                        <select id="problem_type" name="Q5">
-                            <option value="null" <% if (!dataOldRound2.length || dataOldRound2[0].Q5===null) { %>selected<% } %>>ระบุ
-                                    ประเภทปัญหา</option>
-                            <option value="technical" <% if (dataOldRound2.length && dataOldRound2[0].Q5==='technical' ) { %>selected<%
-                                    } %>>เทคนิค</option>
-                            <option value="financial" <% if (dataOldRound2.length && dataOldRound2[0].Q5==='financial' ) { %>selected<%
-                                    } %>>การเงิน</option>
-                            <option value="management" <% if (dataOldRound2.length && dataOldRound2[0].Q5==='management' ) { %>selected
-                                <% } %>>การจัดการ
-                            </option>
+                        <select id="problem_type" name="A5">
+                            <option value="null" <% if (!dataOldRound2.length || !dataOldRound2[0].ans || JSON.parse(dataOldRound2[0].ans)[4].Answer === null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
+                            <option value="เทคนิค" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[4].Answer === 'เทคนิค') { %>selected<% } %>>เทคนิค</option>
+                            <option value="การเงิน" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[4].Answer === 'การเงิน') { %>selected<% } %>>การเงิน</option>
+                            <option value="การจัดการ" <% if (dataOldRound2.length && dataOldRound2[0].ans && JSON.parse(dataOldRound2[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
                         </select>
                     </div>
+                    
     
     
                     <div>
+                        <input type="hidden" name="Q6" value="ผลลัพธ์">
+    
                         <label for="result">ผลลัพธ์:</label>
-                        <textarea id="result" name="Q6"
-                            placeholder="กรอกข้อความ...."><% if (dataOldRound2.length) { %><%= dataOldRound2[0].Q6 %><% } %></textarea>
+                        <textarea id="result" name="A6"
+                            placeholder="กรอกข้อความ...."><%= dataOldRound2.length && dataOldRound2[0].ans ? JSON.parse(dataOldRound2[0].ans)[5].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q7" value="ปัญหา/อุปสรรค">
+    
                         <label for="problem">ปัญหา/อุปสรรค:</label>
-                        <textarea id="problem" name="Q7"
-                            placeholder="กรอกข้อความ...."><% if (dataOldRound2.length) { %><%= dataOldRound2[0].Q7 %><% } %></textarea>
+                        <textarea id="problem" name="A7"
+                            placeholder="กรอกข้อความ...."><%= dataOldRound2.length && dataOldRound2[0].ans ? JSON.parse(dataOldRound2[0].ans)[6].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q8" value="แนวทางแก้ไข">
                         <label for="solution">แนวทางแก้ไข:</label>
-                        <textarea id="solution" name="Q8"
-                            placeholder="กรอกข้อความ...."><% if (dataOldRound2.length) { %><%= dataOldRound2[0].Q8 %><% } %></textarea>
+                        <textarea id="solution" name="A8"
+                            placeholder="กรอกข้อความ...."><%= dataOldRound2.length && dataOldRound2[0].ans ? JSON.parse(dataOldRound2[0].ans)[7].Answer : '' %></textarea>
                     </div>
     
     
                     <div>
+                        <input type="hidden" name="Q9" value="หมายเหตุ">
                         <label for="note">หมายเหตุ:</label>
-                        <textarea id="note" name="Q9"
-                            placeholder="กรอกข้อความ...."><% if (dataOldRound2.length) { %><%= dataOldRound2[0].Q9 %><% } %></textarea>
+                        <textarea id="note" name="A9"
+                            placeholder="กรอกข้อความ...."><%= dataOldRound2.length && dataOldRound2[0].ans ? JSON.parse(dataOldRound2[0].ans)[8].Answer : '' %></textarea>
                     </div>
                     <% question.forEach(item => { %>
-                        <% if (item.status == 1) { %>
-                            <div class="display-none">
-                                <label for="Q<%= item.questionID %>"><%= item.question %>:</label>
-                                <textarea id="note" name="Q<%= item.questionID %>" placeholder="กรอกข้อความ...."><% if (dataOldRound2.length) { %><%= dataOld[0]['Q' + item.questionID] %><% } %></textarea>
-                                
-                                       </div>
-                        <% } else { %>
-                           
-                        <% } %>
+                        <div class="display-none">
+                            <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
+                            <label for="A<%= item.questionID %>"><%= item.question %>:</label>
+                            <% 
+                                let oldAnswer = ''; 
+                                if (dataOldRound2.length && dataOldRound2[0].ans) {
+                                    const ansArray = JSON.parse(dataOldRound2[0].ans);
+                                    ansArray.forEach(old => {
+                                        if (old.Question === item.question) {
+                                        
+                                            oldAnswer = old.Answer;  // Use single equals for assignment
+                                        }
+                                    });
+                                }
+                            %>
+                            <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                        </div>
+                    <% }); %>
+                    
+                    
+                    <h1> KPI Question</h1>
+                    <!-- KPI -->
+                    <% kpiQ.forEach(item => { %>
+                        <div class="display-none">
+                            <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                            <% if(item.goal == 0) { %>
+                                <label>Yes</label>
+                                <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
+                                <label>No</label>
+                                <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
+                            <% } else { %>
+                                <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
+                                <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
+                            <% } %>
+                        </div>
                     <% }); %>
                 <% } %>
                 
