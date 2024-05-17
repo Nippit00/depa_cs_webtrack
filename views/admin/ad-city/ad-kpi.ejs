@@ -87,6 +87,9 @@
             <input type="text" id="<%= item.kpiID %>" name="name<%= item.kpiID %>" value="<%= item.kpiName %>"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
             <div class="radio-wrapper">
+              <br>
+              <label">รูปแบบการตอบข้อมูล</label>
+              <br>
               <input id="YesNo_<%= item.kpiID %>" name="type_<%= item.kpiID %>" type="radio" value="0" <%
                 if(item.goal==0) { %>checked<% } %> onclick="showGoalInput(this)">
                 <label for="YesNo_<%= item.kpiID %>">Yes No</label>
