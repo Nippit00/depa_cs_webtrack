@@ -5,19 +5,17 @@
     <title>Admin - <%= pageTitle %></title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wdth,wght@62.5..100,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        font-family: "Noto Sans Thai", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 400; /* Replace with the desired font weight */
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * {
+    font-family: "Noto Sans Thai", sans-serif;
+    font-weight: 400; /* จะใช้รูปแบบตัวหนาเมื่อต้องการ */
+    font-style: normal;
+  }
+</style>
+
   </head>
   <body class="bg-teal-500">
     <%- include('../include/ad-navbar.ejs') %>
@@ -42,6 +40,27 @@
               ผู้บริหาร : <%=cityData.executive %>
             </p>
           </div>
+         
+              <% if (cityData.government_investment === 0) { %>
+                
+              <% } else { %>
+                <div>
+                  <p class="text-xl font-normal">
+                ลงทุนโดยรัฐบาล : <%= cityData.government_investment.toLocaleString() %> บาท
+              </p>
+            </div>
+              <% } %>
+              
+           
+              <% if (cityData.private_investment === 0) { %>
+                
+                <% } else { %>
+                  <div>
+                    <p class="text-xl font-normal">
+                  ลงทุนโดยเอกชน : <%= cityData.private_investment.toLocaleString() %> บาท
+                </p>
+              </div>
+                <% } %>
         </div>
         <div class="w-[50%] item-center justify-items-center justify-center">
           <iframe
