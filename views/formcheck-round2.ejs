@@ -142,7 +142,10 @@
             }
         }
         .highlight {
-        color: #666; /* Dark gray color */
+        color: #ff0000; /* Dark gray color */
+    }
+    .right-content-text{
+        margin-bottom: 50px;
     }
     </style>
 
@@ -186,46 +189,29 @@
 
                 <p>เงินทุน (บาท) : <span class="highlight">
                         <%= data.funds %>
-                    </span>บาท</p>
+                    </span>ล้าน บาท</p>
 
                 <br>
                 <br>
 
-                <p>สถานะ : <span class="highlight">
-                        <%= dataCheck.Q1%>
-                    </span></p>
+                <% 
+                const keysQ = Object.keys(dataCheck).filter(key => key.startsWith('Q'));
+                const keysA = Object.keys(dataCheck).filter(key => key.startsWith('A'));
 
-                <p>ความก้าวหน้าโครงการ : <span class="highlight">
-                        <%= dataCheck.Q2 %>
-                    %</span></p>
-
-                <p>ไฟล์อัปโหลด : <span class="highlight">
-                        <%= dataCheck.Q3 %>
-                    </span></p>
-
-                <p>ผลการดำเนินงาน: <span class="highlight">
-                        <%= dataCheck.Q4 %>
-                    </span></p>
-
-                <p>ประเภทปัญหา: <span class="highlight">
-                        <%= dataCheck.Q5 %>
-                    </span></p>
-
-                <p>ผลลัพธ์: <span class="highlight">
-                        <%= dataCheck.Q6 %>
-                    </span></p>
-
-                <p>ปัญหา/อุปสรรค: <span class="highlight">
-                        <%= dataCheck.Q7 %>
-                    </span></p>
-
-                <p>แนวทางแก้ไข: <span class="highlight">
-                        <%= dataCheck.Q8 %>
-                    </span></p>
-
-                <p>หมายเหตุ: <span class="highlight">
-                        <%= dataCheck.Q9 %>
-                    </span></p>
+                for (let i = 0; i < Math.max(keysQ.length, keysA.length); i++) {
+                    const keyQ = keysQ[i];
+                    const keyA = keysA[i];
+                %>
+                <p>
+                    <% if (keyQ) { %>
+                    <%= dataCheck[keyQ] %>
+                    <% } %>
+                    :
+                    <% if (keyA) { %>
+                    <span class="highlight"><%= dataCheck[keyA] %></span>
+                    <% } %>
+                    </p>
+                <% } %>
                 <div class="button-container">
                     <button type="submit" id="confirmBtn">ยืนยัน</button>
                     <button type="button" id="cancelBtn">ยกเลิก</button>
@@ -234,7 +220,16 @@
             </div>
             <div class="right-content">
                 <!-- เนื้อหาฝั่งขวา -->
-                <p>ตัวชี้วัด ที่ได้รับอนุมติ : </p>
+                <p class="right-content-text">ตัวชี้วัด ที่ได้รับอนุมติ </p>
+                
+                <% Object.keys(dataCheck).forEach(function(key) { %>
+                    <% dataKpi.forEach(function(item) { %>
+                      <% if (item.kpiID === key ) { %>
+                        <p><%= item.kpiName %> :</p> <p class="highlight">คำตอบ <%= dataCheck[key] %></p>
+                      <% } %>
+                    <% }); %>
+                  <% }); %>                  
+                  
             </div>
 
         </div>
@@ -275,16 +270,9 @@
                     if (result.isConfirmed) {
                         try {
                             // Get the value of data.Q1 (assuming it's a string)
-                            const q1Value = '<%= dataCheck.Q1 %>';
-                            const q2Value = '<%= dataCheck.Q2 %>';
-                            const q3Value = '<%= dataCheck.Q3 %>';
-                            const q4Value = '<%= dataCheck.Q4 %>';
-                            const q5Value = '<%= dataCheck.Q5 %>';
-                            const q6Value = '<%= dataCheck.Q6 %>';
-                            const q7Value = '<%= dataCheck.Q7 %>';
-                            const q8Value = '<%= dataCheck.Q8 %>';
-                            const q9Value = '<%= dataCheck.Q9 %>';
-                            const csrfToken = '<%= csrfToken %>';
+                            const dataCheckString = '<%- JSON.stringify(dataCheck) %>';
+                            const dataChecks = JSON.parse(dataCheckString);
+                            const csrfToken = '<%= csrfToken %>';                          
             
                             // Make a POST request to the /formcheck endpoint with data.Q1
                             const response = await fetch('/comfirmformcheck_round2/<%= data.solutionID %>', {
@@ -294,15 +282,7 @@
                                     'X-CSRF-TOKEN': csrfToken
                                 },
                                 body: JSON.stringify({
-                                    Q1: q1Value,
-                                    Q2: q2Value,
-                                    Q3: q3Value,
-                                    Q4: q4Value,
-                                    Q5: q5Value,
-                                    Q6: q6Value,
-                                    Q7: q7Value,
-                                    Q8: q8Value,
-                                    Q9: q9Value,
+                                    dataChecks:dataChecks,
                                     currentDateTime: currentDateTime
                                 })
                             });

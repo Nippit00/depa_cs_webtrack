@@ -30,7 +30,6 @@
             text-align: center;
         }
 
-
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -38,12 +37,10 @@
             box-sizing: border-box;
         }
 
-
         .head {
             text-align: center;
             margin-top: 50px;
         }
-
 
         .custom-container,
         .custom-container-1 {
@@ -56,14 +53,12 @@
             background-color: #FFF0C4;
         }
 
-
         .custom-container-1>div {
             width: 48%;
             padding: 10px;
             box-sizing: border-box;
             margin-bottom: 20px;
         }
-
 
         .left-content,
         .right-content {
@@ -83,12 +78,18 @@
             /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
         }
 
+        .right-content ul {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* จัดให้ชิดด้านซ้าย */
+            /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
+        }
 
         form {
             width: 100%;
             box-sizing: border-box;
         }
-
 
         form div {
             display: flex;
@@ -98,14 +99,12 @@
             margin-bottom: 20px;
         }
 
-
         label {
             display: block;
             margin-top: 20px;
             width: 100%;
             text-align: center;
         }
-
 
         select,
         textarea,
@@ -119,11 +118,9 @@
             background-color: #fffbf0;
         }
 
-
         input[type="file"] {
             display: none;
         }
-
 
         button {
             background-color: #C2AF76;
@@ -133,7 +130,6 @@
             border-radius: 50px;
             cursor: pointer;
         }
-
 
         button:hover {
             background-color: #A9A9A9;
@@ -145,6 +141,10 @@
             cursor: not-allowed;
         }
 
+        button:disabled {
+            background-color: #A9A9A9;
+            cursor: not-allowed;
+        }
 
         #fileUpload {
             display: none;
@@ -305,11 +305,11 @@
                 <div>
                     <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                   
+                    
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
                         <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
                         <% for (let i = 0; i <= 100; i += 5) { %>
-                            <option value="<%= i %>"
+                            <option value="<%= i %>" 
                                 <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
                                     selected
                                 <% } %>>
@@ -359,7 +359,6 @@
                 <div>
                     <input type="hidden" name="Q6" value="ผลลัพธ์">
 
-
                     <label for="result">ผลลัพธ์:</label>
                     <textarea id="result" name="A6"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[5].Answer : '' %></textarea>
@@ -370,7 +369,6 @@
 
                 <div>
                     <input type="hidden" name="Q7" value="ปัญหา/อุปสรรค">
-
 
                     <label for="problem">ปัญหา/อุปสรรค:</label>
                     <textarea id="problem" name="A7"
@@ -400,19 +398,37 @@
                     <div class="display-none">
                         <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
                         <label for="A<%= item.questionID %>"><%= item.question %>:</label>
-                        <%
-                            let oldAnswer = '';
+                        <% 
+                            let oldAnswer = ''; 
                             if (dataOld.length && dataOld[0].ans) {
                                 const ansArray = JSON.parse(dataOld[0].ans);
                                 ansArray.forEach(old => {
                                     if (old.Question === item.question) {
-                                   
+                                    
                                         oldAnswer = old.Answer;  // Use single equals for assignment
                                     }
                                 });
                             }
                         %>
                         <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                    </div>
+                <% }); %>
+                
+                
+                <h1> KPI Question</h1>
+                <!-- KPI -->
+                <% kpiQ.forEach(item => { %>
+                    <div class="display-none">
+                        <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                        <% if(item.goal == 0) { %>
+                            <label>Yes</label>
+                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
+                            <label>No</label>
+                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
+                        <% } else { %>
+                            <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
+                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
+                        <% } %>
                     </div>
                 <% }); %>
                
@@ -445,14 +461,12 @@
         </div>
 
 
-
-
         <script>
             function check(id){
-               
+                
                 const A=document.getElementById("A"+id).value
                 const C=parseFloat(document.getElementById("C"+id).value)
-               
+                
                 console.log("A:"+A)
                 console.log("C:"+C)
                 if(A>C){
@@ -512,7 +526,6 @@
                 //action form button reportForm
                 document.getElementById("submitButton").addEventListener("click", function (event) {
                     event.preventDefault();  // Prevent the default form submission initially
-
 
                     reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
                     reportForm.submit();
