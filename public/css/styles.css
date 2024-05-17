@@ -159,7 +159,7 @@ button:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #dcb432;
+  background-color: #00B2A9;
   /* สีของ handle หรือแถบที่เราจะแตะแล้วลาก */
   border-radius: 0px;
   /* กำหนดมุมของ handle */
