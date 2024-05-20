@@ -20,6 +20,10 @@
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
+         .description{
+             color:#a7a7a7;
+             font-size: small;
+        }
         .back {
             margin: 30px 0 0 30px;
             color: #000;
@@ -118,9 +122,7 @@
             background-color: #fffbf0;
         }
 
-        input[type="file"] {
-            display: none;
-        }
+       
 
         button {
             background-color: #C2AF76;
@@ -146,9 +148,7 @@
             cursor: not-allowed;
         }
 
-        #fileUpload {
-            display: none;
-        }
+        
         #alert{
             color: red;
             margin-top: 2rem;
@@ -166,7 +166,6 @@
 
 
 <body>
-
 
 
 
@@ -208,13 +207,6 @@
                     <h6>ชื่อโครงการ: N/A </h6>
                     <% } %>
         </div>
-
-
-
-
-
-
-
 
         <div class="custom-container">
             <div class="left-content">
@@ -260,8 +252,8 @@
             <div class="right-content" \88++>
                 <p><strong>CDP :</strong></p>
                 <ul class="flex flex-col ">
-                    <% if (formdata && formdata.length> 0) { %>
-                        <% formdata.forEach((item)=> { %>
+                    <% if (kpiQ && kpiQ.length> 0) { %>
+                        <% kpiQ.forEach((item)=> { %>
                             <li> - <%= item.kpiName %>
                             </li>
                             <% }); %>
@@ -284,29 +276,26 @@
 
 
         <div class="custom-container-1">
-            <form action="/saveForm/<%=formdata[0].solutionID%>" method="post" id="reportForm">
+            <form action="/saveForm/<%=formdata[0].solutionID%>/<%= round %>" method="post" id="reportForm">
                 <div>
-                   
                     <input type="hidden" name="Q1" value="สถานะ">
                     <label for="status">สถานะ :</label>
+                    <p class="description">สถานะปัจจุบันของการดำเนินโครงการ</p>
                     <select id="status" name="A1" required>
-                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[0].Answer === null) { %>selected<% } %>>ระบุสถานะโครงการ</option>
+                        <option value="ยังไม่ดำเนินโครงการ" <% if (!dataOld.length || dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
                         <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ล่าช้ากว่าแผน') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
                         <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ตามแผน') { %>selected<% } %>>ตามแผน</option>
                         <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
                         <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                        <option value="ยกเลิก" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยกเลิก') { %>selected<% } %>>ยกเลิก</option>
                     </select>
-                   
                 </div>
-
-
-
-
+        
                 <div>
                     <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
-                    
-                    <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
+                    <p class="description">ร้อยละของความก้าวหน้าภาพรวมในการดำเนินโครงการ</p>
+                    <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ" onchange="toggleFileUpload()">
                         <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
                         <% for (let i = 0; i <= 100; i += 5) { %>
                             <option value="<%= i %>" 
@@ -317,36 +306,26 @@
                             </option>
                         <% } %>
                     </select>
-                   
                 </div>
-
-
-
-
-                <div>
-                    
+        
+                <div id="fileUploadContainer" style="display: none;">
                     <input type="hidden" name="Q3" value="FileUpload">
-                    
-                    <label for="fileUpload">แนบรูปภาพ</label>
+                    <label for="fileUpload">แนบรูปภาพ :</label>
+                    <p class="description">แนบภาพประกอบการดำเนินโครงการเพื่อเป็นหลักฐานแสดงความสำเร็จของโครงการ</p>
                     <input type="file" id="fileUpload" name="A3" accept=".pdf, .doc, .docx">
                 </div>
-
-
-
-
+        
                 <div>
                     <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
                     <label for="operation">ผลการดำเนินงาน:</label>
-                    <textarea id="operation" name="A4"
-                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[3].Answer : '' %></textarea>
+                    <p class="description">ระบุผลสำเร็จหรือผลประโยชน์ที่เกิดขึ้นจากการดำเนินโครงการ</p>
+                    <textarea id="operation" name="A4" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[3].Answer : '' %></textarea>
                 </div>
-
-
-
-
+        
                 <div>
                     <input type="hidden" name="Q5" value="ประเภทปัญหา">
                     <label for="problem_type">ประเภทปัญหา:</label>
+                    <p class="description">ระบุผลสำเร็จหรือผลประโยชน์ที่เกิดขึ้นจากการดำเนินโครงการ</p>
                     <select id="problem_type" name="A5">
                         <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[4].Answer === null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
                         <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'เทคนิค') { %>selected<% } %>>เทคนิค</option>
@@ -354,53 +333,52 @@
                         <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
                     </select>
                 </div>
-               
-
-
-
-
                 <div>
-                    <input type="hidden" name="Q6" value="ผลลัพธ์">
-
+                    <input type="hidden" name="Q6" value="ปัญหาอื่น ๆ">
+                    <label for="result">ปัญหาอื่นๆ:</label>
+                    <p class="description">ระบุปัญหาที่พบจากการดำเนินโครงการ นอกเหนือจากที่กำหนดไว้</p>
+                    <textarea id="result" name="A6" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[5].Answer : '' %></textarea>
+                </div>
+        
+                <div>
+                    <input type="hidden" name="Q7" value="ผลลัพธ์">
                     <label for="result">ผลลัพธ์:</label>
-                    <textarea id="result" name="A6"
-                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[5].Answer : '' %></textarea>
+                    <p class="description">ผลที่เกิดขึ้นต่อยอดจากผลผลิต หรือผลระยะยาวซึ่งเกิดเป็นผลจุดหมายปลายทาง หรือผลต่อเนื่องจากผลกระทบ</p>
+                    <textarea id="result" name="A7" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[6].Answer : '' %></textarea>
                 </div>
-
-
-
-
+        
                 <div>
-                    <input type="hidden" name="Q7" value="ปัญหา/อุปสรรค">
-
+                    <input type="hidden" name="Q8" value="ปัญหา/อุปสรรค">
                     <label for="problem">ปัญหา/อุปสรรค:</label>
-                    <textarea id="problem" name="A7"
-                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[6].Answer : '' %></textarea>
+                    <p class="description">อธิบายรายละเอียดของปัญหาที่พบจากการดำเนินโครงการ</p>
+                    <textarea id="problem" name="A8" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[7].Answer : '' %></textarea>
                 </div>
-
-
-
-
+        
                 <div>
-                    <input type="hidden" name="Q8" value="แนวทางแก้ไข">
+                    <input type="hidden" name="Q9" value="แนวทางแก้ไข">
                     <label for="solution">แนวทางแก้ไข:</label>
-                    <textarea id="solution" name="A8"
-                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[7].Answer : '' %></textarea>
+                    <p class="description">ระบุวิธีการแก้ไขปัญหาที่พบจากการดำเนินโครงการ</p>
+                    <textarea id="solution" name="A9" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[8].Answer : '' %></textarea>
                 </div>
-
-
-
-
+        
                 <div>
-                    <input type="hidden" name="Q9" value="หมายเหตุ">
+                    <input type="hidden" name="Q10" value="หมายเหตุ">
                     <label for="note">หมายเหตุ:</label>
-                    <textarea id="note" name="A9"
-                        placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[8].Answer : '' %></textarea>
+                    <p class="description">ผลการดำเนินการอื่นๆที่ต้องการรายงาน</p>
+                    <textarea id="note" name="A10" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[9].Answer : '' %></textarea>
                 </div>
+                <div>
+                    <input type="hidden" name="Q11" value="หมายเหตุ">
+                    <label for="note">งบประมาณที่ใช้ในการดำเนินการ:</label>
+                    <p class="description">ระบุงบประมาณที่เกิดขึ้นจากการดำเนินโครงการ</p>
+                    <textarea id="note" name="A11" placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[10].Answer : '' %></textarea>
+                </div>
+                
                 <% question.forEach(item => { %>
                     <div class="display-none">
                         <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
                         <label for="A<%= item.questionID %>"><%= item.question %>:</label>
+                        <p class="description"><%= item.Description %></p>
                         <% 
                             let oldAnswer = ''; 
                             if (dataOld.length && dataOld[0].ans) {
@@ -417,29 +395,27 @@
                     </div>
                 <% }); %>
                 
-                
                 <h2> คำถามตัวชี้วัด</h2>
                 <!-- KPI คำถามชิดซ้าย-->
                 <% kpiQ.forEach(item => { %>
+                   
                     <div class="display-none">
                         <label for="<%= item.kpiID %>"><%= item.kpiName %>:</label>
+                
                         <% if(item.goal == 0) { %>
                             <label>Yes</label>
-                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans==='Yes'){%> checked<%} %>>
+                            <input type="radio" name="<%= item.kpiID %>" value="Yes" <% if(item.ans === 'Yes') { %> checked <% } %>>
                             <label>No</label>
-                            <input type="radio" name="<%= item.kpiID %>" value="No"<% if(!item.ans||item.ans===""||item.ans==='No'){%> checked<%} %>>
+                            <input type="radio" name="<%= item.kpiID %>" value="No" <% if(item.ans === 'No' || !item.ans) { %> checked <% } %>>
                         <% } else { %>
-                            <input type="hidden" id="C<%= item.kpiID %>" value="<%=item.goal%>">
-                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>"step="0.01" value="<% if(item.ans !== ''){%><%= item.ans %><%}%>"  onchange="check('<%= item.kpiID %>')">
+                            <input type="hidden" id="C<%= item.kpiID %>" value="<%= item.goal %>">
+                            <input type="number" id="A<%= item.kpiID %>" name="<%= item.kpiID %>" step="0.01" value="<%= item.ans !== '' ? item.ans : '' %>" onchange="check('<%= item.kpiID %>')">
                             <br/>
-                            <input placeholder="หมายเหตุ">
-                            <% } %>
+                            <input placeholder="หมายเหตุ" value="<%= item.note ? item.note : '' %>">
+                        <% } %>
                     </div>
                 <% }); %>
-               
-               
-               
-               
+                
                
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
@@ -452,314 +428,11 @@
         </div>
 
 
-        <script>
-            function check(id){
-                
-                const A=document.getElementById("A"+id).value
-                const C=parseFloat(document.getElementById("C"+id).value)
-                
-                console.log("A:"+A)
-                console.log("C:"+C)
-                // if(A>C){
-                //     document.getElementById("A"+id).value=C
-                // }
-                if(A<0){
-                    document.getElementById("A"+id).value=0
-                }
-               
-            }
-        </script>
 
 
 
 
-           <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                //checkstatus to alert
-                const urlParams = new URLSearchParams(window.location.search);
-                const successParam = urlParams.get('success');
-                if (successParam === 'true') {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Data saved successfully",
-                        icon: "success",
-                    }).then(function () {
-                        window.location.href = "/city/follow";
-                    });
-                }
-                //send timestamp
-                const currentDateTimeField = document.getElementById('currentDateTime');
-                const currentDateTime = new Date().toLocaleString('th-TH', {
-                    timeZone: 'Asia/Bangkok',
-                    hour12: false,
-                });
-                currentDateTimeField.value = currentDateTime;
-                //action button
-                var saveButton = document.getElementById('saveButton');
-                var submitButton = document.getElementById('submitButton');
-                const reportForm = document.getElementById('reportForm');
-                var statusSelect = document.getElementById('status');
-                var progressSelect = document.getElementById('progress');
-                const fileUploadInput = document.getElementById('fileUpload');
-                /*submitButton.style.display = 'none';*/
-
-
-
-
-
-
-
-
-
-
-
-
-                //action form button reportForm
-                document.getElementById("submitButton").addEventListener("click", function (event) {
-                    event.preventDefault();  // Prevent the default form submission initially
-
-                    reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
-                    reportForm.submit();
-                });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //Condition for disabled button
-
-
-                /*function checkFormCompletion() {
-                    let isComplete = true;
-                    const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'problem', 'solution', 'note'];
-   
-                    requiredFields.forEach(fieldId => {
-                        const field = document.getElementById(fieldId);
-                        if (field && !field.value.trim()) {
-                            isComplete = false;
-                        }
-                    });
-   
-                    if (isComplete) {
-                        submitButton.style.display = 'block';
-                    } else {
-                        submitButton.style.display = 'none';
-                    }
-                }
-   
-                reportForm.addEventListener('input', checkFormCompletion);*/
-
-
-                function checkFormCompletion() {
-                    const inputs = reportForm.querySelectorAll('input, select, textarea');
-                    let isComplete = true;
-
-
-
-
-                    inputs.forEach(input => {
-                        if (input !== fileUploadInput && ((input.type === 'text' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT') && !input.value)) {
-                            isComplete = false;
-                        }
-                    });
-
-
-
-
-                    if (fileUploadInput && fileUploadInput.files.length === 0) {
-                        isComplete = false;
-                    }
-
-
-
-
-                    return isComplete;
-                }
-
-
-
-
-                function handleFormChange() {
-                    if (checkFormCompletion()) {
-                        submitButton.disabled = false;
-                        saveButton.disabled = true;
-                    } else {
-                        submitButton.disabled = true;
-                        saveButton.disabled = false;
-                    }
-                }
-                reportForm.addEventListener('input', handleFormChange);
-                reportForm.addEventListener('change', handleFormChange);
-                submitButton.disabled = true;
-
-
-
-
-
-
-
-
-
-
-
-
-                // sendUpload file to backend
-                document.getElementById('fileUpload').addEventListener('change', function (event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const formData = new FormData();
-                        formData.append('fileUpload', file);
-
-
-
-
-                        const csrfToken = document.querySelector('input[name="_csrf"]').value;
-                        const solutionID = '<%=formdata[0].solutionID%>';
-
-
-
-
-                        fetch(`/upload/formsmart/${solutionID}`, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-Token': csrfToken
-                            },
-                            body: formData
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                console.log('Upload successful:', data);
-                            })
-                            .catch(error => {
-                                console.error('There was a problem with the upload:', error);
-                            });
-                    }
-                });
-
-
-
-
-                //file upload
-
-
-
-
-                function toggleFileUpload() {
-                    if (statusSelect.value === '100' || progressSelect.value === '100') {
-                        fileUploadInput.style.display = 'block';
-                    } else {
-                        fileUploadInput.style.display = 'none';
-                    }
-                }
-
-
-
-
-                function updateSubmitButtonState() {
-                    var isFormValid = Array.from(form.elements).every(function (element) {
-                        if (
-                            (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') &&
-                            element.type !== 'file' &&
-                            element.value.trim() !== ''
-                        ) {
-                            return true;
-                        } else if (element.type === 'file') {
-                            return true;
-                        } else if (element.type === 'button') {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
-
-
-
-
-                    if (isFormValid) {
-                        submitButton.style.backgroundColor = '#C2AF76';
-                        submitButton.style.cursor = 'pointer';
-                        submitButton.disabled = false;
-                    } else {
-                        submitButton.style.backgroundColor = '#A9A9A9';
-                        submitButton.style.cursor = 'not-allowed';
-                        submitButton.disabled = true;
-                    }
-                }
-
-
-
-
-                statusSelect.addEventListener('change', function () {
-                    toggleFileUpload();
-                    updateSubmitButtonState();
-                });
-
-
-
-
-                progressSelect.addEventListener('change', function () {
-                    toggleFileUpload();
-                    updateSubmitButtonState();
-                });
-
-
-
-
-                form.addEventListener('input', function () {
-                    updateSubmitButtonState();
-                });
-
-
-
-
-                window.addEventListener('load', function () {
-                    toggleFileUpload();
-                    updateSubmitButtonState();
-                });
-
-
-
-
-                form.addEventListener('input', function () {
-                    updateSubmitButtonState();
-                });
-
-
-
-
-                updateSubmitButtonState();
-
-
-
-
-            });
-
-
-
-
-
-
-
-
-
-
-
-
-        </script>  
+           
 
 
 
@@ -770,7 +443,80 @@
 
 
 </body>
+<script>
+  document.getElementById('submitButton').addEventListener('click', function(event) {
+    let isValid = true;
+    let firstInvalidElement = null;
+    const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'solution', 'note'];
 
+    // Check standard required fields
+    requiredFields.forEach(field => {
+        const element = document.getElementById(field);
+        if (element && !element.value.trim()) {
+            isValid = false;
+            element.style.border = '2px solid red';
+            if (!firstInvalidElement) {
+                firstInvalidElement = element;
+            }
+        } else if (element) {
+            element.style.border = '';
+        }
+    });
+
+    // Check KPI required fields
+    const kpiFields = document.querySelectorAll('input[type=number],textarea'); // Assuming KPI input names start with "6201ENV"
+    kpiFields.forEach(field => {
+        if (field.type === 'radio') {
+            const radioGroup = document.getElementsByName(field.name);
+            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+            if (!isChecked) {
+                isValid = false;
+                radioGroup.forEach(radio => radio.parentNode.style.border = '2px solid red');
+                if (!firstInvalidElement) {
+                    firstInvalidElement = radioGroup[0];
+                }
+            } else {
+                radioGroup.forEach(radio => radio.parentNode.style.border = '');
+            }
+        } else if (field.type === 'number' && !field.value.trim()) {
+            isValid = false;
+            field.style.border = '2px solid red';
+            if (!firstInvalidElement) {
+                firstInvalidElement = field;
+            }
+        } else {
+            field.style.border = '';
+        }
+    });
+
+    if (!isValid) {
+        alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+        if (firstInvalidElement) {
+            firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalidElement.focus();
+        }
+        event.preventDefault();
+    }
+});
+
+
+
+
+function toggleFileUpload() {
+        const progress = document.getElementById('progress').value;
+        const fileUploadContainer = document.getElementById('fileUploadContainer');
+        if (progress == '100') {
+            fileUploadContainer.style.display = 'block';
+        } else {
+            fileUploadContainer.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleFileUpload(); // Check the initial state on page load
+    });
+
+</script>
 
 
 

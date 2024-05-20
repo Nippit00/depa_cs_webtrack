@@ -83,19 +83,38 @@
         font-size: 14px;
       }
 
-      .complete {
-        color: green;
+      .circle-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%; /* Ensure the container has a height */
       }
-
-      .not-complete {
-        color: rgb(255, 115, 0);
+      
+      .complete-circle {
+        width: 20px;
+        height: 20px;
+        background-color: green;
+        border-radius: 50%;
+        display: inline-block;
       }
-
-
-
-      .incomplete {
-        color: red;
+      
+      .not-complete-circle {
+        width: 20px;
+        height: 20px;
+        background-color: yellow;
+        border-radius: 50%;
+        display: inline-block;
       }
+      
+      .incomplete-circle {
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      
+      
 
       span.disabled-link {
         color: #999;
@@ -137,6 +156,10 @@
         pointer-events: none;
         /* ป้องกันการคลิกเมื่อปุ่มถูก disable */
       }
+      .small-text {
+        font-size: 0.9em; /* หรือขนาดที่ต้องการ */
+    }
+    
     </style>
 
 </head>
@@ -277,13 +300,16 @@
               </div>
               <!-- CDP BUG -->
               <div class="card">
-                <div class="card-header" id="headingThree">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingThree">
                   <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
                       aria-controls="collapseThree">
                       City Data Platform: CDP
                     </button>
                   </h5>
+                  <% const cdpcountshow=countEcoSolutions("CDP") %>
+                  <% const cdpcountSuccessshow=countComplete("CDP") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=cdpcountSuccessshow%>/<%=cdpcountshow%></span>
                 </div>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                   <div class="card-body">
@@ -323,21 +349,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -393,18 +419,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -430,14 +448,19 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingFour">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingFour">
                   <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
-                      aria-controls="collapseFour">
-                      Smart Environment
-                    </button>
+                    
+                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true"
+                              aria-controls="collapseFour">
+                          Smart Environment
+                      </button>
                   </h5>
-                </div>
+                  <% const envcountshow=countEcoSolutions("ENV") %>
+                  <% const envcountSuccessshow=countComplete("ENV") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=envcountSuccessshow%>/<%=envcountshow%></span>
+              </div>
+              
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                   <div class="card-body">
                     <table class="table">
@@ -474,21 +497,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -508,7 +531,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/1"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -530,7 +553,7 @@
                                     </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart_round2/<%= item.solutionID %>">
+                                      <a href="/formsmart_round2/<%= item.solutionID %>/2">
                                         <button class="report-button">กรอกฟอร์ม</button>
                                       </a>
                                     </div>
@@ -544,18 +567,11 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -581,14 +597,18 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingFive">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingFive">
                   <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
-                      aria-controls="collapseFive">
-                      Smart Energy
-                    </button>
+                    
+                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
+                              aria-controls="collapseFive">
+                              Smart Energy
+                      </button>
                   </h5>
-                </div>
+                  <% const enecountshow=countEcoSolutions("ENE") %>
+                  <% const enecountSuccessshow=countComplete("ENE") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=enecountSuccessshow%>/<%=enecountshow%></span>
+              </div>
                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                   <div class="card-body">
                     <table class="table">
@@ -625,21 +645,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -693,18 +713,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -729,13 +741,17 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingsix">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingsix">
                   <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapsesix" aria-expanded="true"
                       aria-controls="collapsesix">
                       Smart Economy
                     </button>
                   </h5>
+                  <% const ecocountshow=countEcoSolutions("ECO") %>
+                  <% const ecocountSuccessshow=countComplete("ECO") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=ecocountSuccessshow%>/<%=ecocountshow%></span>
+                 
                 </div>
                 <div id="collapsesix" class="collapse" aria-labelledby="headingsix" data-parent="#accordion">
                   <div class="card-body">
@@ -773,21 +789,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -841,18 +857,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -877,13 +885,16 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingseven">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingseven">
                   <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseseven"
                       aria-expanded="true" aria-controls="collapseseven">
                       Smart Mobility
                     </button>
                   </h5>
+                  <% const mobcountshow=countEcoSolutions("MOB") %>
+                  <% const mobcountSuccessshow=countComplete("MOB") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=mobcountSuccessshow%>/<%=mobcountshow%></span>
                 </div>
                 <div id="collapseseven" class="collapse" aria-labelledby="headingseven" data-parent="#accordion">
                   <div class="card-body">
@@ -921,21 +932,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -989,18 +1000,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -1025,13 +1028,16 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingEgg">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingEgg">
                   <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseEgg" aria-expanded="true"
                       aria-controls="collapseEgg">
                       Smart Governance
                     </button>
                   </h5>
+                  <% const govcountshow=countEcoSolutions("GOV") %>
+                  <% const govcountSuccessshow=countComplete("GOV") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=govcountSuccessshow%>/<%=govcountshow%></span>
                 </div>
                 <div id="collapseEgg" class="collapse" aria-labelledby="headingEgg" data-parent="#accordion">
                   <div class="card-body">
@@ -1069,21 +1075,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -1137,18 +1143,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -1173,13 +1171,16 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingnine">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingnine">
                   <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapsenine" aria-expanded="true"
                       aria-controls="collapsenine">
                       Smart People
                     </button>
                   </h5>
+                  <% const peocountshow=countEcoSolutions("PEO") %>
+                  <% const peocountSuccessshow=countComplete("PEO") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=peocountSuccessshow%>/<%=peocountshow%></span>
                 </div>
                 <div id="collapsenine" class="collapse" aria-labelledby="headingnine" data-parent="#accordion">
                   <div class="card-body">
@@ -1217,21 +1218,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -1285,18 +1286,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
@@ -1321,13 +1314,16 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header" id="headingten">
+                <div class="card-header d-flex justify-content-between align-items-center" id="headingten">
                   <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseten" aria-expanded="true"
                       aria-controls="collapseten">
                       Smart Living
                     </button>
                   </h5>
+                  <% const livcountshow=countEcoSolutions("LIV") %>
+                  <% const livcountSuccessshow=countComplete("LIV") %>
+                  <span class="ml-auto mr-5 small-text">complete <%=livcountSuccessshow%>/<%=livcountshow%></span>
                 </div>
                 <div id="collapseten" class="collapse" aria-labelledby="headingten" data-parent="#accordion">
                   <div class="card-body">
@@ -1365,21 +1361,21 @@
                                     currentDay < form2StartDay)) { %>
                                     <% if (item.status===2) { %>
                                       <p><span class="disabled-link">
-                                          <%= item.solutionName %>
+                                        <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </span></p>
                                       <% } else { %>
                                         <p>
-                                          <%= item.solutionName %>
+                                          <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                         </p>
                                         <% } %>
                                           <% } else { %>
                                             <% if (item.status_round2===2) { %>
                                               <p><span class="disabled-link">
-                                                  <%= item.solutionName %>
+                                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </span></p>
                                               <% } else { %>
                                                 <p>
-                                                  <%= item.solutionName %>
+                                                  <%= item.solutionID.slice(4) %> <%= item.solutionName %>
                                                 </p>
                                                 <% } %>
                                                   <% } %>
@@ -1433,18 +1429,10 @@
                                 <% if ((currentYear < form2Year) || (currentYear===form2Year && currentMonth <
                                   form2StartMonth) || (currentYear===form2Year && currentMonth===form2StartMonth &&
                                   currentDay < form2StartDay)) { %>
-                                  <div>
-                                    <p
-                                      class="<%= item.status === 2 ? 'complete' : (item.status === 1 ? 'not-complete' : 'incomplete') %>">
-                                      <% if (item.status===2) { %>
-                                        - ส่งเเล้ว
-                                        <% } else if (item.status===1) { %>
-                                          - ฉบับร่าง
-                                          <% } else { %>
-                                            - ยังไม่ได้รายงาน ครั้งที่1
-                                            <% } %>
-                                    </p>
-                                  </div>
+                                    <div class="circle-container">
+                                      <div class="<%= item.status === 2 ? 'complete-circle' : (item.status === 1 ? 'not-complete-circle' : 'incomplete-circle') %>"></div>
+                                    </div>
+                                    
                                   <% } else { %>
                                     <div>
                                       <p
