@@ -11,122 +11,189 @@
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
+        form {
+            width: 100%;
+            /* ขนาดเต็มหน้าจอ */
+            box-sizing: border-box;
+            /* ให้ขนาดเสมอไม่ว่าจะมีการเพิ่ม padding หรือ border */
+        }
+
+        /* CSS สำหรับ input, select, textarea */
+        input,
+        select,
+        textarea {
+            width: calc(100% - 20px);
+            /* ความกว้างเต็มหน้าจอกลับรอบ ลบ 20px เพื่อให้พอดีกับขนาด border และ padding */
+            padding: 8px;
+            /* ขนาดการเส้นของ input */
+            margin: 5px 0 15px;
+            /* ระยะห่างของ input */
+            box-sizing: border-box;
+            /* ให้ขนาดเสมอไม่ว่าจะมีการเพิ่ม padding หรือ border */
+            border: 2px solid #C2AF76;
+            /* ขนาดและสีของเส้นขอบ */
+            border-radius: 15px;
+            /* ความโค้งของขอบ */
+            background-color: #fffbf0;
+            /* สีพื้นหลัง */
+            transition: border-color 0.3s ease-in-out;
+            /* เพิ่มอนิเมชันเมื่อเมาส์ hover หรือ focus */
+        }
+
+        /* เมื่อเลือก input, select, textarea */
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #8a7961;
+            /* เปลี่ยนสีขอบเป็นสีน้ำตาลเข้มเมื่อได้รับการ focus */
+        }
+
+        /* CSS สำหรับ button */
+        button {
+            background-color: #C2AF76;
+            /* สีพื้นหลัง */
+            color: white;
+            /* สีข้อความ */
+            padding: 10px 15px;
+            /* ขนาด padding ของปุ่ม */
+            border: 2px solid #C2AF76;
+            /* ขนาดและสีของเส้นขอบ */
+            border-radius: 50px;
+            /* ความโค้งของขอบ */
+            cursor: pointer;
+            /* ตัวปรับเปลี่ยนเป็น pointer เมื่อเมาส์ hover */
+            transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+            /* เพิ่มอนิเมชันเมื่อเมาส์ hover หรือ focus */
+        }
+
+        /* เมื่อ hover ที่ปุ่ม */
+        button:hover {
+            background-color: #A9A9A9;
+            /* เปลี่ยนสีพื้นหลังเป็นสีเทาเข้ม */
+            border-color: #A9A9A9;
+            /* เปลี่ยนสีขอบเป็นสีเทาเข้ม */
+        }
+
+        /* เมื่อปุ่มไม่สามารถใช้งานได้ */
+        button:disabled {
+            background-color: #A9A9A9;
+            /* เปลี่ยนสีพื้นหลังเป็นสีเทาเข้ม */
+            border-color: #A9A9A9;
+            /* เปลี่ยนสีขอบเป็นสีเทาเข้ม */
+            cursor: not-allowed;
+            /* เปลี่ยนเคอร์เซอร์เป็นไม่สามารถใช้งานได้ */
+        }
+
+        /* CSS สำหรับ .number-input และ .note-input */
+        .number-input,
+        .note-input {
+            margin-top: 5px;
+            /* ระยะห่างด้านบน */
+            padding: 5px;
+            /* ขนาด padding */
+            width: calc(100% - 10px);
+            /* ความกว้างเต็มหน้าจอกลับรอบ ลบ 10px เพื่อให้พอดีกับขนาด padding */
+        }
+
+        /* CSS สำหรับ .description */
         .description {
             color: #a7a7a7;
-            font-size: small;
+            /* สีข้อความ */
+            font-size: medium;
+            /* ขนาดฟอนต์ */
         }
 
+        /* CSS สำหรับ .back */
         .back {
             margin: 30px 0 0 30px;
+            /* ระยะห่างของปุ่ม */
             color: #000;
+            /* สีข้อความ */
             background-color: #FFF0C4;
+            /* สีพื้นหลัง */
             border-radius: 20px;
+            /* ความโค้งของขอบ */
             width: 100px;
+            /* ความกว้าง */
             height: 40px;
+            /* ความสูง */
             text-align: center;
+            /* การจัดตำแหน่งข้อความภายในปุ่ม */
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* CSS สำหรับ .head */
         .head {
             text-align: center;
+            /* การจัดตำแหน่งข้อความภายในปุ่ม */
             margin-top: 50px;
+            /* ระยะห่างด้านบน */
         }
 
         .custom-container,
         .custom-container-1 {
             display: flex;
+            /* ให้เป็น Flexbox */
             justify-content: space-between;
+            /* การจัดวางเนื้อหาให้แสดงตามระยะห่างระหว่างของพวกเขา */
             width: 70%;
+            /* ความกว้างของเนื้อหา */
             margin: 50px auto;
+            /* การจัดข้อความตามแนวนอนและตามแนวตั้ง */
             padding: 20px;
+            /* การเพิ่มระยะห่างรอบขอบของพื้นหลัง */
             border-radius: 50px;
+            /* ความโค้งของขอบ */
             background-color: #FFF0C4;
+            /* สีพื้นหลัง */
         }
 
+        /* CSS สำหรับ .custom-container-1 > div */
         .custom-container-1>div {
             width: 48%;
+            /* ความกว้างของเนื้อหา */
             padding: 10px;
+            /* การเพิ่มระยะห่างรอบขอบของพื้นหลัง */
             box-sizing: border-box;
+            /* ปรับขนาดของพื้นหลังเพื่อให้มีขนาดเท่ากัน */
             margin-bottom: 20px;
+            /* ระยะห่างด้านล่าง */
         }
 
+        /* CSS สำหรับ .left-content และ .right-content */
         .left-content,
         .right-content {
             width: 50%;
+            /* ความกว้างของเนื้อหา */
             padding: 10px;
+            /* การเพิ่มระยะห่างรอบขอบของพื้นหลัง */
             box-sizing: border-box;
+            /* ปรับขนาดของพื้นหลังเพื่อให้มีขนาดเท่ากัน */
             margin-left: 50px;
+            /* การจัดการระยะห่างทางด้านซ้าย */
             flex-direction: column;
+            /* การจัดการการจัดวางของเนื้อหาให้อยู่ในคอลัมน์เดียวกัน */
         }
 
+        /* CSS สำหรับ .right-content ul */
         .right-content ul {
             display: flex;
+            /* การแสดงผลให้อยู่ในรูปแบบ Flexbox */
             flex-direction: column;
+            /* การจัดวางเนื้อหาให้อยู่ในคอลัมน์เดียวกัน */
             align-items: flex-start;
-            /* จัดให้ชิดด้านซ้าย */
-            /* หรือใช้ align-items: center; เพื่อจัดให้อยู่ตรงกลาง */
+            /* การจัดการการจัดตำแหน่งเนื้อหาที่อยู่ทางด้านซ้าย */
         }
 
-        form {
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        form div {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
+        /* CSS สำหรับ label */
         label {
             display: block;
+            /* การแสดงผลเป็นบล็อก */
             margin-top: 20px;
+            /* ระยะห่างด้านบน */
             width: 100%;
-            text-align: center;
-            align-items: flex-start;
-        }
-
-        select,
-        textarea,
-        input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 15px;
-            box-sizing: border-box;
-            border: 2px solid #C2AF76;
-            border-radius: 15px;
-            background-color: #fffbf0;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        button {
-            background-color: #C2AF76;
-            color: white;
-            padding: 10px 15px;
-            border: 2px solid #C2AF76;
-            border-radius: 50px;
-            cursor: pointer;
-            align-items: flex-start;
-        }
-
-        button:hover {
-            background-color: #A9A9A9;
-        }
-
-        button:disabled {
-            background-color: #A9A9A9;
-            cursor: not-allowed;
+            /* ความกว้าง */
+            text-align: left;
+            /* การจัดการการจัดตำแหน่งข้อความ */
         }
 
         #fileUpload {
@@ -234,7 +301,7 @@
                 <ul class="flex flex-col ">
                     <% datakpi.forEach(item=> { %>
                         <p>
-                            <%= item.kpiName %>
+                            - <%= item.kpiName %>
                         </p>
                         <% }); %>
                 </ul>

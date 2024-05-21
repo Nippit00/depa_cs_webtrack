@@ -214,7 +214,7 @@
                 <% } %>
                 <div class="button-container">
                     <button type="submit" id="confirmBtn">ยืนยัน</button>
-                    <button type="button" id="cancelBtn">แก้ไข</button>
+                    <button type="button" id="editBtn">แก้ไข</button>
                 </div>
 
             </div>
@@ -236,7 +236,7 @@
 
 
         <script>
-            const cancelBtn = document.getElementById('cancelBtn');
+            const cancelBtn = document.getElementById('editBtn');
             const confirmBtn = document.getElementById('confirmBtn');
             const currentDateTime = new Date().toLocaleString('th-TH', {
                     timeZone: 'Asia/Bangkok',
@@ -246,14 +246,6 @@
             function goBack() {
                 window.location.href = "/city/follow"
             }
-
-            cancelBtn.addEventListener('click', () => {
-                try {
-                    goBack()
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            });
 
             // send data to backend
             confirmBtn.addEventListener('click', async () => {
@@ -305,6 +297,29 @@
                     }
                 });
             });
+
+
+            cancelBtn.addEventListener('click', async () => {
+                    try {
+                        const dataCheckString = '<%- JSON.stringify(dataCheck) %>';
+                        const dataChecks = JSON.parse(dataCheckString);
+                        const csrfToken = '<%= csrfToken %>';
+                        const response = await fetch('/saveEdit/<%= data.solutionID %>/<%=dataCheck.round%>', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            body: JSON.stringify({
+                                dataChecks: dataChecks,
+                                currentDateTime: currentDateTime
+                            })
+                        });
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+            });
+            
         </script>
 
         <%- include('component/footer.ejs') %>

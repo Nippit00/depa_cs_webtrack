@@ -226,6 +226,131 @@ exports.saveAnsObj = (req, res, next) => {
   });
 };
 
+exports.saveAnsObjEdit = (req, res, next) => {
+  console.log(req.params.round)
+  const dataArray = [];
+  const kpiArray = [];
+  const solutionID = req.params.solutionID;
+  const qUpdate = "UPDATE solution SET status = 1 WHERE solutionID = ?";
+
+  // Loop through request body to extract question-answer pairs
+  for (const key in req.body) {
+    if (key.startsWith('Q')) {
+      const qKey = key;
+      const aKey = 'A' + key.substring(1);
+      const questionObj = {};
+      questionObj['Question'] = req.body[qKey];
+      questionObj['Answer'] = req.body[aKey];
+      dataArray.push(questionObj);
+    }
+    // Extract KPI data
+    if (key.startsWith(solutionID)) {
+      const kpiID = key; // Use the whole key as kpiID since it matches your example
+      const kpiAnswer = req.body[key];
+      kpiArray.push({ kpiID, kpiAnswer });
+    }
+  }
+
+  // Check if the solutionID exists in the database
+  const checkQuery = "SELECT * FROM `anssolution` WHERE `solutionID` = ?";
+  db.query(checkQuery, [solutionID], (err, rows) => {
+    if (err) {
+      console.error("Error checking existing data:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Function to handle KPI data insertion or update
+    const handleKpiData = (callback) => {
+      const kpiQueries = kpiArray.map(kpi => {
+        return new Promise((resolve, reject) => {
+          const checkKpiQuery = "SELECT * FROM `anskpi` WHERE `solutionID` = ? AND `kpiID` = ?";
+          db.query(checkKpiQuery, [solutionID, kpi.kpiID], (err, kpiRows) => {
+            if (err) {
+              return reject(err);
+            }
+            if (kpiRows.length > 0) {
+              const updateKpiQuery = "UPDATE `anskpi` SET `timestamp` = ?, `ans` = ? WHERE `solutionID` = ? AND `kpiID` = ?";
+              db.query(updateKpiQuery, [new Date(), kpi.kpiAnswer, solutionID, kpi.kpiID], (err, result) => {
+                if (err) {
+                  return reject(err);
+                }
+                resolve(result);
+              });
+            } else {
+              const insertKpiQuery = "INSERT INTO `anskpi`(`solutionID`, `kpiID`, `timestamp`, `ans`) VALUES (?,?,?,?)";
+              db.query(insertKpiQuery, [solutionID, kpi.kpiID, new Date(), kpi.kpiAnswer], (err, result) => {
+                if (err) {
+                  return reject(err);
+                }
+                resolve(result);
+              });
+            }
+          });
+        });
+      });
+
+      Promise.all(kpiQueries)
+        .then(results => callback(null, results))
+        .catch(err => callback(err));
+    };
+
+    // If solutionID exists, update the row; otherwise, insert a new row
+    if (rows.length > 0) {
+      const updateQuery = "UPDATE `anssolution` SET `timestamp` = ?, `ans` = ? WHERE `solutionID` = ?";
+      db.query(updateQuery, [new Date(), JSON.stringify(dataArray), solutionID], (err, result) => {
+        if (err) {
+          console.error("Error updating data:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+        console.log("Data updated successfully");
+
+        handleKpiData((err, results) => {
+          if (err) {
+            console.error("Error handling KPI data:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          // Update the status of the solution to 1 (indicating completion)
+          db.query(qUpdate, [solutionID], (err, result) => {
+            if (err) {
+              console.error("Error updating status:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+            console.log("Status updated successfully");
+            // return res.redirect(`/formcheck/${solutionID}/${req.params.round}`)
+            return res.send("success")
+          });
+        });
+      });
+    } else {
+      const insertQuery = "INSERT INTO `anssolution`(`solutionID`, `timestamp`, `Round`, `ans`) VALUES (?,?,?,?)";
+      db.query(insertQuery, [solutionID, new Date(), req.params.round, JSON.stringify(dataArray)], (err, result) => {
+        if (err) {
+          console.error("Error inserting data:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+        console.log("Data inserted successfully");
+
+        handleKpiData((err, results) => {
+          if (err) {
+            console.error("Error handling KPI data:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          // Update the status of the solution to 1 (indicating completion)
+          db.query(qUpdate, [solutionID], (err, result) => {
+            if (err) {
+              console.error("Error updating status:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+            console.log("Status updated successfully");
+            // return res.redirect(`/formcheck/${solutionID}/${req.params.round}`)
+            return res.send("success")
+          });
+        });
+      });
+    }
+  });
+};
+
 
 
 
@@ -308,19 +433,25 @@ exports.saveAnsObjcdp1 = (req, res, next) => {
 
 
 exports.postFormcheck = (req, res, next) => {
-  const dataForm = req.body
-  console.log(req.body)
+  const dataForm = req.body;
+  const solutionid = req.params.solutionID;
+  console.log(req.body);
   try {
-    return res.render("formcheck", {
-      dataForm: dataForm,
-      data: [],
-      dataCheck: [],
-    })
+    const q = "SELECT solution.*, city_home.* FROM solution JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.solutionID = ?";
+    db.query(q, [solutionid], (err, data) => {
+      if (err) return res.status(500).json({ error: "Internal Server Error" });
+      return res.render("formcheck", {
+        data: data[0],
+        dataCheck: dataForm,
+        dataKpi:[],
+      });
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 };
+
 
 
 

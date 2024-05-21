@@ -313,16 +313,13 @@
 
 
             <div class="right-content" \88++>
-                <p><strong>CDP :</strong></p>
+                <p><strong>ตัวชี้วัด :</strong></p>
                 <ul class="flex flex-col ">
-                    <% if (kpiQ && kpiQ.length> 0) { %>
-                        <% kpiQ.forEach((item)=> { %>
-                            <li> - <%= item.kpiName %>
-                            </li>
-                            <% }); %>
-                                <% } else { %>
-                                    <li>No data available</li>
-                                    <% } %>
+                    <% kpiQ.forEach(item=> { %>
+                        <p>
+                            - <%= item.kpiName %>
+                        </p>
+                        <% }); %>
                 </ul>
             </div>
         </div>
@@ -473,7 +470,7 @@
                     </div>
                     <% }); %>
 
-                        <h2> คำถามตัวชี้วัด</h2>
+                        <h2> รายงานผลการดำเนินงาน (ตัวชี้วัด)</h2>
                         <!-- KPI คำถามชิดซ้าย-->
                         <% kpiQ.forEach(item=> { %>
                             <div class="display-none">
@@ -489,12 +486,12 @@
                                             if(item.ans==='No' || !item.ans) { %> checked <% } %>>
                                             <% } else { %>
                                                 <input type="hidden" id="C<%= item.kpiID %>" value="<%= item.goal %>">
-                                                <input class="number-input" type="number" id="A<%= item.kpiID %>"
+                                                <input class="number-input" type="number" placeholder=<%= item.unit %> id="A<%= item.kpiID %>"
                                                     name="<%= item.kpiID %>" step="0.01"
                                                     value="<%= item.ans !== '' ? item.ans : '' %>"
                                                     onchange="check('<%= item.kpiID %>')">
                                                 <br />
-                                                <input class="note-input" placeholder="หมายเหตุ"
+                                                <input class="note-input" placeholder="หมายเหตุเพิ่มเติม"
                                                     value="<%= item.note ? item.note : '' %>">
                                                 <% } %>
                             </div>
@@ -504,6 +501,7 @@
 
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
+                                <input type="hidden" name="round" value="<%= round %>">
 
                                 <p id="alert">*** โปรดอ่าน:
                                     เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น
@@ -521,23 +519,19 @@
 
 </body>
 <script>
+    const currentDateTimeField = document.getElementById('currentDateTime');
+                const currentDateTime = new Date().toLocaleString('th-TH', {
+                    timeZone: 'Asia/Bangkok',
+                    hour12: false,
+                });
+                currentDateTimeField.value = currentDateTime;
     document.getElementById('submitButton').addEventListener('click', function (event) {
+
         let isValid = true;
         let firstInvalidElement = null;
         const requiredFields = ['status', 'progress', 'operation', 'problem_type', 'result', 'solution', 'note', 'bubget'];
-        const currentDateTime = new Date().toLocaleString('th-TH', {
-            timeZone: 'Asia/Bangkok',
-            hour12: false,
-        });
+        
 
-        //sumit form
-
-        /*document.getElementById("submitButton").addEventListener("click", function (event) {
-           event.preventDefault();  
-           reportForm.action = "/formcheck/<%=formdata[0].solutionID%>";
-           reportForm.action = "/saveForm/<%=formdata[0].solutionID%>/<%= round %>";
-           reportForm.submit();
-       });*/
 
 
 
@@ -606,6 +600,11 @@
             }
             event.preventDefault();
         }
+        if(isValid){
+        event.preventDefault();  
+            reportForm.action = "/formcheck/<%=formdata[0].solutionID%>/<%= round %>";
+           reportForm.submit();
+        }
     });
 
 
@@ -628,8 +627,8 @@
                 const successParam = urlParams.get('success');
                 if (successParam === 'true') {
                     Swal.fire({
-                        title: "Success!",
-                        text: "Data saved successfully",
+                        title: "บันทึกสำเร็จ!",
+                        text: "บันทึกฉบับร่างสำเร็จ",
                         icon: "success",
                     }).then(function () {
                         window.location.href = "/city/follow";

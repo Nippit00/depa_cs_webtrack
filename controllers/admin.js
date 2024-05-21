@@ -5,21 +5,16 @@ const db = require("../db.js");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 exports.getAdPage = (req, res, next) => {
-  const q = "SELECT `cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`, `status_round2` FROM `solution` WHERE 1";
+  const q = "SELECT `cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`FROM `solution` WHERE 1";
   db.query(q, (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).json(err);
     }
 
-    // สร้างอาร์เรย์เพื่อเก็บค่าจำนวนของแต่ละสถานะของ status และ status_round2
+    // สร้างอาร์เรย์เพื่อเก็บค่าจำนวนของแต่ละสถานะของ status
     let statusCounts = {
       status: {
-        0: 0,
-        1: 0,
-        2: 0
-      },
-      status_round2: {
         0: 0,
         1: 0,
         2: 0
@@ -31,13 +26,10 @@ exports.getAdPage = (req, res, next) => {
       // นับจำนวนของแต่ละสถานะของ status
       statusCounts.status[element.status]++;
 
-      // นับจำนวนของแต่ละสถานะของ status_round2
-      statusCounts.status_round2[element.status_round2]++;
     });
 
     // แสดงผลลัพธ์ในคอนโซล
     // console.log("จำนวน status:", statusCounts.status);
-    // console.log("จำนวน status_round2:", statusCounts.status_round2);
 
     // ส่งข้อมูลไปยังหน้าแสดงผล
     res.render("admin/ad-main", {
@@ -357,7 +349,7 @@ exports.postAddSolution = (req, res, next) => {
       smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
       break;
   }
-  const q ="INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`,`status_round2`,`status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'0','1')";
+  const q ="INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`,`status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'1')";
   db.query(q,[cityID,smartKey,solutionID,solutionName,sourceFunds,funds,startYear,endYear,status,],(err, result) => {
       if (err) {
         console.error("Error adding solution:", err);
