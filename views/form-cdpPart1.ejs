@@ -11,10 +11,11 @@
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
-         .description{
-             color:#a7a7a7;
-             font-size: small;
+        .description {
+            color: #a7a7a7;
+            font-size: small;
         }
+
         .back {
             margin: 30px 0 0 30px;
             color: #000;
@@ -131,6 +132,7 @@
         #fileUpload {
             display: none;
         }
+
         .footer label {
             font-weight: bold;
             margin-left: 13rem;
@@ -230,9 +232,11 @@
             <div class="right-content" \88++>
                 <p><strong>CDP :</strong></p>
                 <ul class="flex flex-col ">
-                    <% datakpi.forEach(item => { %>
-                        <p><%= item.kpiName %></p>
-                      <% }); %>
+                    <% datakpi.forEach(item=> { %>
+                        <p>
+                            <%= item.kpiName %>
+                        </p>
+                        <% }); %>
                 </ul>
             </div>
 
@@ -248,14 +252,24 @@
                     <label for="status">สถานะ :</label>
                     <p class="description">สถานะปัจจุบันของการดำเนินโครงการ</p>
                     <select id="status" name="A1" required>
-                        <option value="ยังไม่ดำเนินโครงการ" <% if (!dataOld.length || dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
+                        <option value="ยังไม่ดำเนินโครงการ" <% if (!dataOld.length || dataOld.length && dataOld[0].ans
+                            && JSON.parse(dataOld[0].ans)[0].Answer==='ยังไม่ดำเนินโครงการ' ) { %>selected<% } %>
+                                >ยังไม่ดำเนินโครงการ</option>
 
-                        <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ล่าช้ากว่าแผน') { %>selected<% } %>>ล่าช้ากว่าแผน</option>
-                        <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ตามแผน') { %>selected<% } %>>ตามแผน</option>
-                        <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'เร็วกว่าแผน') { %>selected<% } %>>เร็วกว่าแผน</option>
-                        <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยังไม่ดำเนินโครงการ') { %>selected<% } %>>ยังไม่ดำเนินโครงการ</option>
-                        <option value="ยกเลิก" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[0].Answer === 'ยกเลิก') { %>selected<% } %>>ยกเลิก</option>
-                        
+                        <option value="ล่าช้ากว่าแผน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ล่าช้ากว่าแผน' ) { %>selected<% } %>>ล่าช้ากว่าแผน
+                        </option>
+                        <option value="ตามแผน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ตามแผน' ) { %>selected<% } %>>ตามแผน</option>
+                        <option value="เร็วกว่าแผน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='เร็วกว่าแผน' ) { %>selected<% } %>>เร็วกว่าแผน
+                        </option>
+                        <option value="ยังไม่ดำเนินโครงการ" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ยังไม่ดำเนินโครงการ' ) { %>selected<% } %>
+                                >ยังไม่ดำเนินโครงการ</option>
+                        <option value="ยกเลิก" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[0].Answer==='ยกเลิก' ) { %>selected<% } %>>ยกเลิก</option>
+
                     </select>
                 </div>
 
@@ -267,26 +281,28 @@
                     <label for="progress">ความก้าวหน้าโครงการ :</label>
                     <p class="description">ร้อยละของความก้าวหน้าภาพรวมในการดำเนินโครงการ</p>
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ">
-                        <option value="0" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[1].Answer === null) { %>selected<% } %>>ระบุ % ความก้าวหน้า</option>
-                        <% for (let i = 0; i <= 100; i += 5) { %>
-                            <option value="<%= i %>" 
-                                <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[1].Answer == i) { %>
-                                    selected
+                        <option value="0" <% if (!dataOld.length || !dataOld[0].ans ||
+                            JSON.parse(dataOld[0].ans)[1].Answer===null) { %>selected<% } %>>ระบุ % ความก้าวหน้า
+                        </option>
+                        <% for (let i=0; i <=100; i +=5) { %>
+                            <option value="<%= i %>" <% if (dataOld.length && dataOld[0].ans &&
+                                JSON.parse(dataOld[0].ans)[1].Answer==i) { %>
+                                selected
                                 <% } %>>
-                                <%= i %>%
+                                    <%= i %>%
                             </option>
-                        <% } %>
+                            <% } %>
                     </select>
-                   
+
                 </div>
 
 
 
 
                 <div>
-                    
+
                     <input type="hidden" name="Q3" value="FileUpload">
-                    
+
                     <label for="fileUpload">แนบรูปภาพ</label>
                     <p class="description">แนบภาพประกอบการดำเนินโครงการเพื่อเป็นหลักฐานแสดงความสำเร็จของโครงการ</p>
                     <input type="file" id="fileUpload" name="A3" accept=".pdf, .doc, .docx">
@@ -310,11 +326,15 @@
                     <label for="problem_type">ประเภทปัญหา:</label>
                     <p class="description">ระบุผลสำเร็จหรือผลประโยชน์ที่เกิดขึ้นจากการดำเนินโครงการ</p>
                     <select id="problem_type" name="A5">
-                        
-                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans || JSON.parse(dataOld[0].ans)[4].Answer === null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
-                        <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'เทคนิค') { %>selected<% } %>>เทคนิค</option>
-                        <option value="การเงิน" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การเงิน') { %>selected<% } %>>การเงิน</option>
-                        <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans && JSON.parse(dataOld[0].ans)[4].Answer === 'การจัดการ') { %>selected<% } %>>การจัดการ</option>
+
+                        <option value="null" <% if (!dataOld.length || !dataOld[0].ans ||
+                            JSON.parse(dataOld[0].ans)[4].Answer===null) { %>selected<% } %>>ระบุประเภทปัญหา</option>
+                        <option value="เทคนิค" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[4].Answer==='เทคนิค' ) { %>selected<% } %>>เทคนิค</option>
+                        <option value="การเงิน" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[4].Answer==='การเงิน' ) { %>selected<% } %>>การเงิน</option>
+                        <option value="การจัดการ" <% if (dataOld.length && dataOld[0].ans &&
+                            JSON.parse(dataOld[0].ans)[4].Answer==='การจัดการ' ) { %>selected<% } %>>การจัดการ</option>
                     </select>
                 </div>
                 <div>
@@ -332,16 +352,17 @@
                 <div>
                     <input type="hidden" name="Q7" value="ผลลัพธ์">
                     <label for="result">ผลลัพธ์:</label>
-                    <p class="description">ผลที่เกิดขึ้นต่อยอดจากผลผลิต หรือผลระยะยาวซึ่งเกิดเป็นผลจุดหมายปลายทาง หรือผลต่อเนื่องจากผลกระทบ</p>
+                    <p class="description">ผลที่เกิดขึ้นต่อยอดจากผลผลิต หรือผลระยะยาวซึ่งเกิดเป็นผลจุดหมายปลายทาง
+                        หรือผลต่อเนื่องจากผลกระทบ</p>
 
                     <textarea id="result" name="A7"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[6].Answer : '' %></textarea>
                 </div>
-                
+
 
                 <div>
                     <input type="hidden" name="Q8" value="ปัญหา/อุปสรรค">
-    
+
                     <label for="problem">ปัญหา/อุปสรรค:</label>
                     <p class="description">อธิบายรายละเอียดของปัญหาที่พบจากการดำเนินโครงการ</p>
 
@@ -373,90 +394,121 @@
                     <textarea id="note" name="A11"
                         placeholder="กรอกข้อความ...."><%= dataOld.length && dataOld[0].ans ? JSON.parse(dataOld[0].ans)[10].Answer : '' %></textarea>
                 </div>
-                <% question.forEach(item => { %>
+                <% question.forEach(item=> { %>
                     <div class="display-none">
                         <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
-                        <label for="A<%= item.questionID %>"><%= item.question %>:</label>
-                        <p class="description"><%= item.Description %></p>
-                        <% 
-                            let oldAnswer = ''; 
-                            if (dataOld.length && dataOld[0].ans) {
-                                const ansArray = JSON.parse(dataOld[0].ans);
-                                ansArray.forEach(old => {
-                                    if (old.Question === item.question) {
-                                    
-                                        oldAnswer = old.Answer;  // Use single equals for assignment
-                                    }
-                                });
+                        <label for="A<%= item.questionID %>">
+                            <%= item.question %>:
+                        </label>
+                        <p class="description">
+                            <%= item.Description %>
+                        </p>
+                        <% let oldAnswer='' ; if (dataOld.length && dataOld[0].ans) { const
+                            ansArray=JSON.parse(dataOld[0].ans); ansArray.forEach(old=> {
+                            if (old.Question === item.question) {
+
+                            oldAnswer = old.Answer; // Use single equals for assignment
                             }
-                        %>
-                        <textarea id="note" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
+                            });
+                            }
+                            %>
+                            <textarea id="note" name="A<%= item.questionID %>"
+                                placeholder="กรอกข้อความ...."><%= oldAnswer %></textarea>
                     </div>
-                <% }); %>
+                    <% }); %>
 
 
-                <div class="footer">
-                    <label>รายงานตามตัวชี้วัด</label>
-                </div>
+                        <div class="footer">
+                            <label>รายงานตามตัวชี้วัด</label>
+                        </div>
 
-                <div>
-                    <!-- <input type="hidden" value="URL ของ Platform/Website CDP" name="KPI1"> -->
-                    <label for="urlPlatform"><%=formdata[0].kpiName  %>:</label>
-                    <textarea id="urlPlatform" name="<%=formdata[0].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[0].ans %><% } %></textarea>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="URL ของ Data Catalog" name="KPI2"> -->
-                    <label for="urlDatacatalog"><%=formdata[1].kpiName  %>:</label>
-                    <textarea id="urlDatacatalog" name="<%=formdata[1].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[1].ans %><% } %></textarea>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="URL ของ Data Dashboard" name="KPI3"> -->
-                    <label for="urlDatadashboard"><%=formdata[2].kpiName  %>:</label>
-                    <textarea id="urlDatadashboard" name="<%=formdata[2].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[2].ans %><% } %></textarea>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="URL อื่นๆ" name="KPI4"> -->
-                    <label for="urlElse"><%=formdata[3].kpiName  %>:</label>
-                    <textarea id="urlElse" name="<%=formdata[3].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[3].ans %><% } %></textarea>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="รูปแบบการลงทุนจัดทำ CDP" name="KPI5"> -->
-                    <label for="Investment"><%=formdata[4].kpiName  %>:</label>
-                    <select id="Investment" name="<%=formdata[4].kpiID  %>">
-                        <option value="null"<% if (!datakpi.length || datakpi[4].ans === "null") { %>selected<% } %>>ระบุ รูปแบบการลงทุน</option>
-                        <option value="ภาครัฐ" <% if (datakpi.length && datakpi[4].ans === "ภาครัฐ") { %>selected<% } %>>ภาครัฐ</option>
-                        <option value="ภาคเอกชน"<% if (datakpi.length && datakpi[4].ans === "ภาคเอกชน") { %>selected<% } %>>ภาคเอกชน</option>
-                        <option value="ภาครัฐร่วมเอกชน"<% if (datakpi.length && datakpi[4].ans === "ภาครัฐร่วมเอกชน") { %>selected<% } %>>ภาครัฐร่วมเอกชน</option>
-                    </select>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="แหล่งที่มาของงบประมาณ" name="KPI6"> -->
-                    <label for="source"><%=formdata[5].kpiName  %>:</label>
-                    <textarea id="source" name="<%=formdata[5].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[5].ans %><% } %></textarea>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="รูปแบบการขับเคลื่อนและกำกับดูแล CDP" name="KPI7"> -->
-                    <label for="Investment"><%=formdata[6].kpiName  %> :</label>
-                    <select id="Investment" name="<%=formdata[6].kpiID  %>">
-                        <option value="null">ระบุ รูปแบบการลงทุน</option>
-                        <option value="ภาครัฐ" <% if (datakpi.length && datakpi[6].ans === "ภาครัฐ") { %>selected<% } %>>ภาครัฐ</option>
-                        <option value="ภาคเอกชน" <% if (datakpi.length && datakpi[6].ans === "ภาคเอกชน") { %>selected<% } %>>ภาคเอกชน</option>
-                        <option value="ภาครัฐร่วมเอกชน" <% if (datakpi.length && datakpi[6].ans === "ภาครัฐร่วมเอกชน") { %>selected<% } %>>ภาครัฐร่วมเอกชน</option>
-                    </select>
-                </div>
-                <div>
-                    <!-- <input type="hidden" value="การนำ CDP ไปใช้ให้เกิดประโยชน์" name="KPI8"> -->
-                    <label for="usecdp"><%=formdata[7].kpiName  %>:</label>
-                    <textarea id="usecdp" name="<%=formdata[7].kpiID  %>" placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[7].ans %><% } %></textarea>
-                </div>
+                        <div>
+                            <!-- <input type="hidden" value="URL ของ Platform/Website CDP" name="KPI1"> -->
+                            <label for="urlPlatform">
+                                <%=formdata[0].kpiName %>:
+                            </label>
+                            <textarea id="urlPlatform" name="<%=formdata[0].kpiID  %>"
+                                placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[0].ans %><% } %></textarea>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="URL ของ Data Catalog" name="KPI2"> -->
+                            <label for="urlDatacatalog">
+                                <%=formdata[1].kpiName %>:
+                            </label>
+                            <textarea id="urlDatacatalog" name="<%=formdata[1].kpiID  %>"
+                                placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[1].ans %><% } %></textarea>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="URL ของ Data Dashboard" name="KPI3"> -->
+                            <label for="urlDatadashboard">
+                                <%=formdata[2].kpiName %>:
+                            </label>
+                            <textarea id="urlDatadashboard" name="<%=formdata[2].kpiID  %>"
+                                placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[2].ans %><% } %></textarea>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="URL อื่นๆ" name="KPI4"> -->
+                            <label for="urlElse">
+                                <%=formdata[3].kpiName %>:
+                            </label>
+                            <textarea id="urlElse" name="<%=formdata[3].kpiID  %>"
+                                placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[3].ans %><% } %></textarea>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="รูปแบบการลงทุนจัดทำ CDP" name="KPI5"> -->
+                            <label for="Investment">
+                                <%=formdata[4].kpiName %>:
+                            </label>
+                            <select id="Investment" name="<%=formdata[4].kpiID  %>">
+                                <option value="null" <% if (!datakpi.length || datakpi[4].ans==="null" ) { %>selected<%
+                                        } %>>ระบุ รูปแบบการลงทุน</option>
+                                <option value="ภาครัฐ" <% if (datakpi.length && datakpi[4].ans==="ภาครัฐ" ) { %>selected
+                                    <% } %>>ภาครัฐ</option>
+                                <option value="ภาคเอกชน" <% if (datakpi.length && datakpi[4].ans==="ภาคเอกชน" ) { %>
+                                    selected<% } %>>ภาคเอกชน</option>
+                                <option value="ภาครัฐร่วมเอกชน" <% if (datakpi.length &&
+                                    datakpi[4].ans==="ภาครัฐร่วมเอกชน" ) { %>selected<% } %>>ภาครัฐร่วมเอกชน</option>
+                            </select>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="แหล่งที่มาของงบประมาณ" name="KPI6"> -->
+                            <label for="source">
+                                <%=formdata[5].kpiName %>:
+                            </label>
+                            <textarea id="source" name="<%=formdata[5].kpiID  %>"
+                                placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[5].ans %><% } %></textarea>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="รูปแบบการขับเคลื่อนและกำกับดูแล CDP" name="KPI7"> -->
+                            <label for="Investment">
+                                <%=formdata[6].kpiName %> :
+                            </label>
+                            <select id="Investment" name="<%=formdata[6].kpiID  %>">
+                                <option value="null">ระบุ รูปแบบการลงทุน</option>
+                                <option value="ภาครัฐ" <% if (datakpi.length && datakpi[6].ans==="ภาครัฐ" ) { %>selected
+                                    <% } %>>ภาครัฐ</option>
+                                <option value="ภาคเอกชน" <% if (datakpi.length && datakpi[6].ans==="ภาคเอกชน" ) { %>
+                                    selected<% } %>>ภาคเอกชน</option>
+                                <option value="ภาครัฐร่วมเอกชน" <% if (datakpi.length &&
+                                    datakpi[6].ans==="ภาครัฐร่วมเอกชน" ) { %>selected<% } %>>ภาครัฐร่วมเอกชน</option>
+                            </select>
+                        </div>
+                        <div>
+                            <!-- <input type="hidden" value="การนำ CDP ไปใช้ให้เกิดประโยชน์" name="KPI8"> -->
+                            <label for="usecdp">
+                                <%=formdata[7].kpiName %>:
+                            </label>
+                            <textarea id="usecdp" name="<%=formdata[7].kpiID  %>"
+                                placeholder="กรอกข้อความ...."><% if (datakpi.length) { %><%= datakpi[7].ans %><% } %></textarea>
+                        </div>
 
-            
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <!-- ปุ่มบันทึก -->
-                <button type="submit" id="recordButton">บันทึก</button>
 
-                <!-- ปุ่มส่งรายงาน -->
-                <button type="button" id="submitButton">ส่งรายงาน</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <!-- ปุ่มบันทึก -->
+                        <button type="submit" id="recordButton">บันทึก</button>
+
+                        <!-- ปุ่มส่งรายงาน -->
+                        <button type="button" id="submitButton">ส่งรายงาน</button>
             </form>
         </div>
 

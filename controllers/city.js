@@ -16,7 +16,7 @@ exports.GetCity = (req, res) => {
       if (err) return res.status(500).json(err);
       db.query(qSolution, [cityID], (err, solutionData) => {
         if (err) return res.status(500).json(err);
-        
+
         const smartKeyCounts = {};
         solutionData.forEach(row => {
           if (smartKeyCounts[row.smartKey]) {
@@ -25,10 +25,10 @@ exports.GetCity = (req, res) => {
             smartKeyCounts[row.smartKey] = 1;
           }
         });
-        
+
         db.query(qCityFile, [cityID], (err, cityFileData) => {
           if (err) return res.status(500).json(err);
-          
+
           res.render("city/city", {
             req,
             pageTitle: cityData[0].cityname,
@@ -52,18 +52,20 @@ exports.GetCity = (req, res) => {
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
   const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN citydata ON citydata.cityID = solution.cityID WHERE solution.cityID = ? GROUP BY solution.solutionID";
-  const qGetvalue = "SELECT solution.solutionName ,solution.smartKey,anssolution.Q2 FROM anssolution JOIN solution ON anssolution.solutionID = solution.solutionID WHERE anssolution.solutionID = ?"
+  const qGetvalue = "SELECT * FROM anssolution JOIN solution ON anssolution.solutionID = solution.solutionID WHERE anssolution.solutionID = ?"
   try {
     db.query(q, [cityID], (err, data) => {
+      // console.log(data)
       if (err) return res.status(500).json(err);
-      db.query(qGetvalue,[cityID],(err,value)=>{
-        if(err) return res.status(500).json(err);
+      db.query(qGetvalue, [cityID], (err, value) => {
+        console.log(value)
+        if (err) return res.status(500).json(err);
         res.render("city/dashboard", {
           req,
           pageTitle: "Dashboard",
           path: "/city",
           solutionInfo: data,
-          valueInfo:value
+          valueInfo: value,
         });
       })
     });
@@ -76,18 +78,18 @@ exports.getCityDashboard = (req, res, next) => {
 exports.getCityFollow = (req, res, next) => {
   const cityID = req.session.userID;
   const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.status_solution=1 GROUP BY solution.solutionName ORDER BY solution.solutionID ASC";
-  try{
+  try {
     db.query(q, [cityID], (err, data) => {
       // console.log("Check follow data :",data)
       if (err) return res.status(500).json(err);
       res.render("city/follow", {
         pageTitle: "Follow",
         path: "/city",
-        followdata: data ||[]
+        followdata: data || []
       });
     });
 
-  }catch(err){
+  } catch (err) {
     console.log(err);
     res.status(500).json(err)
   }
@@ -101,15 +103,15 @@ exports.getCityUpload = (req, res, next) => {
   });
 };
 
-exports.getHistory=(req,res,next)=>{
+exports.getHistory = (req, res, next) => {
   q = "SELECT * FROM `Login_log` WHERE cityID = ?";
   // console.log(req.session.cityID)
-  db.query(q,[req.session.userID], (err, data) => {
+  db.query(q, [req.session.userID], (err, data) => {
     if (err) return res.status(500).json(err);
     res.render("city/history-log", {
       pageTitle: "History",
       path: "/",
-      data:data,
+      data: data,
     });
   });
 }

@@ -386,12 +386,18 @@
            <%- include('../component/footer.ejs') %>
                <script>
                    document.addEventListener("DOMContentLoaded", function () {
-                       let currentDate = new Date();
-                       let targetDate = new Date(2027, 11, 2); // เวลาที่ต้องการคำนวณถึง
+                        let targetDate = new Date(2027, 11, 2); // เวลาที่ต้องการคำนวณถึง
+                        let currentDate = new Date(); // เวลาปัจจุบัน
                        let timeDiff = Math.abs(targetDate.getTime() - currentDate.getTime());
-                       let remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // หาจำนวนวันที่เหลือ
-                       let remainingMonths = Math.floor(remainingDays / 30); // หาจำนวนเดือนที่เหลือ
-                       let remainingDaysInMonth = remainingDays % 30; // หาจำนวนวันที่เหลือในเดือน
+                        let remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // หาจำนวนวันที่เหลือ
+
+                        let remainingYears = Math.floor(remainingDays / 365.25); // หาจำนวนปีที่เหลือ
+                        let remainingDaysInYear = remainingDays % 365.25; // หาจำนวนวันที่เหลือในปี
+
+                        let remainingMonths = Math.floor(remainingDaysInYear / 30); // หาจำนวนเดือนที่เหลือในปี
+                        let remainingDaysInMonth = Math.floor(remainingDaysInYear % 30); // หาจำนวนวันที่เหลือในเดือน
+
+                        
                        let currentDay = currentDate.getDate();
                        let currentMonth = currentDate.getMonth() + 1;
                        let currentYear = currentDate.getFullYear();
@@ -444,13 +450,25 @@
                            ) {
                            message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ ช่วงเวลา 2-5 ธ.ค. 2027</span><br><br>';
                            event = true;
-                           }else if(event === true){
-                           message += '<br><span>คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก ';
-                           message += remainingMonths + ' เดือน ' + remainingDaysInMonth + ' วัน</span><br><br>';
-                           }else{
-                           message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก ';
-                           message += remainingMonths + ' เดือน ' + remainingDaysInMonth + ' วัน</span><br><br>';
-                           }
+                           }else if (event === true) {
+                            message += '<br><span>คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก ';
+                            if (remainingYears > 0) {
+                              message += remainingYears + ' ปี ';
+                            }
+                            if (remainingMonths > 0) {
+                              message += remainingMonths + ' เดือน ';
+                            }
+                            message += remainingDaysInMonth + ' วัน</span><br><br>';
+                          } else {
+                            message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ 2ปี ในอีก ';
+                            if (remainingYears > 0) {
+                              message += remainingYears + ' ปี ';
+                            }
+                            if (remainingMonths > 0) {
+                              message += remainingMonths + ' เดือน ';
+                            }
+                            message += remainingDaysInMonth + ' วัน</span><br><br>';
+                          }
 
 
                        Swal.fire({

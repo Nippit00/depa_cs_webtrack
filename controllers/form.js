@@ -4,7 +4,7 @@ const axios = require("axios");
 exports.getformSmart = (req, res, next) => {
   const solutionid = req.params.solutionID;
   const cityID = req.session.userID;
-  const round=req.params.round
+  const round = req.params.round
   // console.log("Round is:"+round)
   const q1 =
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
@@ -30,7 +30,7 @@ exports.getformSmart = (req, res, next) => {
                 dataOld: dataOld || [],
                 csrfToken: req.csrfToken(),
                 question: question,
-                round:round,
+                round: round,
               });
             } else {
               const q5 = "SELECT * FROM `kpi` WHERE solutionID = ?";
@@ -42,7 +42,7 @@ exports.getformSmart = (req, res, next) => {
                   dataOld: dataOld || [],
                   csrfToken: req.csrfToken(),
                   question: question,
-                  round:round,
+                  round: round,
                 });
               });
             }
@@ -76,17 +76,17 @@ exports.getformCdp1 = (req, res, next) => {
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
-          db.query(q4,[solutionid], (err, kpiOld) => {
+          db.query(q4, [solutionid], (err, kpiOld) => {
             if (err) return res.status(500).json(err);
-            db.query(qKpi,[solutionid],(err,datakpi)=>{
+            db.query(qKpi, [solutionid], (err, datakpi) => {
               if (err) return res.status(500).json(err);
               res.render("form-cdpPart1", {
                 formdata: data,
-                datakpi:kpiOld|| [],
+                datakpi: kpiOld || [],
                 csrfToken: req.csrfToken(),
                 question: question,
-                datakpi:datakpi,
-                dataOld:dataOld
+                datakpi: datakpi,
+                dataOld: dataOld
               });
             })
           });
@@ -237,7 +237,7 @@ exports.saveAnsObjcdp1 = (req, res, next) => {
   const kpiArray = [];
   const solutionID = req.params.solutionID;
   const qUpdate = "UPDATE solution SET status = 1 WHERE solutionID = ?";
-  
+
   // Loop through request body to extract question-answer pairs
   for (const key in req.body) {
     if (key.startsWith('Q')) {
@@ -309,9 +309,12 @@ exports.saveAnsObjcdp1 = (req, res, next) => {
 
 exports.postFormcheck = (req, res, next) => {
   const dataForm = req.body
+  console.log(req.body)
   try {
-    return res.render({
-      
+    return res.render("formcheck", {
+      dataForm: dataForm,
+      data: [],
+      dataCheck: [],
     })
   } catch (err) {
     console.log(err);
