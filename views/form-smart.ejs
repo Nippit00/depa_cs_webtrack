@@ -222,6 +222,12 @@
             width: 100%;
             /* ความกว้างเต็มหน้าจอ */
         }
+        #alert{
+            color: red;
+        }
+        #alert2{
+            color: red;
+        }
     </style>
 </head>
 
@@ -331,11 +337,11 @@
                     <label for="status">สถานะ :</label>
                     <p class="description">สถานะปัจจุบันของการดำเนินโครงการ</p>
                     <select id="status" name="A1" required>
-                        <option value="ยังไม่ดำเนินโครงการ" <%= dataOld.find(d => d.questionID == '1').ans === 'ยังไม่ดำเนินโครงการ' ? 'selected' : '' %>>ยังไม่ดำเนินโครงการ</option>
-                        <option value="ล่าช้ากว่าแผน" <%= dataOld.find(d => d.questionID == '1').ans === 'ล่าช้ากว่าแผน' ? 'selected' : '' %>>ล่าช้ากว่าแผน</option>
-                        <option value="ตามแผน" <%= dataOld.find(d => d.questionID == '1').ans === 'ตามแผน' ? 'selected' : '' %>>ตามแผน</option>
-                        <option value="เร็วกว่าแผน" <%= dataOld.find(d => d.questionID == '1').ans === 'เร็วกว่าแผน' ? 'selected' : '' %>>เร็วกว่าแผน</option>
-                        <option value="ยกเลิก" <%= dataOld.find(d => d.questionID == '1').ans === 'ยกเลิก' ? 'selected' : '' %>>ยกเลิก</option>
+                        <option value="ยังไม่ดำเนินโครงการ" <%= (dataOld.find(d => d.questionID == '1')?.ans ?? '') === 'ยังไม่ดำเนินโครงการ' ? 'selected' : '' %>>ยังไม่ดำเนินโครงการ</option>
+                        <option value="ล่าช้ากว่าแผน" <%= (dataOld.find(d => d.questionID == '1')?.ans ?? '') === 'ล่าช้ากว่าแผน' ? 'selected' : '' %>>ล่าช้ากว่าแผน</option>
+                        <option value="ตามแผน" <%= (dataOld.find(d => d.questionID == '1')?.ans ?? '') === 'ตามแผน' ? 'selected' : '' %>>ตามแผน</option>
+                        <option value="เร็วกว่าแผน" <%= (dataOld.find(d => d.questionID == '1')?.ans ?? '') === 'เร็วกว่าแผน' ? 'selected' : '' %>>เร็วกว่าแผน</option>
+                        <option value="ยกเลิก" <%= (dataOld.find(d => d.questionID == '1')?.ans ?? '') === 'ยกเลิก' ? 'selected' : '' %>>ยกเลิก</option>
                     </select>
                 </div>
         
@@ -346,7 +352,7 @@
                     <select id="progress" name="A2" placeholder="ความก้าวหน้าโครงการ" onchange="toggleFileUpload()">
                         <option value="0">ระบุ % ความก้าวหน้า</option>
                         <% for (let i = 0; i <= 100; i += 5) { %>
-                            <option value="<%= i %>" <%= dataOld.find(d => d.questionID == '2').ans == i ? 'selected' : '' %>><%= i %>%</option>
+                            <option value="<%= i %>" <%= (dataOld.find(d => d.questionID == '2')?.ans ?? '') == i ? 'selected' : '' %>><%= i %>%</option>
                         <% } %>
                     </select>
                 </div>
@@ -362,7 +368,7 @@
                     <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
                     <label for="operation">ผลการดำเนินงาน:</label>
                     <p class="description">ระบุผลสำเร็จหรือผลประโยชน์ที่เกิดขึ้นจากการดำเนินโครงการ</p>
-                    <textarea id="operation" name="A4" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '4').ans %></textarea>
+                    <textarea id="operation" name="A4" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '4')?.ans ?? '' %></textarea>
                 </div>
         
                 <div>
@@ -370,10 +376,10 @@
                     <label for="problem_type">ประเภทปัญหา:</label>
                     <p class="description">ระบุประเภทปัญหาที่พบจากการดำเนินโครงการ</p>
                     <select id="problem_type" name="A5">
-                        <option value="null" <%= dataOld.find(d => d.questionID == '5').ans === 'null' ? 'selected' : '' %>>ระบุประเภทปัญหา</option>
-                        <option value="เทคนิค" <%= dataOld.find(d => d.questionID == '5').ans === 'เทคนิค' ? 'selected' : '' %>>เทคนิค</option>
-                        <option value="การเงิน" <%= dataOld.find(d => d.questionID == '5').ans === 'การเงิน' ? 'selected' : '' %>>การเงิน</option>
-                        <option value="การจัดการ" <%= dataOld.find(d => d.questionID == '5').ans === 'การจัดการ' ? 'selected' : '' %>>การจัดการ</option>
+                        <option value="null" <%= (dataOld.find(d => d.questionID == '5')?.ans ?? '') === 'null' ? 'selected' : '' %>>ระบุประเภทปัญหา</option>
+                        <option value="เทคนิค" <%= (dataOld.find(d => d.questionID == '5')?.ans ?? '') === 'เทคนิค' ? 'selected' : '' %>>เทคนิค</option>
+                        <option value="การเงิน" <%= (dataOld.find(d => d.questionID == '5')?.ans ?? '') === 'การเงิน' ? 'selected' : '' %>>การเงิน</option>
+                        <option value="การจัดการ" <%= (dataOld.find(d => d.questionID == '5')?.ans ?? '') === 'การจัดการ' ? 'selected' : '' %>>การจัดการ</option>
                     </select>
                 </div>
         
@@ -381,41 +387,41 @@
                     <input type="hidden" name="Q6" value="ปัญหาอื่น ๆ">
                     <label for="result">ปัญหาอื่นๆ:</label>
                     <p class="description">ระบุปัญหาที่พบจากการดำเนินโครงการ นอกเหนือจากที่กำหนดไว้</p>
-                    <textarea id="result" name="A6" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '6').ans %></textarea>
+                    <textarea id="result" name="A6" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '6')?.ans ?? '' %></textarea>
                 </div>
         
                 <div>
                     <input type="hidden" name="Q7" value="ผลลัพธ์">
                     <label for="result">ผลลัพธ์:</label>
                     <p class="description">ผลที่เกิดขึ้นต่อยอดจากผลผลิต หรือผลระยะยาวซึ่งเกิดเป็นผลจุดหมายปลายทาง หรือผลต่อเนื่องจากผลกระทบ</p>
-                    <textarea id="result" name="A7" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '7').ans %></textarea>
+                    <textarea id="result" name="A7" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '7')?.ans ?? '' %></textarea>
                 </div>
         
                 <div>
                     <input type="hidden" name="Q8" value="ปัญหา/อุปสรรค">
                     <label for="problem">ปัญหา/อุปสรรค:</label>
                     <p class="description">อธิบายรายละเอียดของปัญหาที่พบจากการดำเนินโครงการ</p>
-                    <textarea id="problem" name="A8" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '8').ans %></textarea>
+                    <textarea id="problem" name="A8" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '8')?.ans ?? '' %></textarea>
                 </div>
         
                 <div>
                     <input type="hidden" name="Q9" value="แนวทางแก้ไข">
                     <label for="solution">แนวทางแก้ไข:</label>
                     <p class="description">ระบุวิธีการแก้ไขปัญหาที่พบจากการดำเนินโครงการ</p>
-                    <textarea id="solution" name="A9" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '9').ans %></textarea>
+                    <textarea id="solution" name="A9" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '9')?.ans ?? '' %></textarea>
                 </div>
         
                 <div>
                     <input type="hidden" name="Q10" value="หมายเหตุ">
                     <label for="note">หมายเหตุ:</label>
                     <p class="description">ผลการดำเนินการอื่นๆที่ต้องการรายงาน</p>
-                    <textarea id="note" name="A10" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '10').ans %></textarea>
+                    <textarea id="note" name="A10" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '10')?.ans ?? '' %></textarea>
                 </div>
                 <div>
                     <input type="hidden" name="Q11" value="หมายเหตุ">
                     <label for="bubget">งบประมาณที่ใช้ในการดำเนินการ:</label>
                     <p class="description">ระบุงบประมาณที่เกิดขึ้นจากการดำเนินโครงการ</p>
-                    <textarea id="bubget" name="A11" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '11').ans %></textarea>
+                    <textarea id="bubget" name="A11" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == '11')?.ans ?? '' %></textarea>
                 </div>
         
                 <!-- Additional Questions -->
@@ -430,7 +436,7 @@
                     <p class="description">
                         <%= item.Description %>
                     </p>
-                    <textarea id="other" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == item.questionID).ans %></textarea>
+                    <textarea id="other" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...."><%= dataOld.find(d => d.questionID == item.questionID)?.ans ?? '' %></textarea>
                 </div>
                 <% 
                     }
@@ -462,12 +468,13 @@
                 <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                 <input type="hidden" name="round" value="<%= round %>">
         
-                <p id="alert">*** โปรดอ่าน: เมื่อกดบันทึกจะเป็นเพียงการบันทึกข้อมูลเพื่อให้กรอกภายหลังเท่านั้น ยังไม่ทำการส่งฟอร์ม ***</p>
+                <p id="alert">*** โปรดอ่าน: กรุณากดบันทึกทุกครั้งเพื่อบันทึกคำตอบไว้ ***</p>
                 <p id="alert2">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
                 <button type="submit" id="saveButton">บันทึก</button>
                 <button type="submit" id="submitButton">ส่งรายงาน</button>
             </form>
         </div>
+        
         
         
 

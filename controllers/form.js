@@ -102,18 +102,19 @@ exports.getformCdp1 = (req, res, next) => {
 
 exports.saveAnsObj = (req, res, next) => {
   const data = req.body;
-  const solutionID = req.params.solutionID; 
-  const timestamp = new Date(); 
+  const solutionID = req.params.solutionID;
+  const timestamp = new Date();
   const round = req.params.round;
-  
-  // Ensure solutionID does not exceed the length allowed by the database
+
+  console.log(data);
+
   if (solutionID.length > 255) {
     return res.status(400).json({ error: 'solutionID exceeds the maximum length allowed' });
   }
 
   let queries = [];
   let kpiQueries = [];
-  
+
   for (const key in data) {
     if (key.startsWith('Q')) {
       const questionID = key.substring(1);
@@ -128,7 +129,7 @@ exports.saveAnsObj = (req, res, next) => {
           answer
         ]);
       }
-    } else if (key.startsWith('6201ENV01')) {  // Assuming KPI keys are like '6201ENV01-01'
+    } else if (key.startsWith(solutionID)) {  // Assuming KPI keys are like '6201ENV01-01'
       const kpiID = key;
       const answer = data[key];
       if (answer !== undefined) {
@@ -143,7 +144,9 @@ exports.saveAnsObj = (req, res, next) => {
     }
   }
 
-  // First, check if the solutionID exists
+  console.log('Queries:', queries);
+  console.log('KPI Queries:', kpiQueries);
+
   const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ?';
 
   db.query(checkQuery, [solutionID], (checkErr, checkResult) => {
@@ -153,7 +156,17 @@ exports.saveAnsObj = (req, res, next) => {
     }
 
     if (checkResult.length > 0) {
-      // If solutionID exists, update existing records in anssolution table
+      let completedUpdates = 0;
+      const totalUpdates = queries.length + kpiQueries.length;
+
+      const checkCompletion = () => {
+        completedUpdates++;
+        if (completedUpdates === totalUpdates) {
+          res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        }
+      };
+
+      // Update existing records in anssolution table
       queries.forEach(query => {
         const updateQuery = `
           UPDATE anssolution 
@@ -165,6 +178,7 @@ exports.saveAnsObj = (req, res, next) => {
             console.error('Error updating data:', updateErr);
             return res.status(500).json({ error: 'Failed to update answers' });
           }
+          checkCompletion();
         });
       });
 
@@ -180,12 +194,14 @@ exports.saveAnsObj = (req, res, next) => {
             console.error('Error updating KPI data:', updateErr);
             return res.status(500).json({ error: 'Failed to update KPI data' });
           }
+          checkCompletion();
         });
       });
 
-      res.status(200).json({ message: 'Answers and KPI data updated successfully' });
+      if (totalUpdates === 0) {
+        res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+      }
     } else {
-      // If solutionID does not exist, insert new records in anssolution table
       const insertQuery = `
         INSERT INTO anssolution (solutionID, timestamp, questionID, Round, ans) 
         VALUES ?
@@ -196,18 +212,21 @@ exports.saveAnsObj = (req, res, next) => {
           return res.status(500).json({ error: 'Failed to save answers' });
         }
 
-        // Insert KPI data
-        const insertKpiQuery = `
-          INSERT INTO anskpi (solutionID, kpiID, timestamp, ans, Round) 
-          VALUES ?
-        `;
-        db.query(insertKpiQuery, [kpiQueries], (insertKpiErr, insertKpiResult) => {
-          if (insertKpiErr) {
-            console.error('Error inserting KPI data:', insertKpiErr);
-            return res.status(500).json({ error: 'Failed to save KPI data' });
-          }
-          res.status(200).json({ message: 'Answers and KPI data saved successfully' });
-        });
+        if (kpiQueries.length > 0) {
+          const insertKpiQuery = `
+            INSERT INTO anskpi (solutionID, kpiID, timestamp, ans, Round) 
+            VALUES ?
+          `;
+          db.query(insertKpiQuery, [kpiQueries], (insertKpiErr, insertKpiResult) => {
+            if (insertKpiErr) {
+              console.error('Error inserting KPI data:', insertKpiErr);
+              return res.status(500).json({ error: 'Failed to save KPI data' });
+            }
+            res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+          });
+        } else {
+          res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        }
       });
     }
   });
