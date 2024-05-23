@@ -100,131 +100,121 @@ exports.getformCdp1 = (req, res, next) => {
 };
 
 
-
-
-
-//Saveform
 exports.saveAnsObj = (req, res, next) => {
-  const dataArray = [];
-  const kpiArray = [];
-  const solutionID = req.params.solutionID;
-  const qUpdate = "UPDATE solution SET status = 1 WHERE solutionID = ?";
+  const data = req.body;
+  const solutionID = req.params.solutionID; 
+  const timestamp = new Date(); 
+  const round = req.params.round;
+  
+  // Ensure solutionID does not exceed the length allowed by the database
+  if (solutionID.length > 255) {
+    return res.status(400).json({ error: 'solutionID exceeds the maximum length allowed' });
+  }
 
-  // Loop through request body to extract question-answer pairs
-  for (const key in req.body) {
+  let queries = [];
+  let kpiQueries = [];
+  
+  for (const key in data) {
     if (key.startsWith('Q')) {
-      const qKey = key;
-      const aKey = 'A' + key.substring(1);
-      const questionObj = {};
-      questionObj['Question'] = req.body[qKey];
-      questionObj['Answer'] = req.body[aKey];
-      dataArray.push(questionObj);
-    }
-    // Extract KPI data
-    if (key.startsWith(solutionID)) {
-      const kpiID = key; // Use the whole key as kpiID since it matches your example
-      const kpiAnswer = req.body[key];
-      kpiArray.push({ kpiID, kpiAnswer });
+      const questionID = key.substring(1);
+      const answerKey = `A${questionID}`;
+      const answer = data[answerKey];
+      if (answer !== undefined) {
+        queries.push([
+          solutionID,
+          timestamp,
+          questionID,
+          round,
+          answer
+        ]);
+      }
+    } else if (key.startsWith('6201ENV01')) {  // Assuming KPI keys are like '6201ENV01-01'
+      const kpiID = key;
+      const answer = data[key];
+      if (answer !== undefined) {
+        kpiQueries.push([
+          solutionID,
+          kpiID,
+          timestamp,
+          answer,
+          round
+        ]);
+      }
     }
   }
 
-  // Check if the solutionID exists in the database
-  const checkQuery = "SELECT * FROM `anssolution` WHERE `solutionID` = ?";
-  db.query(checkQuery, [solutionID], (err, rows) => {
-    if (err) {
-      console.error("Error checking existing data:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
+  // First, check if the solutionID exists
+  const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ?';
+
+  db.query(checkQuery, [solutionID], (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error('Error checking existing data:', checkErr);
+      return res.status(500).json({ error: 'Failed to check existing data' });
     }
 
-    // Function to handle KPI data insertion or update
-    const handleKpiData = (callback) => {
-      const kpiQueries = kpiArray.map(kpi => {
-        return new Promise((resolve, reject) => {
-          const checkKpiQuery = "SELECT * FROM `anskpi` WHERE `solutionID` = ? AND `kpiID` = ?";
-          db.query(checkKpiQuery, [solutionID, kpi.kpiID], (err, kpiRows) => {
-            if (err) {
-              return reject(err);
-            }
-            if (kpiRows.length > 0) {
-              const updateKpiQuery = "UPDATE `anskpi` SET `timestamp` = ?, `ans` = ? WHERE `solutionID` = ? AND `kpiID` = ?";
-              db.query(updateKpiQuery, [new Date(), kpi.kpiAnswer, solutionID, kpi.kpiID], (err, result) => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(result);
-              });
-            } else {
-              const insertKpiQuery = "INSERT INTO `anskpi`(`solutionID`, `kpiID`, `timestamp`, `ans`) VALUES (?,?,?,?)";
-              db.query(insertKpiQuery, [solutionID, kpi.kpiID, new Date(), kpi.kpiAnswer], (err, result) => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(result);
-              });
-            }
-          });
-        });
-      });
-
-      Promise.all(kpiQueries)
-        .then(results => callback(null, results))
-        .catch(err => callback(err));
-    };
-
-    // If solutionID exists, update the row; otherwise, insert a new row
-    if (rows.length > 0) {
-      const updateQuery = "UPDATE `anssolution` SET `timestamp` = ?, `ans` = ? WHERE `solutionID` = ?";
-      db.query(updateQuery, [new Date(), JSON.stringify(dataArray), solutionID], (err, result) => {
-        if (err) {
-          console.error("Error updating data:", err);
-          return res.status(500).json({ error: "Internal Server Error" });
-        }
-        console.log("Data updated successfully");
-
-        handleKpiData((err, results) => {
-          if (err) {
-            console.error("Error handling KPI data:", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+    if (checkResult.length > 0) {
+      // If solutionID exists, update existing records in anssolution table
+      queries.forEach(query => {
+        const updateQuery = `
+          UPDATE anssolution 
+          SET timestamp = ?, Round = ?, ans = ?
+          WHERE solutionID = ? AND questionID = ?
+        `;
+        db.query(updateQuery, [query[1], query[3], query[4], query[0], query[2]], (updateErr, updateResult) => {
+          if (updateErr) {
+            console.error('Error updating data:', updateErr);
+            return res.status(500).json({ error: 'Failed to update answers' });
           }
-          // Update the status of the solution to 1 (indicating completion)
-          db.query(qUpdate, [solutionID], (err, result) => {
-            if (err) {
-              console.error("Error updating status:", err);
-              return res.status(500).json({ error: "Internal Server Error" });
-            }
-            console.log("Status updated successfully");
-            return res.redirect(`/formsmart/${req.params.solutionID}/${req.params.round}?success=true`);
-          });
         });
       });
+
+      // Update existing records in anskpi table
+      kpiQueries.forEach(query => {
+        const updateKpiQuery = `
+          UPDATE anskpi 
+          SET timestamp = ?, ans = ?, Round = ?
+          WHERE solutionID = ? AND kpiID = ?
+        `;
+        db.query(updateKpiQuery, [query[2], query[3], query[4], query[0], query[1]], (updateErr, updateResult) => {
+          if (updateErr) {
+            console.error('Error updating KPI data:', updateErr);
+            return res.status(500).json({ error: 'Failed to update KPI data' });
+          }
+        });
+      });
+
+      res.status(200).json({ message: 'Answers and KPI data updated successfully' });
     } else {
-      const insertQuery = "INSERT INTO `anssolution`(`solutionID`, `timestamp`, `Round`, `ans`) VALUES (?,?,?,?)";
-      db.query(insertQuery, [solutionID, new Date(), req.params.round, JSON.stringify(dataArray)], (err, result) => {
-        if (err) {
-          console.error("Error inserting data:", err);
-          return res.status(500).json({ error: "Internal Server Error" });
+      // If solutionID does not exist, insert new records in anssolution table
+      const insertQuery = `
+        INSERT INTO anssolution (solutionID, timestamp, questionID, Round, ans) 
+        VALUES ?
+      `;
+      db.query(insertQuery, [queries], (insertErr, insertResult) => {
+        if (insertErr) {
+          console.error('Error inserting data:', insertErr);
+          return res.status(500).json({ error: 'Failed to save answers' });
         }
-        console.log("Data inserted successfully");
 
-        handleKpiData((err, results) => {
-          if (err) {
-            console.error("Error handling KPI data:", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+        // Insert KPI data
+        const insertKpiQuery = `
+          INSERT INTO anskpi (solutionID, kpiID, timestamp, ans, Round) 
+          VALUES ?
+        `;
+        db.query(insertKpiQuery, [kpiQueries], (insertKpiErr, insertKpiResult) => {
+          if (insertKpiErr) {
+            console.error('Error inserting KPI data:', insertKpiErr);
+            return res.status(500).json({ error: 'Failed to save KPI data' });
           }
-          // Update the status of the solution to 1 (indicating completion)
-          db.query(qUpdate, [solutionID], (err, result) => {
-            if (err) {
-              console.error("Error updating status:", err);
-              return res.status(500).json({ error: "Internal Server Error" });
-            }
-            console.log("Status updated successfully");
-            return res.redirect(`/formsmart/${req.params.solutionID}/${req.params.round}?success=true`);
-          });
+          res.status(200).json({ message: 'Answers and KPI data saved successfully' });
         });
       });
     }
   });
 };
+
+
+
 
 exports.saveAnsObjEdit = (req, res, next) => {
   console.log(req.params.round)
