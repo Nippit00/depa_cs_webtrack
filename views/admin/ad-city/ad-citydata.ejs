@@ -131,9 +131,12 @@
               </div>
               <div class="chart-container">
                 <canvas id="stackedBarChart"></canvas>
-              </div><div class="chart-container">
-                <canvas id="stackedBarChart"></canvas>
-              </div>      <!-- ปัญหาและอุปสรรค -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ปัญหาและอุปสรรค -->
       <div class="card">
         <h3 class="section-title">ปัญหาและอุปสรรค</h3>
         <div class="chart-container">
@@ -445,74 +448,7 @@
       plugins: [ChartDataLabels] // Ensure you include the ChartDataLabels plugin
     });
 
-    const ctx = document.getElementById('treemapChart').getContext('2d');
-    const data = {
-      datasets: [{
-        label: 'Treemap',
-        tree: [{
-            name: 'GOV',
-            value: 68.33
-          },
-          {
-            name: 'ENE',
-            value: 50.00
-          },
-          {
-            name: 'LIV',
-            value: 33.33
-          },
-          {
-            name: 'ENV',
-            value: 16.67
-          },
-        ],
-        key: 'value',
-        groups: ['name'],
-        backgroundColor: function(ctx) {
-          const value = ctx.raw.v;
-          if (value > 50) {
-            return '#004c6d';
-          } else if (value > 20) {
-            return '#005f7f';
-          } else {
-            return '#007f96';
-          }
-        },
-        borderColor: '#fff',
-        borderWidth: 2,
-        spacing: 1,
-        labels: {
-          display: true,
-          align: 'center',
-          anchor: 'center',
-          formatter: (ctx) => `${ctx.raw.g}\n${ctx.raw.v.toFixed(2)}%`,
-          color: '#fff',
-          font: {
-            weight: 'bold',
-            size: 16
-          },
-        }
-      }]
-    };
-
-    const options = {
-      maintainAspectRatio: false,
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function(tooltipItem) {
-              return tooltipItem.raw.g + ': ' + tooltipItem.raw.v.toFixed(2) + '%';
-            }
-          }
-        }
-      }
-    };
-
-    const treemapChart = new Chart(ctx, {
-      type: 'treemap',
-      data: data,
-      options: options
-    });
+  
   </script>
 </body>
 
