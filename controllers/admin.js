@@ -126,20 +126,53 @@ exports.getAdCityDataP = (req, res, next) => {
     "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   const q2 =
     "SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
+  const q3 =
+    "SELECT `smartKey`,`Progress`,`solutionName` FROM `solution` WHERE cityID=? ";
 
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
       // console.log("Data is:", data);
       db.query(q2, [req.params.cityID], (errer, solution) => {
         if (err) return res.status(500).json(errer);
-        console.log("solution is:",solution)
-        res.render("admin/ad-city/ad-citydata", {
-          req,
-          pageTitle: "Dashboard",
-          path: "/city",
-          cityData: data[0],
-          solution: solution,
-        });
+        db.query(q3,[req.params.cityID],(err,countsmart)=>{
+          if (err) return res.status(500).json(err);
+          const smartKeyCounts = {};
+          const projectSucess = [];
+          let n = 0;
+          let totalProgress = 0;
+          let completeCount = 0;
+          
+          countsmart.forEach(row => {
+            if (smartKeyCounts[row.smartKey]) {
+              smartKeyCounts[row.smartKey]++;
+            } else {
+              smartKeyCounts[row.smartKey] = 1;
+            }
+            if (row.Progress == 100) {
+              completeCount++;
+              projectSucess.push(row.solutionName);
+            }
+            totalProgress += row.Progress;
+            n++;
+          });
+          
+          const averageProgress = n > 0 ? (totalProgress / n).toFixed(0) : 0;
+          const complete = completeCount;
+          const count = n;
+
+          res.render("admin/ad-city/ad-citydata", {
+            req,
+            pageTitle: "Dashboard",
+            path: "/city",
+            cityData: data[0],
+            solution: solution,
+            smartKeyCounts: smartKeyCounts,
+            totalProgress:averageProgress,
+            complete:complete,
+            count:count,
+            projectSucess:projectSucess,
+          });
+        })
       });
     });
   } catch (err) {
@@ -365,7 +398,6 @@ exports.postAddSolution = (req, res, next) => {
             // console.log("Data is:", data);
             db.query(q2, [cityID], (errer, solution) => {
               if (err) return res.status(500).json(errer);
-              console.log("solution is:",solution)
               res.render("admin/ad-city/ad-citydata", {
                 req,
                 pageTitle: "Dashboard",

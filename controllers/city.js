@@ -81,11 +81,17 @@ exports.getCityFollow = (req, res, next) => {
   try {
     db.query(q, [cityID], (err, data) => {
       // console.log("Check follow data :",data)
-      if (err) return res.status(500).json(err);
+      const followdata = data.map(row => {
+        return {
+          ...row,
+          status: JSON.parse(row.status)
+        };
+      });
+      console.log(followdata)
       res.render("city/follow", {
         pageTitle: "Follow",
         path: "/city",
-        followdata: data || []
+        followdata: followdata || [],
       });
     });
 
