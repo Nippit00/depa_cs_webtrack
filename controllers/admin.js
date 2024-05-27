@@ -120,28 +120,28 @@ exports.getAdCityP = (req, res, next) => {
 };
 
 exports.getAdCityDataP = (req, res, next) => {
-  // console.log(req.params);
   try {
-    const q =
-    "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
-  const q2 =
-    "SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
-  const q3 =
-    "SELECT `smartKey`,`Progress`,`solutionName` FROM `solution` WHERE cityID=? ";
+    const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+    const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
+    const q3 = "SELECT `smartKey`,`Progress`,`solutionName` FROM `solution` WHERE cityID=? ";
 
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
-      // console.log("Data is:", data);
+
       db.query(q2, [req.params.cityID], (errer, solution) => {
-        if (err) return res.status(500).json(errer);
-        db.query(q3,[req.params.cityID],(err,countsmart)=>{
+        if (errer) return res.status(500).json(errer);
+
+        db.query(q3, [req.params.cityID], (err, countsmart) => {
           if (err) return res.status(500).json(err);
+
           const smartKeyCounts = {};
-          const projectSucess = [];
+          const projectSuccess = [];
+          const successfulProjectsData = Array(8).fill(0); // Initialize an array for successful projects
+          const unsuccessfulProjectsData = Array(8).fill(0); // Initialize an array for unsuccessful projects
           let n = 0;
           let totalProgress = 0;
           let completeCount = 0;
-          
+
           countsmart.forEach(row => {
             if (smartKeyCounts[row.smartKey]) {
               smartKeyCounts[row.smartKey]++;
@@ -150,12 +150,15 @@ exports.getAdCityDataP = (req, res, next) => {
             }
             if (row.Progress == 100) {
               completeCount++;
-              projectSucess.push(row.solutionName);
+              projectSuccess.push(row.solutionName);
+              successfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
+            } else {
+              unsuccessfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
             }
             totalProgress += row.Progress;
             n++;
           });
-          
+
           const averageProgress = n > 0 ? (totalProgress / n).toFixed(0) : 0;
           const complete = completeCount;
           const count = n;
@@ -167,12 +170,14 @@ exports.getAdCityDataP = (req, res, next) => {
             cityData: data[0],
             solution: solution,
             smartKeyCounts: smartKeyCounts,
-            totalProgress:averageProgress,
-            complete:complete,
-            count:count,
-            projectSucess:projectSucess,
+            totalProgress: averageProgress,
+            complete: complete,
+            count: count,
+            projectSuccess: projectSuccess,
+            successfulProjectsData: JSON.stringify(successfulProjectsData), // Stringify the arrays
+            unsuccessfulProjectsData: JSON.stringify(unsuccessfulProjectsData) // Stringify the arrays
           });
-        })
+        });
       });
     });
   } catch (err) {
@@ -180,6 +185,8 @@ exports.getAdCityDataP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
+
 
 exports.getAddCity = (req, res, next) => {
   res.render("admin/ad-city/ad-addCity", {

@@ -38,7 +38,43 @@
       width: 100%;
       height: 200px;
       /* ปรับความสูงตามต้องการ */
+      display: flex;
+      justify-content: center;
     }
+
+    .chart-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100px;
+            height: 100px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            position: relative;
+            bottom: -20%;
+        }
+
+        .chart-bar::before {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .env {
+            background-color: #2c7f97;
+        }
+
+        .ene {
+            background-color: #003366;
+        }
+
+        .eco {
+            background-color: #6e9197;
+        }
   </style>
 </head>
 
@@ -69,14 +105,22 @@
       <!-- Header -->
       <div class="card">
         <h2 class="text-2xl font-bold mb-4"><%= cityData.cityName %></h2>
-        <p class="text-md mb-2">ได้รับตราสัญลักษณ: </p>
-        <p class="text-md mb-2">ประเภท: </p>
+        <p class="text-md mb-2">ได้รับตราสัญลักษณ: <%=cityData.date.toLocaleDateString('th-TH', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long',
+        }) %> </p>
+        <p class="text-md mb-2">
+          ประเภท: <%= new Date() - new Date(cityData.date) < 6 * 30 * 24 * 60 * 60 * 1000 ? 'เมืองใหม่' : 'เมืองเก่า' %>
+        </p>
+        
       </div>
       <!-- Dashboard -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- บริการเมืองอัจฉริยะ -->
         <div class="card lg:col-span-1">
-          <h3 class="section-title">บริการเมืองอัจฉริยะ: <%= Object.keys(smartKeyCounts).length %>
+          <h3 class="section-title">บริการเมืองอัจฉริยะ: <span style="color: #2c7f97;"><%= Object.keys(smartKeyCounts).length %></span>
             Smarts <%=count %> โครงการ</h3>
           <div class="grid grid-cols-2 gap-4">
             <div class="flex items-center justify-center space-x-2">
@@ -122,6 +166,17 @@
               <div class="chart-container">
                 <canvas id="progressChart"></canvas>
               </div>
+              <div class="chart-container">
+                <div class="chart-bar env" data-label="ENV 100.00%">
+                    100.00%
+                </div>
+                <div class="chart-bar ene" data-label="ENE 100.00%">
+                    100.00%
+                </div>
+                <div class="chart-bar eco" data-label="ECO 90.00%">
+                    90.00%
+                </div>
+            </div>
             </div>
             <!-- ค่าเฉลี่ยความสำเร็จ -->
             <div class="text-center">
@@ -138,7 +193,7 @@
       </div>
       <!-- ปัญหาและอุปสรรค -->
       <div class="card">
-        <h3 class="section-title">ปัญหาและอุปสรรค</h3>
+        <h3 class="section-title" style="text-align: center;">ปัญหาและอุปสรรค</h3>
         <div class="chart-container">
           <canvas id="problemsChart"></canvas>
         </div>
@@ -147,7 +202,7 @@
       <div class="card">
         <h3 class="section-title">โครงการที่สำเร็จ</h3>
         <ul class="list-disc pl-5 space-y-2">
-          <% projectSucess.forEach(item => { %>
+          <% projectSuccess.forEach(item => { %>
           <li><%=item %></li>
           <% }) %>
         </ul>
@@ -186,7 +241,7 @@
       </table>
     </div>
   </div>
-
+<% console.log(JSON.stringify(smartKeyCounts)) %>
   <%- include('../include/ad-footer.ejs') %>
   <script>
     function GoEditPage() {
@@ -393,20 +448,23 @@
         }
       }
     });
-
+ 
+    const successfulProjectsData = JSON.parse('<%= successfulProjectsData %>');
+    const unsuccessfulProjectsData = JSON.parse('<%= unsuccessfulProjectsData %>');
+    
     const ctx = document.getElementById('stackedBarChart').getContext('2d');
     const stackedBarChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Env', 'Ene', 'Gov', 'Liv'], // Labels for the categories
+        labels: ['CDP', 'ECO', 'ENE', 'ENV', 'GOV', 'LIV', 'MOB', 'PEO'],
         datasets: [{
             label: 'โครงการที่สำเร็จแล้ว',
-            data: [0, 0, 0, 1], // Successful projects
+            data: successfulProjectsData,
             backgroundColor: '#FFCE56'
           },
           {
             label: 'โครงการที่ยังไม่สำเร็จ',
-            data: [3, 1, 3, 2], // Unsuccessful projects
+            data: unsuccessfulProjectsData,
             backgroundColor: '#cccccc'
           }
         ]
@@ -428,7 +486,7 @@
           },
           tooltip: {
             callbacks: {
-              label: function(tooltipItem) {
+              label: function (tooltipItem) {
                 return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
               }
             }
@@ -440,14 +498,13 @@
               weight: 'bold'
             },
             formatter: (value, context) => {
-              return value;
+              return value === 0 ? null : value; // Only display labels for non-zero values
             }
           }
         }
       },
-      plugins: [ChartDataLabels] // Ensure you include the ChartDataLabels plugin
+      plugins: [ChartDataLabels]
     });
-
   
   </script>
 </body>

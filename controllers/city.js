@@ -57,14 +57,23 @@ exports.getCityDashboard = (req, res, next) => {
     db.query(q, [cityID], (err, data) => {
       // console.log(data)
       if (err) return res.status(500).json(err);
+
+      const dataUpdate = data.map(row => {
+        return {
+          ...row,
+          status: JSON.parse(row.status)
+        };
+      });
+
       db.query(qGetvalue, [cityID], (err, value) => {
-        console.log(value)
+        // console.log(value)
         if (err) return res.status(500).json(err);
         res.render("city/dashboard", {
           req,
           pageTitle: "Dashboard",
           path: "/city",
-          solutionInfo: data,
+          solutionInfo: JSON.stringify(dataUpdate),
+          // solutionInfo: data,
           valueInfo: value,
         });
       })
@@ -87,7 +96,7 @@ exports.getCityFollow = (req, res, next) => {
           status: JSON.parse(row.status)
         };
       });
-      console.log(followdata)
+      // console.log(followdata)
       res.render("city/follow", {
         pageTitle: "Follow",
         path: "/city",

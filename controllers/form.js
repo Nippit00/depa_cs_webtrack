@@ -273,7 +273,7 @@ exports.saveAnsObj = (req, res, next) => {
 
 
 exports.saveAnsObjEdit = (req, res, next) => {
-  console.log(req.params.round)
+  
   const dataArray = [];
   const kpiArray = [];
   const solutionID = req.params.solutionID;
@@ -481,7 +481,7 @@ exports.saveAnsObjcdp1 = (req, res, next) => {
 exports.postFormcheck = (req, res, next) => {
   const dataForm = req.body;
   const solutionid = req.params.solutionID;
-  console.log(req.body);
+
   try {
     const q = "SELECT solution.*, city_home.* FROM solution JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.solutionID = ?";
     db.query(q, [solutionid], (err, data) => {

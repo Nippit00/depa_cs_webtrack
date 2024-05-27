@@ -113,7 +113,7 @@
       <div class="mx-36 mb-12 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 box-border">
         <h2 class="text-white"></h2>
         <div class="flex justify-between space-x-2 flex-wrap">
-          <div class="mb-2.5 text-center" onclick="show(1)">
+          <div class="mb-2.5 text-center" onclick="show(10)">
             <img src="/img/favi.png" alt="Image 0" id="1"
               class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl" />
             <h5 class="mt-1.5 text-sm text-white">โครงสร้างพื้นฐานกายภาพ</h5>
@@ -121,9 +121,9 @@
           <div class="mb-2.5 text-center" onclick="show(10)">
             <img src="/img/favi.png" alt="Image 0" id="1"
               class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl" />
-            <h5 class="mt-1.5 text-sm text-white">โครงสร้างพื้นฐานด้านดิจิทัล</h5>
+            <h5 class="mt-1.5 text-sm text-white">โครงสร้างพื้นฐานดิจิตอล</h5>
           </div>
-          <div class="mb-2.5 text-center" onclick="show(11)">
+          <div class="mb-2.5 text-center" onclick="show(1)">
             <img src="/img/favi.png" alt="Image 0" id="1"
               class="max-w-full h-auto w-20 rounded-full border-2 border-teal-400 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-xl" />
             <h5 class="mt-1.5 text-sm text-white">CDP</h5>
@@ -206,35 +206,6 @@
       </div>
 
       <script>
-        function countSmartKeys(solutionInfo) {
-          const counts = {};
-          const statusCounts = {}; // Object to store counts of data.status === 2 for each smartKey
-
-          solutionInfo.forEach(data => {
-            if (counts[data.smartKey]) {
-              counts[data.smartKey]++;
-            } else {
-              counts[data.smartKey] = 1;
-            }
-
-            if (data.status === 2) {
-              if (statusCounts[data.smartKey]) {
-                statusCounts[data.smartKey]++;
-              } else {
-                statusCounts[data.smartKey] = 1;
-              }
-            }
-          });
-
-          for (const key in counts) {
-            if (statusCounts[key]) {
-              counts[key] = (statusCounts[key] / counts[key]) * 100;
-            } else {
-              counts[key] = 0;
-            }
-          }
-          return counts;
-        }
 
         function show(index) {
           // Remove active class from all images
@@ -242,6 +213,8 @@
           images.forEach(img => {
             img.classList.remove('active');
           });
+          const solutionInfo =  <%- solutionInfo %> ;
+          console.log(solutionInfo)
 
           // Add active class to the clicked image
           const clickedImage = document.getElementById(index.toString());
@@ -249,80 +222,73 @@
 
           const bodyTable = document.getElementById("body-table");
           let html = "";
-          const solutionInfo = JSON.parse('<%- JSON.stringify(solutionInfo) %>');
-          const valueInfo = JSON.parse('<%- JSON.stringify(valueInfo) %>');
-
-          const calculateAverageQ2 = (smartKey) => {
-            const projectCount = valueInfo.filter(
-              (data) => data.smartKey === smartKey
-            ).length;
-            const sum = valueInfo.reduce((acc, data) => {
-              if (data.smartKey === smartKey) {
-                return acc + parseFloat(data.Q2);
-              }
-              return acc;
-            }, 0);
-            return projectCount > 0 ? sum / projectCount : 0;
-          };
-
-          const getQ2Value = (project, smartKey) => {
-            const projectInfo = valueInfo.find(
-              (data) =>
-                data.smartKey === smartKey &&
-                project.solutionName === data.solutionName
-            );
-            return projectInfo ? projectInfo.Q2 : 0;
-          };
-
-          const counts = countSmartKeys(solutionInfo);
 
           switch (index) {
             case 1:
-              // Example case, adapt as needed
-              break;
-            case 2:
-              bodyTable.innerHTML = "";
+            bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
-                if (data.smartKey === "ENV") {
-                  const statusPercentageEnv = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
+                if (data.smartKey === "CDP") {
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageEnv}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "ENV")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
 
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("ENV").toFixed(2)}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>`;
+              break;
+            case 2:
+              bodyTable.innerHTML = "";
+              solutionInfo.forEach((data) => {
+                if (data.smartKey === "ENV") {
+                  const statusPercentageEnv = data.status.round1 === 2 ? "100%" : "0%";
+
+                  const statusForm1Circle =
+                    data.status.round1 === 2
+                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
+                      : data.status.round1 === 1
+                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
+                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                  const statusForm2Circle =
+                    data.status_round2.round1 === 2
+                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
+                      : data.status_round2.round1 === 1
+                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
+                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+
+                  const statusUpload =
+                    data.status_upload.round1 === 2
+                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
+                      : data.status_upload.round1 === 1
+                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
+                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+                  html += `
+                        <tr>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                        </tr>`;
+                }
+              });
+
+              html += `<tr>
+                <td>รวม</td>
+                <td></td>
+                <td></td>
                 <td></td>
             </tr>`;
               break;
@@ -330,408 +296,186 @@
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
                 if (data.smartKey === "ENE") {
-                  const statusPercentageEne = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageEne}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "ENE")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["ENE"] !== undefined ? counts["ENE"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("ENE").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
             case 4:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
                 if (data.smartKey === "ECO") {
-                  const statusPercentageEco = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
 
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageEco}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "ECO")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["ECO"] !== undefined ? counts["ECO"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("ECO").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
             case 5:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
                 if (data.smartKey === "MOB") {
-                  const statusPercentageMob = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
 
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageMob}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "MOB")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["MOB"] !== undefined ? counts["MOB"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("MOB").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
             case 6:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
                 if (data.smartKey === "GOV") {
-                  const statusPercentageGov = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
 
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageGov}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "GOV")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["GOV"] !== undefined ? counts["GOV"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("GOV").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
             case 7:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
                 if (data.smartKey === "PEO") {
-                  const statusPercentagePeo = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
 
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentagePeo}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "PEO")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["PEO"] !== undefined ? counts["PEO"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("PEO").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
             case 8:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
                 if (data.smartKey === "LIV") {
-                  const statusPercentageLiv = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageLiv}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "LIV")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["LIV"] !== undefined ? counts["LIV"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("LIV").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
               case 9:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
-                if (data.smartKey === "LIV") {
-                  const statusPercentageLiv = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+                
 
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageLiv}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "LIV")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
-                }
+                
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["LIV"] !== undefined ? counts["LIV"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("LIV").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
               case 10:
               bodyTable.innerHTML = "";
               solutionInfo.forEach((data) => {
-                if (data.smartKey === "LIV") {
-                  const statusPercentageLiv = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  html += `
-                        <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageLiv}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "LIV")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
-                        </tr>`;
-                }
-              });
-              html += `<tr>
-                <td>รวม</td>
-                <td>${counts["LIV"] !== undefined ? counts["LIV"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("LIV").toFixed(2)}%</td>
-                <td>${counts["ENV"] !== undefined ? counts["ENV"].toFixed(2) : "-"}%</td>
-            </tr>`;
-              break;
-              case 11:
-              bodyTable.innerHTML = "";
-              solutionInfo.forEach((data) => {
                 if (data.smartKey === "CDP") {
-                  const statusPercentageCdp = data.status === 2 ? "100%" : "0%";
-
-                  const statusForm1Circle =
-                    data.status === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusForm2Circle =
-                    data.status_round2 === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_round2 === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
-
-                  const statusUpload =
-                    data.status_upload === 2
-                      ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>`
-                      : data.status_upload === 1
-                        ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>`
-                        : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
 
                   html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${statusPercentageLiv}</td>
-                            <td style="padding: 20px; text-align: center;">${getQ2Value(data, "CDP")}%</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm1Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusForm2Circle}</td>
-                            <td style="padding: 20px; text-align: center;">${statusUpload}</td>
+                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
+                            <td style="padding: 20px; text-align: center;"></td>
                         </tr>`;
                 }
               });
               html += `<tr>
                 <td>รวม</td>
-                <td>${counts["CDP"] !== undefined ? counts["CDP"].toFixed(2) : "-"}%</td>
-                <td>${calculateAverageQ2("CDP").toFixed(2)}%</td>
-                <td>${counts["CDP"] !== undefined ? counts["CDP"].toFixed(2) : "-"}%</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>`;
               break;
             default:
+              console.log(index)
               break;
           }
           bodyTable.innerHTML = html;
