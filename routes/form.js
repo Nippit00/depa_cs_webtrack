@@ -5,15 +5,10 @@ const formController = require('../controllers/form.js');
 const isAuth = require('../middlewares/is-auth.js');
 const router = express.Router();
 
-//open form
-// router.get('/form',isAuth,formController.getform);
 
-// //Check before installing into database 
+// //send data form to backebd
+router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormcheck);
 
-// router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormcheck);
-
-// router.post('/formcheck_round2/:solutionID',isAuth,formController.postFormcheck2);
-// router.post('/comfirmformcheck_round2/:solutionID',isAuth,formController.comfirmFormcheck2);
 
 // //select form
 router.get('/formsmart/:solutionID/:round',isAuth,formController.getformSmart);

@@ -267,7 +267,7 @@
                             const csrfToken = '<%= csrfToken %>';                          
             
                             // Make a POST request to the /formcheck endpoint with data.Q1
-                            const response = await fetch('/comfirmformcheck/<%= data.solutionID %>', {
+                            const response = await fetch('/comfirmformcheck/<%= data.solutionID %>/<%=round%>', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',

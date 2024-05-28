@@ -55,7 +55,6 @@ exports.getCityDashboard = (req, res, next) => {
   const qGetvalue = "SELECT * FROM anssolution JOIN solution ON anssolution.solutionID = solution.solutionID WHERE anssolution.solutionID = ?"
   try {
     db.query(q, [cityID], (err, data) => {
-      // console.log(data)
       if (err) return res.status(500).json(err);
 
       const dataUpdate = data.map(row => {
@@ -73,7 +72,7 @@ exports.getCityDashboard = (req, res, next) => {
           pageTitle: "Dashboard",
           path: "/city",
           solutionInfo: JSON.stringify(dataUpdate),
-          // solutionInfo: data,
+          data: data,
           valueInfo: value,
         });
       })

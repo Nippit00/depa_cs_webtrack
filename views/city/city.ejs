@@ -76,7 +76,7 @@
        }
 
         .map-container {
-            text-align: right;
+            text-align: left;
             position: relative;
             top: -120px;
             /* ปรับค่า top ตามที่ต้องการ */
@@ -91,7 +91,7 @@
 
 
         .custom-rectangle {
-            width: 185%;
+            width: 130%;
             /* ปรับขนาดตามที่คุณต้องการ */
             height: 170px;
             /* ปรับขนาดตามที่คุณต้องการ */
@@ -359,10 +359,12 @@
                            </div>
                </div>
                <div class="map-container">
-                   <iframe width="600" height="450" frameborder="0" style="border:0"
+                   <!-- <iframe width="600" height="450" frameborder="0" style="border:0"
                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityInfo.LAT%>,<%=cityInfo.LNG%>&zoom=5"
                        allowfullscreen>
-                   </iframe>
+                   </iframe> -->
+        <img src="/cityPic/<%= cityInfo.cityID %>.png">
+                   
 
 
 

@@ -98,11 +98,11 @@
         </div>
       </div>
       <div class="lg:w-1/2 flex justify-center items-center">
-        <iframe class="w-full h-64 lg:h-96" frameborder="0" style="border: 0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>&zoom=5&maptype=satellite" allowfullscreen=""></iframe>
+        <img src="/cityPic/<%= cityData.cityID %>.png">
+        <!-- <iframe class="w-full h-64 lg:h-96" frameborder="0" style="border: 0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>&zoom=5&maptype=satellite" allowfullscreen=""></iframe> -->
       </div>
     </div>
     <div class="container mx-auto p-6 bg-gray-200">
-      <!-- Header -->
       <div class="card">
         <h2 class="text-2xl font-bold mb-4"><%= cityData.cityName %></h2>
         <p class="text-md mb-2">ได้รับตราสัญลักษณ: <%=cityData.date.toLocaleDateString('th-TH', {
@@ -113,8 +113,7 @@
         }) %> </p>
         <p class="text-md mb-2">
           ประเภท: <%= new Date() - new Date(cityData.date) < 6 * 30 * 24 * 60 * 60 * 1000 ? 'เมืองใหม่' : 'เมืองเก่า' %>
-        </p>
-        
+        </p>        
       </div>
       <!-- Dashboard -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -167,15 +166,7 @@
                 <canvas id="progressChart"></canvas>
               </div>
               <div class="chart-container">
-                <div class="chart-bar env" data-label="ENV 100.00%">
-                    100.00%
-                </div>
-                <div class="chart-bar ene" data-label="ENE 100.00%">
-                    100.00%
-                </div>
-                <div class="chart-bar eco" data-label="ECO 90.00%">
-                    90.00%
-                </div>
+                <canvas id="avgprogress"></canvas>
             </div>
             </div>
             <!-- ค่าเฉลี่ยความสำเร็จ -->
@@ -241,7 +232,7 @@
       </table>
     </div>
   </div>
-<% console.log(JSON.stringify(smartKeyCounts)) %>
+  
   <%- include('../include/ad-footer.ejs') %>
   <script>
     function GoEditPage() {
@@ -408,55 +399,64 @@
         }
       }]
     });
-
+    const problemData = <%- JSON.stringify(problemPercentages) %>;
     // กราฟปัญหาและอุปสรรค
-    const problemsCtx = document.getElementById('problemsChart').getContext('2d');
-    const problemsChart = new Chart(problemsCtx, {
-      type: 'bar',
-      data: {
-        labels: ['ข้อจำกัดด้านกฎระเบียบ', 'ขาดแคลนบุคลากร', 'ไม่มีงบประมาณ'],
-        datasets: [{
-          label: '% ของปัญหา',
-          data: [40, 20, 40],
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-        }]
-      },
-      options: {
-        plugins: {
-          datalabels: {
-            anchor: 'end',
-            align: 'top',
-            formatter: (value) => {
-              return value + '%';
-            },
-            color: '#000',
-            font: {
-              weight: 'bold'
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+  const problemsCtx = document.getElementById('problemsChart').getContext('2d');
+
+  // แปลงข้อมูลจาก problemData ให้เข้ากับกราฟ
+  const labels = problemData.map(problem => problem.problem);
+  const data = problemData.map(problem => parseFloat(problem.percentage));
+
+  const problemsChart = new Chart(problemsCtx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '% ของปัญหา',
+        data: data,
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+      }]
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          formatter: (value) => {
+            return value + '%';
+          },
+          color: '#000',
+          font: {
+            weight: 'bold'
           }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            ticks: {
-              callback: function(value) {
-                return value + '%';
-              }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: function(value) {
+              return value + '%';
             }
           }
         }
       }
-    });
- 
-    const successfulProjectsData = JSON.parse('<%= successfulProjectsData %>');
+    }
+  });
+});
+const smartKeyCounts = JSON.parse('<%- JSON.stringify(smartKeyCounts) %>');
+  const labelsSmart = Object.keys(smartKeyCounts);
+  
+  const successfulProjectsData = JSON.parse('<%= successfulProjectsData %>');
     const unsuccessfulProjectsData = JSON.parse('<%= unsuccessfulProjectsData %>');
     
     const ctx = document.getElementById('stackedBarChart').getContext('2d');
     const stackedBarChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['CDP', 'ECO', 'ENE', 'ENV', 'GOV', 'LIV', 'MOB', 'PEO'],
+        labels: labelsSmart,
         datasets: [{
             label: 'โครงการที่สำเร็จแล้ว',
             data: successfulProjectsData,
@@ -505,7 +505,63 @@
       },
       plugins: [ChartDataLabels]
     });
-  
+
+    const averageProgressPerSmartKey = JSON.parse('<%- JSON.stringify(averageProgressPerSmartKey) %>');
+    const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
+  const avgProgressLabels = Object.keys(averageProgressPerSmartKey);
+  const avgProgressData = avgProgressLabels.map(key => parseFloat(averageProgressPerSmartKey[key]));
+
+  const avgProgressChart = new Chart(avgProgressCtx, {
+    type: 'bar',
+    data: {
+      labels: avgProgressLabels,
+      datasets: [{
+        label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
+        data: avgProgressData,
+        backgroundColor: '#00f0d8'
+      }]
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true
+        },
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: function(value) {
+              return value + '%';
+            }
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom'
+        },
+        tooltip: {
+          callbacks: {
+            label: function(tooltipItem) {
+              return tooltipItem.dataset.label + ': ' + tooltipItem.raw + '%';
+            }
+          }
+        },
+        datalabels: {
+          display: true,
+          color: '#000',
+          font: {
+            weight: 'bold'
+          },
+          formatter: (value, context) => {
+            return value === 0 ? null : value + '%'; // Only display labels for non-zero values
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
   </script>
 </body>
 

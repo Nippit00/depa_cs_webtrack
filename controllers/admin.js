@@ -48,38 +48,39 @@ exports.getAdPage = (req, res, next) => {
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
   // const CityID = req.params.CityID;
-  const CityID='6201ECO01'
+  const CityID = '6201ECO01'
 
   const q = "SELECT citydata.province,solution.solutionName FROM `solution` JOIN citydata ON solution.cityID=citydata.cityID WHERE solution.solutionID=?";
-  try{
-  db.query(q, [CityID], (err, data) => {
-    // console.log(data)
-    if (err) return res.status(500).json(err);
-    const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
+  try {
+    db.query(q, [CityID], (err, data) => {
+      // console.log(data)
+      if (err) return res.status(500).json(err);
+      const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
 
-    // ส่วนของข้อความที่ต้องการส่ง
-    const message = "จังหวัด" + data[0].province +data[0].solutionName +  "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
+      // ส่วนของข้อความที่ต้องการส่ง
+      const message = "จังหวัด" + data[0].province + data[0].solutionName + "ส่งฟรอมแล้วนะขอรับท่านพี่เค้ก";
 
-    // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
-    const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
+      // URL ของ API สำหรับการส่งข้อความผ่าน Line Notify
+      const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
 
-    // ส่งข้อความผ่าน Line Notify API
-    axios
-      .post(LINE_NOTIFY_API_URL, `message=${message}`, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
-        },
-      })
-      .then((response) => {
-        // console.log("Notification sent:", response.data);
-        res.status(200).json({ message: "Notification sent successfully" });
-      })
-      .catch((error) => {
-        console.error("Error sending notification:", error);
-        res.status(500).json({ error: "Failed to send notification" });
-      });
-  });}
+      // ส่งข้อความผ่าน Line Notify API
+      axios
+        .post(LINE_NOTIFY_API_URL, `message=${message}`, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
+          },
+        })
+        .then((response) => {
+          // console.log("Notification sent:", response.data);
+          res.status(200).json({ message: "Notification sent successfully" });
+        })
+        .catch((error) => {
+          console.error("Error sending notification:", error);
+          res.status(500).json({ error: "Failed to send notification" });
+        });
+    });
+  }
   catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -118,13 +119,13 @@ exports.getAdCityP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
-
 exports.getAdCityDataP = (req, res, next) => {
   try {
     const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
     const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
     const q3 = "SELECT `smartKey`,`Progress`,`solutionName` FROM `solution` WHERE cityID=? ";
-
+    const q4 = "SELECT anssolution.ans FROM `anssolution` JOIN `solution` ON anssolution.solutionID = solution.solutionID WHERE anssolution.questionID = '5' AND solution.cityID = ?;";
+    
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
 
@@ -134,57 +135,108 @@ exports.getAdCityDataP = (req, res, next) => {
         db.query(q3, [req.params.cityID], (err, countsmart) => {
           if (err) return res.status(500).json(err);
 
-          const smartKeyCounts = {};
-          const projectSuccess = [];
-          const successfulProjectsData = Array(8).fill(0); // Initialize an array for successful projects
-          const unsuccessfulProjectsData = Array(8).fill(0); // Initialize an array for unsuccessful projects
-          let n = 0;
-          let totalProgress = 0;
-          let completeCount = 0;
+          db.query(q4, [req.params.cityID], (err, result) => {
+            if (err) return res.status(500).json(err);
 
-          countsmart.forEach(row => {
-            if (smartKeyCounts[row.smartKey]) {
-              smartKeyCounts[row.smartKey]++;
-            } else {
-              smartKeyCounts[row.smartKey] = 1;
-            }
-            if (row.Progress == 100) {
-              completeCount++;
-              projectSuccess.push(row.solutionName);
-              successfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
-            } else {
-              unsuccessfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
-            }
-            totalProgress += row.Progress;
-            n++;
-          });
+            // คำนวณเปอร์เซ็นต์ของปัญหา โดยกรองค่าที่เป็น null ออก
+            const validProblems = result.filter(row => row.ans !== 'null');
+            const totalProblems = validProblems.length;
+            const problemCounts = {};
 
-          const averageProgress = n > 0 ? (totalProgress / n).toFixed(0) : 0;
-          const complete = completeCount;
-          const count = n;
+            validProblems.forEach(row => {
+              if (problemCounts[row.ans]) {
+                problemCounts[row.ans]++;
+              } else {
+                problemCounts[row.ans] = 1;
+              }
+            });
 
-          res.render("admin/ad-city/ad-citydata", {
-            req,
-            pageTitle: "Dashboard",
-            path: "/city",
-            cityData: data[0],
-            solution: solution,
-            smartKeyCounts: smartKeyCounts,
-            totalProgress: averageProgress,
-            complete: complete,
-            count: count,
-            projectSuccess: projectSuccess,
-            successfulProjectsData: JSON.stringify(successfulProjectsData), // Stringify the arrays
-            unsuccessfulProjectsData: JSON.stringify(unsuccessfulProjectsData) // Stringify the arrays
+            const problemPercentages = Object.keys(problemCounts).map(key => {
+              return {
+                problem: key,
+                percentage: ((problemCounts[key] / totalProblems) * 100).toFixed(2)
+              };
+            });
+
+            // โค้ดเดิมที่คำนวณ progress และ success
+            const smartKeyCounts = {};
+            const projectSuccess = [];
+            const successfulProjectsData = Array(8).fill(0); // Initialize an array for successful projects
+            const unsuccessfulProjectsData = Array(8).fill(0); // Initialize an array for unsuccessful projects
+            let n = 0;
+            let totalProgress = 0;
+            let completeCount = 0;
+
+            countsmart.forEach(row => {
+              if (smartKeyCounts[row.smartKey]) {
+                smartKeyCounts[row.smartKey]++;
+              } else {
+                smartKeyCounts[row.smartKey] = 1;
+              }
+              if (row.Progress == 100) {
+                completeCount++;
+                projectSuccess.push(row.solutionName);
+                successfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
+              } else {
+                unsuccessfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
+              }
+              totalProgress += row.Progress;
+              n++;
+            });
+
+            // คำนวณค่าเฉลี่ยของความคืบหน้าสำหรับแต่ละ smartKey
+            const smartKeyProgress = {};
+            const smartKeyCountsForAverage = {};
+
+            countsmart.forEach(item => {
+              if (smartKeyProgress[item.smartKey]) {
+                smartKeyProgress[item.smartKey] += item.Progress;
+                smartKeyCountsForAverage[item.smartKey] += 1;
+              } else {
+                smartKeyProgress[item.smartKey] = item.Progress;
+                smartKeyCountsForAverage[item.smartKey] = 1;
+              }
+            });
+
+            const averageProgressPerSmartKey = {};
+            Object.keys(smartKeyProgress).forEach(key => {
+              averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
+            });
+        
+
+            const averageProgress = n > 0 ? (totalProgress / n).toFixed(0) : 0;
+            const complete = completeCount;
+            const count = n;
+
+            res.render("admin/ad-city/ad-citydata", {
+              req,
+              pageTitle: "Dashboard",
+              path: "/city",
+              cityData: data[0],
+              solution: solution,
+              smartKeyCounts: smartKeyCounts,
+              totalProgress: averageProgress,
+              averageProgressPerSmartKey: averageProgressPerSmartKey, // ส่งค่าเฉลี่ยของ progress ไปยัง template
+              complete: complete,
+              count: count,
+              projectSuccess: projectSuccess,
+              successfulProjectsData: JSON.stringify(successfulProjectsData), // Stringify the arrays
+              unsuccessfulProjectsData: JSON.stringify(unsuccessfulProjectsData), // Stringify the arrays
+              problemPercentages: problemPercentages, // ส่งข้อมูลเปอร์เซ็นต์ของปัญหาไปยัง template
+            });
           });
         });
       });
     });
+
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 };
+
+
+
 
 
 
@@ -216,85 +268,85 @@ exports.postAddCity = (req, res, next) => {
       console.error("Error checking admin username:", adminUsernameError);
       return res.status(500).send("Internal Server Error");
     }
-    
+
     if (adminUsernameResult.length > 0) {
       // Admin username already exists
       return res.status(400).send("Admin username already exists");
     }
-  db.query("SELECT * FROM citydata WHERE username = ?", [username], (usernameError, usernameResult) => {
-    if (usernameError) {
-      console.error("Error checking username:", usernameError);
-      return res.status(500).send("Internal Server Error");
-    }
-    
-    if (usernameResult.length > 0) {
-      // Username already exists
-      return res.status(400).send("Username already exists");
-    }
-  // ใช้ bcrypt เพื่อเข้ารหัส password
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      console.error("Error hashing password:", err);
-      return res.status(500).send("Internal Server Error");
-    }
-
-    // ทำสิ่งที่ต้องการด้วย hashedPassword ที่เข้ารหัสแล้ว
-    // console.log("Hashed Password:", hashedPassword);
-
-    // เตรียมข้อมูลสำหรับการเพิ่มเข้าฐานข้อมูล
-    const cityData = {
-      cityID,
-      province,
-      date,
-      developer,
-      executive,
-      government_investment,
-      private_investment,
-      username,
-      password: hashedPassword, // ใช้รหัสที่เข้ารหัสแล้ว
-      LAT,
-      LNG,
-    };
-
-    // เพิ่มข้อมูลลงในตาราง citydata
-    db.query("INSERT INTO citydata SET ?", cityData, (error, result) => {
-      if (error) {
-        console.error("Error inserting city data:", error);
+    db.query("SELECT * FROM citydata WHERE username = ?", [username], (usernameError, usernameResult) => {
+      if (usernameError) {
+        console.error("Error checking username:", usernameError);
         return res.status(500).send("Internal Server Error");
       }
-      console.log("City data added successfully");
 
-      // เตรียมข้อมูลสำหรับการเพิ่มข้อมูลลงในตาราง city_home
-      const cityHomeData = {
-        cityID,
-        cityName,
-      };
+      if (usernameResult.length > 0) {
+        // Username already exists
+        return res.status(400).send("Username already exists");
+      }
+      // ใช้ bcrypt เพื่อเข้ารหัส password
+      bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if (err) {
+          console.error("Error hashing password:", err);
+          return res.status(500).send("Internal Server Error");
+        }
 
-      // เพิ่มข้อมูลลงในตาราง city_home
-      db.query(
-        "INSERT INTO city_home SET ?",
-        cityHomeData,
-        (homeError, homeResult) => {
-          if (homeError) {
-            console.error("Error inserting city home data:", homeError);
+        // ทำสิ่งที่ต้องการด้วย hashedPassword ที่เข้ารหัสแล้ว
+        // console.log("Hashed Password:", hashedPassword);
+
+        // เตรียมข้อมูลสำหรับการเพิ่มเข้าฐานข้อมูล
+        const cityData = {
+          cityID,
+          province,
+          date,
+          developer,
+          executive,
+          government_investment,
+          private_investment,
+          username,
+          password: hashedPassword, // ใช้รหัสที่เข้ารหัสแล้ว
+          LAT,
+          LNG,
+        };
+
+        // เพิ่มข้อมูลลงในตาราง citydata
+        db.query("INSERT INTO citydata SET ?", cityData, (error, result) => {
+          if (error) {
+            console.error("Error inserting city data:", error);
             return res.status(500).send("Internal Server Error");
           }
-          console.log("City home data added successfully");
+          console.log("City data added successfully");
 
-          // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
-          // res.status(200).redirect("admin/ad-city/ad-addCity?success=true");
-          // res.status(200).send("succesfully");
-          res.render("admin/ad-city/ad-addCity", {
-            pageTitle: "add",
-            path: "/",
-            success: true,
-          });
-        }
-      );
+          // เตรียมข้อมูลสำหรับการเพิ่มข้อมูลลงในตาราง city_home
+          const cityHomeData = {
+            cityID,
+            cityName,
+          };
+
+          // เพิ่มข้อมูลลงในตาราง city_home
+          db.query(
+            "INSERT INTO city_home SET ?",
+            cityHomeData,
+            (homeError, homeResult) => {
+              if (homeError) {
+                console.error("Error inserting city home data:", homeError);
+                return res.status(500).send("Internal Server Error");
+              }
+              console.log("City home data added successfully");
+
+              // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
+              // res.status(200).redirect("admin/ad-city/ad-addCity?success=true");
+              // res.status(200).send("succesfully");
+              res.render("admin/ad-city/ad-addCity", {
+                pageTitle: "add",
+                path: "/",
+                success: true,
+              });
+            }
+          );
+        });
+      });
     });
   });
-  });
-});
 };
 
 exports.getEditProvince = (req, res, next) => {
@@ -389,34 +441,34 @@ exports.postAddSolution = (req, res, next) => {
       smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
       break;
   }
-  const q ="INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`,`status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'1')";
-  db.query(q,[cityID,smartKey,solutionID,solutionName,sourceFunds,funds,startYear,endYear,status,],(err, result) => {
-      if (err) {
-        console.error("Error adding solution:", err);
-        res.status(500).json({ error: "Error adding solution" });
-      } else {
-        // console.log("Solution added successfully");
-        // res.status(200).json({ message: "Solution added successfully" });
-          const q1 ="SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
-          const q2 ="SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
+  const q = "INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`,`status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'1')";
+  db.query(q, [cityID, smartKey, solutionID, solutionName, sourceFunds, funds, startYear, endYear, status,], (err, result) => {
+    if (err) {
+      console.error("Error adding solution:", err);
+      res.status(500).json({ error: "Error adding solution" });
+    } else {
+      // console.log("Solution added successfully");
+      // res.status(200).json({ message: "Solution added successfully" });
+      const q1 = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+      const q2 = "SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
 
-          db.query(q1, [cityID], (err, data) => {
-            if (err) return res.status(500).json(err);
-            // console.log("Data is:", data);
-            db.query(q2, [cityID], (errer, solution) => {
-              if (err) return res.status(500).json(errer);
-              res.render("admin/ad-city/ad-citydata", {
-                req,
-                pageTitle: "Dashboard",
-                path: "/city",
-                cityData: data[0],
-                solution: solution,
-              });
-            });
+      db.query(q1, [cityID], (err, data) => {
+        if (err) return res.status(500).json(err);
+        // console.log("Data is:", data);
+        db.query(q2, [cityID], (errer, solution) => {
+          if (err) return res.status(500).json(errer);
+          res.render("admin/ad-city/ad-citydata", {
+            req,
+            pageTitle: "Dashboard",
+            path: "/city",
+            cityData: data[0],
+            solution: solution,
           });
-        //here
-      }
+        });
+      });
+      //here
     }
+  }
   );
 };
 
@@ -432,7 +484,7 @@ exports.getEditSolution = (req, res, next) => {
         pageTitle: "Edit_Solution",
         path: "/Edit_Solution",
         cityData: data[0],
-        solutionID:req.params.solutionID,
+        solutionID: req.params.solutionID,
         success: false,
       });
     });
@@ -473,18 +525,18 @@ exports.getAddQuestion = (req, res, next) => {
         return res.status(500).json(err);
       }
 
-        const q1 = "SELECT * FROM `question` WHERE 1";
-        db.query(q1, (err, data) => {
-          if (err) return res.status(500).json(err);
-          res.render("admin/ad-question/ad-question.ejs", {
-            req,
-            pageTitle: "Question",
-            path: "/Question",
-            data: data,
-            success: true,
-          });
+      const q1 = "SELECT * FROM `question` WHERE 1";
+      db.query(q1, (err, data) => {
+        if (err) return res.status(500).json(err);
+        res.render("admin/ad-question/ad-question.ejs", {
+          req,
+          pageTitle: "Question",
+          path: "/Question",
+          data: data,
+          success: true,
         });
-      
+      });
+
     });
   } catch (err) {
     console.error(err);
@@ -513,27 +565,27 @@ exports.postDeleteQuestion = (req, res, next) => {
   });
 };
 
-exports.getkpi=(req,res,next)=>{
-  const solutionID=req.params.solutionID
-  const q1="SELECT * FROM `kpi` WHERE solutionID=?"
-  db.query(q1,[solutionID],(err,kpi)=>{
+exports.getkpi = (req, res, next) => {
+  const solutionID = req.params.solutionID
+  const q1 = "SELECT * FROM `kpi` WHERE solutionID=?"
+  db.query(q1, [solutionID], (err, kpi) => {
     if (err) return res.status(500).json(err);
     // console.log(kpi)
     res.render("admin/ad-city/ad-kpi.ejs", {
       req,
-      solutionID:solutionID,
-      kpi:kpi,
+      solutionID: solutionID,
+      kpi: kpi,
       pageTitle: "KPI",
       path: "/KPI",
-    
+
     });
   })
-  
+
 }
 exports.postkpi = (req, res, next) => {
   // ดึงข้อมูลจาก req.body
   const data = req.body;
-  
+
   // ดึงข้อมูล solutionID จาก req.params
   const solutionID = req.params.solutionID;
 
@@ -559,7 +611,7 @@ exports.postkpi = (req, res, next) => {
       // Execute the SQL query
       db.query(q, [kpiName, goal, unit, kpiID], (err, result) => {
         // console.log(result)
-       
+
         if (err) {
           console.error(`Error updating KPI ${kpiID}:`, err);
         } else {
@@ -577,10 +629,10 @@ exports.postkpi = (req, res, next) => {
 
 exports.deleteSolution = (req, res, next) => {
   // console.log(req.params);
-  
+
   try {
-    const q3="UPDATE `solution` SET `status_solution`='0' WHERE solutionID=? ORDER BY `solution`.`smartKey` ASC"
-    db.query(q3,[req.params.solutionID],(err,deletedata)=>{
+    const q3 = "UPDATE `solution` SET `status_solution`='0' WHERE solutionID=? ORDER BY `solution`.`smartKey` ASC"
+    db.query(q3, [req.params.solutionID], (err, deletedata) => {
       if (err) return res.status(500).json(err);
       res.redirect(`/admin/city/${req.params.cityID}`);
     })
@@ -652,3 +704,74 @@ exports.updateSolution = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
+exports.getRoundPage = (req, res, next) => {
+  const q1 = "SELECT DISTINCT `date` FROM `citydata`";
+  db.query(q1, (err, dates) => {
+    if (err) return res.status(500).json(err);
+
+    // แปลงวันที่ให้อยู่ในรูปแบบที่ต้องการในภาษาไทย
+    const formattedDates = dates.map(item => {
+      const date = new Date(item.date);
+      return {
+        original: item.date,
+        formatted: date.toLocaleDateString('th-TH', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      };
+    });
+    res.render("admin/ad-city/ad-round", {
+      req,
+      pageTitle: "round",
+      path: "/round",
+      dates: formattedDates
+    });
+  });
+};
+exports.postRound = (req, res, next) => {
+  const { open, close, _csrf, ...dates } = req.body;
+
+  for (const [date, round] of Object.entries(dates)) {
+      if (date === '_csrf') continue;
+
+      const formattedDate = new Date(date).toISOString().split('T')[0];
+
+      const selectSql = "SELECT COUNT(*) as count FROM `Round` WHERE `Date` = ?";
+      db.query(selectSql, [formattedDate], (selectErr, selectResult) => {
+          if (selectErr) {
+              console.error(selectErr);
+              return res.status(500).send('Internal Server Error');
+          }
+
+          const count = selectResult[0].count;
+          if (count > 0) {
+              // If date exists, update the record
+              const updateSql = "UPDATE `Round` SET `open` = ?, `close` = ?, `round` = ? WHERE `Date` = ?";
+              const updateValues = [open, close, round, formattedDate];
+              db.query(updateSql, updateValues, (updateErr, updateResult) => {
+                  if (updateErr) {
+                      console.error(updateErr);
+                      return res.status(500).send('Internal Server Error');
+                  }
+                  console.log(`Updated round for date: ${formattedDate}`);
+              });
+          } else {
+              // If date does not exist, insert a new record
+              const insertSql = "INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
+              const insertValues = [formattedDate, open, close, round];
+              db.query(insertSql, insertValues, (insertErr, insertResult) => {
+                  if (insertErr) {
+                      console.error(insertErr);
+                      return res.status(500).send('Internal Server Error');
+                  }
+                  console.log(`Inserted round for date: ${formattedDate}`);
+              });
+          }
+      });
+  }
+
+  res.redirect('/admin/city');
+}
+
