@@ -119,13 +119,14 @@ exports.getAdCityP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
 exports.getAdCityDataP = (req, res, next) => {
   try {
     const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
     const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
-    const q3 = "SELECT `smartKey`,`Progress`,`solutionName` FROM `solution` WHERE cityID=? ";
-    const q4 = "SELECT anssolution.ans FROM `anssolution` JOIN `solution` ON anssolution.solutionID = solution.solutionID WHERE anssolution.questionID = '5' AND solution.cityID = ?;";
-    
+    const q3 = "SELECT `smartKey`,`solutionName` FROM `solution` WHERE cityID=? ";
+    const q4 = "SELECT * FROM `anssolution` JOIN `solution` ON anssolution.solutionID = solution.solutionID WHERE solution.cityID = ?;";
+
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
 
@@ -138,8 +139,11 @@ exports.getAdCityDataP = (req, res, next) => {
           db.query(q4, [req.params.cityID], (err, result) => {
             if (err) return res.status(500).json(err);
 
+            // ค้นหา round สูงสุด
+            const maxRound = Math.max(...result.map(row => row.Round));
+            
             // คำนวณเปอร์เซ็นต์ของปัญหา โดยกรองค่าที่เป็น null ออก
-            const validProblems = result.filter(row => row.ans !== 'null');
+            const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null');
             const totalProblems = validProblems.length;
             const problemCounts = {};
 
@@ -150,7 +154,7 @@ exports.getAdCityDataP = (req, res, next) => {
                 problemCounts[row.ans] = 1;
               }
             });
-
+    
             const problemPercentages = Object.keys(problemCounts).map(key => {
               return {
                 problem: key,
@@ -158,71 +162,83 @@ exports.getAdCityDataP = (req, res, next) => {
               };
             });
 
-            // โค้ดเดิมที่คำนวณ progress และ success
-            const smartKeyCounts = {};
-            const projectSuccess = [];
-            const successfulProjectsData = Array(8).fill(0); // Initialize an array for successful projects
-            const unsuccessfulProjectsData = Array(8).fill(0); // Initialize an array for unsuccessful projects
-            let n = 0;
-            let totalProgress = 0;
-            let completeCount = 0;
+          
 
-            countsmart.forEach(row => {
-              if (smartKeyCounts[row.smartKey]) {
-                smartKeyCounts[row.smartKey]++;
-              } else {
-                smartKeyCounts[row.smartKey] = 1;
-              }
-              if (row.Progress == 100) {
-                completeCount++;
-                projectSuccess.push(row.solutionName);
-                successfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
-              } else {
-                unsuccessfulProjectsData[Object.keys(smartKeyCounts).indexOf(row.smartKey)]++;
-              }
-              totalProgress += row.Progress;
-              n++;
-            });
+            // คำนวณความคืบหน้าและความสำเร็จ
+            const rounded = {};
+            for (let round = 1; round <= maxRound; round++) {
+              const roundData = result.filter(row => row.Round == round);
+              const smartKeyCounts = {};
+              const projectSuccess = [];
+              const successfulProjectsData = Array(8).fill(0);
+              const unsuccessfulProjectsData = Array(8).fill(0);
 
-            // คำนวณค่าเฉลี่ยของความคืบหน้าสำหรับแต่ละ smartKey
-            const smartKeyProgress = {};
-            const smartKeyCountsForAverage = {};
+              countsmart.forEach(row => {
+                if (smartKeyCounts[row.smartKey]) {
+                  smartKeyCounts[row.smartKey]++;
+                } else {
+                  smartKeyCounts[row.smartKey] = 1;
+                }
+              });
+              const count = Object.values(smartKeyCounts).reduce((acc, value) => acc + value, 0);
 
-            countsmart.forEach(item => {
-              if (smartKeyProgress[item.smartKey]) {
-                smartKeyProgress[item.smartKey] += item.Progress;
-                smartKeyCountsForAverage[item.smartKey] += 1;
-              } else {
-                smartKeyProgress[item.smartKey] = item.Progress;
-                smartKeyCountsForAverage[item.smartKey] = 1;
-              }
-            });
+              // คำนวณค่าเฉลี่ยของความคืบหน้าสำหรับแต่ละ smartKey
+              const smartKeyProgress = {};
+              const smartKeyCountsForAverage = {};
+              let totalSum = 0;  // ผลรวมทั้งหมด
+              let totalCount = 0;  // จำนวนทั้งหมด
 
-            const averageProgressPerSmartKey = {};
-            Object.keys(smartKeyProgress).forEach(key => {
-              averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
-            });
-        
+              roundData.forEach(item => {
+                if (item.questionID == 2) {
+                  item.ans = parseInt(item.ans, 10);
+                  totalSum += item.ans;
+                  totalCount += 1;
 
-            const averageProgress = n > 0 ? (totalProgress / n).toFixed(0) : 0;
-            const complete = completeCount;
-            const count = n;
+                  if (smartKeyProgress[item.smartKey]) {
+                    smartKeyProgress[item.smartKey] += item.ans;
+                    smartKeyCountsForAverage[item.smartKey] += 1;
+                  } else {
+                    smartKeyProgress[item.smartKey] = item.ans;
+                    smartKeyCountsForAverage[item.smartKey] = 1;
+                  }
 
+                  // นับโครงการที่สำเร็จและไม่สำเร็จ
+                  if (item.ans == 100) {
+                    projectSuccess.push(item.solutionName);
+                    successfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
+                  } else {
+                    unsuccessfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
+                  }
+                }
+              });
+
+              // หาค่าเฉลี่ยของแต่ละ smartKey
+              const averageProgressPerSmartKey = {};
+              Object.keys(smartKeyProgress).forEach(key => {
+                averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
+              });
+
+              // หาค่าเฉลี่ยของทั้งหมด
+              const totalAverage = (totalSum / count).toFixed(2);
+              rounded[round] = {
+                count: count,
+                complete: projectSuccess,
+                progress: totalAverage,
+                success: successfulProjectsData,
+                unsuccess: unsuccessfulProjectsData,
+                problem: validProblems.map(row => row.ans),
+                smartkeycount: smartKeyCounts,
+                averageProgressPerSmart: averageProgressPerSmartKey
+              };
+            }
+            console.log(JSON.stringify(rounded))
             res.render("admin/ad-city/ad-citydata", {
               req,
               pageTitle: "Dashboard",
               path: "/city",
               cityData: data[0],
               solution: solution,
-              smartKeyCounts: smartKeyCounts,
-              totalProgress: averageProgress,
-              averageProgressPerSmartKey: averageProgressPerSmartKey, // ส่งค่าเฉลี่ยของ progress ไปยัง template
-              complete: complete,
-              count: count,
-              projectSuccess: projectSuccess,
-              successfulProjectsData: JSON.stringify(successfulProjectsData), // Stringify the arrays
-              unsuccessfulProjectsData: JSON.stringify(unsuccessfulProjectsData), // Stringify the arrays
-              problemPercentages: problemPercentages, // ส่งข้อมูลเปอร์เซ็นต์ของปัญหาไปยัง template
+              rounded: JSON.stringify(rounded) // ส่งค่า rounded ไปยัง template
             });
           });
         });
@@ -234,6 +250,12 @@ exports.getAdCityDataP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
+
+
+
+
+
 
 
 

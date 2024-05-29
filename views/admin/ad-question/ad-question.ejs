@@ -40,20 +40,20 @@
           </tr>
         </thead>
         <tbody>
-          <% data.forEach(item => { %>
-          <tr>
-            
-            <td class="px-4 py-2 border"><%= item.question %></td>
-            <td class="px-4 py-2 border">
-              <button
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                onclick="DeleteQuestion('<%= item.questionID %>')"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+          <% data.slice(11).forEach(item => { %>
+            <tr>
+              <td class="px-4 py-2 border"><%= item.question %></td>
+              <td class="px-4 py-2 border">
+                <button
+                  class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                  onclick="DeleteQuestion('<%= item.questionID %>')"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
           <% }); %>
+          
         </tbody>
       </table>
     </div>

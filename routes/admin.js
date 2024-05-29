@@ -17,7 +17,7 @@ router.get('/history', isAdmin, adminController.getHistoryPage);
 // ***     City Page     ***
 // **************************
 router.get('/city', isAdmin, adminController.getAdCityP);
-router.get('/city/:cityID', isAdmin, adminController.getAdCityDataP);
+router.get('/city/:cityID', adminController.getAdCityDataP);
 router.get('/city/edit/:cityID', isAdmin, adminController.getEditProvince);
 router.post('/city/update/:cityID', isAdmin, adminController.postUpdateProvince);
 router.get('/addCity',isAdmin,adminController.getAddCity)

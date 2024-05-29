@@ -86,8 +86,10 @@ exports.getCityDashboard = (req, res, next) => {
 exports.getCityFollow = (req, res, next) => {
   const cityID = req.session.userID;
   const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.status_solution=1 GROUP BY solution.solutionName ORDER BY solution.solutionID ASC";
+  const qRound = "SELECT * FROM citydata JOIN round ON citydata.date = round.Date WHERE citydata.cityID = ?"
   try {
     db.query(q, [cityID], (err, data) => {
+      if (err) return res.status(500).json(err);
       // console.log("Check follow data :",data)
       const followdata = data.map(row => {
         return {
@@ -96,11 +98,15 @@ exports.getCityFollow = (req, res, next) => {
         };
       });
       // console.log(followdata)
-      res.render("city/follow", {
-        pageTitle: "Follow",
-        path: "/city",
-        followdata: followdata || [],
-      });
+      db.query(qRound,[cityID],(err,dataRound)=>{
+        if (err) return res.status(500).json(err);
+        res.render("city/follow", {
+          pageTitle: "Follow",
+          path: "/city",
+          followdata: followdata || [],
+          dataRound:dataRound[0],
+        });
+      })
     });
 
   } catch (err) {

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <% include('../include/ad-head.ejs') %>
   <title>Admin - <%= pageTitle %></title>
@@ -15,9 +14,8 @@
       font-family: "Noto Sans Thai", sans-serif;
       font-optical-sizing: auto;
       font-weight: 400;
-      /* Replace with the desired font weight */
       font-style: normal;
-      font-variation-settings: "wdth"100;
+      font-variation-settings: "wdth" 100;
     }
 
     .card {
@@ -37,44 +35,9 @@
     .chart-container {
       width: 100%;
       height: 200px;
-      /* ปรับความสูงตามต้องการ */
       display: flex;
       justify-content: center;
     }
-
-    .chart-bar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100px;
-            height: 100px;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
-            position: relative;
-            bottom: -20%;
-        }
-
-        .chart-bar::before {
-            content: attr(data-label);
-            position: absolute;
-            bottom: 5px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-        }
-
-        .env {
-            background-color: #2c7f97;
-        }
-
-        .ene {
-            background-color: #003366;
-        }
-
-        .eco {
-            background-color: #6e9197;
-        }
   </style>
 </head>
 
@@ -87,7 +50,6 @@
         <p class="text-xl mb-2">จังหวัด : <%= cityData.province %></p>
         <p class="text-xl mb-2">ผู้พัฒนา : <%= cityData.developer %></p>
         <p class="text-xl mb-2">ผู้บริหาร : <%= cityData.executive %></p>
-        <!-- ย้ายปุ่มมาที่นี่ -->
         <div class="flex justify-start space-x-4 mt-6">
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GoEditPage()">
             แก้ไขข้อมูลจังหวัด
@@ -99,60 +61,60 @@
       </div>
       <div class="lg:w-1/2 flex justify-center items-center">
         <img src="/cityPic/<%= cityData.cityID %>.png">
-        <!-- <iframe class="w-full h-64 lg:h-96" frameborder="0" style="border: 0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityData.LAT%>,<%=cityData.LNG%>&zoom=5&maptype=satellite" allowfullscreen=""></iframe> -->
       </div>
     </div>
     <div class="container mx-auto p-6 bg-gray-200">
       <div class="card">
         <h2 class="text-2xl font-bold mb-4"><%= cityData.cityName %></h2>
-        <p class="text-md mb-2">ได้รับตราสัญลักษณ: <%=cityData.date.toLocaleDateString('th-TH', {
+        <p class="text-md mb-2">ได้รับตราสัญลักษณ: <%= cityData.date.toLocaleDateString('th-TH', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
           weekday: 'long',
-        }) %> </p>
+        }) %></p>
         <p class="text-md mb-2">
           ประเภท: <%= new Date() - new Date(cityData.date) < 6 * 30 * 24 * 60 * 60 * 1000 ? 'เมืองใหม่' : 'เมืองเก่า' %>
-        </p>        
+        </p>
       </div>
       <!-- Dashboard -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- บริการเมืองอัจฉริยะ -->
+        <% const initialRound = JSON.parse(rounded)[1]; %>
         <div class="card lg:col-span-1">
-          <h3 class="section-title">บริการเมืองอัจฉริยะ: <span style="color: #2c7f97;"><%= Object.keys(smartKeyCounts).length %></span>
-            Smarts <%=count %> โครงการ</h3>
+          <h3 class="section-title">บริการเมืองอัจฉริยะ : <span style="color: #2c7f97;"><%= Object.keys(initialRound.smartkeycount).length %></span>
+            Smarts <span style="color: #d0a519;"><%= initialRound.count %></span> โครงการ</h3>
           <div class="grid grid-cols-2 gap-4">
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo01.png" alt="ENV Image" style="width: 70px; height: 70px;">
-              <span>ENV (<%= smartKeyCounts.ENV ?? '0' %>)</span>
+              <span>ENV (<%= initialRound.smartkeycount.ENV ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo04.png" alt="ENE Image" style="width: 70px; height: 70px;">
-              <span>ENE (<%= smartKeyCounts.ENE ?? '0' %>)</span>
+              <span>ENE (<%= initialRound.smartkeycount.ENE ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo05.png" alt="ECO Image" style="width: 70px; height: 70px;">
-              <span>ECO (<%= smartKeyCounts.ECO ?? '0' %>)</span>
+              <span>ECO (<%= initialRound.smartkeycount.ECO ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo02.png" alt="GOV Image" style="width: 70px; height: 70px;">
-              <span>GOV (<%= smartKeyCounts.GOV ?? '0' %>)</span>
+              <span>GOV (<%= initialRound.smartkeycount.GOV ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo06.png" alt="LIV Image" style="width: 70px; height: 70px;">
-              <span>LIV (<%= smartKeyCounts.LIV ?? '0' %>)</span>
+              <span>LIV (<%= initialRound.smartkeycount.LIV ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo07.png" alt="PEO Image" style="width: 70px; height: 70px;">
-              <span>PEO (<%= smartKeyCounts.PEO ?? '0' %>)</span>
+              <span>PEO (<%= initialRound.smartkeycount.PEO ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img src="/img/lo03.png" alt="MOB Image" style="width: 70px; height: 70px;">
-              <span>MOB (<%= smartKeyCounts.MOB ?? '0' %>)</span>
+              <span>MOB (<%= initialRound.smartkeycount.MOB ?? '0' %>)</span>
             </div>
             <div class="flex items-center justify-center space-x-2">
               <img style="width: 70px; height: 70px;" src="/img/favi.png" alt="CDP Image" class="w-15 h-15">
-              <span>CDP (<%= smartKeyCounts.CDP ?? '0' %>)</span>
+              <span>CDP (<%= initialRound.smartkeycount.CDP ?? '0' %>)</span>
             </div>
           </div>
         </div>
@@ -167,7 +129,7 @@
               </div>
               <div class="chart-container">
                 <canvas id="avgprogress"></canvas>
-            </div>
+              </div>
             </div>
             <!-- ค่าเฉลี่ยความสำเร็จ -->
             <div class="text-center">
@@ -193,10 +155,18 @@
       <div class="card">
         <h3 class="section-title">โครงการที่สำเร็จ</h3>
         <ul class="list-disc pl-5 space-y-2">
-          <% projectSuccess.forEach(item => { %>
-          <li><%=item %></li>
+          <% initialRound.complete.forEach(item => { %>
+          <li><%= item %></li>
           <% }) %>
         </ul>
+      </div>
+      <div class="flex justify-between mt-4">
+        <button class="bg-blue-400 hover:bg-blue-300 text-gray-800 font-bold py-2 px-4 rounded" onclick="round(-1)">
+          Back
+        </button>
+        <button class="bg-blue-400 hover:bg-blue-300 text-gray-800 font-bold py-2 px-4 rounded" onclick="round(1)">
+          Next
+        </button>
       </div>
     </div>
     <div class="mt-6">
@@ -232,19 +202,17 @@
       </table>
     </div>
   </div>
-  
+
   <%- include('../include/ad-footer.ejs') %>
   <script>
     function GoEditPage() {
       const cityID = "<%= cityData.cityID %>";
       window.location.href = `/admin/city/edit/${cityID}`;
-      console.log("active");
     }
 
     function GoAddSolution() {
       const cityID = "<%= cityData.cityID %>";
       window.location.href = `/admin/solution/add/${cityID}`;
-      console.log("active");
     }
   </script>
   <script>
@@ -266,6 +234,43 @@
       handleSearch();
     });
 
+    const rounded = <%- rounded %>;
+
+    let currentRound = 1;
+    let initialRound = rounded[currentRound];
+
+    function round(direction) {
+      currentRound += direction;
+      if (currentRound < 1) currentRound = 1;
+      if (currentRound > Object.keys(rounded).length) currentRound = Object.keys(rounded).length;
+
+      const data = rounded[currentRound];
+
+      // Update the progress chart
+      progressChart.data.datasets[0].data = [100 - data.progress, data.progress];
+      progressChart.options.centerText.text = `${data.progress}%`;
+      progressChart.update();
+
+      // Update the success chart
+      successChart.data.datasets[0].data = [data.count - data.complete.length, data.complete.length];
+      successChart.options.centerText.text = `${((data.complete.length / data.count) * 100).toFixed(0)}%`;
+      successChart.update();
+
+      // Update the problem chart
+      problemsChart.data.labels = data.problem;
+      problemsChart.data.datasets[0].data = data.problem.map(problem => problem.length); // Example transformation
+      problemsChart.update();
+
+      // Update the stacked bar chart
+      stackedBarChart.data.datasets[0].data = Object.values(data.smartkeycount);
+      stackedBarChart.data.datasets[1].data = Object.values(data.smartkeycount).map((value, index) => value - data.success[index]);
+      stackedBarChart.update();
+
+      // Update the average progress chart
+      avgProgressChart.data.datasets[0].data = Object.values(data.averageProgressPreSmart);
+      avgProgressChart.update();
+    }
+
     // กราฟความคืบหน้าโครงการ
     const progressCtx = document.getElementById('progressChart').getContext('2d');
     const progressChart = new Chart(progressCtx, {
@@ -273,70 +278,47 @@
       data: {
         labels: ['ยังไม่ดำเนินการ', 'ดำเนินการแล้ว'],
         datasets: [{
-          data: [100 - '<%=totalProgress%>', '<%=totalProgress%>'],
+          data: [100 - initialRound.progress, initialRound.progress],
           backgroundColor: ['#eeeeee', '#00f0d8'],
-          borderWidth: 6, // Add border width
-          borderColor: '#ffffff' // Add border color
+          borderWidth: 6,
+          borderColor: '#ffffff'
         }]
       },
       options: {
         plugins: {
           datalabels: {
-            formatter: (value, context) => {
-              // Only show the label for the 'ดำเนินการแล้ว' segment
-              if (context.dataIndex === 1) {
-                return value + '%';
-              }
-              return '';
-            },
+            formatter: (value, context) => context.dataIndex === 1 ? `${value}%` : '',
             color: '#fff',
-            font: {
-              weight: 'bold',
-              size: 16
-            },
-            // Align the label to the center of the chart
+            font: { weight: 'bold', size: 16 },
             align: 'center',
             anchor: 'center'
           },
           tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
-              }
-            }
+            callbacks: { label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.raw}%` }
           }
         },
-        // Center text plugin to show total progress
-        centerText: {
-          display: true,
-          text: '<%=totalProgress%>%'
-        },
-        // Adjusting the size of the doughnut hole
+        centerText: { display: true, text: `${initialRound.progress}%` },
         cutout: '50%',
         maintainAspectRatio: false,
       },
       plugins: [{
         id: 'centerText',
-        beforeDraw: function(chart) {
+        beforeDraw: chart => {
           if (chart.options.centerText.display) {
             const ctx = chart.ctx;
             const centerConfig = chart.options.centerText;
             const fontSize = (chart.height / 114).toFixed(2);
             ctx.font = `bold ${fontSize}em sans-serif`;
             ctx.textBaseline = 'middle';
-
             const text = centerConfig.text;
             const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
             const textY = chart.height / 2;
-
-            ctx.fillStyle = '#000'; // Text color
+            ctx.fillStyle = '#000';
             ctx.fillText(text, textX, textY);
           }
         }
       }]
     });
-
-
 
     // กราฟค่าเฉลี่ยความสำเร็จ
     const successCtx = document.getElementById('successChart').getContext('2d');
@@ -345,10 +327,10 @@
       data: {
         labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
         datasets: [{
-          data: ['<%= count %>' - '<%= complete %>', '<%= complete %>'],
+          data: [initialRound.count - initialRound.success, initialRound.success],
           backgroundColor: ['#eeeeee', '#FFCE56'],
-          borderWidth: 6, // Add border width
-          borderColor: '#ffffff' // Add border color
+          borderWidth: 6,
+          borderColor: '#ffffff'
         }]
       },
       options: {
@@ -356,213 +338,145 @@
           datalabels: {
             formatter: (value, context) => {
               const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-              const percentage = (value / total * 100).toFixed(0) + '%';
-              return percentage;
+              return `${(value / total * 100).toFixed(0)}%`;
             },
             color: '#fff',
-            font: {
-              weight: 'bold'
-            }
+            font: { weight: 'bold' }
           },
           tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                return tooltipItem.label + ': ' + tooltipItem.raw;
-              }
-            }
+            callbacks: { label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.raw}` }
           }
         },
-        cutout: '50%', // Adjust the cutout percentage to your preference
+        cutout: '50%',
         maintainAspectRatio: false,
-        centerText: {
-          display: true,
-          text: `${('<%= complete %>' / '<%= count %>' * 100).toFixed(0)}%`
-        }
+        centerText: { display: true, text: `${(initialRound.complete.length / initialRound.count * 100).toFixed(0)}%` }
       },
       plugins: [{
         id: 'centerText',
-        beforeDraw: function(chart) {
+        beforeDraw: chart => {
           if (chart.options.centerText.display) {
             const ctx = chart.ctx;
             const centerConfig = chart.options.centerText;
             const fontSize = (chart.height / 114).toFixed(2);
             ctx.font = `bold ${fontSize}em sans-serif`;
             ctx.textBaseline = 'middle';
-
             const text = centerConfig.text;
             const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
             const textY = chart.height / 2;
-
-            ctx.fillStyle = '#000'; // Text color
+            ctx.fillStyle = '#000';
             ctx.fillText(text, textX, textY);
           }
         }
       }]
     });
-    const problemData = <%- JSON.stringify(problemPercentages) %>;
-    // กราฟปัญหาและอุปสรรค
+
     document.addEventListener('DOMContentLoaded', function() {
-  const problemsCtx = document.getElementById('problemsChart').getContext('2d');
-
-  // แปลงข้อมูลจาก problemData ให้เข้ากับกราฟ
-  const labels = problemData.map(problem => problem.problem);
-  const data = problemData.map(problem => parseFloat(problem.percentage));
-
-  const problemsChart = new Chart(problemsCtx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '% ของปัญหา',
-        data: data,
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          anchor: 'end',
-          align: 'top',
-          formatter: (value) => {
-            return value + '%';
+      const problemsCtx = document.getElementById('problemsChart').getContext('2d');
+      const problemData = initialRound.problem;
+      const problemsChart = new Chart(problemsCtx, {
+        type: 'bar',
+        data: {
+          labels: problemData,
+          datasets: [{
+            label: '% ของปัญหา',
+            data: problemData.map(problem => problem.percentage),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+          }]
+        },
+        options: {
+          plugins: {
+            datalabels: {
+              anchor: 'end',
+              align: 'top',
+              formatter: value => `${value}%`,
+              color: '#000',
+              font: { weight: 'bold' }
+            }
           },
-          color: '#000',
-          font: {
-            weight: 'bold'
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: function(value) {
-              return value + '%';
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { callback: value => `${value}%` }
             }
           }
         }
-      }
-    }
-  });
-});
-const smartKeyCounts = JSON.parse('<%- JSON.stringify(smartKeyCounts) %>');
-  const labelsSmart = Object.keys(smartKeyCounts);
-  
-  const successfulProjectsData = JSON.parse('<%= successfulProjectsData %>');
-    const unsuccessfulProjectsData = JSON.parse('<%= unsuccessfulProjectsData %>');
-    
-    const ctx = document.getElementById('stackedBarChart').getContext('2d');
-    const stackedBarChart = new Chart(ctx, {
+      });
+    });
+
+    const stackedBarCtx = document.getElementById('stackedBarChart').getContext('2d');
+    const stackedBarChart = new Chart(stackedBarCtx, {
       type: 'bar',
       data: {
-        labels: labelsSmart,
+        labels: Object.keys(initialRound.smartkeycount),
         datasets: [{
             label: 'โครงการที่สำเร็จแล้ว',
-            data: successfulProjectsData,
+            data: Object.values(initialRound.smartkeycount),
             backgroundColor: '#FFCE56'
           },
           {
             label: 'โครงการที่ยังไม่สำเร็จ',
-            data: unsuccessfulProjectsData,
+            data: Object.values(initialRound.smartkeycount).map((value, index) => value - initialRound.success[index]),
             backgroundColor: '#cccccc'
           }
         ]
       },
       options: {
         scales: {
-          x: {
-            stacked: true
-          },
-          y: {
-            stacked: true,
-            beginAtZero: true
-          }
+          x: { stacked: true },
+          y: { stacked: true, beginAtZero: true }
         },
         plugins: {
-          legend: {
-            display: true,
-            position: 'bottom'
-          },
+          legend: { display: true, position: 'bottom' },
           tooltip: {
-            callbacks: {
-              label: function (tooltipItem) {
-                return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
-              }
-            }
+            callbacks: { label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}` }
           },
           datalabels: {
             display: true,
             color: '#000',
-            font: {
-              weight: 'bold'
-            },
-            formatter: (value, context) => {
-              return value === 0 ? null : value; // Only display labels for non-zero values
-            }
+            font: { weight: 'bold' },
+            formatter: (value, context) => value === 0 ? null : value
           }
         }
       },
       plugins: [ChartDataLabels]
     });
-
-    const averageProgressPerSmartKey = JSON.parse('<%- JSON.stringify(averageProgressPerSmartKey) %>');
+    console.log(initialRound.averageProgressPreSmart)
     const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
-  const avgProgressLabels = Object.keys(averageProgressPerSmartKey);
-  const avgProgressData = avgProgressLabels.map(key => parseFloat(averageProgressPerSmartKey[key]));
-
-  const avgProgressChart = new Chart(avgProgressCtx, {
-    type: 'bar',
-    data: {
-      labels: avgProgressLabels,
-      datasets: [{
-        label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
-        data: avgProgressData,
-        backgroundColor: '#00f0d8'
-      }]
-    },
-    options: {
-      scales: {
-        x: {
-          stacked: true
+    const avgProgressChart = new Chart(avgProgressCtx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(initialRound.averageProgressPreSmart),
+        datasets: [{
+          label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
+          data: Object.values(initialRound.averageProgressPreSmart),
+          backgroundColor: '#00f0d8'
+        }]
+      },
+      options: {
+        scales: {
+          x: { stacked: true },
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { callback: value => `${value}%` }
+          }
         },
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: function(value) {
-              return value + '%';
-            }
+        plugins: {
+          legend: { display: true, position: 'bottom' },
+          tooltip: {
+            callbacks: { label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}%` }
+          },
+          datalabels: {
+            display: true,
+            color: '#000',
+            font: { weight: 'bold' },
+            formatter: (value, context) => value === 0 ? null : `${value}%`
           }
         }
       },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom'
-        },
-        tooltip: {
-          callbacks: {
-            label: function(tooltipItem) {
-              return tooltipItem.dataset.label + ': ' + tooltipItem.raw + '%';
-            }
-          }
-        },
-        datalabels: {
-          display: true,
-          color: '#000',
-          font: {
-            weight: 'bold'
-          },
-          formatter: (value, context) => {
-            return value === 0 ? null : value + '%'; // Only display labels for non-zero values
-          }
-        }
-      }
-    },
-    plugins: [ChartDataLabels]
-  });
+      plugins: [ChartDataLabels]
+    });
   </script>
 </body>
-
 </html>

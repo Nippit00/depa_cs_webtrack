@@ -300,25 +300,32 @@
 
 
             cancelBtn.addEventListener('click', async () => {
-                    try {
-                        const dataCheckString = '<%- JSON.stringify(dataCheck) %>';
-                        const dataChecks = JSON.parse(dataCheckString);
-                        const csrfToken = '<%= csrfToken %>';
-                        const response = await fetch('/saveEdit/<%= data.solutionID %>/<%=dataCheck.round%>', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            },
-                            body: JSON.stringify({
-                                dataChecks: dataChecks,
-                                currentDateTime: currentDateTime
-                            })
-                        });
-                    } catch (error) {
-                        console.error('Error:', error);
+                try {
+                    const dataCheckString = '<%- JSON.stringify(dataCheck) %>';
+                    const dataChecks = JSON.parse(dataCheckString);
+                    const csrfToken = '<%= csrfToken %>';
+                    const response = await fetch('/saveEdit/<%= data.solutionID %>/<%=dataCheck.round%>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({
+                            dataChecks: dataChecks,
+                            currentDateTime: currentDateTime
+                        })
+                    });
+
+                    if (response.ok) {
+                        // Redirect to the specified URL
+                        window.location.href = `/formsmart/<%= data.solutionID %>/<%=dataCheck.round%>`;
+                    } else {
+                        console.error('Error:', response.status);
                     }
-            });
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+        });
             
         </script>
 

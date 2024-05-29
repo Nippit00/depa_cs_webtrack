@@ -531,7 +531,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>/1"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -553,7 +553,7 @@
                                     </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart_round2/<%= item.solutionID %>/2">
+                                      <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                         <button class="report-button">กรอกฟอร์ม</button>
                                       </a>
                                     </div>
