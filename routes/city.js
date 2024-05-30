@@ -2,8 +2,10 @@ const express = require('express');
 
 const cityController = require('../controllers/city.js');
 const isAuth = require('../middlewares/is-auth')
+const loadingMiddleware = require('../middlewares/loading');
 
 const router = express.Router();
+router.use(loadingMiddleware);
 
 // **************************
 // ***     City Page      ***

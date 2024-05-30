@@ -139,31 +139,52 @@ exports.getAdCityDataP = (req, res, next) => {
           db.query(q4, [req.params.cityID], (err, result) => {
             if (err) return res.status(500).json(err);
 
+            // ตรวจสอบว่ามีข้อมูลใน result หรือไม่
+            if (result.length === 0) {
+              const rounded = {};
+              const smartKeyCounts = {};
+              const problemPercentages = [];
+              const successfulProjectsData = Array(8).fill(0);
+              let unsuccessfulProjectsData = [];
+
+              const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0' };
+
+              countsmart.forEach(row => {
+                if (smartKeyCounts[row.smartKey]) {
+                  smartKeyCounts[row.smartKey]++;
+                } else {
+                  smartKeyCounts[row.smartKey] = 1;
+                }
+              });
+              const count = Object.values(smartKeyCounts).reduce((acc, value) => acc + value, 0);
+
+              // เอาค่า value จาก smartKeyCounts ใส่ใน unsuccessfulProjectsData
+              unsuccessfulProjectsData = Object.values(smartKeyCounts);
+
+              rounded['1'] = {
+                count: count,
+                complete: [],
+                progress: 0,
+                success: successfulProjectsData,
+                unsuccess: unsuccessfulProjectsData,
+                problem: problemPercentages,
+                smartkeycount: smartKeyCounts,
+                averageProgressPerSmart: averageProgressPerSmartKey
+              };
+
+              console.log(rounded);
+              res.render("admin/ad-city/ad-citydata", {
+                req,
+                pageTitle: "Dashboard",
+                path: "/city",
+                cityData: data[0],
+                solution: solution,
+                rounded: JSON.stringify(rounded) // ส่งค่า rounded ไปยัง template
+              });
+              return;
+            }
             // ค้นหา round สูงสุด
             const maxRound = Math.max(...result.map(row => row.Round));
-            
-            // คำนวณเปอร์เซ็นต์ของปัญหา โดยกรองค่าที่เป็น null ออก
-            const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null');
-            const totalProblems = validProblems.length;
-            const problemCounts = {};
-
-            validProblems.forEach(row => {
-              if (problemCounts[row.ans]) {
-                problemCounts[row.ans]++;
-              } else {
-                problemCounts[row.ans] = 1;
-              }
-            });
-    
-            const problemPercentages = Object.keys(problemCounts).map(key => {
-              return {
-                problem: key,
-                percentage: ((problemCounts[key] / totalProblems) * 100).toFixed(2)
-              };
-            });
-
-          
-
             // คำนวณความคืบหน้าและความสำเร็จ
             const rounded = {};
             for (let round = 1; round <= maxRound; round++) {
@@ -171,7 +192,26 @@ exports.getAdCityDataP = (req, res, next) => {
               const smartKeyCounts = {};
               const projectSuccess = [];
               const successfulProjectsData = Array(8).fill(0);
-              const unsuccessfulProjectsData = Array(8).fill(0);
+              let unsuccessfulProjectsData = Array(8).fill(0);
+
+
+              const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null' && row.Round==round);
+              const totalProblems = validProblems.length;
+              const problemCounts = {};
+
+              validProblems.forEach(row => {
+                if (problemCounts[row.ans]) {
+                  problemCounts[row.ans]++;
+                } else {
+                  problemCounts[row.ans] = 1;
+                }
+              });
+              const problemPercentages = Object.keys(problemCounts).map(key => {
+                return {
+                  problem: key,
+                  percentage: ((problemCounts[key] / totalProblems) * 100).toFixed(2)
+                };
+              });
 
               countsmart.forEach(row => {
                 if (smartKeyCounts[row.smartKey]) {
@@ -206,14 +246,15 @@ exports.getAdCityDataP = (req, res, next) => {
                   if (item.ans == 100) {
                     projectSuccess.push(item.solutionName);
                     successfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
-                  } else {
-                    unsuccessfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
                   }
                 }
               });
 
+              const smartKeyCountsValues = Object.values(smartKeyCounts);
+              unsuccessfulProjectsData = smartKeyCountsValues.map((value, index) => value - successfulProjectsData[index]);
+
               // หาค่าเฉลี่ยของแต่ละ smartKey
-              const averageProgressPerSmartKey = {};
+              const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0' };
               Object.keys(smartKeyProgress).forEach(key => {
                 averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
               });
@@ -226,12 +267,12 @@ exports.getAdCityDataP = (req, res, next) => {
                 progress: totalAverage,
                 success: successfulProjectsData,
                 unsuccess: unsuccessfulProjectsData,
-                problem: validProblems.map(row => row.ans),
+                problem: problemPercentages,
                 smartkeycount: smartKeyCounts,
                 averageProgressPerSmart: averageProgressPerSmartKey
               };
             }
-            console.log(JSON.stringify(rounded))
+            console.log(rounded)
             res.render("admin/ad-city/ad-citydata", {
               req,
               pageTitle: "Dashboard",
@@ -240,6 +281,7 @@ exports.getAdCityDataP = (req, res, next) => {
               solution: solution,
               rounded: JSON.stringify(rounded) // ส่งค่า rounded ไปยัง template
             });
+
           });
         });
       });
@@ -250,6 +292,7 @@ exports.getAdCityDataP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
 
 
 
@@ -732,18 +775,23 @@ exports.getRoundPage = (req, res, next) => {
   db.query(q1, (err, dates) => {
     if (err) return res.status(500).json(err);
 
-    // แปลงวันที่ให้อยู่ในรูปแบบที่ต้องการในภาษาไทย
+    const now = new Date();
+    // แปลงวันที่ให้อยู่ในรูปแบบที่ต้องการในภาษาไทย และคำนวณอายุจากวันปัจจุบัน
     const formattedDates = dates.map(item => {
       const date = new Date(item.date);
+      const timeDiff = now - date;
+      const ageInDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // คำนวณจำนวนวัน
       return {
         original: item.date,
         formatted: date.toLocaleDateString('th-TH', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
-        })
+        }),
+        age: ageInDays
       };
     });
+
     res.render("admin/ad-city/ad-round", {
       req,
       pageTitle: "round",
@@ -752,46 +800,46 @@ exports.getRoundPage = (req, res, next) => {
     });
   });
 };
+
 exports.postRound = (req, res, next) => {
   const { open, close, _csrf, ...dates } = req.body;
 
   for (const [date, round] of Object.entries(dates)) {
-      if (date === '_csrf') continue;
+    if (date === '_csrf') continue;
+    const formattedDate = new Date(date);
+    formattedDate.setDate(formattedDate.getDate());
+    const selectSql = "SELECT COUNT(*) as count FROM `Round` WHERE `Date` = ?";
+    db.query(selectSql, [formattedDate], (selectErr, selectResult) => {
+      if (selectErr) {
+        console.error(selectErr);
+        return res.status(500).send('Internal Server Error');
+      }
 
-      const formattedDate = new Date(date).toISOString().split('T')[0];
-
-      const selectSql = "SELECT COUNT(*) as count FROM `Round` WHERE `Date` = ?";
-      db.query(selectSql, [formattedDate], (selectErr, selectResult) => {
-          if (selectErr) {
-              console.error(selectErr);
-              return res.status(500).send('Internal Server Error');
+      const count = selectResult[0].count;
+      if (count > 0) {
+        // If date exists, update the record
+        const updateSql = "UPDATE `Round` SET `open` = ?, `close` = ?, `round` = ? WHERE `Date` = ?";
+        const updateValues = [open, close, round, formattedDate];
+        db.query(updateSql, updateValues, (updateErr, updateResult) => {
+          if (updateErr) {
+            console.error(updateErr);
+            return res.status(500).send('Internal Server Error');
           }
-
-          const count = selectResult[0].count;
-          if (count > 0) {
-              // If date exists, update the record
-              const updateSql = "UPDATE `Round` SET `open` = ?, `close` = ?, `round` = ? WHERE `Date` = ?";
-              const updateValues = [open, close, round, formattedDate];
-              db.query(updateSql, updateValues, (updateErr, updateResult) => {
-                  if (updateErr) {
-                      console.error(updateErr);
-                      return res.status(500).send('Internal Server Error');
-                  }
-                  console.log(`Updated round for date: ${formattedDate}`);
-              });
-          } else {
-              // If date does not exist, insert a new record
-              const insertSql = "INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
-              const insertValues = [formattedDate, open, close, round];
-              db.query(insertSql, insertValues, (insertErr, insertResult) => {
-                  if (insertErr) {
-                      console.error(insertErr);
-                      return res.status(500).send('Internal Server Error');
-                  }
-                  console.log(`Inserted round for date: ${formattedDate}`);
-              });
+          console.log(`Updated round for date: ${formattedDate}`);
+        });
+      } else {
+        // If date does not exist, insert a new record
+        const insertSql = "INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
+        const insertValues = [formattedDate, open, close, round];
+        db.query(insertSql, insertValues, (insertErr, insertResult) => {
+          if (insertErr) {
+            console.error(insertErr);
+            return res.status(500).send('Internal Server Error');
           }
-      });
+          console.log(`Inserted round for date: ${formattedDate}`);
+        });
+      }
+    });
   }
 
   res.redirect('/admin/city');

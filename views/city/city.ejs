@@ -220,11 +220,42 @@
            color: #FFFFFF;
            border-radius: 5px;
        }
+       .loading-spinner {
+        display: block;
+        position: fixed;
+        z-index: 9999;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #3498db;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
    </style>
 </head>
 
 
 <body>
+    <% if (loading) { %>
+        <div class="loading-spinner"></div>
+        <script>
+            setTimeout(function() {
+                document.querySelector('.loading-spinner').style.display = 'none';
+            }, 1000); // 1 วินาที
+        </script>
+    <% } %>
+    
+    
+
 
 
    <%- include('../component/navbar.ejs') %>
@@ -271,6 +302,16 @@
                            </b>
                            <br>
                            <br>
+                           <b class="menu-text">อายุของเมือง :</b> <b style="color: #04B2A1;">
+                            <%= announcementDuration.years %> ปี <%= announcementDuration.months %> เดือน <%= announcementDuration.days %> วัน  (<%=announcementDuration.totalDays %>วัน)
+                           </b>
+                           <br>
+                           <br>
+                           <b class="menu-text">วันครบรอบ 2 ปี :</b> <b style="color: #04B2A1;">
+                            <%= announcementDuration.twoYearsLaterFormatted %>
+                            </b>
+                            <br>
+                            <br>   
                            <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;">
                                <%= cityInfo.executive %>
                            </b>
@@ -291,7 +332,14 @@
                            </b>
                            <br>
                            <br>
-                           <b class="menu-text">7 smart :</b>
+                           <b class="menu-text">ถ้าเป็นผู้ว่าราชการจังหวัด :</b> <b style="color: #04B2A1;">
+                              โชว์ city (วังจันทร์วัลเลย์)
+                           </b>
+                           
+                           <br>
+                           <br>
+                           <b class="menu-text">7 smart :</b> <b style="color: #04B2A1;"><%= Object.values(smartKeyCounts).reduce((acc, value) => acc + value, 0 -4) %>
+                            solution</b>
                            <div class="custom-rectangle">
                                <div class="col-md-1">
                                    <div class="image-container">
@@ -388,6 +436,8 @@
               
            <%- include('../component/footer.ejs') %>
                <script>
+                
+                
                    document.addEventListener("DOMContentLoaded", function () {
                         let targetDate = new Date(2027, 11, 2); // เวลาที่ต้องการคำนวณถึง
                         let currentDate = new Date(); // เวลาปัจจุบัน
@@ -495,6 +545,7 @@
 
 
                </script>
+               
 </body>
 
 

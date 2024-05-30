@@ -459,7 +459,7 @@
                 <% kpiQ.forEach(item => { %>
                 <div class="display-none">
                     <label class="kpi-label" for="<%= item.kpiID %>">
-                        <%= item.kpiName %>:
+                        <%= item.kpiName %>: <span id="alert">*</span>
                     </label>
                     <% if(item.goal == 0) { %>
                         <label class="radio-label">Yes</label>
@@ -468,9 +468,9 @@
                         <input class="radio-input" type="radio" name="<%= item.kpiID %>" value="No" <%= item.ans === 'No' ? 'checked' : '' %>>
                     <% } else { %>
                         <input type="hidden" id="C<%= item.kpiID %>" value="<%= item.goal %>">
-                        <input class="number-input" type="number" placeholder="<%= item.unit %>" id="A<%= item.kpiID %>" name="<%= item.kpiID %>" step="0.01" value="<%= item.ans !== '' ? item.ans : '' %>">
+                        <input class="number-input" type="number" placeholder="<%= item.unit %> " id="A<%= item.kpiID %>" name="<%= item.kpiID %>" step="0.01" value="<%= item.ans !== '' ? item.ans : '' %>">
                         <br />
-                        <input class="note-input" placeholder="หมายเหตุเพิ่มเติม" value="<%= item.note ? item.note : '' %>">
+                        <input class="note-input" placeholder="หมายเหตุเพิ่มเติม(ถ้ามี)" value="<%= item.note ? item.note : '' %>">
                     <% } %>
                 </div>
                 <% }); %>

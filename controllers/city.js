@@ -1,4 +1,5 @@
 const db = require("../db.js");
+const moment = require('moment'); //ใช้ในการคำนวณวันที่
 
 // ****************
 // **  getCity   **
@@ -14,6 +15,16 @@ exports.GetCity = (req, res) => {
   try {
     db.query(qCityData, [cityID], (err, cityData) => {
       if (err) return res.status(500).json(err);
+
+      const announcementDate = moment(cityData[0].date);
+      const currentDate = moment();
+      const duration = moment.duration(currentDate.diff(announcementDate));
+      const years = duration.years();
+      const months = duration.months();
+      const days = duration.days();
+      const totalDays = currentDate.diff(announcementDate, 'days'); //นับวันทั้งหมด
+      const twoYearsLater = announcementDate.clone().add(2, 'years'); //นับจากวันที่ประกาศไป2ปี
+      const twoYearsLaterFormatted = twoYearsLater.format('DD/MM/YYYY');
       db.query(qSolution, [cityID], (err, solutionData) => {
         if (err) return res.status(500).json(err);
 
@@ -36,7 +47,8 @@ exports.GetCity = (req, res) => {
             cityInfo: cityData[0],
             citysolution: solutionData,
             smartKeyCounts: smartKeyCounts,// ส่งจำนวน smart key แต่ละตัวในออบเจกต์ไปยัง view
-            datafile: cityFileData
+            datafile: cityFileData,
+            announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted },
           });
         });
       });
