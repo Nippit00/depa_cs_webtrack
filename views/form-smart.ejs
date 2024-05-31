@@ -538,12 +538,12 @@
 
 </body>
 <script>
+    window.onload = function() {
+        document.getElementById('spinner-container').style.display = 'none';
+    };
+
     window.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('spinner-container').style.display = 'flex';
-        setTimeout(() => {
-            document.getElementById('spinner-container').style.display = 'none';
-            document.getElementById('content-container').style.display = 'flex';
-        }, 250);
     });
     document.getElementById('submitButton').addEventListener('click', function (event) {
 

@@ -453,13 +453,13 @@
               
            <%- include('../component/footer.ejs') %>
                <script>
-                    window.addEventListener('DOMContentLoaded', (event) => {
-                        document.getElementById('spinner-container').style.display = 'flex';
-                        setTimeout(() => {
-                            document.getElementById('spinner-container').style.display = 'none';
-                            document.getElementById('content-container').style.display = 'flex';
-                        }, 450);
-                    });
+                window.onload = function() {
+                    document.getElementById('spinner-container').style.display = 'none';
+                };
+        
+                window.addEventListener('DOMContentLoaded', (event) => {
+                    document.getElementById('spinner-container').style.display = 'flex';
+                });
 
                 
                 
