@@ -52,7 +52,7 @@
       text-align: left;
       position: relative;
       top: -100px;
-      margin-left: 120px;
+      margin-left: 100px;
       margin-bottom: 150px;
     }
 
@@ -76,10 +76,57 @@
       margin-top: -500px;
       margin-bottom: 250px;
     }
+
+    #spinner-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #static-image {
+      width: 300px;
+      /* ปรับขนาดให้เหมาะสมกับการแสดงผล */
+      height: auto;
+      margin-bottom: 20px;
+      /* ปรับตำแหน่งตามความเหมาะสม */
+    }
+
+
+    #spinner {
+      width: 64px;
+      height: 64px;
+      border: 6px solid transparent;
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <div id="spinner-container">
+    <img src="/img/favi.png" alt="Loading..." id="static-image">
+    <div id="spinner"></div>
+  </div>
+
   <%- include('../component/navbar.ejs') %>
 
   <div class="banner">
@@ -100,20 +147,21 @@
     </div>
   </div>
 
-  <div class="map-container">
-    <img src="/cityPic/<%= data[0].cityID %>.png">
-    <!-- <iframe width="600" height="450" frameborder="0" style="border: 0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=solutionInfo[0].LAT%>,<%=solutionInfo[0].LNG%>&zoom=5" allowfullscreen></iframe> -->
+  <div class="map-container md:w-1/2 p-4">
+    <img src="/cityPic/<%= data[0].cityID %>.png" alt="City Map" class="w-fu h-auto rounded-md shadow-lg">
   </div>
+</div>
 
   <!-- Chart -->
   <!-- <canvas id="myChart" width="400" height="200"></canvas> -->
   <h1>dashboard จาก Admin รอบล่าสุด</h1>
 
-  <p style="text-align: center;">*** โปรดอ่าน: 
-    <span style="color: red;">สถานะสีแดง</span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -
-    <span style="color: yellow;">สถานะสีเหลือง</span> หมายถึงฉบับล่าง -
-    <span style="color: green;">สถานะสีเขียว</span> หมายถึง ดำเนินการแล้ว ***
+  <p style="text-align: center;">*** โปรดอ่าน:
+    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: red;"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -
+    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: yellow;"></span></span> หมายถึงฉบับล่าง -
+    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: green;"></span></span> หมายถึง ดำเนินการแล้ว ***
   </p>
+
   <br>
 
   <!-- table -->
@@ -192,10 +240,18 @@
       </tbody>
     </table>
   </div>
-  
-  
+
+
 
   <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      document.getElementById('spinner-container').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('spinner-container').style.display = 'none';
+        document.getElementById('content-container').style.display = 'flex';
+      }, 350);
+    });
+
     function show(index) {
       // Remove active class from all images
       const images = document.querySelectorAll('img');
@@ -207,28 +263,28 @@
       function calculateAverageSuccess(dataArray, smartKey) {
         let totalSuccess = 0;
         let count = 0;
-      
+
         dataArray.forEach((data) => {
           if (data.smartKey === smartKey) {
             totalSuccess += data.Progress === 100 ? 1 : 0;
             count++;
           }
         });
-      
+
         return count > 0 ? totalSuccess / count : 0;
       }
 
       function calculateAverageProgress(dataArray, smartKey) {
         let totalProgress = 0;
         let count = 0;
-      
+
         dataArray.forEach((data) => {
           if (data.smartKey === smartKey) {
             totalProgress += data.Progress / 100;
             count++;
           }
         });
-      
+
         return count > 0 ? totalProgress / count : 0;
       }
 
@@ -305,7 +361,7 @@
             }
           });
           const averageProgressEne = calculateAverageProgress(solutionInfo, "ENE");
-          const averageSuccessEne= calculateAverageSuccess(solutionInfo, "ENE");
+          const averageSuccessEne = calculateAverageSuccess(solutionInfo, "ENE");
           html += `<tr>
                 <td>รวม</td>
                 <td style="padding: 20px; text-align: center;">${(averageSuccessEne * 100).toFixed(0)}%</td>
@@ -330,7 +386,7 @@
             }
           });
           const averageProgressEco = calculateAverageProgress(solutionInfo, "ECO");
-          const averageSuccessEco= calculateAverageSuccess(solutionInfo, "ECO");
+          const averageSuccessEco = calculateAverageSuccess(solutionInfo, "ECO");
           html += `<tr>
                 <td>รวม</td>
                 <td style="padding: 20px; text-align: center;">${(averageSuccessEco * 100).toFixed(0)}%</td>

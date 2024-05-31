@@ -159,12 +159,54 @@
       .small-text {
         font-size: 0.9em; /* หรือขนาดที่ต้องการ */
     }
+    #spinner-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  #static-image {
+      width: 300px; /* ปรับขนาดให้เหมาะสมกับการแสดงผล */
+      height: auto;
+      margin-bottom: 20px; /* ปรับตำแหน่งตามความเหมาะสม */
+  }
+  
+  
+  #spinner {
+      width: 64px;
+      height: 64px;
+      border: 6px solid transparent;
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+  
+  @keyframes spin {
+      to {
+          transform: rotate(360deg);
+      }
+  }
     
     </style>
 
 </head>
 
 <body>
+  <div id="spinner-container">
+    <img src="/img/favi.png" alt="Loading..." id="static-image">
+    <div id="spinner"></div>
+</div>
   <% function countEcoSolutions(data) { let count=0; followdata.forEach((item)=> {
     if (item.smartKey === data) {
     count++;
@@ -386,7 +428,7 @@
                                     <% if(count==1){ %> 
                                       <a href="/formcdp1/<%= item.solutionID %>"><button class="report-button">กรอกฟอร์ม</button></a>
                                       <% } else{%>
-                                    <a href="/formsmart/<%= item.solutionID %>"><button class="report-button">กรอกฟอร์ม</button></a>
+                                    <a href="/formsmart/<%= item.solutionID %>/<%=dataRound.round%>"><button class="report-button">กรอกฟอร์ม</button></a>
                                   <% } %>
                                   </div>
                                 <% } %>
@@ -406,7 +448,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -679,7 +721,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -699,7 +741,7 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
-                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                       <button class="report-button">กรอกฟอร์ม</button>
                                     </a>
                                   </div>
@@ -823,7 +865,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -843,7 +885,7 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
-                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                       <button class="report-button">กรอกฟอร์ม</button>
                                     </a>
                                   </div>
@@ -966,7 +1008,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -986,7 +1028,7 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
-                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                       <button class="report-button">กรอกฟอร์ม</button>
                                     </a>
                                   </div>
@@ -1109,7 +1151,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -1129,7 +1171,7 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
-                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                       <button class="report-button">กรอกฟอร์ม</button>
                                     </a>
                                   </div>
@@ -1252,7 +1294,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -1272,7 +1314,7 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
-                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                       <button class="report-button">กรอกฟอร์ม</button>
                                     </a>
                                   </div>
@@ -1395,7 +1437,7 @@
                                   </div>
                                   <% } else { %>
                                     <div class="button-container">
-                                      <a href="/formsmart/<%=item.solutionID%>"><button
+                                      <a href="/formsmart/<%=item.solutionID%>/<%=dataRound.round%>"><button
                                           class="report-button">กรอกฟอร์ม</button></a>
                                     </div>
                                     <% } %>
@@ -1415,7 +1457,7 @@
                                   </div>
                                 <% } else { %>
                                   <div class="button-container">
-                                    <a href="/formsmart_round2/<%= item.solutionID %>">
+                                    <a href="/formsmart_round2/<%= item.solutionID %>/<%=dataRound.round%>">
                                       <button class="report-button">กรอกฟอร์ม</button>
                                     </a>
                                   </div>
@@ -1467,6 +1509,15 @@
         <br>
         <br>
         <%- include('../component/footer.ejs') %>
+        <script>
+          window.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('spinner-container').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('spinner-container').style.display = 'none';
+                document.getElementById('content-container').style.display = 'flex';
+            }, 350);
+        });
+        </script>
 
           
 

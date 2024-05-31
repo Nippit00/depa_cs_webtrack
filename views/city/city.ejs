@@ -157,7 +157,7 @@
 
 
        .custom-rectangle img {
-           max-width: 120%;
+           max-width: 80%;
            height: auto;
            border-radius: 10px;
            /* ปรับขอบรูป */
@@ -220,39 +220,56 @@
            color: #FFFFFF;
            border-radius: 5px;
        }
-       .loading-spinner {
-        display: block;
+       
+
+       #spinner-container {
+        display: none;
         position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
         z-index: 9999;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 16px solid #f3f3f3;
-        border-top: 16px solid #3498db;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #static-image {
+        width: 300px; /* ปรับขนาดให้เหมาะสมกับการแสดงผล */
+        height: auto;
+        margin-bottom: 20px; /* ปรับตำแหน่งตามความเหมาะสม */
+    }
+    
+    
+    #spinner {
+        width: 64px;
+        height: 64px;
+        border: 6px solid transparent;
+        border-top-color: #3498db;
         border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
+        animation: spin 1s linear infinite;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+    
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
       
    </style>
 </head>
 
 
 <body>
-    <% if (loading) { %>
-        <div class="loading-spinner"></div>
-        <script>
-            setTimeout(function() {
-                document.querySelector('.loading-spinner').style.display = 'none';
-            }, 1000); // 1 วินาที
-        </script>
-    <% } %>
+    <div id="spinner-container">
+        <img src="/img/favi.png" alt="Loading..." id="static-image">
+        <div id="spinner"></div>
+    </div>
     
     
 
@@ -343,8 +360,8 @@
                            <div class="custom-rectangle">
                                <div class="col-md-1">
                                    <div class="image-container">
-                                       <h5>Smart Environment</h5>
-                                       <img src="/img/s1.png" alt="Image 1">
+                                       <h5>Smart <br>Environment</h5>
+                                       <img src="/img/lo01.png" alt="Image 1">
                                        <h5>
                                            <%= smartKeyCounts.ENV %> โครงการ
                                        </h5>
@@ -352,8 +369,8 @@
                                </div>
                                <div class="col-md-1">
                                    <div class="image-container">
-                                       <h5>Smart Energy</h5>
-                                       <img src="/img/se.png" alt="Image 2">
+                                       <h5>Smart <br> Energy</h5>
+                                       <img src="/img/lo04.png" alt="Image 2">
                                        <h5>
                                            <%= smartKeyCounts.ENE%> โครงการ
                                        </h5>
@@ -362,7 +379,7 @@
                                <div class="col-md-1">
                                    <div class="image-container">
                                        <h5>Smart Economy</h5>
-                                       <img src="/img/sec.png" alt="Image 3">
+                                       <img src="/img/lo05.png" alt="Image 3">
                                        <h5>
                                            <%= smartKeyCounts.ECO%> โครงการ
                                        </h5>
@@ -371,7 +388,7 @@
                                <div class="col-md-1">
                                    <div class="image-container">
                                        <h5>Smart Mobility</h5>
-                                       <img src="/img/sm.png" alt="Image 4">
+                                       <img src="/img/lo03.png" alt="Image 4">
                                        <h5>
                                            <%= smartKeyCounts.MOB%> โครงการ
                                        </h5>
@@ -380,7 +397,7 @@
                                <div class="col-md-1">
                                    <div class="image-container">
                                        <h5>Smart Governance</h5>
-                                       <img src="/img/sco.png" alt="Image 5">
+                                       <img src="/img/lo02.png" alt="Image 5">
                                        <h5>
                                            <%= smartKeyCounts.GOV%> โครงการ
                                        </h5>
@@ -388,8 +405,8 @@
                                </div>
                                <div class="col-md-1">
                                    <div class="image-container">
-                                       <h5>Smart People</h5>
-                                       <img src="/img/sp.png" alt="Image 6">
+                                       <h5>Smart <br> People</h5>
+                                       <img src="/img/lo07.png" alt="Image 6">
                                        <h5>
                                            <%= smartKeyCounts.PEO%> โครงการ
                                        </h5>
@@ -397,8 +414,8 @@
                                </div>
                                <div class="col-md-1">
                                    <div class="image-container">
-                                       <h5>Smart Living</h5>
-                                       <img src="/img/sl.png" alt="Image 7">
+                                       <h5>Smart <br> Living</h5>
+                                       <img src="/img/lo06.png" alt="Image 7">
                                        <h5>
                                            <%= smartKeyCounts.LIV%> โครงการ
                                        </h5>
@@ -436,6 +453,14 @@
               
            <%- include('../component/footer.ejs') %>
                <script>
+                    window.addEventListener('DOMContentLoaded', (event) => {
+                        document.getElementById('spinner-container').style.display = 'flex';
+                        setTimeout(() => {
+                            document.getElementById('spinner-container').style.display = 'none';
+                            document.getElementById('content-container').style.display = 'flex';
+                        }, 450);
+                    });
+
                 
                 
                    document.addEventListener("DOMContentLoaded", function () {

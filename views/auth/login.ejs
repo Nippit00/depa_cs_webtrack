@@ -32,7 +32,7 @@
           <h4>ติดตามความคืบหน้า</h4>
           <h6 style="color:blue">ติดตามความคืบหน้าของเมืองที่ได้รับตราสัญลักษณ์</h6>
         </div>
-        <form action="/login" method="post">
+        <form id="loginForm" action="/login" method="post">
           <div class="form-group">
             <label class="label" for="username">Username</label>
             <input type="username" id="username" name="username" placeholder="username" style="border: 2px solid #C2AF76; border-radius: 50px;" required>
@@ -43,7 +43,7 @@
           </div>
           <br>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="button">SIGN IN</button>
+          <button id="signInButton" type="submit" class="button">SIGN IN</button>
         </form>
       </div>
     </div>
@@ -57,6 +57,18 @@
 
 
   <%- include('../component/footer.ejs') %>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function() {
+      var signInButton = document.getElementById('signInButton');
+      signInButton.innerText = 'Signing in...';
+      signInButton.style.opacity = '0.2';
+  
+      setTimeout(function() {
+        signInButton.innerText = 'SIGN IN';
+        signInButton.style.opacity = '1';
+      }, 400); // 2000 milliseconds = 2 seconds
+    });
+  </script>
 </body>
 
 </html>
