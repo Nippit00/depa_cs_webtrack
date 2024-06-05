@@ -51,8 +51,55 @@
     }
   </style>
 </head>
-
+<style>
+  #spinner-container {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      overflow: hidden;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  #static-image {
+      width: 300px;
+      height: auto;
+      margin-bottom: 20px;
+  }
+  
+  #progress-bar-container {
+      width: 80%;
+      background-color: #f3f3f3;
+      border-radius: 25px;
+      overflow: hidden;
+  }
+  
+  #progress-bar {
+      height: 20px;
+      width: 0%;
+      background-color: #3498db;
+      transition: width 0.4s ease;
+  }
+</style>
 <body class="bg-teal-500">
+
+  <div id="spinner-container">
+    <img id="static-image" src="/img/favi.png" alt="Loading...">
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+</div>
+
+
+
+
+
   <%- include('../include/ad-navbar.ejs') %>
   <div class="container mx-auto p-6 bg-white mt-6 rounded-lg shadow-lg">
     <div class="flex flex-col lg:flex-row lg:space-x-6">
@@ -217,6 +264,31 @@
   </div>
 
   <%- include('../include/ad-footer.ejs') %>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const progressBar = document.getElementById('progress-bar');
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+            } else {
+                width += 1;
+                progressBar.style.width = width + '%';
+            }
+        }, 50); // Increase the progress every 50ms
+    });
+
+    window.onload = function() {
+        document.getElementById('spinner-container').style.display = 'none';
+    };
+</script>
+
+
+
+
+
   <script>
     function GoEditPage() {
       const cityID = "<%= cityData.cityID %>";
@@ -499,7 +571,8 @@
             display: true,
             color: '#000',
             font: {
-              weight: 'bold'
+              weight: 'semi',
+              size: 16
             },
             formatter: (value, context) => value === 0 ? null : `${value}%`
           }

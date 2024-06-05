@@ -2,72 +2,40 @@
 <html lang="en">
 
 
+
+
 <head>
-    <script>
-        // Redirect away from the login page if user is already logged in
-        if (sessionStorage.getItem('isLoggedIn')) {
-            window.location.href = '/city'; // Redirect to city page
-        }
-        history.pushState(null, null, location.href);
-        window.onpopstate = function (event) {
-            history.go(1);
-        };
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
-    <!-- Add this in the head section -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- Add this before closing </body> tag -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
-        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-    <title>
-        <%= pageTitle %>
-    </title>
-    <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
-    <style>
-        .title-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: -300px;
-        }
-
-        .citie-text {
-            color: #C2AF76;
-            /* รหัสสีของเมืองที่คุณต้องการ */
-        }
-
-        .cities-text {
-            color: #04B2A1;
-            /* รหัสสีของเมืองที่คุณต้องการ */
-        }
-
-        .content-container {
-            width: 80%;
-            /* กำหนดความกว้างของ content-container */
-            margin: 0 auto;
-            /* ทำให้ content-container อยู่กึ่งกลางตามแนวนอน */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            /* ทำให้ text และรูปภาพอยู่กึ่งกลางตามแนวตั้ง */
-        }
-
-        .text-container,
-        .map-container {
-            flex: 1;
-        }
-
-        .text-container {
-            padding: 20px;
-            position: relative;
-            top: -150px;
-            /* ปรับค่า top ตามที่คุณต้องการ */
-
-        }
+   <script>
+       // Redirect away from the login page if user is already logged in
+       if (sessionStorage.getItem('isLoggedIn')) {
+           window.location.href = '/city'; // Redirect to city page
+       }
+       history.pushState(null, null, location.href);
+       window.onpopstate = function (event) {
+           history.go(1);
+       };
+   </script>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/css/styles.css">
+   <!-- Add this in the head section -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+   <!-- Add this before closing </body> tag -->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
+       integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+   <title>
+       <%= pageTitle %>
+   </title>
+   <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
+   <style>
+       .title-container {
+           text-align: center;
+           padding: 20px;
+           position: relative;
+           top: -300px;
+       }
 
 
        .citie-text {
@@ -75,14 +43,6 @@
            /* รหัสสีของเมืองที่คุณต้องการ */
        }
 
-        .map-container {
-            text-align: left;
-            position: relative;
-            top: -120px;
-            /* ปรับค่า top ตามที่ต้องการ */
-            margin-bottom: 200px;
-            /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
-        }
 
        .cities-text {
            color: #04B2A1;
@@ -90,23 +50,16 @@
        }
 
 
-        .custom-rectangle {
-            width: 130%;
-            /* ปรับขนาดตามที่คุณต้องการ */
-            height: 170px;
-            /* ปรับขนาดตามที่คุณต้องการ */
-            background-color: white;
-            /* สีพื้นหลังของกรอบ */
-            margin-top: 30px;
-            /* ปรับตำแหน่งตามที่คุณต้องการ */
-            border: 3px solid;
-            border-radius: 15px 50px 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            overflow: hidden;
-            box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.5);
-        }
+       .content-container {
+           width: 80%;
+           /* กำหนดความกว้างของ content-container */
+           margin: 0 auto;
+           /* ทำให้ content-container อยู่กึ่งกลางตามแนวนอน */
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           /* ทำให้ text และรูปภาพอยู่กึ่งกลางตามแนวตั้ง */
+       }
 
 
        .text-container,
@@ -127,471 +80,680 @@
 
 
 
-       .menu-text {
-           color: black;
-       }
+      .citie-text {
+          color: #C2AF76;
+          /* รหัสสีของเมืองที่คุณต้องการ */
+      }
 
 
        .map-container {
-           text-align: right;
+           text-align: left;
            position: relative;
-           top: -120px; /* ปรับค่า top ตามที่ต้องการ */
-           margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+           top: -120px;
+           /* ปรับค่า top ตามที่ต้องการ */
+           margin-bottom: 200px;
+           /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
        }
 
 
-       .text-container b.menu-text {
-           margin-bottom: 50px;
-           /* ปรับค่า margin-bottom ตามที่ต้องการ */
+      .cities-text {
+          color: #04B2A1;
+          /* รหัสสีของเมืองที่คุณต้องการ */
+      }
+
+
+
+
+       .custom-rectangle {
+           width: 130%;
+           /* ปรับขนาดตามที่คุณต้องการ */
+           height: 170px;
+           /* ปรับขนาดตามที่คุณต้องการ */
+           background-color: white;
+           /* สีพื้นหลังของกรอบ */
+           margin-top: 30px;
+           /* ปรับตำแหน่งตามที่คุณต้องการ */
+           border: 3px solid;
+           border-radius: 15px 50px 20px;
+           display: flex;
+           justify-content: space-around;
+           align-items: center;
+           overflow: hidden;
+           box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.5);
        }
 
 
-       .text-container b.menu-text {
-           margin-bottom: 50px;
+
+
+      .text-container,
+      .map-container {
+          flex: 1;
+      }
+
+
+
+
+      .text-container {
+          padding: 20px;
+          position: relative;
+          top: -150px;
+          /* ปรับค่า top ตามที่คุณต้องการ */
+
+
+
+
+      }
+
+
+
+
+
+
+
+
+      .menu-text {
+          color: black;
+      }
+
+
+
+
+      .map-container {
+          text-align: right;
+          position: relative;
+          top: -120px; /* ปรับค่า top ตามที่ต้องการ */
+          margin-bottom: 200px; /* เพิ่มขอบเขตด้านล่างเพื่อไม่ให้กระทบกับ footer */
+      }
+
+
+
+
+      .text-container b.menu-text {
+          margin-bottom: 50px;
+          /* ปรับค่า margin-bottom ตามที่ต้องการ */
+      }
+
+
+
+
+      .text-container b.menu-text {
+          margin-bottom: 50px;
+      }
+
+
+
+
+      .image-container {
+          text-align: center;
+      }
+
+
+
+
+      .custom-rectangle img {
+          max-width: 80%;
+          height: auto;
+          border-radius: 10px;
+          /* ปรับขอบรูป */
+      }
+
+
+
+
+      .image-container h5 {
+          margin-top: 10px;
+          font-size: 13px;
+          /* ปรับขนาดและรูปแบบตัวหนังสือตามที่คุณต้องการ */
+      }
+
+
+
+
+      h6 {
+          margin-left: 190px;
+          /* ปรับค่าตามที่คุณต้องการ */
+          position: relative;
+          top: 0px;
+          /* ปรับค่าตามที่คุณต้องการ */
+      }
+
+
+
+
+      .link-u {
+          margin-left: 190px;
+          /* ปรับค่าตามที่คุณต้องการ */
+          position: relative;
+          top: 0px;
+          /* ปรับค่าตามที่คุณต้องการ */
+      }
+
+
+
+
+      .my-swal-container {
+          border: 2px solid #6C757D;
+          background-color: #F8F9FA;
+          border-radius: 10px;
+          color: #495057;
+          font-family: 'Arial', sans-serif;
+      }
+
+
+
+
+      .my-swal-popup {
+          background-color: #F8F9FA;
+          border: none;
+          box-shadow: none;
+      }
+
+
+
+
+      .my-swal-title {
+          color: #04B2A1;
+      }
+
+
+
+
+      .my-swal-text {
+          color: #495057;
+      }
+
+
+
+
+      .my-swal-confirm-button {
+          background-color: #28A745;
+          color: #FFFFFF;
+          border-radius: 5px;
+      }
+     
+
+
+      #spinner-container {
+       display: flex;
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(255, 255, 255, 0.9);
+       z-index: 9999;
+       overflow: hidden;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+   }
+  
+   #static-image {
+       width: 300px;
+       height: auto;
+       margin-bottom: 20px;
+   }
+  
+   #spinner {
+       display: flex;
+       gap: 10px;
+   }
+  
+   .dot {
+       width: 16px;
+       height: 16px;
+       background-color: #3498db;
+       border-radius: 50%;
+       animation: blink 1.4s infinite both;
+   }
+  
+   .dot:nth-child(1) {
+       animation-delay: -0.32s;
+   }
+  
+   .dot:nth-child(2) {
+       animation-delay: -0.16s;
+   }
+  
+   @keyframes blink {
+       0%, 80%, 100% {
+           opacity: 0;
        }
-
-
-       .image-container {
-           text-align: center;
+       40% {
+           opacity: 1;
        }
-
-
-       .custom-rectangle img {
-           max-width: 80%;
-           height: auto;
-           border-radius: 10px;
-           /* ปรับขอบรูป */
-       }
-
-
-       .image-container h5 {
-           margin-top: 10px;
-           font-size: 13px;
-           /* ปรับขนาดและรูปแบบตัวหนังสือตามที่คุณต้องการ */
-       }
-
-
-       h6 {
-           margin-left: 190px;
-           /* ปรับค่าตามที่คุณต้องการ */
-           position: relative;
-           top: 0px;
-           /* ปรับค่าตามที่คุณต้องการ */
-       }
-
-
-       .link-u {
-           margin-left: 190px;
-           /* ปรับค่าตามที่คุณต้องการ */
-           position: relative;
-           top: 0px;
-           /* ปรับค่าตามที่คุณต้องการ */
-       }
-
-
-       .my-swal-container {
-           border: 2px solid #6C757D;
-           background-color: #F8F9FA;
-           border-radius: 10px;
-           color: #495057;
-           font-family: 'Arial', sans-serif;
-       }
-
-
-       .my-swal-popup {
-           background-color: #F8F9FA;
-           border: none;
-           box-shadow: none;
-       }
-
-
-       .my-swal-title {
-           color: #04B2A1;
-       }
-
-
-       .my-swal-text {
-           color: #495057;
-       }
-
-
-       .my-swal-confirm-button {
-           background-color: #28A745;
-           color: #FFFFFF;
-           border-radius: 5px;
-       }
-       
-
-       #spinner-container {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.9);
-        z-index: 9999;
-        overflow: hidden;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    #static-image {
-        width: 300px;
-        height: auto;
-        margin-bottom: 20px;
-    }
-    
-    #spinner {
-        display: flex;
-        gap: 10px;
-    }
-    
-    .dot {
-        width: 16px;
-        height: 16px;
-        background-color: #3498db;
-        border-radius: 50%;
-        animation: blink 1.4s infinite both;
-    }
-    
-    .dot:nth-child(1) {
-        animation-delay: -0.32s;
-    }
-    
-    .dot:nth-child(2) {
-        animation-delay: -0.16s;
-    }
-    
-    @keyframes blink {
-        0%, 80%, 100% {
-            opacity: 0;
+   }
+   .map-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
         }
-        40% {
-            opacity: 1;
+
+        .map-container img {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
         }
-    }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            max-width: 90%;
+            max-height: 90%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .popup img {
+            width: 90dvh;
+            height: auto;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+  
     
-      
-   </style>
+  </style>
 </head>
 
 
+
+
 <body>
-    <div id="spinner-container">
-        <img id="static-image" src="/img/favi.png" alt="Loading...">
-        <div id="spinner">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-    </div>
-    
-    
-
-
-
-   <%- include('../component/navbar.ejs') %>
-
-
-       <div class="banner">
-           <img src="/img/bbj.png" alt="Banner Image">
+   <div id="spinner-container">
+       <img id="static-image" src="/img/favi.png" alt="Loading...">
+       <div id="spinner">
+           <div class="dot"></div>
+           <div class="dot"></div>
+           <div class="dot"></div>
        </div>
-
-
-       <div class="title-container text-3xl">
-           <h1>แผน <span class="citie-text">Smart City </span></h1>
-       </div>
-
-
-       <%- include('../component/menu.ejs') %>
-
-
-           <div class="content-container">
-               <div class="text-container">
-                   <h4><span class="cities-text">
-                           <%= cityInfo.cityName %>
-                       </span></h4>
-                   <br>
-                   <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
-                       <%= cityInfo.cityName %>
-                           <br>
-                           <br>
-                           <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;">
-                               <%= cityInfo.province %>
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
-                               <%= cityInfo.developer %>
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
-                               <%const date=new Date(cityInfo.date); const
-                                   formattedDate=`${date.getDate().toString().padStart(2, '0' )}/${(date.getMonth() +
-                                   1).toString().padStart(2, '0' )}/${date.getFullYear().toString().substr(-2)}`;%>
-                                   <%= formattedDate %>
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">อายุของเมือง :</b> <b style="color: #04B2A1;">
-                            <%= announcementDuration.years %> ปี <%= announcementDuration.months %> เดือน <%= announcementDuration.days %> วัน  (<%=announcementDuration.totalDays %>วัน)
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">วันครบรอบ 2 ปี :</b> <b style="color: #04B2A1;">
-                            <%= announcementDuration.twoYearsLaterFormatted %>
-                            </b>
-                            <br>
-                            <br>   
-                           <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;">
-                               <%= cityInfo.executive %>
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;">
-                               <%= (cityInfo.government_investment+cityInfo.private_investment).toLocaleString() %> บาท
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;">
-                               <%= cityInfo.government_investment.toLocaleString() %> บาท
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;">
-                               <%= cityInfo.private_investment.toLocaleString() %> บาท
-                           </b>
-                           <br>
-                           <br>
-                           <b class="menu-text">ถ้าเป็นผู้ว่าราชการจังหวัด :</b> <b style="color: #04B2A1;">
-                              โชว์ city (วังจันทร์วัลเลย์)
-                           </b>
-                           
-                           <br>
-                           <br>
-                           <b class="menu-text">7 smart :</b> <b style="color: #04B2A1;"><%= Object.values(smartKeyCounts).reduce((acc, value) => acc + value, 0 -4) %>
-                            solution</b>
-                           <div class="custom-rectangle">
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart <br>Environment</h5>
-                                       <img src="/img/lo01.png" alt="Image 1">
-                                       <h5>
-                                           <%= smartKeyCounts.ENV %> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart <br> Energy</h5>
-                                       <img src="/img/lo04.png" alt="Image 2">
-                                       <h5>
-                                           <%= smartKeyCounts.ENE%> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart Economy</h5>
-                                       <img src="/img/lo05.png" alt="Image 3">
-                                       <h5>
-                                           <%= smartKeyCounts.ECO%> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart Mobility</h5>
-                                       <img src="/img/lo03.png" alt="Image 4">
-                                       <h5>
-                                           <%= smartKeyCounts.MOB%> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart Governance</h5>
-                                       <img src="/img/lo02.png" alt="Image 5">
-                                       <h5>
-                                           <%= smartKeyCounts.GOV%> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart <br> People</h5>
-                                       <img src="/img/lo07.png" alt="Image 6">
-                                       <h5>
-                                           <%= smartKeyCounts.PEO%> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                               <div class="col-md-1">
-                                   <div class="image-container">
-                                       <h5>Smart <br> Living</h5>
-                                       <img src="/img/lo06.png" alt="Image 7">
-                                       <h5>
-                                           <%= smartKeyCounts.LIV%> โครงการ
-                                       </h5>
-                                   </div>
-                               </div>
-                           </div>
-               </div>
-               <div class="map-container">
-                   <!-- <iframe width="600" height="450" frameborder="0" style="border:0"
-                       src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB_QQj5dFvATApuqEbGEt1i__KatMvU80o&q=<%=cityInfo.LAT%>,<%=cityInfo.LNG%>&zoom=5"
-                       allowfullscreen>
-                   </iframe> -->
-        <img src="/cityPic/<%= cityInfo.cityID %>.png">
-                   
+   </div>
+  
+  
 
 
 
 
-               </div>
-           </div>
-           <h6 class="ml-48 relative top-[-150px]"><span class="text-blue-500">Download</span>
-               เอกสารรายละเอียดของแผนเมือง</h6>
-               <% datafile.forEach(data => {
-                if (data.fileID === "F1") { %>
-                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">1.ข้อสรุปผู้บริหาร</a> <br>
-                <% } else if (data.fileID === "F2") { %>
-                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a> <br>
-                <% } else if (data.fileID === "F3") { %>
-                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a> <br>
-                <% } else { %>
-                    <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative top-[-100px]">4.อื่นๆ</a>
-                <% }
-            }) %>
-            
-              
-           <%- include('../component/footer.ejs') %>
-               <script>
-                window.onload = function() {
-                    document.getElementById('spinner-container').style.display = 'none';
-                };
-        
-                window.addEventListener('DOMContentLoaded', (event) => {
-                    document.getElementById('spinner-container').style.display = 'flex';
-                });
 
-                
-                
-                   document.addEventListener("DOMContentLoaded", function () {
-                        let targetDate = new Date(2027, 11, 2); // เวลาที่ต้องการคำนวณถึง
-                        let currentDate = new Date(); // เวลาปัจจุบัน
-                       let timeDiff = Math.abs(targetDate.getTime() - currentDate.getTime());
-                        let remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // หาจำนวนวันที่เหลือ
 
-                        let remainingYears = Math.floor(remainingDays / 365.25); // หาจำนวนปีที่เหลือ
-                        let remainingDaysInYear = remainingDays % 365.25; // หาจำนวนวันที่เหลือในปี
+  <%- include('../component/navbar.ejs') %>
 
-                        let remainingMonths = Math.floor(remainingDaysInYear / 30); // หาจำนวนเดือนที่เหลือในปี
-                        let remainingDaysInMonth = Math.floor(remainingDaysInYear % 30); // หาจำนวนวันที่เหลือในเดือน
 
+
+
+      <div class="banner">
+          <img src="/img/bbj.png" alt="Banner Image">
+      </div>
+
+
+
+
+      <div class="title-container text-3xl">
+          <h1>แผน <span class="citie-text">Smart City </span></h1>
+      </div>
+
+
+
+
+      <%- include('../component/menu.ejs') %>
+
+
+
+
+          <div class="content-container">
+              <div class="text-container">
+                  <h4><span class="cities-text">
+                          <%= cityInfo.cityName %>
+                      </span></h4>
+                  <br>
+                  <b class="menu-text">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
+                      <%= cityInfo.cityName %>
+                          <br>
+                          <br>
+                          <b class="menu-text">จังหวัด :</b> <b style="color: #04B2A1;">
+                              <%= cityInfo.province %>
+                          </b>
+                          <br>
+                          <br>
+                          <b class="menu-text">ผู้พัฒนาเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
+                              <%= cityInfo.developer %>
+                          </b>
+                          <br>
+                          <br>
+                          <b class="menu-text">ประกาศเมืองอัจฉริยะ :</b> <b style="color: #04B2A1;">
+                            <% const date = new Date(cityInfo.date);
+                               const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().padStart(4, '0')}`;
+                               %>
+                               <%= formattedDate %>
+                        </b>
                         
-                       let currentDay = currentDate.getDate();
-                       let currentMonth = currentDate.getMonth() + 1;
-                       let currentYear = currentDate.getFullYear();
-                       let event = false
+                          <br>
+                          <br>
+                          <b class="menu-text">อายุของเมือง :</b> <b style="color: #04B2A1;">
+                           <%= announcementDuration.years %> ปี <%= announcementDuration.months %> เดือน <%= announcementDuration.days %> วัน  (<%=announcementDuration.totalDays %>วัน)
+                          </b>
+                          <br>
+                          <br>
+                          <b class="menu-text">วันครบรอบ 2 ปี :</b> <b style="color: #04B2A1;">
+                           <%= announcementDuration.twoYearsLaterFormatted %>
+                           </b>
+                           <br>
+                           <br>  
+                          <b class="menu-text">ผู้บริหารของหน่วยงาน :</b> <b style="color: #04B2A1;">
+                              <%= cityInfo.executive %>
+                          </b>
+                          <br>
+                          <br>
+                          <b class="menu-text">มูลค่าการลงทุน :</b> <b style="color: #04B2A1;">
+                              <%= (cityInfo.government_investment+cityInfo.private_investment).toLocaleString() %> บาท
+                          </b>
+                          <br>
+                          <br>
+                          <b class="menu-text">มูลค่าการลงทุนภาครัฐ :</b> <b style="color: #04B2A1;">
+                              <%= cityInfo.government_investment.toLocaleString() %> บาท
+                          </b>
+                          <br>
+                          <br>
+                          <b class="menu-text">มูลค่าการลงทุนภาคเอกชน :</b> <b style="color: #04B2A1;">
+                              <%= cityInfo.private_investment.toLocaleString() %> บาท
+                          </b>
+                          <br>
+                          <br>
+                          <% if(province.length > 0) { %>
+                           <div style="display: flex;">
+                           <div><b class="menu-text">โครงการในจังหวัด :</b></div>
+                           <div>
+                               <% if (cityInfo.executive && cityInfo.executive.includes('ผู้ว่าราชการจังหวัด')) { %>
+                                   <% province.forEach(item => { %>
+                                       <div >
+                                           <b ><%= item.cityName %></b>
+                                       </div>
+                                   <% }) %>
+                               <% } %>
+                           </div>
+                           </div>
+                       <% } %>
+                         
+                          <br>
+                          <br>
+                          <b class="menu-text">7 smart :</b> <b style="color: #04B2A1;"><%= Object.values(smartKeyCounts).reduce((acc, value) => acc + value, 0 -4) %>
+                           solution</b>
+                          <div class="custom-rectangle">
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart <br>Environment</h5>
+                                      <img src="/img/lo01.png" alt="Image 1">
+                                      <h5>
+                                          <%= smartKeyCounts.ENV %> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart <br> Energy</h5>
+                                      <img src="/img/lo04.png" alt="Image 2">
+                                      <h5>
+                                          <%= smartKeyCounts.ENE%> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart Economy</h5>
+                                      <img src="/img/lo05.png" alt="Image 3">
+                                      <h5>
+                                          <%= smartKeyCounts.ECO%> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart Mobility</h5>
+                                      <img src="/img/lo03.png" alt="Image 4">
+                                      <h5>
+                                          <%= smartKeyCounts.MOB%> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart Governance</h5>
+                                      <img src="/img/lo02.png" alt="Image 5">
+                                      <h5>
+                                          <%= smartKeyCounts.GOV%> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart <br> People</h5>
+                                      <img src="/img/lo07.png" alt="Image 6">
+                                      <h5>
+                                          <%= smartKeyCounts.PEO%> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1">
+                                  <div class="image-container">
+                                      <h5>Smart <br> Living</h5>
+                                      <img src="/img/lo06.png" alt="Image 7">
+                                      <h5>
+                                          <%= smartKeyCounts.LIV%> โครงการ
+                                      </h5>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <br>
+                          
+                            <h6 class="ml-48 relative"><span class="text-blue-500">Download</span>
+                                เอกสารรายละเอียดของแผนเมือง
+                              </h6>
+                              <% datafile.forEach(data => { %>
+                                <% if (data.fileID === "F1") { %>
+                                  <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative ">1.ข้อสรุปผู้บริหาร</a><br>
+                                <% } else if (data.fileID === "F2") { %>
+                                  <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative  ">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a><br>
+                                <% } else if (data.fileID === "F3") { %>
+                                  <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative  ">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a><br>
+                                <% } else { %>
+                                  <a style="margin-left: 190px;" href="<%= data.link %>" target="_blank" class="ml-48 relative ">4.อื่นๆ</a><br>
+                                <% } %>
+                              <% }) %>
+                          
+              </div>
+              <div class="map-container">
+                <img src="/cityPic/<%= cityInfo.cityID %>.png" id="mapImage" >
+            </div>
+        
+            <div class="popup-overlay" id="popupOverlay"></div>
+            <div class="popup" id="popup">
+                <img src="/cityPic/<%= cityInfo.cityID %>.png" alt="Popup Image">
+            </div>
+          </div>
+          
+          
+          
+            
+          <%- include('../component/footer.ejs') %>
+              <script>
+               window.onload = function() {
+                   document.getElementById('spinner-container').style.display = 'none';
+               };
+      
+               window.addEventListener('DOMContentLoaded', (event) => {
+                   document.getElementById('spinner-container').style.display = 'flex';
+               });
 
 
-                       let form1StartDay = 23;
-                       let form1EndDay = 30;
-                       let form1StartMonth = 5;
-                       let form1EndMonth = 5;
-                       let form1Year = 2025;                         
+              
+              
+                  document.addEventListener("DOMContentLoaded", function () {
+                       let targetDate = new Date(2027, 11, 2); // เวลาที่ต้องการคำนวณถึง
+                       let currentDate = new Date(); // เวลาปัจจุบัน
+                      let timeDiff = Math.abs(targetDate.getTime() - currentDate.getTime());
+                       let remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // หาจำนวนวันที่เหลือ
 
 
-                       let form2StartDay = 11;
-                       let form2EndDay = 15;
-                       let form2StartMonth = 9;
-                       let form2EndMonth = 9;
-                       let form2Year = 2026;
+                       let remainingYears = Math.floor(remainingDays / 365.25); // หาจำนวนปีที่เหลือ
+                       let remainingDaysInYear = remainingDays % 365.25; // หาจำนวนวันที่เหลือในปี
 
 
-                       let reportStartDay = 2;
-                       let reportEndDay = 5;
-                       let reportStartMonth = 12;
-                       let reportEndMonth = 12;
-                       let reportYear = 2027;
+                       let remainingMonths = Math.floor(remainingDaysInYear / 30); // หาจำนวนเดือนที่เหลือในปี
+                       let remainingDaysInMonth = Math.floor(remainingDaysInYear % 30); // หาจำนวนวันที่เหลือในเดือน
 
 
-                       let message = '';
+                      
+                      let currentDay = currentDate.getDate();
+                      let currentMonth = currentDate.getMonth() + 1;
+                      let currentYear = currentDate.getFullYear();
+                      let event = false
 
 
-                       if (currentYear === form1Year && currentMonth === form1StartMonth && currentDay >= form1StartDay && currentDay <= form1EndDay) {
-                           message = '<br><span class="highlight">กรอกแบบฟอร์มครั้งที่ 1 ช่วงเวลา 3-5 พ.ค. 2024</span><br><br><br>';
-                           event = true;
-                       } else {
-                           message = '<br><span>กรอกแบบฟอร์มครั้งที่ 1 ช่วงเวลา 3-5 พ.ค. 2024</span><br><br><br>';
-                       }
 
 
-                           if (currentYear === form2Year && currentMonth === form2StartMonth && currentDay >= form2StartDay && currentDay <= form2EndDay) {
-                           message += '<br><span class="highlight">กรอกแบบฟอร์มครั้งที่ 2 ช่วงเวลา 11-15 ก.ย. 2026</span><br><br><br>';
-                           event = true;
-                           } else {
-                           message += '<br><span>กรอกแบบฟอร์มครั้งที่ 2 ช่วงเวลา 11-15 ก.ย. 2026</span><br><br><br>';
-                           }
+                      let form1StartDay = 23;
+                      let form1EndDay = 30;
+                      let form1StartMonth = 5;
+                      let form1EndMonth = 5;
+                      let form1Year = 2025;                        
 
 
-                           if (
-                           (currentYear === reportYear && currentMonth === reportStartMonth && currentDay >= reportStartDay && currentDay <= reportEndDay) ||
-                           (currentYear === reportYear && currentMonth === reportEndMonth && currentDay <= reportEndDay)
-                           ) {
-                           message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ ช่วงเวลา 2-5 ธ.ค. 2027</span><br><br>';
-                           event = true;
-                           }else if (event === true) {
-                            message += '<br><span>คุณต้องอัพโหลดไฟล์รายงานครบ 2 ปี ในอีก ';
-                            if (remainingYears > 0) {
-                              message += remainingYears + ' ปี ';
-                            }
-                            if (remainingMonths > 0) {
-                              message += remainingMonths + ' เดือน ';
-                            }
-                            message += remainingDaysInMonth + ' วัน</span><br><br>';
+
+
+                      let form2StartDay = 11;
+                      let form2EndDay = 15;
+                      let form2StartMonth = 9;
+                      let form2EndMonth = 9;
+                      let form2Year = 2026;
+
+
+
+
+                      let reportStartDay = 2;
+                      let reportEndDay = 5;
+                      let reportStartMonth = 12;
+                      let reportEndMonth = 12;
+                      let reportYear = 2027;
+
+
+
+
+                      let message = '';
+
+
+
+
+                      if (currentYear === form1Year && currentMonth === form1StartMonth && currentDay >= form1StartDay && currentDay <= form1EndDay) {
+                          message = '<br><span class="highlight">กรอกแบบฟอร์มครั้งที่ 1 ช่วงเวลา 3-5 พ.ค. 2024</span><br><br><br>';
+                          event = true;
+                      } else {
+                          message = '<br><span>กรอกแบบฟอร์มครั้งที่ 1 ช่วงเวลา 3-5 พ.ค. 2024</span><br><br><br>';
+                      }
+
+
+
+
+                          if (currentYear === form2Year && currentMonth === form2StartMonth && currentDay >= form2StartDay && currentDay <= form2EndDay) {
+                          message += '<br><span class="highlight">กรอกแบบฟอร์มครั้งที่ 2 ช่วงเวลา 11-15 ก.ย. 2026</span><br><br><br>';
+                          event = true;
                           } else {
-                            message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ 2 ปี ในอีก ';
-                            if (remainingYears > 0) {
-                              message += remainingYears + ' ปี ';
-                            }
-                            if (remainingMonths > 0) {
-                              message += remainingMonths + ' เดือน ';
-                            }
-                            message += remainingDaysInMonth + ' วัน</span><br><br>';
+                          message += '<br><span>กรอกแบบฟอร์มครั้งที่ 2 ช่วงเวลา 11-15 ก.ย. 2026</span><br><br><br>';
                           }
 
 
-                       Swal.fire({
-                           title: 'ช่วงเวลากรอกฟอร์ม / อัพโหลดไฟล์',
-                           html: '<style>.highlight { color: red; }</style>' +
-                             message,
-                           imageUrl: "/img/favi.png",
-                           imageWidth: 100,
-                           imageHeight: 100,
-                           imageAlt: "Custom image",
-                           confirmButtonText: 'OK',
-                           customClass: {
-                             container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
-                             popup: 'bg-[#F8F9FA] border-none shadow-none',
-                             title: 'text-[#04B2A1]',
-                             text: 'text-[#495057]',
-                             confirmButton: 'bg-green-600 text-white rounded-md'
+
+
+                          if (
+                          (currentYear === reportYear && currentMonth === reportStartMonth && currentDay >= reportStartDay && currentDay <= reportEndDay) ||
+                          (currentYear === reportYear && currentMonth === reportEndMonth && currentDay <= reportEndDay)
+                          ) {
+                          message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ ช่วงเวลา 2-5 ธ.ค. 2027</span><br><br>';
+                          event = true;
+                          }else if (event === true) {
+                           message += '<br><span>คุณต้องอัพโหลดไฟล์รายงานครบ 2 ปี ในอีก ';
+                           if (remainingYears > 0) {
+                             message += remainingYears + ' ปี ';
                            }
-                         });
-                   });
+                           if (remainingMonths > 0) {
+                             message += remainingMonths + ' เดือน ';
+                           }
+                           message += remainingDaysInMonth + ' วัน</span><br><br>';
+                         } else {
+                           message += '<br><span class="highlight">คุณต้องอัพโหลดไฟล์รายงานครบ 2 ปี ในอีก ';
+                           if (remainingYears > 0) {
+                             message += remainingYears + ' ปี ';
+                           }
+                           if (remainingMonths > 0) {
+                             message += remainingMonths + ' เดือน ';
+                           }
+                           message += remainingDaysInMonth + ' วัน</span><br><br>';
+                         }
 
 
-               </script>
-               
+
+
+                      Swal.fire({
+                          title: 'ช่วงเวลากรอกฟอร์ม / อัพโหลดไฟล์',
+                          html: '<style>.highlight { color: red; }</style>' +
+                            message,
+                          imageUrl: "/img/favi.png",
+                          imageWidth: 100,
+                          imageHeight: 100,
+                          imageAlt: "Custom image",
+                          confirmButtonText: 'OK',
+                          customClass: {
+                            container: 'bg-[#F8F9FA] border-[#6C757D] border-2 rounded-md text-[#495057] font-Arial',
+                            popup: 'bg-[#F8F9FA] border-none shadow-none',
+                            title: 'text-[#04B2A1]',
+                            text: 'text-[#495057]',
+                            confirmButton: 'bg-green-600 text-white rounded-md'
+                          }
+                        });
+                  });
+
+
+
+
+              </script>
+             
 </body>
+<script>
+    document.getElementById('mapImage').addEventListener('click', function() {
+        document.getElementById('popup').style.display = 'block';
+        document.getElementById('popupOverlay').style.display = 'block';
+    });
+
+    document.getElementById('popupOverlay').addEventListener('click', function() {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('popupOverlay').style.display = 'none';
+    });
+</script>
+
 
 
 </html>
+
+
+
+
+
+
+
+
+
 
 
 

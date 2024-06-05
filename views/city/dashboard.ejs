@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <title>Dashboard</title>
   <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -75,6 +78,36 @@
       margin-right: auto;
       margin-top: -500px;
       margin-bottom: 250px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: normal;
+      margin-bottom: 16px;
+    }
+
+    .chart-container {
+      width: 100%;
+      height: 300px;
+      /* Increase height for better visualization */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .chart-center-text {
+      position: absolute;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #000;
     }
 
     #spinner-container {
@@ -159,22 +192,55 @@
 
   <div class="content-container">
     <div class="text-container">
-      <h4><span class="cities-text">เมืองอัจฉริยะ</span></h4>
+      <h4 class="flex justify-center mb-5">
+        <span class="cities-text text-2xl"><%= data[0].cityName %></span>
+      </h4>      
+      <div class="shadow-md border-[1px] rounded-lg py-5">
+    
+        <!-- กราฟ  -->
+        <div class="">
+          <div class="grid grid-cols-2 gap-4">
+            <!-- ความคืบหน้าโครงการ -->
+            <div class="text-center">
+              <h3 class="section-title">ความคืบหน้าของโครงการตามแผน</h3>
+              <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+              </div>
+              <div class="chart-container">
+                <canvas id="avgprogress"></canvas>
+              </div>
+            </div>
+            <!-- ค่าเฉลี่ยความสำเร็จ -->
+            <div class="text-center">
+              <h3 class="section-title">ค่าเฉลี่ย % ของความสำเร็จ</h3>
+              <div class="chart-container">
+                <canvas id="successChart"></canvas>
+              </div>
+              <div class="chart-container">
+                <canvas id="stackedBarChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shadow-md border-[1px] rounded-lg py-5 mt-2 ">
+        <h3 class="section-title" style="text-align: center;">ปัญหาและอุปสรรค</h3>
+        <div class="chart-container">
+          <canvas id="problemsChart"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="map-container md:w-1/2 p-4">
-    <img src="/cityPic/<%= data[0].cityID %>.png" alt="City Map" class="w-fu h-auto rounded-md shadow-lg">
-  </div>
+
 </div>
 
   <!-- Chart -->
   <!-- <canvas id="myChart" width="400" height="200"></canvas> -->
-  <h1>dashboard จาก Admin รอบล่าสุด</h1>
 
   <p style="text-align: center;">*** โปรดอ่าน:
     <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: red;"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -
-    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: yellow;"></span></span> หมายถึงฉบับล่าง -
+    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: yellow;"></span></span> หมายถึงฉบับร่าง -
     <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: green;"></span></span> หมายถึง ดำเนินการแล้ว ***
   </p>
 
@@ -576,41 +642,263 @@
   </script>
 
   <script>
-    var ctx = document.getElementById("myChart").getContext("2d");
-    var myChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["ต.1", "ต.2", "ต.3", "ต.4"], // ตัวอย่าง label
-        datasets: [{
-          label: "จำนวนประชากร",
-          data: [150, 200, 120, 180], // ตัวอย่างข้อมูล
-          backgroundColor: "rgba(75, 192, 192, 0.2)", // สีพื้นหลัง
-          borderColor: "rgba(75, 192, 192, 1)", // สีขอบ
-          borderWidth: 1, // ความหนาขอบ
-        }, ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+    const progressCtx = document.getElementById('progressChart').getContext('2d');
+    const rounded = <%- rounded %>;
+    let currentRound = Object.keys(rounded).length;
+    let initialRound = rounded[currentRound];
 
-    function openTab(tabName) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+const progressChart = new Chart(progressCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['ยังไม่ดำเนินการ', 'ดำเนินการแล้ว'],
+    datasets: [{
+      data: [100 - initialRound.progress, initialRound.progress],
+      backgroundColor: ['#eeeeee', '#00f0d8'],
+      borderWidth: 6,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    plugins: {
+      datalabels: {
+        formatter: (value, context) => context.dataIndex === 1 ? `${value}%` : '',
+        color: '#fff',
+        font: {
+          weight: 'bold',
+          size: 16
+        },
+        align: 'center',
+        anchor: 'center'
+      },
+      tooltip: {
+        callbacks: {
+          label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.raw}%`
+        }
       }
-      tablinks = document.getElementsByClassName("tablink");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
+    },
+    centerText: {
+      display: true,
+      text: `${initialRound.progress}%`
+    },
+    cutout: '50%',
+    maintainAspectRatio: false,
+  },
+  plugins: [{
+    id: 'centerText',
+    beforeDraw: chart => {
+      if (chart.options.centerText.display) {
+        const ctx = chart.ctx;
+        const centerConfig = chart.options.centerText;
+        const fontSize = (chart.height / 180).toFixed(2);
+        ctx.font = `bold ${fontSize}em sans-serif`;
+        ctx.textBaseline = 'middle';
+        const text = centerConfig.text;
+        const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
+        const textY = chart.height / 2;
+        ctx.fillStyle = '#000';
+        ctx.fillText(text, textX, textY);
       }
-      document.getElementById(tabName).style.display = "block";
-      event.currentTarget.classList.add("active");
     }
+  }]
+});
+
+
+// กราฟค่าเฉลี่ยความสำเร็จ
+
+
+const successCtx = document.getElementById('successChart').getContext('2d');
+const totalProjects = initialRound.count;
+const successProjects = initialRound.success.reduce((a, b) => a + b, 0);
+const unsuccessfulProjects = totalProjects - successProjects;
+
+const successChart = new Chart(successCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
+    datasets: [{
+      data: [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100],
+      backgroundColor: ['#eeeeee', '#FFCE56'],
+      borderWidth: 6,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    plugins: {
+      datalabels: {
+        formatter: (value) => `${value.toFixed(0)}%`,
+        color: '#fff',
+        font: {
+          weight: 'bold'
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw.toFixed(0)}%`
+        }
+      }
+    },
+    cutout: '50%',
+    maintainAspectRatio: false,
+    centerText: {
+      display: true,
+      text: `${((successProjects / totalProjects) * 100).toFixed(0)}%`
+    }
+  },
+  plugins: [{
+    id: 'centerText',
+    beforeDraw: (chart) => {
+      if (chart.options.centerText.display) {
+        const ctx = chart.ctx;
+        const centerConfig = chart.options.centerText;
+        const fontSize = (chart.height / 180).toFixed(2);
+        ctx.font = `bold ${fontSize}em sans-serif`;
+        ctx.textBaseline = 'middle';
+        const text = centerConfig.text;
+        const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
+        const textY = chart.height / 2;
+        ctx.fillStyle = '#000';
+        ctx.fillText(text, textX, textY);
+      }
+    }
+  }]
+});
+
+
+const problemsCtx = document.getElementById('problemsChart').getContext('2d');
+const problemData = initialRound.problem;
+
+const problemsChart = new Chart(problemsCtx, {
+  type: 'bar',
+  data: {
+    labels: problemData.map(p => p.problem),
+    datasets: [{
+      label: '% ของปัญหา',
+      data: problemData.map(problem => problem.percentage),
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        display: false // This will hide the legend
+      },
+      datalabels: {
+        display: false // This will hide the data labels
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+        ticks: {
+          callback: (value) => `${value}%`
+        }
+      }
+    }
+  }
+});
+
+
+
+
+const stackedBarCtx = document.getElementById('stackedBarChart').getContext('2d');
+const stackedBarChart = new Chart(stackedBarCtx, {
+  type: 'bar',
+  data: {
+    labels: Object.keys(initialRound.smartkeycount),
+    datasets: [{
+        label: 'โครงการที่สำเร็จแล้ว',
+        data: Object.values(initialRound.success),
+        backgroundColor: '#FFCE56'
+      },
+      {
+        label: 'โครงการที่ยังไม่สำเร็จ',
+        data: Object.values(initialRound.unsuccess),
+        backgroundColor: '#cccccc'
+      }
+    ]
+  },
+  options: {
+    scales: {
+      x: {
+        stacked: true
+      },
+      y: {
+        stacked: true,
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom'
+      },
+      tooltip: {
+        callbacks: {
+          label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}`
+        }
+      },
+      datalabels: {
+        display: true,
+        color: '#000',
+        font: {
+          weight: 'bold'
+        },
+        formatter: (value, context) => value === 0 ? null : value
+      }
+    }
+  },
+  plugins: [ChartDataLabels]
+});
+// console.log(initialRound.averageProgressPerSmart)
+const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
+const avgProgressChart = new Chart(avgProgressCtx, {
+  type: 'bar',
+  data: {
+    labels: Object.keys(initialRound.averageProgressPerSmart),
+    datasets: [{
+      label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
+
+      data: Object.values(initialRound.averageProgressPerSmart),
+      backgroundColor: '#00f0d8'
+    }]
+  },
+  options: {
+    scales: {
+      x: {
+        stacked: true
+      },
+      y: {
+        beginAtZero: true,
+        max: 100,
+        ticks: {
+          callback: value => `${value}%`
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom'
+      },
+      tooltip: {
+        callbacks: {
+          label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}%`
+        }
+      },
+      datalabels: {
+        display: true,
+        color: '#000',
+        font: {
+          weight: 'bold'
+        },
+        formatter: (value, context) => value === 0 ? null : `${value}%`
+      }
+    }
+  },
+  plugins: [ChartDataLabels]
+});
+
   </script>
 
   <%- include('../component/footer.ejs') %>

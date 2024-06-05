@@ -28,10 +28,6 @@ exports.getAdPage = (req, res, next) => {
   });
 };
 
-
-
-
-
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
   // const CityID = req.params.CityID;
@@ -278,9 +274,6 @@ exports.getAdCityDataP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
-
-
-
 
 exports.getAddCity = (req, res, next) => {
   res.render("admin/ad-city/ad-addCity", {
@@ -667,7 +660,6 @@ exports.postkpi = (req, res, next) => {
   // res.status(200).json({ message: 'อัปเดตข้อมูล KPI สำเร็จ' });
   res.redirect('/admin/city');
 };
-
 
 exports.deleteSolution = (req, res, next) => {
   // console.log(req.params);

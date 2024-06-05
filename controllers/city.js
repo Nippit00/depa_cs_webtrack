@@ -12,10 +12,10 @@ exports.GetCity = (req, res) => {
     "SELECT `smartKey` FROM `solution` WHERE cityID=? ";
   const qCityFile =
     "SELECT * FROM cityfile WHERE cityfile.cityID = ?";
+  const qProvince="SELECT city_home.cityName FROM `citydata`JOIN `city_home` ON `citydata`.`cityID` = `city_home`.`cityID`WHERE `citydata`.`province` = ? AND `citydata`.`cityID` != ?;"
   try {
     db.query(qCityData, [cityID], (err, cityData) => {
       if (err) return res.status(500).json(err);
-
       const announcementDate = moment(cityData[0].date);
       const currentDate = moment();
       const duration = moment.duration(currentDate.diff(announcementDate));
@@ -40,6 +40,8 @@ exports.GetCity = (req, res) => {
         db.query(qCityFile, [cityID], (err, cityFileData) => {
           if (err) return res.status(500).json(err);
 
+          db.query(qProvince,[cityData[0].province,cityData[0].cityID],(err,province)=>{
+          if (err) return res.status(500).json(err);
           res.render("city/city", {
             req,
             pageTitle: cityData[0].cityname,
@@ -49,7 +51,12 @@ exports.GetCity = (req, res) => {
             smartKeyCounts: smartKeyCounts,// ส่งจำนวน smart key แต่ละตัวในออบเจกต์ไปยัง view
             datafile: cityFileData,
             announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted },
+            province:province
           });
+          })
+              
+
+
         });
       });
     });
@@ -63,31 +70,221 @@ exports.GetCity = (req, res) => {
 
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN citydata ON citydata.cityID = solution.cityID WHERE solution.cityID = ? GROUP BY solution.solutionID";
-  const qGetvalue = "SELECT * FROM anssolution JOIN solution ON anssolution.solutionID = solution.solutionID WHERE anssolution.solutionID = ?"
+  const q = `
+    SELECT * FROM solution
+    JOIN smart ON solution.smartKey = smart.smartKey
+    JOIN kpi ON kpi.solutionID = solution.solutionID
+    JOIN citydata ON citydata.cityID = solution.cityID
+    JOIN city_home ON city_home.cityID = solution.cityID
+    WHERE solution.cityID = ?
+    GROUP BY solution.solutionID;
+  `;
+  const qGetvalue = `
+    SELECT * FROM anssolution
+    JOIN solution ON anssolution.solutionID = solution.solutionID
+    WHERE solution.cityID = ?;
+  `;
+  const qGetprogress = `
+    SELECT * FROM solution
+    JOIN anssolution ON solution.solutionID = anssolution.solutionID
+    WHERE solution.cityID = ?;
+  `;
+  const qSmartKey = `
+  SELECT smartKey,solutionName FROM solution 
+  WHERE cityID=? `;
+
   try {
     db.query(q, [cityID], (err, data) => {
       if (err) return res.status(500).json(err);
 
-      const dataUpdate = data.map(row => {
+      const dataUpdate = data.map((row) => {
         return {
           ...row,
-          status: JSON.parse(row.status)
+          status: JSON.parse(row.status),
         };
       });
 
       db.query(qGetvalue, [cityID], (err, value) => {
-        // console.log(value)
         if (err) return res.status(500).json(err);
-        res.render("city/dashboard", {
-          req,
-          pageTitle: "Dashboard",
-          path: "/city",
-          solutionInfo: JSON.stringify(dataUpdate),
-          data: data,
-          valueInfo: value,
+
+        db.query(qGetprogress, [cityID], (err, dataProgress) => {
+          if (err) return res.status(500).json(err);
+
+          db.query(qSmartKey,[cityID],(err,dataSmartkey)=>{
+            if (err) return res.status(500).json(err);
+
+            if (dataProgress.length === 0) {
+              const rounded = {};
+              const smartKeyCounts = {};
+              const problemPercentages = [];
+              const successfulProjectsData = Array(8).fill(0);
+              let unsuccessfulProjectsData = [];
+  
+              const averageProgressPerSmartKey = {
+                ENE: "0",
+                ENV: "0",
+                GOV: "0",
+                ECO: "0",
+                LIV: "0",
+                MOB: "0",
+                CDP: "0",
+              };
+  
+              dataSmartkey.forEach((row) => {
+                if (smartKeyCounts[row.smartKey]) {
+                  smartKeyCounts[row.smartKey]++;
+                } else {
+                  smartKeyCounts[row.smartKey] = 1;
+                }
+              });
+              const count = Object.values(smartKeyCounts).reduce(
+                (acc, value) => acc + value,
+                0
+              );
+  
+              unsuccessfulProjectsData = Object.values(smartKeyCounts);
+  
+              rounded["1"] = {
+                count: count,
+                complete: [],
+                progress: 0,
+                success: successfulProjectsData,
+                unsuccess: unsuccessfulProjectsData,
+                problem: problemPercentages,
+                smartkeycount: smartKeyCounts,
+                averageProgressPerSmart: averageProgressPerSmartKey,
+              };
+              
+  
+              res.render("city/dashboard", {
+                req,
+                pageTitle: "Dashboard",
+                path: "/city",
+                solutionInfo: JSON.stringify(dataUpdate),
+                data: data,
+                valueInfo: value,
+                rounded: JSON.stringify(rounded),
+              });
+              return;
+            }
+  
+            const maxRound = Math.max(...dataProgress.map((row) => row.Round));
+            const rounded = {};
+  
+            for (let round = 1; round <= maxRound; round++) {
+              const roundData = dataProgress.filter((row) => row.Round == round);
+              const smartKeyCounts = {};
+              const projectSuccess = [];
+              const successfulProjectsData = Array(8).fill(0);
+              let unsuccessfulProjectsData = Array(8).fill(0);
+  
+              const validProblems = dataProgress.filter(
+                (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round
+              );
+              const totalProblems = validProblems.length;
+              const problemCounts = {};
+  
+              validProblems.forEach((row) => {
+                if (problemCounts[row.ans]) {
+                  problemCounts[row.ans]++;
+                } else {
+                  problemCounts[row.ans] = 1;
+                }
+              });
+  
+              const problemPercentages = Object.keys(problemCounts).map((key) => {
+                return {
+                  problem: key,
+                  percentage: ((problemCounts[key] / totalProblems) * 100).toFixed(2),
+                };
+              });
+  
+              dataSmartkey.forEach((row) => {
+                if (smartKeyCounts[row.smartKey]) {
+                  smartKeyCounts[row.smartKey]++;
+                } else {
+                  smartKeyCounts[row.smartKey] = 1;
+                }
+              });
+  
+              const count = Object.values(smartKeyCounts).reduce(
+                (acc, value) => acc + value,
+                0
+              );
+  
+              const smartKeyProgress = {};
+              const smartKeyCountsForAverage = {};
+              let totalSum = 0;
+              let totalCount = 0;
+  
+              roundData.forEach((item) => {
+                if (item.questionID == 2) {
+                  item.ans = parseInt(item.ans, 10);
+                  totalSum += item.ans;
+                  totalCount += 1;
+  
+                  if (smartKeyProgress[item.smartKey]) {
+                    smartKeyProgress[item.smartKey] += item.ans;
+                    smartKeyCountsForAverage[item.smartKey] += 1;
+                  } else {
+                    smartKeyProgress[item.smartKey] = item.ans;
+                    smartKeyCountsForAverage[item.smartKey] = 1;
+                  }
+  
+                  if (item.ans == 100) {
+                    projectSuccess.push(item.solutionName);
+                    successfulProjectsData[
+                      Object.keys(smartKeyCounts).indexOf(item.smartKey)
+                    ]++;
+                  }
+                }
+              });
+  
+              const smartKeyCountsValues = Object.values(smartKeyCounts);
+              unsuccessfulProjectsData = smartKeyCountsValues.map(
+                (value, index) => value - successfulProjectsData[index]
+              );
+  
+              const averageProgressPerSmartKey = {
+                ENE: "0",
+                ENV: "0",
+                GOV: "0",
+                ECO: "0",
+                LIV: "0",
+                MOB: "0",
+                CDP: "0",
+              };
+  
+              Object.keys(smartKeyProgress).forEach((key) => {
+                averageProgressPerSmartKey[key] = (
+                  smartKeyProgress[key] / smartKeyCountsForAverage[key]
+                ).toFixed(2);
+              });
+  
+              const totalAverage = (totalSum / count).toFixed(2);
+              rounded[round] = {
+                count: count,
+                complete: projectSuccess,
+                progress: totalAverage,
+                success: successfulProjectsData,
+                unsuccess: unsuccessfulProjectsData,
+                problem: problemPercentages,
+                smartkeycount: smartKeyCounts,
+                averageProgressPerSmart: averageProgressPerSmartKey,
+              };
+            }
+            res.render("city/dashboard", {
+              req,
+              pageTitle: "Dashboard",
+              path: "/city",
+              solutionInfo: JSON.stringify(dataUpdate),
+              data: data,
+              valueInfo: value,
+              rounded: JSON.stringify(rounded),
+            });
+          })
         });
-      })
+      });
     });
   } catch (err) {
     console.log(err);

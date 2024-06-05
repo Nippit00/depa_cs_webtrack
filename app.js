@@ -50,6 +50,7 @@ const cityRoute = require("./routes/city");
 const formRoute = require("./routes/form.js");
 const fileUplaod=require("./routes/file.js")
 const uploadroutes = require("./routes/uploadRoutes.js");
+const notification =require("./routes/notification.js")
 
 app.use(authRoute,csrfProtection);
 app.use(mainRoute);
@@ -58,6 +59,7 @@ app.use(fileUplaod)
 app.use("/admin", adminRoute);
 app.use("/city", cityRoute);
 app.use("/upload", uploadroutes);
+app.use("/notification",notification)
 
 
     app.listen(process.env.PORT, () => {

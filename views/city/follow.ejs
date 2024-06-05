@@ -284,7 +284,7 @@
 
 
     <%- include('../component/navbar.ejs') %>
-  
+   
 
       <div class="title-container">
         <h1>รายงานความคืบหน้าในการขับเคลื่อนเมืองที่ได้รับตราสัญลักษณ์</h1>
@@ -297,10 +297,18 @@
         </h4>
         <br>
 
+        
+        
         <div class="table-container">
-          <p class="collapsible" style="text-align: center;">
-            <%=followdata[0].cityName%>
-          </p>
+          
+          <p style="text-align: center; padding-top: 20px;"><span style="color: white; text-shadow: 1px 1px 2px black;">*** โปรดอ่าน:</span>
+            <span style="color: white; text-shadow: 1px 1px 2px black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: red; border: 1px solid red;"></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</span> 
+            <span style="color: white; text-shadow: 1px 1px 2px black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: yellow; border: 1px solid yellow;"></span> หมายถึงฉบับร่าง -</span> 
+            <span style="color: white; text-shadow: 1px 1px 2px black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: green; border: 1px solid green;"></span> หมายถึง ดำเนินการแล้ว</span> 
+            
+        </p>
+        
+          
           <div class="content">
             <div id="accordion">
               <div class="card">
