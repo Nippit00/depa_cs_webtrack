@@ -5,39 +5,26 @@ const db = require("../db.js");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 exports.getAdPage = (req, res, next) => {
-  const q = "SELECT `cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`FROM `solution` WHERE 1";
-  db.query(q, (err, data) => {
+  const q = "SELECT * FROM `Round` ORDER BY `date` ASC;"
+  const q1 = "SELECT citydata.cityID, citydata.province, citydata.date,city_home.cityName FROM `citydata` JOIN city_home ON citydata.cityID=city_home.cityID WHERE 1"
+  db.query(q, (err, date) => {
     if (err) {
       console.error(err);
       return res.status(500).json(err);
     }
-
-    // สร้างอาร์เรย์เพื่อเก็บค่าจำนวนของแต่ละสถานะของ status
-    let statusCounts = {
-      status: {
-        0: 0,
-        1: 0,
-        2: 0
+    db.query(q1, (err, city) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json(err);
       }
-    };
+      res.render("admin/ad-main", {
+        pageTitle: "Main",
+        path: "/",
+        date: date,
+        city:city,
+      });
+    })
 
-    // วนลูปผ่านข้อมูลที่ได้จากการ query
-    data.forEach(element => {
-      // นับจำนวนของแต่ละสถานะของ status
-      statusCounts.status[element.status]++;
-
-    });
-
-    // แสดงผลลัพธ์ในคอนโซล
-    // console.log("จำนวน status:", statusCounts.status);
-
-    // ส่งข้อมูลไปยังหน้าแสดงผล
-    res.render("admin/ad-main", {
-      pageTitle: "Main",
-      path: "/",
-      data: data,
-      statusCounts: statusCounts
-    });
   });
 };
 
@@ -172,7 +159,6 @@ exports.getAdCityDataP = (req, res, next) => {
                 averageProgressPerSmart: averageProgressPerSmartKey
               };
 
-              console.log(rounded);
               res.render("admin/ad-city/ad-citydata", {
                 req,
                 pageTitle: "Dashboard",
@@ -195,7 +181,7 @@ exports.getAdCityDataP = (req, res, next) => {
               let unsuccessfulProjectsData = Array(8).fill(0);
 
 
-              const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null' && row.Round==round);
+              const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null' && row.Round == round);
               const totalProblems = validProblems.length;
               const problemCounts = {};
 
@@ -292,15 +278,6 @@ exports.getAdCityDataP = (req, res, next) => {
     res.status(500).json(err);
   }
 };
-
-
-
-
-
-
-
-
-
 
 
 

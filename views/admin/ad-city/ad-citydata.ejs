@@ -103,7 +103,7 @@
         <% const initialRound = JSON.parse(rounded)[1]; %>
         <div class="card lg:col-span-1">
           <h3 class="section-title">บริการเมืองอัจฉริยะ : <span style="color: #2c7f97;"><%= Object.keys(initialRound.smartkeycount).length-1 %></span>
-            Smarts <span style="color: #d0a519;"><br/>จำนวนโครงการ : <%= initialRound.count-4 %></span> โครงการ</h3>
+            Smarts <br/>จำนวนโครงการ : <span style="color: #d0a519;"><%= initialRound.count-4 %></span> โครงการ</h3>
           <div class="grid grid-cols-2 gap-4 ">
             <div class="flex  items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2<%= initialRound.smartkeycount.ENV ? '' : 'grayscale opacity-50' %>">
               <img src="/img/lo01.png" alt="ENV Image" style="width: 70px; height: 70px;">
