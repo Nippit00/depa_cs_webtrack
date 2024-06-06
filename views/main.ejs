@@ -231,7 +231,12 @@
                         %>
                         <%= formattedDate %>
                     </td>
-                    <td>1 ปี 2 เดือน 3 วัน</td>
+                    <% if (data.years <= 0) { %>
+                        <td><%= data.months %> เดือน <%= data.days %> วัน</td>
+                        <% } else { %>
+                            <td><%= data.years %> ปี <%= data.months %> เดือน <%= data.days %> วัน</td>
+                          <% } %>
+                    
                     <td>50%</td>
                     <td>50%</td>
                 </tr>

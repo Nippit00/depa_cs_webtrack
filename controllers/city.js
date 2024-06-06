@@ -13,6 +13,11 @@ exports.GetCity = (req, res) => {
   const qCityFile =
     "SELECT * FROM cityfile WHERE cityfile.cityID = ?";
   const qProvince="SELECT city_home.cityName FROM `citydata`JOIN `city_home` ON `citydata`.`cityID` = `city_home`.`cityID`WHERE `citydata`.`province` = ? AND `citydata`.`cityID` != ?;"
+  const qRound = `
+    SELECT * FROM round 
+    JOIN citydata ON round.Date = citydata.date 
+    WHERE cityID=?
+  `
   try {
     db.query(qCityData, [cityID], (err, cityData) => {
       if (err) return res.status(500).json(err);
@@ -28,7 +33,7 @@ exports.GetCity = (req, res) => {
       db.query(qSolution, [cityID], (err, solutionData) => {
         if (err) return res.status(500).json(err);
 
-        const smartKeyCounts = {};
+        const smartKeyCounts =  { 'ENE': 0, 'ENV': 0, 'GOV': 0, 'ECO': 0, 'LIV': 0, 'MOB': 0, 'CDP': 0,'PEO':0  };
         solutionData.forEach(row => {
           if (smartKeyCounts[row.smartKey]) {
             smartKeyCounts[row.smartKey]++;
@@ -42,17 +47,23 @@ exports.GetCity = (req, res) => {
 
           db.query(qProvince,[cityData[0].province,cityData[0].cityID],(err,province)=>{
           if (err) return res.status(500).json(err);
-          res.render("city/city", {
-            req,
-            pageTitle: cityData[0].cityname,
-            path: "/city",
-            cityInfo: cityData[0],
-            citysolution: solutionData,
-            smartKeyCounts: smartKeyCounts,// ส่งจำนวน smart key แต่ละตัวในออบเจกต์ไปยัง view
-            datafile: cityFileData,
-            announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted },
-            province:province
-          });
+            db.query(qRound,[cityID],(err,dataRound)=>{
+              if (err) return res.status(500).json(err);
+
+              const startRound = dataRound[0].open.format('DD/MM/YYYY');
+              res.render("city/city", {
+                req,
+                pageTitle: cityData[0].cityname,
+                path: "/city",
+                cityInfo: cityData[0],
+                citysolution: solutionData,
+                smartKeyCounts: smartKeyCounts,// ส่งจำนวน smart key แต่ละตัวในออบเจกต์ไปยัง view
+                datafile: cityFileData,
+                announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted },
+                province:province,
+                startRound:startRound,
+              });
+            })
           })
               
 

@@ -209,7 +209,7 @@ exports.getAdCityDataP = (req, res, next) => {
               const smartKeyCountsForAverage = {};
               let totalSum = 0;  // ผลรวมทั้งหมด
               let totalCount = 0;  // จำนวนทั้งหมด
-
+              
               roundData.forEach(item => {
                 if (item.questionID == 2) {
                   item.ans = parseInt(item.ans, 10);
@@ -226,6 +226,7 @@ exports.getAdCityDataP = (req, res, next) => {
 
                   // นับโครงการที่สำเร็จและไม่สำเร็จ
                   if (item.ans == 100) {
+                    
                     projectSuccess.push(item.solutionName);
                     successfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
                   }
@@ -236,11 +237,17 @@ exports.getAdCityDataP = (req, res, next) => {
               unsuccessfulProjectsData = smartKeyCountsValues.map((value, index) => value - successfulProjectsData[index]);
 
               // หาค่าเฉลี่ยของแต่ละ smartKey
-              const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0' };
+              const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0','PEO':'0' };
               Object.keys(smartKeyProgress).forEach(key => {
                 averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
               });
-
+              let funds=0
+              const qfunds=''
+              // db.query(qfunds,[],(err,fu)=>{
+              //   if (err) return res.status(500).json(err);
+              //   funds=fu
+              // })
+              console.log(funds)
               // หาค่าเฉลี่ยของทั้งหมด
               const totalAverage = (totalSum / count).toFixed(2);
               rounded[round] = {
@@ -251,10 +258,11 @@ exports.getAdCityDataP = (req, res, next) => {
                 unsuccess: unsuccessfulProjectsData,
                 problem: problemPercentages,
                 smartkeycount: smartKeyCounts,
-                averageProgressPerSmart: averageProgressPerSmartKey
+                averageProgressPerSmart: averageProgressPerSmartKey,
+                funds:funds
               };
             }
-            console.log(rounded)
+            // console.log(rounded)
             res.render("admin/ad-city/ad-citydata", {
               req,
               pageTitle: "Dashboard",

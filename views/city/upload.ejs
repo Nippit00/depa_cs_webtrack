@@ -260,10 +260,9 @@
     <br>
     <br>
     <!-- Link สำหรับดาวน์โหลด -->
-    <a href="ตำแหน่งของไฟล์" class="link-u" download>
-        ไฟล์แบบฟอร์มสำหรับเมืองที่ต้องการต่อตราสัญลักษณ์ครบ 2 ปี
-        <button class="btn btn-primary" style="margin-left: 20px;"><i class="fas fa-download"></i> download</button>
-    </a>
+    <span>ไฟล์แบบฟอร์มสำหรับเมืองที่ต้องการต่อตราสัญลักษณ์ครบ 2 ปี<button class="btn btn-primary" id="downloadButton" style="margin-left: 20px;">
+        <i class="fas fa-download"></i> download
+    </button></span>
 
     <!-- ฟอร์มอัปโหลด -->
     <div class="upload-form-container">
@@ -326,23 +325,21 @@
             reader.readAsDataURL(file);
         });
 
-        async function submitData() {
-
+        function submitData() {
+            // Check if any files are selected
+            if (FileData.length === 0) {
+                alert("กรุณาเลือกไฟล์ที่ต้องการอัปโหลด");
+                return;
+            }
+        
             const csrfToken = document.getElementById('token').value;
-            console.log(csrfToken);
-            console.log(FileData)
-
+        
             try {
-                // const formDataObj = {};
-                // for (const [key, value] of formData.entries()) {
-                //     formDataObj[key] = value;
-                // }
-
                 const requestBody = {
                     file: FileData,
                     CityID: 123 // Your CityID value
                 };
-
+        
                 fetch('/upload', {
                     method: 'POST',
                     body: JSON.stringify(requestBody),
@@ -351,25 +348,37 @@
                         'CSRF-Token': csrfToken
                     }
                 })
-                    .then(response => {
-
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        console.log('File uploaded successfully');
-                        // Redirect to /city
-
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                window.location.href = "/city";
-
-
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log('File uploaded successfully');
+                    window.location.href = "/city";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             } catch (error) {
                 console.error('Error:', error);
             }
         }
+
+        document.getElementById('downloadButton').addEventListener('click', function (event) {
+            event.preventDefault();
+            
+            Swal.fire({
+                title: 'คุณต้องการต่อตราสัญลักษณ์ใช่หรือไม่?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'ใช่',
+                cancelButtonText: 'ไม่'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('downloadLink').click();
+                }
+            });
+        });
+        
 
         // try {
         //         const response = await fetch('/upload', {

@@ -20,6 +20,9 @@
     <title>form</title>
     <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
     <style>
+        body{
+            background-color: #F5F5F5;
+        }
         form {
             width: 100%;
             /* ขนาดเต็มหน้าจอ */
@@ -39,11 +42,11 @@
             /* ระยะห่างของ input */
             box-sizing: border-box;
             /* ให้ขนาดเสมอไม่ว่าจะมีการเพิ่ม padding หรือ border */
-            border: 2px solid #C2AF76;
+            border: 1.5px solid #000000;
             /* ขนาดและสีของเส้นขอบ */
             border-radius: 15px;
             /* ความโค้งของขอบ */
-            background-color: #fffbf0;
+            background-color: #FFFFFF;
             /* สีพื้นหลัง */
             transition: border-color 0.3s ease-in-out;
             /* เพิ่มอนิเมชันเมื่อเมาส์ hover หรือ focus */
@@ -152,7 +155,7 @@
             /* การเพิ่มระยะห่างรอบขอบของพื้นหลัง */
             border-radius: 50px;
             /* ความโค้งของขอบ */
-            background-color: #FFF0C4;
+            background-color: #FFFFFF;
             /* สีพื้นหลัง */
         }
 
@@ -277,6 +280,30 @@
             40% {
                 opacity: 1;
             }
+        }
+        .display-none label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Add some margin to the description elements */
+        .display-none .description {
+            margin-bottom: 10px;
+        }
+
+        /* Add some margin to the textarea elements */
+        .display-none textarea {
+            margin-bottom: 20px;
+            width: 100%;
+            height: 100px;
+            resize: vertical;
+        }
+
+        /* Optional: Add some padding to the .display-none container */
+        .display-none {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
         }
         
     </style>

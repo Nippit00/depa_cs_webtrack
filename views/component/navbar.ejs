@@ -4,113 +4,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
-    integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
-  <style>
-    /* Your custom CSS styles go here */
-    nav {
-      background-color: #00B2A9;
-      color: #000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 0px;
-      height: 70px;
-      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
-    }
-
-    nav a {
-      display: flex;
-      align-items: center;
-      background-color: #dcb432;
-      padding: 10px 20px;
-      border-radius: 20px;
-      text-decoration: none;
-      color: white;
-      transition: background-color 0.3s, color 0.3s;
-      margin-left: 20px;
-    }
-
-    nav a:hover {
-      background-color: #dcb432;
-    }
-
-    .city-text {
-      margin-left: 5px;
-    }
-
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-    }
-
-    li {
-      margin-left: 20px;
-      margin-right: 20px;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      border-radius: 20px;
-      text-decoration: none;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .btn:hover {
-      background-color: #d0a519;
-    }
-
-    .bg-green-300 {
-      background-color: #dcb432;
-    }
-
-    .bg-red-300 {
-      background-color: #dcb432;
-    }
-
-
-    @media screen and (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav a {
-        margin-bottom: 10px;
-      }
-    }
-  </style>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+     
 </head>
 
 <body>
-  <nav>
-    <a href="/">
+  <nav class="bg-teal-500 text-black flex justify-between items-center p-0 h-16 shadow-md">
+    <a href="/" class="flex items-center bg-yellow-500 rounded-full px-3 py-2 ml-2 hover:bg-yellow-600 text-black hover:no-underline hover:text-white">
       <i class="fas fa-home"></i>
-      <span class="city-text">depa - Smart City Overview on Real-time Evaluation</span>
+      <span class="ml-2 hidden md:block">depa - Smart City Overview on Real-time Evaluation</span>
+      <span class="ml-2 block md:hidden">D-Score</span>
     </a>
-    <div>
-      <ul style="background-color: #fff; margin-top: -10px; padding: 10px; border-radius: 0px 0px 0px 50px; box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);">
-        <li>
-          <img src="/img/favii.png" alt="Description of the image" style="max-width: 200px; max-height: 200px;">
-        </li>
+    <div id="menu" class="items-center">
+      <ul class="flex flex-col md:flex-row md:items-center md:space-x-5 mr-5">
         <% if (!isAuthenticated) { %>
-        <li>
-          <a class="btn bg-green-300" href="/login">SIGN IN</a>
+        <li class="my-2 md:my-0">
+          <a class="btn bg-yellow-500 px-3 py-2 rounded-xl text-white transition duration-300 hover:bg-yellow-600" href="/login">SIGN IN</a>
         </li>
         <% } else { %>
-        <li>
+        <li class="my-2 md:my-0">
           <form action="/logout" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn bg-red-300">Log out</button>
+            <button class="btn bg-yellow-500 px-3 py-2 mb-[-1rem] rounded-xl text-white transition duration-300 hover:bg-yellow-600">Log out</button>
           </form>
         </li>
         <% } %>
-      </ul>      
+      </ul>
     </div>
   </nav>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
 </body>
 
 </html>

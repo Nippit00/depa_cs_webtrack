@@ -50,21 +50,27 @@
 
         /* CSS สำหรับ button */
         button {
-            background-color: #C2AF76;
-            /* สีพื้นหลัง */
-            color: white;
-            /* สีข้อความ */
-            padding: 10px 15px;
-            /* ขนาด padding ของปุ่ม */
-            border: 2px solid #C2AF76;
-            /* ขนาดและสีของเส้นขอบ */
-            border-radius: 50px;
-            /* ความโค้งของขอบ */
-            cursor: pointer;
-            /* ตัวปรับเปลี่ยนเป็น pointer เมื่อเมาส์ hover */
-            transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
-            /* เพิ่มอนิเมชันเมื่อเมาส์ hover หรือ focus */
-        }
+        background-color: #C2AF76;
+        /* สีพื้นหลัง */
+        color: white;
+        /* สีข้อความ */
+        padding: 10px 15px;
+        /* ขนาด padding ของปุ่ม */
+        border: 2px solid #C2AF76;
+        /* ขนาดและสีของเส้นขอบ */
+        border-radius: 50px;
+        /* ความโค้งของขอบ */
+        cursor: pointer;
+        /* ตัวปรับเปลี่ยนเป็น pointer เมื่อเมาส์ hover */
+        transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        /* เพิ่มอนิเมชันเมื่อเมาส์ hover หรือ focus */
+        text-align: center;
+        /* จัดข้อความให้อยู่กึ่งกลางในแนวนอน */
+        display: inline-block;
+        /* ทำให้ปุ่มเป็น inline-block เพื่อจัดการการจัดตำแหน่ง */
+    }
+
+
 
         /* เมื่อ hover ที่ปุ่ม */
         button:hover {
@@ -164,7 +170,7 @@
         .right-content {
             width: 50%;
             /* ความกว้างของเนื้อหา */
-            padding: 10px;
+            padding: 1px;
             /* การเพิ่มระยะห่างรอบขอบของพื้นหลัง */
             box-sizing: border-box;
             /* ปรับขนาดของพื้นหลังเพื่อให้มีขนาดเท่ากัน */

@@ -12,219 +12,64 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <title>Dashboard</title>
   <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .title-container {
-      text-align: center;
-      padding: 20px;
-      position: relative;
-      top: -300px;
-    }
-
-    .titles-container {
-      text-align: center;
-      padding: 20px;
-      position: relative;
-      top: 0px;
-    }
-
-    .content-container {
-      width: 80%;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .text-container,
-    .map-container {
-      flex: 1;
-    }
-
-    .text-container {
-      padding: 20px;
-      position: relative;
-      top: -150px;
-    }
-
-    .menu-text {
-      color: black;
-    }
-
-    .map-container {
-      text-align: left;
-      position: relative;
-      top: -100px;
-      margin-left: 100px;
-      margin-bottom: 150px;
-    }
-
-    .map-container img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .text-container b.menu-text {
-      margin-bottom: 50px;
-    }
-
-    .cities-text {
-      color: #04b2a1;
-    }
-
-    #myChart {
-      display: block;
-      margin-left: 65%;
-      margin-right: auto;
-      margin-top: -500px;
-      margin-bottom: 250px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 24px;
-    }
-
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: normal;
-      margin-bottom: 16px;
-    }
-
-    .chart-container {
-      width: 100%;
-      height: 300px;
-      /* Increase height for better visualization */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
-
-    .chart-center-text {
-      position: absolute;
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #000;
-    }
-
-    #spinner-container {
-      display: flex;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.9);
-      z-index: 9999;
-      overflow: hidden;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-  }
-  
-  #static-image {
-      width: 300px;
-      height: auto;
-      margin-bottom: 20px;
-  }
-  
-  #spinner {
-      display: flex;
-      gap: 10px;
-  }
-  
-  .dot {
-      width: 16px;
-      height: 16px;
-      background-color: #3498db;
-      border-radius: 50%;
-      animation: blink 1.4s infinite both;
-  }
-  
-  .dot:nth-child(1) {
-      animation-delay: -0.32s;
-  }
-  
-  .dot:nth-child(2) {
-      animation-delay: -0.16s;
-  }
-  
-  @keyframes blink {
-      0%, 80%, 100% {
-          opacity: 0;
-      }
-      40% {
-          opacity: 1;
-      }
-  }
-  
-  </style>
 </head>
 
-<body>
+<body class="font-th-sarabun">
 
-  <div id="spinner-container">
-    <img id="static-image" src="/img/favi.png" alt="Loading...">
-    <div id="spinner">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
+  <div id="spinner-container" class="flex fixed inset-0 bg-white bg-opacity-90 z-50 flex-col justify-center items-center">
+    <img id="static-image" src="/img/favi.png" alt="Loading..." class="w-24 h-auto mb-5">
+    <div id="spinner" class="flex gap-2">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
-</div>
-
+  </div>
 
   <%- include('../component/navbar.ejs') %>
 
-  <div class="banner">
-    <img src="/img/bbj.png" alt="Banner Image" />
+  <div class="w-full">
+    <img src="/img/bbj.png" alt="Banner Image" class="w-full" />
   </div>
 
-  <div class="title-container">
-    <h1 style="font-size: 38px;">
-      ผลรายงานความคืบหน้า<span class="cities-text">เมืองที่ได้รับตราสัญลักษณ์</span>
+  <div class="text-center py-5">
+    <h1 class="text-4xl">
+      ผลรายงานความคืบหน้า<span class="text-[#04b2a1]">เมืองที่ได้รับตราสัญลักษณ์</span>
     </h1>
   </div>
 
   <%- include('../component/menu.ejs') %>
 
-  <div class="content-container">
-    <div class="text-container">
+  <div class="flex flex-col lg:flex-row justify-around mt-10 px-5">
+    <div class="">
       <h4 class="flex justify-center mb-5">
-        <span class="cities-text text-2xl"><%= data[0].cityName %></span>
-      </h4>      
-      <div class="shadow-md border-[1px] rounded-lg py-5">
-    
+        <span class="text-[#04b2a1] text-2xl"><%= data[0].cityName %></span>
+      </h4>
+      <div class="shadow-md border border-gray-300 rounded-lg py-5 px-24">
         <!-- กราฟ  -->
-        <div class="">
-          <div class="grid grid-cols-2 gap-4">
-            <!-- ความคืบหน้าโครงการ -->
-            <div class="text-center">
-              <h3 class="section-title">ความคืบหน้าของโครงการตามแผน</h3>
-              <div class="chart-container">
-                <canvas id="progressChart"></canvas>
-              </div>
-              <div class="chart-container">
-                <canvas id="avgprogress"></canvas>
-              </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- ความคืบหน้าโครงการ -->
+          <div class="text-center">
+            <h3 class="section-title">ความคืบหน้าของโครงการตามแผน</h3>
+            <div class="chart-container">
+              <canvas id="progressChart"></canvas>
             </div>
-            <!-- ค่าเฉลี่ยความสำเร็จ -->
-            <div class="text-center">
-              <h3 class="section-title">ค่าเฉลี่ย % ของความสำเร็จ</h3>
-              <div class="chart-container">
-                <canvas id="successChart"></canvas>
-              </div>
-              <div class="chart-container">
-                <canvas id="stackedBarChart"></canvas>
-              </div>
+            <div class="chart-container">
+              <canvas id="avgprogress"></canvas>
+            </div>
+          </div>
+          <!-- ค่าเฉลี่ยความสำเร็จ -->
+          <div class="text-center">
+            <h3 class="section-title">ค่าเฉลี่ย % ของความสำเร็จ</h3>
+            <div class="chart-container">
+              <canvas id="successChart"></canvas>
+            </div>
+            <div class="chart-container">
+              <canvas id="stackedBarChart"></canvas>
             </div>
           </div>
         </div>
-      </div>
-      <div class="shadow-md border-[1px] rounded-lg py-5 mt-2 ">
-        <h3 class="section-title" style="text-align: center;">ปัญหาและอุปสรรค</h3>
+        
+        <h3 class="section-title text-center mt-5">ปัญหาและอุปสรรค</h3>
         <div class="chart-container">
           <canvas id="problemsChart"></canvas>
         </div>
@@ -232,22 +77,15 @@
     </div>
   </div>
 
-
-</div>
-
-  <!-- Chart -->
-  <!-- <canvas id="myChart" width="400" height="200"></canvas> -->
-
-  <p style="text-align: center;">*** โปรดอ่าน:
-    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: red;"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -
-    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: yellow;"></span></span> หมายถึงฉบับร่าง -
-    <span style="color: black;">สถานะ <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: green;"></span></span> หมายถึง ดำเนินการแล้ว ***
+  <p class="text-center mt-5">
+    *** โปรดอ่าน:
+    <span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-red-500"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -
+    <span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-yellow-500"></span></span> หมายถึงฉบับร่าง -
+    <span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-green-500"></span></span> หมายถึง ดำเนินการแล้ว ***
   </p>
 
-  <br>
-
   <!-- table -->
-  <div class="mx-36 mb-12 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 box-border">
+  <div class="mx-8 my-10 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400">
     <h6 class="text-white text-2xl font-bold text-center mb-5">หัวข้อโครงการ</h6>
     <div class="flex justify-between space-x-2 flex-wrap">
       <div class="mb-2.5 text-center" onclick="show(10)">
@@ -323,16 +161,14 @@
     </table>
   </div>
 
-
-
   <script>
-    window.onload = function() {
+    window.onload = function () {
       document.getElementById('spinner-container').style.display = 'none';
-  };
+    };
 
-  window.addEventListener('DOMContentLoaded', (event) => {
+    window.addEventListener('DOMContentLoaded', (event) => {
       document.getElementById('spinner-container').style.display = 'flex';
-  });
+    });
 
     function show(index) {
       // Remove active class from all images
@@ -384,12 +220,12 @@
             if (data.smartKey === "CDP") {
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -408,12 +244,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}%</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}%</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -421,8 +257,8 @@
           const averageSuccessEnv = calculateAverageSuccess(solutionInfo, "ENV");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessEnv * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressEnv * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessEnv * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressEnv * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -433,12 +269,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -446,8 +282,8 @@
           const averageSuccessEne = calculateAverageSuccess(solutionInfo, "ENE");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessEne * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressEne * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessEne * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressEne * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -458,12 +294,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -471,8 +307,8 @@
           const averageSuccessEco = calculateAverageSuccess(solutionInfo, "ECO");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessEco * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressEco * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessEco * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressEco * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -483,12 +319,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -496,8 +332,8 @@
           const averageSuccessMob = calculateAverageSuccess(solutionInfo, "MOB");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessMob * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressMob * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessMob * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressMob * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -508,12 +344,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -521,8 +357,8 @@
           const averageSuccessGov = calculateAverageSuccess(solutionInfo, "GOV");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessGov * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressGov * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessGov * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressGov * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -533,12 +369,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -546,8 +382,8 @@
           const averageSuccessPeo = calculateAverageSuccess(solutionInfo, "PEO");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessPeo * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressPeo * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessPeo * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressPeo * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -558,12 +394,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -571,25 +407,23 @@
           const averageSuccessLiv = calculateAverageSuccess(solutionInfo, "LIV");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessLiv * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressLiv * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessLiv * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressLiv * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
         case 9:
           bodyTable.innerHTML = "";
           solutionInfo.forEach((data) => {
-
             html += `
                         <tr>
-                            <td style="padding: 20px; text-align: center;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
-
           });
           html += `<tr>
                 <td>รวม</td>
@@ -605,12 +439,12 @@
               const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
               html += `
                         <tr>
-                            <td style="padding: 20px; text-align: left;">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                            <td style="padding: 20px; text-align: center;">${status}</td>
-                            <td style="padding: 20px; text-align: center;">${data.Progress}</td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
-                            <td style="padding: 20px; text-align: center;"></td>
+                            <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
+                            <td class="p-5">${status}</td>
+                            <td class="p-5">${data.Progress}</td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
+                            <td class="p-5"></td>
                         </tr>`;
             }
           });
@@ -618,8 +452,8 @@
           const averageSuccessCdp = calculateAverageSuccess(solutionInfo, "CDP");
           html += `<tr>
                 <td>รวม</td>
-                <td style="padding: 20px; text-align: center;">${(averageSuccessCdp * 100).toFixed(0)}%</td>
-                <td style="padding: 20px; text-align: center;">${(averageProgressCdp * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageSuccessCdp * 100).toFixed(0)}%</td>
+                <td class="p-5">${(averageProgressCdp * 100).toFixed(0)}%</td>
                 <td></td>
             </tr>`;
           break;
@@ -647,258 +481,249 @@
     let currentRound = Object.keys(rounded).length;
     let initialRound = rounded[currentRound];
 
-const progressChart = new Chart(progressCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['ยังไม่ดำเนินการ', 'ดำเนินการแล้ว'],
-    datasets: [{
-      data: [100 - initialRound.progress, initialRound.progress],
-      backgroundColor: ['#eeeeee', '#00f0d8'],
-      borderWidth: 6,
-      borderColor: '#ffffff'
-    }]
-  },
-  options: {
-    plugins: {
-      datalabels: {
-        formatter: (value, context) => context.dataIndex === 1 ? `${value}%` : '',
-        color: '#fff',
-        font: {
-          weight: 'bold',
-          size: 16
+    const progressChart = new Chart(progressCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['ยังไม่ดำเนินการ', 'ดำเนินการแล้ว'],
+        datasets: [{
+          data: [100 - initialRound.progress, initialRound.progress],
+          backgroundColor: ['#eeeeee', '#00f0d8'],
+          borderWidth: 6,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        plugins: {
+          datalabels: {
+            formatter: (value, context) => context.dataIndex === 1 ? `${value}%` : '',
+            color: '#fff',
+            font: {
+              weight: 'bold',
+              size: 16
+            },
+            align: 'center',
+            anchor: 'center'
+          },
+          tooltip: {
+            callbacks: {
+              label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.raw}%`
+            }
+          }
         },
-        align: 'center',
-        anchor: 'center'
-      },
-      tooltip: {
-        callbacks: {
-          label: tooltipItem => `${tooltipItem.label}: ${tooltipItem.raw}%`
-        }
-      }
-    },
-    centerText: {
-      display: true,
-      text: `${initialRound.progress}%`
-    },
-    cutout: '50%',
-    maintainAspectRatio: false,
-  },
-  plugins: [{
-    id: 'centerText',
-    beforeDraw: chart => {
-      if (chart.options.centerText.display) {
-        const ctx = chart.ctx;
-        const centerConfig = chart.options.centerText;
-        const fontSize = (chart.height / 180).toFixed(2);
-        ctx.font = `bold ${fontSize}em sans-serif`;
-        ctx.textBaseline = 'middle';
-        const text = centerConfig.text;
-        const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
-        const textY = chart.height / 2;
-        ctx.fillStyle = '#000';
-        ctx.fillText(text, textX, textY);
-      }
-    }
-  }]
-});
-
-
-// กราฟค่าเฉลี่ยความสำเร็จ
-
-
-const successCtx = document.getElementById('successChart').getContext('2d');
-const totalProjects = initialRound.count;
-const successProjects = initialRound.success.reduce((a, b) => a + b, 0);
-const unsuccessfulProjects = totalProjects - successProjects;
-
-const successChart = new Chart(successCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
-    datasets: [{
-      data: [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100],
-      backgroundColor: ['#eeeeee', '#FFCE56'],
-      borderWidth: 6,
-      borderColor: '#ffffff'
-    }]
-  },
-  options: {
-    plugins: {
-      datalabels: {
-        formatter: (value) => `${value.toFixed(0)}%`,
-        color: '#fff',
-        font: {
-          weight: 'bold'
-        }
-      },
-      tooltip: {
-        callbacks: {
-          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw.toFixed(0)}%`
-        }
-      }
-    },
-    cutout: '50%',
-    maintainAspectRatio: false,
-    centerText: {
-      display: true,
-      text: `${((successProjects / totalProjects) * 100).toFixed(0)}%`
-    }
-  },
-  plugins: [{
-    id: 'centerText',
-    beforeDraw: (chart) => {
-      if (chart.options.centerText.display) {
-        const ctx = chart.ctx;
-        const centerConfig = chart.options.centerText;
-        const fontSize = (chart.height / 180).toFixed(2);
-        ctx.font = `bold ${fontSize}em sans-serif`;
-        ctx.textBaseline = 'middle';
-        const text = centerConfig.text;
-        const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
-        const textY = chart.height / 2;
-        ctx.fillStyle = '#000';
-        ctx.fillText(text, textX, textY);
-      }
-    }
-  }]
-});
-
-
-const problemsCtx = document.getElementById('problemsChart').getContext('2d');
-const problemData = initialRound.problem;
-
-const problemsChart = new Chart(problemsCtx, {
-  type: 'bar',
-  data: {
-    labels: problemData.map(p => p.problem),
-    datasets: [{
-      label: '% ของปัญหา',
-      data: problemData.map(problem => problem.percentage),
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        display: false // This will hide the legend
-      },
-      datalabels: {
-        display: false // This will hide the data labels
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
-        ticks: {
-          callback: (value) => `${value}%`
-        }
-      }
-    }
-  }
-});
-
-
-
-
-const stackedBarCtx = document.getElementById('stackedBarChart').getContext('2d');
-const stackedBarChart = new Chart(stackedBarCtx, {
-  type: 'bar',
-  data: {
-    labels: Object.keys(initialRound.smartkeycount),
-    datasets: [{
-        label: 'โครงการที่สำเร็จแล้ว',
-        data: Object.values(initialRound.success),
-        backgroundColor: '#FFCE56'
-      },
-      {
-        label: 'โครงการที่ยังไม่สำเร็จ',
-        data: Object.values(initialRound.unsuccess),
-        backgroundColor: '#cccccc'
-      }
-    ]
-  },
-  options: {
-    scales: {
-      x: {
-        stacked: true
-      },
-      y: {
-        stacked: true,
-        beginAtZero: true
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom'
-      },
-      tooltip: {
-        callbacks: {
-          label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}`
-        }
-      },
-      datalabels: {
-        display: true,
-        color: '#000',
-        font: {
-          weight: 'bold'
+        centerText: {
+          display: true,
+          text: `${initialRound.progress}%`
         },
-        formatter: (value, context) => value === 0 ? null : value
-      }
-    }
-  },
-  plugins: [ChartDataLabels]
-});
-// console.log(initialRound.averageProgressPerSmart)
-const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
-const avgProgressChart = new Chart(avgProgressCtx, {
-  type: 'bar',
-  data: {
-    labels: Object.keys(initialRound.averageProgressPerSmart),
-    datasets: [{
-      label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
+        cutout: '50%',
+        maintainAspectRatio: false,
+      },
+      plugins: [{
+        id: 'centerText',
+        beforeDraw: chart => {
+          if (chart.options.centerText.display) {
+            const ctx = chart.ctx;
+            const centerConfig = chart.options.centerText;
+            const fontSize = (chart.height / 180).toFixed(2);
+            ctx.font = `bold ${fontSize}em sans-serif`;
+            ctx.textBaseline = 'middle';
+            const text = centerConfig.text;
+            const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
+            const textY = chart.height / 2;
+            ctx.fillStyle = '#000';
+            ctx.fillText(text, textX, textY);
+          }
+        }
+      }]
+    });
 
-      data: Object.values(initialRound.averageProgressPerSmart),
-      backgroundColor: '#00f0d8'
-    }]
-  },
-  options: {
-    scales: {
-      x: {
-        stacked: true
+    // กราฟค่าเฉลี่ยความสำเร็จ
+    const successCtx = document.getElementById('successChart').getContext('2d');
+    const totalProjects = initialRound.count;
+    const successProjects = initialRound.success.reduce((a, b) => a + b, 0);
+    const unsuccessfulProjects = totalProjects - successProjects;
+
+    const successChart = new Chart(successCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
+        datasets: [{
+          data: [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100],
+          backgroundColor: ['#eeeeee', '#FFCE56'],
+          borderWidth: 6,
+          borderColor: '#ffffff'
+        }]
       },
-      y: {
-        beginAtZero: true,
-        max: 100,
-        ticks: {
-          callback: value => `${value}%`
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom'
-      },
-      tooltip: {
-        callbacks: {
-          label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}%`
-        }
-      },
-      datalabels: {
-        display: true,
-        color: '#000',
-        font: {
-          weight: 'bold'
+      options: {
+        plugins: {
+          datalabels: {
+            formatter: (value) => `${value.toFixed(0)}%`,
+            color: '#fff',
+            font: {
+              weight: 'bold'
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw.toFixed(0)}%`
+            }
+          }
         },
-        formatter: (value, context) => value === 0 ? null : `${value}%`
-      }
-    }
-  },
-  plugins: [ChartDataLabels]
-});
+        cutout: '50%',
+        maintainAspectRatio: false,
+        centerText: {
+          display: true,
+          text: `${((successProjects / totalProjects) * 100).toFixed(0)}%`
+        }
+      },
+      plugins: [{
+        id: 'centerText',
+        beforeDraw: (chart) => {
+          if (chart.options.centerText.display) {
+            const ctx = chart.ctx;
+            const centerConfig = chart.options.centerText;
+            const fontSize = (chart.height / 180).toFixed(2);
+            ctx.font = `bold ${fontSize}em sans-serif`;
+            ctx.textBaseline = 'middle';
+            const text = centerConfig.text;
+            const textX = Math.round((chart.width - ctx.measureText(text).width) / 2);
+            const textY = chart.height / 2;
+            ctx.fillStyle = '#000';
+            ctx.fillText(text, textX, textY);
+          }
+        }
+      }]
+    });
 
+    const problemsCtx = document.getElementById('problemsChart').getContext('2d');
+    const problemData = initialRound.problem;
+
+    const problemsChart = new Chart(problemsCtx, {
+      type: 'bar',
+      data: {
+        labels: problemData.map(p => p.problem),
+        datasets: [{
+          label: '% ของปัญหา',
+          data: problemData.map(problem => problem.percentage),
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false // This will hide the legend
+          },
+          datalabels: {
+            display: false // This will hide the data labels
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: (value) => `${value}%`
+            }
+          }
+        }
+      }
+    });
+
+    const stackedBarCtx = document.getElementById('stackedBarChart').getContext('2d');
+    const stackedBarChart = new Chart(stackedBarCtx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(initialRound.smartkeycount),
+        datasets: [{
+          label: 'โครงการที่สำเร็จแล้ว',
+          data: Object.values(initialRound.success),
+          backgroundColor: '#FFCE56'
+        },
+        {
+          label: 'โครงการที่ยังไม่สำเร็จ',
+          data: Object.values(initialRound.unsuccess),
+          backgroundColor: '#cccccc'
+        }
+        ]
+      },
+      options: {
+        scales: {
+          x: {
+            stacked: true
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}`
+            }
+          },
+          datalabels: {
+            display: true,
+            color: '#000',
+            font: {
+              weight: 'bold'
+            },
+            formatter: (value, context) => value === 0 ? null : value
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+
+    const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
+    const avgProgressChart = new Chart(avgProgressCtx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(initialRound.averageProgressPerSmart),
+        datasets: [{
+          label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
+          data: Object.values(initialRound.averageProgressPerSmart),
+          backgroundColor: '#00f0d8'
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            stacked: true
+          },
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: value => `${value}%`
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}%`
+            }
+          },
+          datalabels: {
+            display: true,
+            color: '#000',
+            font: {
+              weight: 'bold'
+            },
+            formatter: (value, context) => value === 0 ? null : `${value}%`
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
   </script>
 
   <%- include('../component/footer.ejs') %>

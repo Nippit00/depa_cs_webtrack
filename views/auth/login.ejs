@@ -7,66 +7,54 @@
     if (sessionStorage.getItem('isLoggedIn')) {
         window.location.href = '/city'; // Redirect to city page
     }
-</script>
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   <title>Login</title>
   <link rel="icon" type="image/x-icon" href="/img/favi.png">
-  <style>
-    
-  </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
 
   <%- include('../component/navbar.ejs') %>
 
-
-  <div class="container">
-    <div class="left-container">
-      <img src="/img/bg02.png" alt="รูปภาพ" class="image">
-      <div class="form-container">
-        <div class="title">
-          <h4>ติดตามความคืบหน้า</h4>
-          <h6 style="color:blue">ติดตามความคืบหน้าของเมืองที่ได้รับตราสัญลักษณ์</h6>
-        </div>
-        <form id="loginForm" action="/login" method="post">
-          <div class="form-group">
-            <label class="label" for="username">Username</label>
-            <input type="username" id="username" name="username" placeholder="username" style="border: 2px solid #C2AF76; border-radius: 50px;" required>
+  <div class="flex flex-col md:flex-row my-16 items-center justify-center">
+    <div class="md:w-1/2 w-full flex flex-col items-center p-6">
+      <div class="text-4xl font-bold">LOGIN</div>
+      <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+        <form id="loginForm" action="/login" method="post" class="space-y-4">
+          <div>
+            <label class="block text-gray-700" for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="username" class="w-full p-2 border-2 border-yellow-400 rounded-full" required>
           </div>
-          <div class="form-group">
-            <label class="label" for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="password" style="border: 2px solid #C2AF76; border-radius: 50px;" required>
+          <div>
+            <label class="block text-gray-700" for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="password" class="w-full p-2 border-2 border-yellow-400 rounded-full" required>
           </div>
-          <br>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button id="signInButton" type="submit" class="button">SIGN IN</button>
+          <button id="signInButton" type="submit" class="w-full bg-yellow-400 text-white py-2 rounded-full mt-4 hover:bg-yellow-500 transition duration-300">SIGN IN</button>
         </form>
       </div>
     </div>
-
-    <div class="right-container">
-      <div class="image-frame">
-        <img src="/img/bg-01.png" alt="รูปภาพ" class="image-right">
-      </div>
+    <div class="md:w-1/2 w-full flex justify-center items-center p-6">
+      <img src="/img/bg-01.png" alt="รูปภาพ" class="w-full max-w-lg">
     </div>
   </div>
 
-
   <%- include('../component/footer.ejs') %>
+
   <script>
     document.getElementById('loginForm').addEventListener('submit', function() {
       var signInButton = document.getElementById('signInButton');
       signInButton.innerText = 'Signing in...';
       signInButton.style.opacity = '0.2';
-  
+
       setTimeout(function() {
         signInButton.innerText = 'SIGN IN';
         signInButton.style.opacity = '1';
-      }, 400); // 2000 milliseconds = 2 seconds
+      }, 400); // 400 milliseconds = 0.4 seconds
     });
   </script>
 </body>
