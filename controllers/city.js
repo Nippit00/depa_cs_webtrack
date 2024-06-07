@@ -50,7 +50,7 @@ exports.GetCity = (req, res) => {
             db.query(qRound,[cityID],(err,dataRound)=>{
               if (err) return res.status(500).json(err);
 
-              const startRound = dataRound[0].open.format('DD/MM/YYYY');
+              console.log(dataRound)
               res.render("city/city", {
                 req,
                 pageTitle: cityData[0].cityname,
@@ -61,7 +61,7 @@ exports.GetCity = (req, res) => {
                 datafile: cityFileData,
                 announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted },
                 province:province,
-                startRound:startRound,
+                dataRound:dataRound,
               });
             })
           })
@@ -324,7 +324,7 @@ exports.getCityFollow = (req, res, next) => {
           pageTitle: "Follow",
           path: "/city",
           followdata: followdata || [],
-          dataRound:dataRound[0],
+          dataRound:dataRound,
         });
       })
     });
