@@ -50,7 +50,7 @@ exports.GetCity = (req, res) => {
             db.query(qRound,[cityID],(err,dataRound)=>{
               if (err) return res.status(500).json(err);
 
-              console.log(dataRound)
+              // console.log(dataRound)
               res.render("city/city", {
                 req,
                 pageTitle: cityData[0].cityname,

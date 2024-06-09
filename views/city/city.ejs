@@ -102,7 +102,7 @@
         </div>
         <div class="flex flex-col lg:flex-row justify-around mt-10">
             <div class="w-full lg:w-1/2 p-5">
-                <h4 class="text-lg font-bold">
+                <h4 class="text-2xl font-bold">
                     <span class="text-teal-600">
                         <%= cityInfo.cityName %>
                     </span>
@@ -184,17 +184,16 @@
                 </div>
 
                 <div class="my-5">
+                    <% if (cityInfo.executive && cityInfo.executive.includes('ผู้ว่าราชการจังหวัด')) { %>
                     <% if(province.length> 0) { %>
-                        <div class="flex items-center">
-                            <div class="text-lg"><b>โครงการในจังหวัด :</b></div>
+                        <div class="flex items-start">
+                            <div class="text-lg"><b>โครงการในจังหวัด : </b></div>
                             <div class="text-lg">
-                                <% if (cityInfo.executive && cityInfo.executive.includes('ผู้ว่าราชการจังหวัด')) { %>
+                                
                                     <% province.forEach(item=> { %>
                                         <div>
                                             <div class="text-teal-600">
-                                                <b>
-                                                    <%= item.cityName %>
-                                                </b>
+                                                <b><%= item.cityName %></b>
                                             </div>
                                         </div>
                                         <% }) %>
