@@ -3,31 +3,31 @@
 
 <head>
   <%- include('../include/head.ejs') %>
-    <title>
-      <%= pageTitle %>
-    </title>
-    <script>
-      window.onload = function () {
-        document.getElementById('spinner-container').style.display = 'none';
-      };
+  <title>
+    <%= pageTitle %>
+  </title>
+  <script>
+    window.onload = function () {
+      document.getElementById('spinner-container').style.display = 'none';
+    };
 
-      window.addEventListener('DOMContentLoaded', (event) => {
-        document.getElementById('spinner-container').style.display = 'flex';
-      });
+    window.addEventListener('DOMContentLoaded', (event) => {
+      document.getElementById('spinner-container').style.display = 'flex';
+    });
 
-      function toggleCollapse(elementId) {
-        const element = document.getElementById(elementId);
-        if (element.classList.contains('hidden')) {
-          element.classList.remove('hidden');
-        } else {
-          element.classList.add('hidden');
-        }
+    function toggleCollapse(elementId) {
+      const element = document.getElementById(elementId);
+      if (element.classList.contains('hidden')) {
+        element.classList.remove('hidden');
+      } else {
+        element.classList.add('hidden');
       }
-    </script>
+    }
+  </script>
 </head>
 
-<body>
-  <div> 
+<body class="bg-gray-100">
+  <div>
     <% function countEcoSolutions(data) { let count1=0; followdata.forEach((item)=> {
       if (item.smartKey === data) {
       count1++;
@@ -69,186 +69,195 @@
       var form2Year = 2025;
       %>
 
-      <div id="spinner-container"
-        class="flex fixed top-0 left-0 w-full h-full bg-white bg-opacity-90 z-50 overflow-hidden flex-col justify-center items-center">
-        <img id="static-image" src="/img/favi.png" alt="Loading..." class="w-48 h-auto mb-5">
-        <div id="spinner" class="flex gap-2">
-          <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink animation-delay-1"></div>
-          <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink animation-delay-2"></div>
-          <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink animation-delay-3"></div>
-        </div>
+    <div id="spinner-container"
+      class="flex fixed top-0 left-0 w-full h-full bg-white bg-opacity-90 z-50 overflow-hidden flex-col justify-center items-center">
+      <img id="static-image" src="/img/favi.png" alt="Loading..." class="w-48 h-auto mb-5">
+      <div id="spinner" class="flex gap-2">
+        <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink animation-delay-1"></div>
+        <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink animation-delay-2"></div>
+        <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink animation-delay-3"></div>
       </div>
+    </div>
   </div>
-  <div class="flex flex-col">
-      <div><%- include('../component/navbar.ejs') %></div>
-      <div class="w-full">
-        <img src="/img/bbj.png" alt="Banner Image" class="w-full" />
+  <div class="flex flex-col min-h-screen">
+    <div><%- include('../component/navbar.ejs') %></div>
+    <div class="w-full">
+      <img src="/img/bbj.png" alt="Banner Image" class="w-full object-cover h-64" />
+    </div>
+
+    <div class="text-center py-5">
+      <h1 class="text-3xl font-bold">
+        รายงานความคืบหน้า<span class="text-[#04b2a1]">เมืองที่ได้รับตราสัญลักษณ์</span>
+      </h1>
+    </div>
+    <div><%- include('../component/menu.ejs') %></div>
+    <div class="mt-5">
+      <div>
+        <h4 class="text-center text-teal-500 text-2xl"><%=followdata[0].cityName%></h4>
       </div>
-    
-      <div class="text-center py-5">
-        <h1 class="text-4xl">
-          รายงานความคืบหน้า<span class="text-[#04b2a1]">เมืองที่ได้รับตราสัญลักษณ์</span>
-        </h1>
-      </div>
-      <div><%- include('../component/menu.ejs') %></div>
-      <div class="mt-5">
-        <div>  
-          <h4 class="text-center text-teal-500 text-2xl"><%=followdata[0].cityName%></h4>
-        </div>
-      
-      
-        <div class="table-container w-4/5 mx-auto shadow-lg rounded-2xl mb-12 bg-yellow-400">
-          <p class="text-center pt-5"><span class="text-white text-shadow-lg">*** โปรดอ่าน:</span>
-            <span class="text-white text-shadow-lg">สถานะ <span class="inline-block w-4 h-4 bg-red-500 rounded-full border border-red-500"></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</span>
-            <span class="text-white text-shadow-lg">สถานะ <span class="inline-block w-4 h-4 bg-yellow-500 rounded-full border border-yellow-500"></span> หมายถึงฉบับร่าง -</span>
-            <span class="text-white text-shadow-lg">สถานะ <span class="inline-block w-4 h-4 bg-green-500 rounded-full border border-green-500"></span> หมายถึง ดำเนินการแล้ว</span>
-          </p>
-      
-          <div class="content p-5 bg-gray-200 rounded-2xl mx-2 mb-5">
-            <div id="accordion">
-              <% function renderCard(section, displayName) { %>
-              <div class="card mb-4">
-                <div class="card-header flex justify-between items-center cursor-pointer" onclick="toggleCollapse('collapse<%= section %>')" id="heading<%= section %>">
-                  <h5 class="mb-0">
-                    <%= displayName %>
-                  </h5>
-                  <% const countShow = countEcoSolutions(section) %>
-                  <% const countSuccessShow = countComplete(section) %>
-                  <span class="ml-auto mr-5 text-sm">สำเร็จ <%= countSuccessShow %>/<%= countShow %></span>
-                </div>
-                <div id="collapse<%= section %>" class="hidden" aria-labelledby="heading<%= section %>">
-                  <div class="card-body">
-                    <table class="w-full border-collapse">
-                      <tr>
-                        <th class="border p-2">
-                          <% const countProject = countEcoSolutions(section) %>
-                          <%= countProject %> โครงการ
-                        </th>
-                        <th class="border p-2">รอบที่ <%= dataRound.round %></th>
-                        <th class="border p-2">รอบที่ <%= dataRound.round + 1 %></th>
-                        <th class="border p-2">
-                          <% const count = countEcoSolutions(section) %>
-                          <% const countSuccess = countComplete(section) %>
-                          <% const countSuccessRound2 = countCompleteRound2(section) %>
+
+      <div class="table-container w-11/12 lg:w-4/5 mx-auto shadow-lg rounded-2xl mb-12 bg-yellow-400">
+        <p class="text-center pt-5"><span class="text-white text-shadow-lg">*** โปรดอ่าน:</span>
+          <span class="text-white text-shadow-lg">สถานะ <span
+              class="inline-block w-4 h-4 bg-red-500 rounded-full border border-red-500"></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</span>
+          <span class="text-white text-shadow-lg">สถานะ <span
+              class="inline-block w-4 h-4 bg-yellow-500 rounded-full border border-yellow-500"></span> หมายถึงฉบับร่าง -</span>
+          <span class="text-white text-shadow-lg">สถานะ <span
+              class="inline-block w-4 h-4 bg-green-500 rounded-full border border-green-500"></span> หมายถึง ดำเนินการแล้ว</span>
+        </p>
+
+        <div class="content p-5 bg-gray-200 rounded-2xl mx-2 mb-5">
+          <div id="accordion">
+            <% function renderCard(section, displayName) { %>
+            <div class="card mb-4">
+              <div class="card-header flex justify-between items-center cursor-pointer" onclick="toggleCollapse('collapse<%= section %>')" id="heading<%= section %>">
+                <h5 class="mb-0">
+                  <%= displayName %>
+                </h5>
+                <% const countShow = countEcoSolutions(section) %>
+                <% const countSuccessShow = countComplete(section) %>
+                <span class="ml-auto mr-5 text-sm">สำเร็จ <%= countSuccessShow %>/<%= countShow %></span>
+              </div>
+              <div id="collapse<%= section %>" class="hidden" aria-labelledby="heading<%= section %>">
+                <div class="card-body">
+                  <table class="w-full border-collapse">
+                    <tr>
+                      <th class="border p-2">
+                        <% const countProject = countEcoSolutions(section) %>
+                        <%= countProject %> โครงการ
+                      </th>
+                      <th class="border p-2">รอบที่ <%= dataRound.round %></th>
+                      <th class="border p-2">รอบที่ <%= dataRound.round + 1 %></th>
+                      <th class="border p-2">
+                        <% const count = countEcoSolutions(section) %>
+                        <% const countSuccess = countComplete(section) %>
+                        <% const countSuccessRound2 = countCompleteRound2(section) %>
+                        <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                        สำเร็จ <%= countSuccess %>/<%= count %>
+                        <% } else { %>
+                        สำเร็จ <%= countSuccessRound2 %>/<%= count %>
+                        <% } %>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td class="border p-2">
+                        <% followdata.forEach((item) => { %>
+                        <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
+                        <% if (item.smartKey === section) { %>
+                        <!-- แสดงข้อมูลของแต่ละ object -->
+                        <div>
                           <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                          สำเร็จ <%= countSuccess %>/<%= count %>
-                          <% } else { %>
-                          สำเร็จ <%= countSuccessRound2 %>/<%= count %>
-                          <% } %>
-                        </th>
-                      </tr>
-                      <tr>
-                        <td class="border p-2">
-                          <% followdata.forEach((item) => { %>
-                          <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                          <% if (item.smartKey === section) { %>
-                          <!-- แสดงข้อมูลของแต่ละ object -->
-                          <div>
-                            <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                            <% if (item.status === 2) { %>
-                            <p><span class="text-gray-500 cursor-not-allowed">
-                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                              </span></p>
-                            <% } else { %>
-                            <p>
+                          <% if (item.status === 2) { %>
+                          <p><span class="text-gray-500 cursor-not-allowed">
                               <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                            </p>
-                            <% } %>
-                            <% } else { %>
+                            </span></p>
+                          <% } else { %>
+                          <p>
+                            <%= item.solutionID.slice(4) %> <%= item.solutionName %>
+                          </p>
+                          <% } %>
+                          <% } else { %>
+                          <% if (item.status_round2 === 2) { %>
+                          <p><span class="text-gray-500 cursor-not-allowed">
+                              <%= item.solutionID.slice(4) %> <%= item.solutionName %>
+                            </span></p>
+                          <% } else { %>
+                          <p>
+                            <%= item.solutionID.slice(4) %> <%= item.solutionName %>
+                          </p>
+                          <% } %>
+                          <% } %>
+                        </div>
+                        <% } %>
+                        <% }); %>
+                        <!-- สิ้นสุดการวนลูป -->
+                      </td>
+                      <td class="border p-2">
+                        <% let count4 = 1; %>
+                        <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === section) { %>
+                        <% if (item.status === 2 || (currentYear === form1Year && currentMonth < form1StartMonth) || (currentYear === form1Year && currentMonth === form1StartMonth && currentDay < form1StartDay)) { %>
+                        <div class="button-container-disable mb-2 opacity-50 cursor-not-allowed pointer-events-none">
+                          <button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button>
+                        </div>
+                        <% } else { %>
+                        <div class="button-container mb-2">
+                          <% if (count4 == 1) { %>
+                          <a href="/formsmart/<%= item.solutionID %>"><button
+                              class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
+                          <% } else { %>
+                          <a href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>"><button
+                              class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
+                          <% } %>
+                        </div>
+                        <% } %>
+                        <% } %>
+                        <% count4++; %>
+                        <% }); %>
+                      </td>
+                      <td class="border p-2">
+                        <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === section) { %>
+                        <% if (item.status_round2 === 2 || (currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                        <div class="button-container-disable mb-2 opacity-50 cursor-not-allowed pointer-events-none">
+                          <button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button>
+                        </div>
+                        <% } else { %>
+                        <div class="button-container mb-2">
+                          <a href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>"><button
+                              class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
+                        </div>
+                        <% } %>
+                        <% } %>
+                        <% }); %>
+                      </td>
+                      <td class="border p-2">
+                        <% followdata.forEach((item) => { %>
+                        <% if (item.smartKey === section) { %>
+                        <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                        <div class="circle-container flex justify-center items-center h-full">
+                          <div
+                            class="<%= item.status === 2 ? 'complete-circle w-5 h-5 bg-green-500 rounded-full' : (item.status === 1 ? 'not-complete-circle w-5 h-5 bg-yellow-500 rounded-full' : 'incomplete-circle w-5 h-5 bg-red-500 rounded-full') %>">
+                          </div>
+                        </div>
+                        <% } else { %>
+                        <div>
+                          <p
+                            class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
                             <% if (item.status_round2 === 2) { %>
-                            <p><span class="text-gray-500 cursor-not-allowed">
-                                <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                              </span></p>
+                            - ส่งเเล้ว
+                            <% } else if (item.status_round2 === 1) { %>
+                            - ฉบับร่าง
                             <% } else { %>
-                            <p>
-                              <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                            </p>
+                            - ยังไม่ได้รายงาน ครั้งที่2
                             <% } %>
-                            <% } %>
-                          </div>
-                          <% } %>
-                          <% }); %>
-                          <!-- สิ้นสุดการวนลูป -->
-                        </td>
-                        <td class="border p-2">
-                          <% let count4 = 1; %>
-                          <% followdata.forEach((item) => { %>
-                          <% if (item.smartKey === section) { %>
-                          <% if (item.status === 2 || (currentYear === form1Year && currentMonth < form1StartMonth) || (currentYear === form1Year && currentMonth === form1StartMonth && currentDay < form1StartDay)) { %>
-                          <div class="button-container-disable mb-2 opacity-50 cursor-not-allowed pointer-events-none">
-                            <button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button>
-                          </div>
-                          <% } else { %>
-                          <div class="button-container mb-2">
-                            <% if (count4 == 1) { %>
-                            <a href="/formsmart/<%= item.solutionID %>"><button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
-                            <% } else { %>
-                            <a href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>"><button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
-                            <% } %>
-                          </div>
-                          <% } %>
-                          <% } %>
-                          <% count4++; %>
-                          <% }); %>
-                        </td>
-                        <td class="border p-2">
-                          <% followdata.forEach((item) => { %>
-                          <% if (item.smartKey === section) { %>
-                          <% if (item.status_round2 === 2 || (currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                          <div class="button-container-disable mb-2 opacity-50 cursor-not-allowed pointer-events-none">
-                            <button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button>
-                          </div>
-                          <% } else { %>
-                          <div class="button-container mb-2">
-                            <a href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>"><button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
-                          </div>
-                          <% } %>
-                          <% } %>
-                          <% }); %>
-                        </td>
-                        <td class="border p-2">
-                          <% followdata.forEach((item) => { %>
-                          <% if (item.smartKey === section) { %>
-                          <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                          <div class="circle-container flex justify-center items-center h-full">
-                            <div class="<%= item.status === 2 ? 'complete-circle w-5 h-5 bg-green-500 rounded-full' : (item.status === 1 ? 'not-complete-circle w-5 h-5 bg-yellow-500 rounded-full' : 'incomplete-circle w-5 h-5 bg-red-500 rounded-full') %>"></div>
-                          </div>
-                          <% } else { %>
-                          <div>
-                            <p class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
-                              <% if (item.status_round2 === 2) { %>
-                              - ส่งเเล้ว
-                              <% } else if (item.status_round2 === 1) { %>
-                              - ฉบับร่าง
-                              <% } else { %>
-                              - ยังไม่ได้รายงาน ครั้งที่2
-                              <% } %>
-                            </p>
-                          </div>
-                          <% } %>
-                          <% } %>
-                          <% }); %>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
+                          </p>
+                        </div>
+                        <% } %>
+                        <% } %>
+                        <% }); %>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </div>
-              <% } %>
-      
-              <%- renderCard('CDP', 'City Data Platform: CDP') %>
-              <%- renderCard('ENV', 'Smart Environment') %>
-              <%- renderCard('ENE', 'Smart Energy') %>
-              <%- renderCard('GOV', 'Smart Governance') %>
-              <%- renderCard('ECO', 'Smart Economy') %>
-              <%- renderCard('LIV', 'Smart Living') %>
-              <%- renderCard('MOB', 'Smart Mobility') %>
-              <%- renderCard('PEO', 'Smart People') %>
-      
             </div>
+            <% } %>
+
+            <%- renderCard('CDP', 'City Data Platform: CDP') %>
+            <%- renderCard('ENV', 'Smart Environment') %>
+            <%- renderCard('ENE', 'Smart Energy') %>
+            <%- renderCard('GOV', 'Smart Governance') %>
+            <%- renderCard('ECO', 'Smart Economy') %>
+            <%- renderCard('LIV', 'Smart Living') %>
+            <%- renderCard('MOB', 'Smart Mobility') %>
+            <%- renderCard('PEO', 'Smart People') %>
+
           </div>
-        </div></div>
-      <div><%- include('../component/footer.ejs') %></div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-auto"><%- include('../component/footer.ejs') %></div>
   </div>
 
 </body>
