@@ -4,225 +4,59 @@
 <head>
     <%- include('include/head.ejs') %>
     <title><%= pageTitle %></title>
-    <style>
-        /* Your existing styles */
-        .title-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: -250px;
-            margin-bottom: 100px;
-        }
-
-        .titles-container {
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            top: 0px;
-        }
-
-        .banner img {
-            width: 100%;
-        }
-
-        .content-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 30px;
-            margin-top: -300px;
-            margin-bottom: 100px;
-        }
-
-        .map-container {
-            width: 10%;
-            text-align: center;
-        }
-
-        .chart-container {
-            width: 20%;
-        }
-
-        .chart-container canvas {
-            width: 100%;
-            height: auto;
-            margin-bottom: 100px;
-        }
-
-        .table-container {
-            width: 80%;
-            margin: 0 auto;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            margin-bottom: 50px;
-            background-color: #584f42;
-        }
-
-        #searchInput {
-            width: 250px;
-            padding: 8px;
-            margin-bottom: 5px;
-            margin-top: 5px;
-            border: thick double #00B2A9;
-            border-radius: 50px;
-            float: right;
-            margin-right: 10px;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            border: none;
-            border-radius: 0px;
-        }
-
-        th, td {
-            padding: 10px;
-            border: none;
-        }
-
-        th {
-            background-color: #FFF8D6;
-        }
-
-        .citie-text {
-            color: #C2AF76;
-        }
-
-        #table-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-right: 10px;
-            margin-left: 10px;
-        }
-
-        #table-navigation button {
-            width: 100px;
-            padding: 8px;
-            border: 3px solid #C2AF76;
-            border-radius: 50px;
-            background-color: #FFF8D6;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        #table-navigation button:hover {
-            background-color: #C2AF76;
-            color: white;
-            border: 3px solid #FFF8D6;
-        }
-
-        .table tr[style*="display: none"] {
-            transition: all 0.3s ease;
-        }
-
-        #spinner-container {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
-            z-index: 9999;
-            overflow: hidden;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #static-image {
-            width: 300px;
-            height: auto;
-            margin-bottom: 20px;
-        }
-        
-        #spinner {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .dot {
-            width: 16px;
-            height: 16px;
-            background-color: #3498db;
-            border-radius: 50%;
-            animation: blink 1.4s infinite both;
-        }
-        
-        .dot:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        
-        .dot:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        
-        @keyframes blink {
-            0%, 80%, 100% {
-                opacity: 0;
-            }
-            40% {
-                opacity: 1;
-            }
-        }
-        
-        
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="dark-mode">
-    <div id="spinner-container">
-        <img id="static-image" src="/img/favi.png" alt="Loading...">
-        <div id="spinner">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+<body>
+    <div id="spinner-container" class="fixed inset-0 bg-white bg-opacity-90 z-50 flex flex-col justify-center items-center">
+        <img id="static-image" src="/img/favi.png" alt="Loading..." class="w-24 h-auto mb-5">
+        <div id="spinner" class="flex gap-2">
+            <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink"></div>
+            <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink delay-100"></div>
+            <div class="dot w-4 h-4 bg-blue-500 rounded-full animate-blink delay-200"></div>
         </div>
     </div>
+
+    <div><%- include('component/navbar.ejs') %></div>
     
 
-    <%- include('component/navbar.ejs') %>
-
-    <div class="banner">
-        <img src="/img/bbj.png" alt="Banner Image">
+    <div >
+        <img src="/img/bbj.png" alt="Banner Image" class="w-full">
     </div>
 
-    <div class="title-container">
-        <h1><span class="citie-text">CITY</span> PROFILE DASHBOARD</h1>
+    <div class="title-container text-center py-5">
+        <h1 class="text-4xl"><span class="text-yellow-600">CITY</span> PROFILE DASHBOARD</h1>
     </div>
 
-    <div class="content-container">
+    <div class="content-container flex justify-center items-center p-8">
         <iframe title="web" width="1024" height="612" src="https://app.powerbi.com/view?r=eyJrIjoiZjk0NTY5ZDgtODgwOC00Yjc1LTg0MDUtNjllZDM3M2Y0NmRmIiwidCI6IjRhNGY3YjUyLTBlMDUtNDQxNS04NDU0LTc2ODliMDBhODdiMiIsImMiOjEwfQ%3D%3D&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
     </div>
 
-    <div class="titles-container">
-        <h1><span class="citie-text">CITY</span> OVERALL</h1>
+    <div class="titles-container text-center py-5">
+        <h1 class="text-4xl"><span class="text-yellow-600">CITY</span> OVERALL</h1>
     </div>
 
-    <div class="table-container">
-        <h2></h2>
-        <input type="text" id="searchInput" placeholder="ค้นหา..." onkeyup="searchTable()">
-        <table class="table">
+    <div class="table-container w-4/5 mx-auto bg-yellow-300 shadow-md rounded-2xl p-5">
+        <input type="text" id="searchInput" placeholder="ค้นหา..." class="w-64 p-2 mb-5 border-2 border-teal-500 rounded-full float-right">
+        <table class="table w-full border-collapse bg-white rounded-lg">
             <thead>
-                <tr>
-                    <th>ลำดับ</th>
-                    <th>แผนพัฒนาเมืองอัจฉริยะ</th>
-                    <th>จังหวัด</th>
-                    <th>ประกาศเมืองอัจฉริยะ</th>
-                    <th>อายุการถือครองตราสัญลักษณ์</th>
-                    <th>%ความคืบหน้า</th>
-                    <th>%ความสำเร็จ</th>
+                <tr class="bg-yellow-100">
+                    <th class="p-4">ลำดับ</th>
+                    <th class="p-4">แผนพัฒนาเมืองอัจฉริยะ</th>
+                    <th class="p-4">จังหวัด</th>
+                    <th class="p-4">ประกาศเมืองอัจฉริยะ</th>
+                    <th class="p-4">อายุการถือครองตราสัญลักษณ์</th>
+                    <th class="p-4">%ความคืบหน้า</th>
+                    <th class="p-4">%ความสำเร็จ</th>
                 </tr>
             </thead>
             <tbody>
                 <% fechdata.forEach((data, index) => { %>
-                <tr>
-                    <td><%= index + 1 %></td>
-                    <td><a href="#"><%= data.cityName %></a></td>
-                    <td><%= data.province %></td>
-                    <td>
+                <tr class="hover:bg-gray-100">
+                    <td class="p-4"><%= index + 1 %></td>
+                    <td class="p-4"><a href="#" class="text-blue-500 hover:underline"><%= data.cityName %></a></td>
+                    <td class="p-4"><%= data.province %></td>
+                    <td class="p-4">
                         <% 
                             const date = new Date(data.date);
                             const thaiMonths = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
@@ -232,21 +66,20 @@
                         <%= formattedDate %>
                     </td>
                     <% if (data.years <= 0) { %>
-                        <td><%= data.months %> เดือน <%= data.days %> วัน</td>
-                        <% } else { %>
-                            <td><%= data.years %> ปี <%= data.months %> เดือน <%= data.days %> วัน</td>
-                          <% } %>
-                    
-                    <td>50%</td>
-                    <td>50%</td>
+                        <td class="p-4"><%= data.months %> เดือน <%= data.days %> วัน</td>
+                    <% } else { %>
+                        <td class="p-4"><%= data.years %> ปี <%= data.months %> เดือน <%= data.days %> วัน</td>
+                    <% } %>
+                    <td class="p-4">50%</td>
+                    <td class="p-4">50%</td>
                 </tr>
                 <% }); %>
             </tbody>
         </table>
-        <div id="table-navigation">
-            <button onclick="previousPage()">Back</button>
-            <button onclick="nextPage()">Next</button>
-        </div>        
+        <div id="table-navigation" class="flex justify-between mt-4">
+            <button onclick="previousPage()" class="w-24 p-2 bg-yellow-100 border-2 border-yellow-600 rounded-full hover:bg-yellow-600 hover:text-white">Back</button>
+            <button onclick="nextPage()" class="w-24 p-2 bg-yellow-100 border-2 border-yellow-600 rounded-full hover:bg-yellow-600 hover:text-white">Next</button>
+        </div>
     </div>
 
     <%- include('component/footer.ejs') %>

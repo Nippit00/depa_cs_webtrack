@@ -283,6 +283,7 @@ exports.getCityDashboard = (req, res, next) => {
                 smartkeycount: smartKeyCounts,
                 averageProgressPerSmart: averageProgressPerSmartKey,
               };
+              // console.log(rounded)
             }
             res.render("city/dashboard", {
               req,
@@ -317,14 +318,15 @@ exports.getCityFollow = (req, res, next) => {
           status: JSON.parse(row.status)
         };
       });
-      // console.log(followdata)
+      
       db.query(qRound,[cityID],(err,dataRound)=>{
+        console.log(dataRound)
         if (err) return res.status(500).json(err);
         res.render("city/follow", {
           pageTitle: "Follow",
           path: "/city",
           followdata: followdata || [],
-          dataRound:dataRound,
+          dataRound:dataRound[0],
         });
       })
     });
