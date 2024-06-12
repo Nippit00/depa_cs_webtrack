@@ -134,7 +134,7 @@
         <form action="/saveForm/<%= formdata[0].solutionID %>/<%= round %>" method="post" id="reportForm">
             <div class="mt-5">
                 <input type="hidden" name="Q1" value="สถานะ">
-                <label for="status" class="block font-medium mb-2 text-blue-600 text-xl">สถานะ:</label>
+                <label for="status" class="block font-medium mb-2 text-teal-600 text-xl">สถานะ:</label>
                 <p class="text-gray-500 mb-2">สถานะปัจจุบันของการดำเนินโครงการ</p>
                 <select id="status" name="A1" class="block w-full p-2 border rounded-md" required>
                     <option value="ยังไม่ดำเนินโครงการ" <%= (dataOld.find(d => d.questionID == '1')?.ans ?? '') === 'ยังไม่ดำเนินโครงการ' ? 'selected' : '' %>>ยังไม่ดำเนินโครงการ</option>
@@ -147,7 +147,7 @@
 
             <div class="mt-5">
                 <input type="hidden" name="Q2" value="ความก้าวหน้าโครงการ">
-                <label for="progress" class="block text-blue-600 font-medium mb-2 text-xl">ความก้าวหน้าโครงการ:</label>
+                <label for="progress" class="block text-teal-600 font-medium mb-2 text-xl">ความก้าวหน้าโครงการ:</label>
                 <p class="text-gray-500 mb-2">ร้อยละของความก้าวหน้าภาพรวมในการดำเนินโครงการ</p>
                 <select id="progress" name="A2" class="block w-full p-2 border rounded-md" onchange="toggleFileUpload()">
                     <option value="0">ระบุ % ความก้าวหน้า</option>
@@ -159,21 +159,21 @@
 
             <div id="fileUploadContainer" class="mt-5" style="display: none;">
                 <input type="hidden" name="Q3" value="FileUpload">
-                <label for="fileUpload" class="block text-blue-600 font-medium mb-2 text-xl">แนบรูปภาพ:</label>
+                <label for="fileUpload" class="block text-teal-600 font-medium mb-2 text-xl">แนบรูปภาพ:</label>
                 <p class="text-gray-500 mb-2">แนบภาพประกอบการดำเนินโครงการเพื่อเป็นหลักฐานแสดงความสำเร็จของโครงการ</p>
                 <input type="file" id="fileUpload" name="A3" accept=".pdf, .doc, .docx" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
-                <label for="operation" class="block text-blue-600 font-medium mb-2 text-xl">ผลการดำเนินงาน:</label>
+                <label for="operation" class="block text-teal-600 font-medium mb-2 text-xl">ผลการดำเนินงาน:</label>
                 <p class="text-gray-500 mb-2">ระบุผลสำเร็จหรือผลประโยชน์ที่เกิดขึ้นจากการดำเนินโครงการ</p>
                 <input type="text" id="operation" name="A4" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '4')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q5" value="ประเภทปัญหา">
-                <label for="problem_type" class="block text-blue-600 font-medium mb-2 text-xl">ประเภทปัญหา:</label>
+                <label for="problem_type" class="block text-teal-600 font-medium mb-2 text-xl">ประเภทปัญหา:</label>
                 <p class="text-gray-500 mb-2">ระบุประเภทปัญหาที่พบจากการดำเนินโครงการ</p>
                 <select id="problem_type" name="A5" class="block w-full p-2 border rounded-md">
                     <option value="null" <%= (dataOld.find(d => d.questionID == '5')?.ans ?? '') === 'null' ? 'selected' : '' %>>ระบุประเภทปัญหา</option>
@@ -195,42 +195,42 @@
 
             <div class="mt-5">
                 <input type="hidden" name="Q6" value="ปัญหาอื่น ๆ">
-                <label for="result" class="block text-blue-600 font-medium mb-2 text-xl">ปัญหาอื่นๆ:</label>
+                <label for="result" class="block text-teal-600 font-medium mb-2 text-xl">ปัญหาอื่นๆ:</label>
                 <p class="text-gray-500 mb-2">ระบุปัญหาที่พบจากการดำเนินโครงการ นอกเหนือจากที่กำหนดไว้</p>
                 <input type="text" id="result" name="A6" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '6')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q7" value="ผลลัพธ์">
-                <label for="result" class="block text-blue-600 font-medium mb-2 text-xl">ผลลัพธ์:</label>
+                <label for="result" class="block text-teal-600 font-medium mb-2 text-xl">ผลลัพธ์:</label>
                 <p class="text-gray-500 mb-2">ผลที่เกิดขึ้นต่อยอดจากผลผลิต หรือผลระยะยาวซึ่งเกิดเป็นผลจุดหมายปลายทาง หรือผลต่อเนื่องจากผลกระทบ</p>
                 <input type="text" id="result" name="A7" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '7')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q8" value="ปัญหา/อุปสรรค">
-                <label for="problem" class="block text-blue-600 font-medium mb-2 text-xl">ปัญหา/อุปสรรค:</label>
+                <label for="problem" class="block text-teal-600 font-medium mb-2 text-xl">ปัญหา/อุปสรรค:</label>
                 <p class="text-gray-500 mb-2">อธิบายรายละเอียดของปัญหาที่พบจากการดำเนินโครงการ</p>
                 <input type="text" id="problem" name="A8" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '8')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q9" value="แนวทางแก้ไข">
-                <label for="solution" class="block text-blue-600 font-medium mb-2 text-xl">แนวทางแก้ไข:</label>
+                <label for="solution" class="block text-teal-600 font-medium mb-2 text-xl">แนวทางแก้ไข:</label>
                 <p class="text-gray-500 mb-2">ระบุวิธีการแก้ไขปัญหาที่พบจากการดำเนินโครงการ</p>
                 <input type="text" id="solution" name="A9" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '9')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q10" value="หมายเหตุ">
-                <label for="note" class="block text-blue-600 font-medium mb-2 text-xl">หมายเหตุ:</label>
+                <label for="note" class="block text-teal-600 font-medium mb-2 text-xl">หมายเหตุ:</label>
                 <p class="text-gray-500 mb-2">ผลการดำเนินการอื่นๆที่ต้องการรายงาน</p>
                 <input type="text" id="note" name="A10" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '10')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
 
             <div class="mt-5">
                 <input type="hidden" name="Q11" value="หมายเหตุ">
-                <label for="bubget" class="block text-blue-600 font-medium mb-2 text-xl">งบประมาณที่ใช้ในการดำเนินการ:</label>
+                <label for="bubget" class="block text-teal-600 font-medium mb-2 text-xl">งบประมาณที่ใช้ในการดำเนินการ:</label>
                 <p class="text-gray-500 mb-2">ระบุงบประมาณที่เกิดขึ้นจากการดำเนินโครงการ</p>
                 <input type="text" id="bubget" name="A11" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == '11')?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
             </div>
@@ -239,7 +239,7 @@
                 if (index >= 11) { %>
                     <div class="mt-5">
                         <input type="hidden" value="<%= item.question %>" name="Q<%= item.questionID %>">
-                        <label for="other" class="block text-blue-600 font-medium mb-2 text-xl"><%= item.question %>:</label>
+                        <label for="other" class="block text-teal-600 font-medium mb-2 text-xl"><%= item.question %>:</label>
                         <p class="text-gray-500 mb-2"><%= item.Description %></p>
                         <input type="text" id="other" name="A<%= item.questionID %>" placeholder="กรอกข้อความ...." value="<%= dataOld.find(d => d.questionID == item.questionID)?.ans ?? '' %>" class="block w-full p-2 border rounded-md">
                     </div>
@@ -250,7 +250,7 @@
 
             <% kpiQ.forEach(item => { %>
                 <div class="mb-4">
-                    <label for="<%= item.kpiID %>" class="block text-blue-600 font-medium mt-5 text-xl"><%= item.kpiName %>: <span class="text-red-500">*</span></label>
+                    <label for="<%= item.kpiID %>" class="block text-teal-600 font-medium mt-5 text-xl"><%= item.kpiName %>: <span class="text-red-500">*</span></label>
                     <% if (item.goal == 0) { %>
                         <label class="mr-4">Yes</label>
                         <input type="radio" name="<%= item.kpiID %>" value="Yes" <%= item.ans === 'Yes' ? 'checked' : '' %> class="mr-4">

@@ -143,90 +143,15 @@
                         <% } %>
                       </th>
                     </tr>
-                    <tr>
-                      <td class="border p-2">
-                        <% followdata.forEach((item) => { %>
-                        <!-- ตรวจสอบเงื่อนไขก่อนที่จะแสดงข้อมูล -->
-                        <% if (item.smartKey === section) { %>
-                        <!-- แสดงข้อมูลของแต่ละ object -->
-                        <div>
-                          <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                          <% if (item.status === 2) { %>
-                          <p><span class="text-gray-500 cursor-not-allowed">
-                              <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                            </span></p>
-                          <% } else { %>
-                          <p>
-                            <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                          </p>
-                          <% } %>
-                          <% } else { %>
-                          <% if (item.status_round2 === 2) { %>
-                          <p><span class="text-gray-500 cursor-not-allowed">
-                              <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                            </span></p>
-                          <% } else { %>
-                          <p>
-                            <%= item.solutionID.slice(4) %> <%= item.solutionName %>
-                          </p>
-                          <% } %>
-                          <% } %>
-                        </div>
-                        <% } %>
-                        <% }); %>
-                        <!-- สิ้นสุดการวนลูป -->
-                      </td>
-                      <td class="border p-2">
-                        <% let count4 = 1; %>
-                        <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === section) { %>
-                        <% if (item.status === 2 || (currentYear === form1Year && currentMonth < form1StartMonth) || (currentYear === form1Year && currentMonth === form1StartMonth && currentDay < form1StartDay)) { %>
-                        <div class="button-container-disable mb-2 opacity-50 cursor-not-allowed pointer-events-none">
-                          <button class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button>
-                        </div>
-                        <% } else { %>
-                        <div class="button-container mb-2">
-                          <% if (count4 == 1) { %>
-                          <a href="/formsmart/<%= item.solutionID %>"><button
-                              class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
-                          <% } else { %>
-                          <a href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>"><button
-                              class="report-button p-2 bg-teal-500 text-white rounded">กรอกฟอร์ม</button></a>
-                          <% } %>
-                        </div>
-                        <% } %>
-                        <% } %>
-                        <% count4++; %>
-                        <% }); %>
-                      </td>
-                     
-                      <td class="border p-2">
-                        <% followdata.forEach((item) => { %>
-                        <% if (item.smartKey === section) { %>
-                        <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                        <div class="circle-container flex justify-center items-center h-full">
-                          <div
-                            class="<%= item.status === 2 ? 'complete-circle w-5 h-5 bg-green-500 rounded-full' : (item.status === 1 ? 'not-complete-circle w-5 h-5 bg-yellow-500 rounded-full' : 'incomplete-circle w-5 h-5 bg-red-500 rounded-full') %>">
-                          </div>
-                        </div>
-                        <% } else { %>
-                        <div>
-                          <p
-                            class="<%= item.status_round2 === 2 ? 'complete' : (item.status_round2 === 1 ? 'not-complete' : 'incomplete') %>">
-                            <% if (item.status_round2 === 2) { %>
-                            - ส่งเเล้ว
-                            <% } else if (item.status_round2 === 1) { %>
-                            - ฉบับร่าง
-                            <% } else { %>
-                            - ยังไม่ได้รายงาน ครั้งที่2
-                            <% } %>
-                          </p>
-                        </div>
-                        <% } %>
-                        <% } %>
-                        <% }); %>
-                      </td>
-                    </tr>
+                    <% followdata.forEach((item) => { %>
+                      <% if(item.smartKey===section){ %>
+                      <tr class="">
+                        <td><%= item.solutionID.slice(4) %> <%= item.solutionName %></td>
+                        <td><a class="p-2 bg-teal-500 text-white rounded" href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>">กรอกฟอร์ม</a></td>
+                        <td>สถานะ</td>
+                      </tr>
+                      
+                      <% }})%>
                   </table>
                 </div>
               </div>
