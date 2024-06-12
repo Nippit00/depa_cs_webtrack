@@ -1,0 +1,17 @@
+FROM node:latest
+
+ENV SERVER_IP=209.15.96.114/22
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY ./app.js ./
+
+COPY . .
+
+EXPOSE 8888
+
+CMD [ "node", "app.js" ]
