@@ -73,7 +73,7 @@
     </style>
 </head>
 
-<body class="font-th-sarabun">
+<spanody class="font-th-sarabun">
     <div id="spinner-container">
         <img id="static-image" src="/img/favi.png" alt="Loading...">
         <div id="spinner">
@@ -93,93 +93,93 @@
             <p>แผน </p>
             <p class="text-[#C2AF76]"> Smart City </p>
         </div>
-        <div class="my-5">
+        <div class="my-3">
             <%- include('../component/menu1.ejs') %>
         </div>
         <div class="flex flex-col lg:flex-row justify-around mt-10 mx-auto">
-            <div class="w-full lg:w-1/2 p-5 lg:p-20">
-                <h4 class="text-2xl font-bold">
+            <div class="w-full  lg:w-1/2 p-5 lg:p-20">
+                <h4 class="text-2xl font-medium md:mb-">
                     <span class="text-teal-600">
                         <%= cityInfo.cityName %>
                     </span>
                 </h4>
-                <div class="my-5">
-                    <b class="text-lg">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ :</b>
-                    <b class="text-teal-600">
+                <div class="my-3  ">
+                    <span class="text-lg text-gray-700 font-medium">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ: </span>
+                    <span class="text-teal-600">
                         <%= cityInfo.cityName %>
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">จังหวัด :</b>
-                    <b class="text-teal-600">
+                <div class="my-3 ">
+                    <span class="text-lg text-gray-700 font-medium">จังหวัด:</span>
+                    <span class="text-teal-600">
                         <%= cityInfo.province %>
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">ผู้พัฒนาเมืองอัจฉริยะ :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">ผู้พัฒนาเมืองอัจฉริยะ :</span>
+                    <span class="text-teal-600">
                         <%= cityInfo.developer %>
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">ประกาศเมืองอัจฉริยะ :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">ประกาศเมืองอัจฉริยะ :</span>
+                    <span class="text-teal-600">
                         <% const date = new Date(cityInfo.date); 
                             const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear().toString().padStart(4, '0')}`; %>
                         <%= formattedDate %>
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">อายุของเมือง :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">อายุของเมือง :</span>
+                    <span class="text-teal-600">
                         <%= announcementDuration.years %> ปี
                         <%= announcementDuration.months %> เดือน
                         <%= announcementDuration.days %> วัน
                         (<%= announcementDuration.totalDays %> วัน)
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">วันครบรอบ 2 ปี :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">วันครบรอบ 2 ปี :</span>
+                    <span class="text-teal-600">
                         <%= announcementDuration.twoYearsLaterFormatted %>
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">ผู้บริหารของหน่วยงาน :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">ผู้บริหารของหน่วยงาน :</span>
+                    <span class="text-teal-600">
                         <%= cityInfo.executive %>
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">มูลค่าการลงทุน :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">มูลค่าการลงทุน :</span>
+                    <span class="text-teal-600">
                         <%= (cityInfo.government_investment + cityInfo.private_investment).toLocaleString() %> บาท
-                    </b>
+                    </span>
                 </div>
-                <div class="my-5">
-                    <b class="text-lg">มูลค่าการลงทุนภาครัฐ :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">มูลค่าการลงทุนภาครัฐ :</span>
+                    <span class="text-teal-600">
                         <%= cityInfo.government_investment.toLocaleString() %> บาท
-                    </b>
+                    </span>
                 </div>
                 <% if (cityInfo.private_investment) { %>
-                <div class="my-5">
-                    <b class="text-lg">มูลค่าการลงทุนภาคเอกชน :</b>
-                    <b class="text-teal-600">
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">มูลค่าการลงทุนภาคเอกชน :</span>
+                    <span class="text-teal-600">
                         <%= cityInfo.private_investment.toLocaleString() %> บาท
-                    </b>
+                    </span>
                 </div>
                 <% } %>
-                <div class="my-5">
+                <div class="my-3">
                     <% if (cityInfo.executive && cityInfo.executive.includes('ผู้ว่าราชการจังหวัด')) { %>
                     <% if (province.length > 0) { %>
                     <div class="flex items-start">
-                        <div class="text-lg"><b>โครงการในจังหวัด : </b></div>
+                        <div class="text-lg text-gray-700 font-medium">โครงการในจังหวัด : </div>
                         <div class="text-lg">
                             <% province.forEach(item => { %>
                             <div>
                                 <div class="text-teal-600">
-                                    <b><%= item.cityName %></b>
+                                    <span><%= item.cityName %>,</span>
                                 </div>
                             </div>
                             <% }) %>
@@ -196,73 +196,85 @@
             </div>
         </div>
         <div class="mx-5 scale-100 lg:scale-75">
-            <div class="text-3xl text-center"><b>7 smart :</b><b style="color: #04B2A1;">
+            <div class="text-3xl text-center"><span>7 smart :</span><span style="color: #04B2A1;">
                     <%= Object.values(smartKeyCounts).reduce((acc, value) => acc + value, 0 - 4) %>โครงการ
-                </b>
+                </span>
             </div>
             <div class="flex flex-wrap justify-around p-6 rounded-xl border-[#00B2A9] border-4 mt-5  ">
                 <div class="flex flex-col items-center m-4">
-                    <div class="text-center text-lg">Smart <br>Environment</div>
                     <img src="/img/lo01.png" alt="Image 1" class="w-20 h-20">
-                    <div class="mt-2 text-lg">
+                    <div class="text-center text-lg">Smart Environment</div>
+                    <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.ENV %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <div class="text-center text-lg">Smart <br> Energy</div>
                     <img src="/img/lo04.png" alt="Image 2" class="w-20 h-20">
-                    <div class="mt-2 text-lg" >
+                    <div class="text-center text-lg">Smart Energy</div>
+
+                    <div class="mt-2 text-lg border-2  p-2 rounded-lg" >
                         <%= smartKeyCounts.ENE %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <div class="text-center text-lg">Smart <br>Economy</div>
+                    
                     <img src="/img/lo05.png" alt="Image 3" class="w-20 h-20">
-                    <div class="mt-2 text-lg">
+                    <div class="text-center text-lg">Smart Economy</div>
+                    <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.ECO %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <h5 class="text-center text-lg">Smart <br>Mobility</h5>
                     <img src="/img/lo03.png" alt="Image 4" class="w-20 h-20">
-                    <div class="mt-2 text-lg">
+                    <div class="text-center text-lg ">Smart Mobility</div>
+
+                    <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.MOB %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <div class="text-center text-lg">Smart <br>Governance</div>
                     <img src="/img/lo02.png" alt="Image 5" class="w-20 h-20">
-                    <div class="mt-2 text-lg">
+                    <div class="text-center text-lg">Smart Governance</div>
+
+                    <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.GOV %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <div class="text-center text-lg">Smart <br> People</div>
                     <img src="/img/lo07.png" alt="Image 6" class="w-20 h-20">
-                    <div class="mt-2 text-lg">
+                    <div class="text-center text-lg">Smart People</div>
+
+                    <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.PEO %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <div class="text-center text-lg">Smart <br> Living</div>
                     <img src="/img/lo06.png" alt="Image 7" class="w-20 h-20">
-                    <div class="mt-2 text-lg">
+                    <div class="text-center text-lg">Smart Living</div>
+
+                    <div class="mt-2 text-lg border-2 p-2 rounded-lg">
                         <%= smartKeyCounts.LIV %> โครงการ
                     </div>
                 </div>
             </div>
         </div>
-        <div class="ml-0 mb-10 lg:ml-52">
-            <div class="text-xl"><span class="text-cyan-500">Download </span><span>เอกสารรายละเอียดของแผนเมือง :</span></div>
+        <div class="ml-0 mb-10 lg:ml-52 self-start mr-8">
+            <div class="text-xl mb-2"><span>เอกสารรายละเอียดของแผนเมือง :</span></div>
             <% datafile.forEach(data => { %>
             <% if (data.fileID === "F1") { %>
-            <a style="margin-left: 0;" href="<%= data.link %>" target="_blank" class="relative">1.ข้อสรุปผู้บริหาร</a><br>
+            <div class="mb-2"><a class="flex" href="<%= data.link %>" target="_blank" >1.ข้อสรุปผู้บริหาร<svg class="w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#00b2a9" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg></a></div>
             <% } else if (data.fileID === "F2") { %>
-            <a style="margin-left: 0;" href="<%= data.link %>" target="_blank" class="relative">2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ</a><br>
+            <div class="mb-2" > <a class="flex" href="<%= data.link %>" target="_blank" >2.ข้อเสนอแผนเมืองอัจฉริยะที่ยื่นเสนอ<svg class="w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#00b2a9" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg></a></div>
             <% } else if (data.fileID === "F3") { %>
-            <a style="margin-left: 0;" href="<%= data.link %>" target="_blank" class="relative">3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ</a><br>
+                <div class="mb-2"> <a class="flex"  href="<%= data.link %>" target="_blank" >3.ประกาศจากคณะกรรมการชาติในการได้รับตราสัญลักษณ์เมืองอัจฉริยะ<svg class="w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#00b2a9" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg></a></div>
             <% } else { %>
-            <a style="margin-left: 0;" href="<%= data.link %>" target="_blank" class="relative">4.อื่นๆ</a>
+                <div class="mb-2"> 
+                    <a class="flex" href="<%= data.link %>" target="_blank">
+                        4.อื่นๆ
+                        <svg  class="w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#00b2a9" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+                    
+                     </a>
+                </div>
             <% } %>
             <% }) %>
         </div>
@@ -309,17 +321,17 @@
             let message = '';
 
             if (currentYear === form1Year && currentMonth === form1StartMonth && currentDay >= form1StartDay && currentDay <= form1EndDay) {
-                message = `<span class="highlight">กรอกแบบฟอร์มครั้งที่ ${round} ช่วงเวลา 3-5 พ.ค. 2024</span><br><br>`;
+                message = `<span class="highlight">กรอกแบบฟอร์มครั้งที่ ${round} ช่วงเวลา 3-5 พ.ค. 2024</span><spanr><spanr>`;
                 event = true;
             } else {
-                message = `กรอกแบบฟอร์มครั้งที่ ${round} ช่วงเวลา 3-5 พ.ค. 2024<br><br>`;
+                message = `กรอกแบบฟอร์มครั้งที่ ${round} ช่วงเวลา 3-5 พ.ค. 2024<spanr><spanr>`;
             }
 
             if (
                 (currentYear === reportYear && currentMonth === reportStartMonth && currentDay >= reportStartDay && currentDay <= reportEndDay) ||
                 (currentYear === reportYear && currentMonth === reportEndMonth && currentDay <= reportEndDay)
             ) {
-                message += '<span class="highlight">คุณต้องอัพโหลดไฟล์รายงาน ช่วงเวลา 2-5 ธ.ค. 2027</span><br><br>';
+                message += '<span class="highlight">คุณต้องอัพโหลดไฟล์รายงาน ช่วงเวลา 2-5 ธ.ค. 2027</span><spanr><spanr>';
                 event = true;
             } else if (event === true) {
                 message += 'คุณต้องอัพโหลดไฟล์รายงาน ในอีก ';
@@ -329,7 +341,7 @@
                 if (remainingMonths > 0) {
                     message += remainingMonths + ' เดือน ';
                 }
-                message += remainingDaysInMonth + ' วัน<br><br>';
+                message += remainingDaysInMonth + ' วัน<spanr><spanr>';
             } else {
                 message += '<span class="highlight">คุณต้องอัพโหลดไฟล์รายงาน ในอีก ';
                 if (remainingYears > 0) {
@@ -338,7 +350,7 @@
                 if (remainingMonths > 0) {
                     message += remainingMonths + ' เดือน ';
                 }
-                message += remainingDaysInMonth + ' วัน</span><br><br>';
+                message += remainingDaysInMonth + ' วัน</span><spanr><spanr>';
             }
 
             Swal.fire({

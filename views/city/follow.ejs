@@ -88,7 +88,7 @@
     </div>
 
     <div class="text-center mt-3 ">
-      <h1 class="text-3xl font-bold">
+      <h1 class="text-4xl">
         รายงานความคืบหน้า<span class="text-[#04b2a1]">เมืองที่ได้รับตราสัญลักษณ์</span>
       </h1>
     </div>
@@ -108,19 +108,21 @@
               class="inline-block w-4 h-4 bg-yellow-500 rounded-full border border-yellow-500"></span> หมายถึงฉบับร่าง -</span>
           <span class="text-white text-shadow-lg">สถานะ <span
               class="inline-block w-4 h-4 bg-green-500 rounded-full border border-green-500"></span> หมายถึง ดำเนินการแล้ว</span>
-        </p>
+          <span class="text-white text-shadow-lg">สถานะ <span class="inline-block w-4 h-4 bg-gray-200 rounded-full border-gray-500 border-2"></span> หมายถึง ยังไม่ถึงรอบเปิดกรอกฟอร์ม </span>
+            
+            </p>
 
         <div class="content p-5 bg-gray-200 rounded-2xl mx-2 mb-5">
           <div id="accordion">
             <% function renderCard(section, displayName) { %>
-            <div class="card mb-4">
+            <div class="card mb-2">
               <div class="card-header flex justify-between items-center cursor-pointer" onclick="toggleCollapse('collapse<%= section %>')" id="heading<%= section %>">
                 <h5 class="mb-0">
                   <%= displayName %>
                 </h5>
                 <% const countShow = countEcoSolutions(section) %>
                 <% const countSuccessShow = countComplete(section) %>
-                <span class="ml-auto mr-5 text-sm">สำเร็จ <%= countSuccessShow %>/<%= countShow %></span>
+                <span class="ml-auto mr-5 text-sm">รายงานเรียบร้อย <%= countSuccessShow %>/<%= countShow %> โครงการ</span>
               </div>
               <div id="collapse<%= section %>" class="hidden" aria-labelledby="heading<%= section %>">
                 <div class="card-body">

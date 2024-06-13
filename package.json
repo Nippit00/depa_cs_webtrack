@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/suthivich/depa_cs_webtrack#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@google-cloud/storage": "^7.11.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",

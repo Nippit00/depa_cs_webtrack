@@ -11,10 +11,10 @@
 
 <body>
   <nav class="bg-teal-500 text-black flex justify-between items-center p-0 h-16 shadow-md">
-    <a href="/" class="flex items-center bg-yellow-500 rounded-full px-3 py-2 ml-2 hover:bg-yellow-600 text-black hover:no-underline hover:text-white">
+    <a href="/" class="flex items-center bg-[#DDB433] rounded-full px-3 py-2 ml-2 hover:bg-yellow-300 text-black hover:no-underline hover:text-white">
       <i class="fas fa-home"></i>
       <span class="ml-2 hidden md:block">depa - Smart City Overview on Real-time Evaluation</span>
-      <span class="ml-2 block md:hidden">D-Score</span>
+      <span class="ml-2 block md:hidden">d-SCORE</span>
     </a>
     <div id="menu" class="items-center md:bg-white md:w-auto md:h-auto md:py-1 md:rounded-bl-3xl">
       
@@ -22,13 +22,13 @@
         <li class="hidden md:block"><img src="/img/navpic.png" class="w-72"></li>
         <% if (!isAuthenticated) { %>
         <li class="my-2 md:my-0">
-          <a class="btn bg-yellow-500 px-3 py-2 rounded-xl text-white transition duration-300 hover:bg-yellow-600" href="/login">SIGN IN</a>
+          <a class="btn bg-[#DDB433] px-3 py-2 rounded-xl text-white transition duration-300 hover:bg-yellow-300" href="/login">SIGN IN</a>
         </li>
         <% } else { %>
         <li class="my-2 md:my-0">
           <form action="/logout" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn bg-yellow-500 px-3 py-2 mb-[-1rem] rounded-xl text-white transition duration-300 hover:bg-yellow-600">Log out</button>
+            <button class="btn bg-[#DDB433] px-3 py-2 mb-[-1rem] rounded-xl text-white transition duration-300 hover:bg-yellow-300">Log out</button>
           </form>
         </li>
         <% } %>
@@ -36,14 +36,6 @@
     </div>
   </nav>
 
-  <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
-
-    menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
-  </script>
 </body>
 
 </html>

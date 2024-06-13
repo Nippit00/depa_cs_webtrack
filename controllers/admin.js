@@ -748,7 +748,7 @@ exports.updateSolution = (req, res, next) => {
 };
 
 exports.getRoundPage = (req, res, next) => {
-  const q1 = "SELECT DISTINCT `date` FROM `citydata`";
+  const q1 = "SELECT DISTINCT `date` FROM `citydata` ORDER BY `date` ASC;";
   db.query(q1, (err, dates) => {
     if (err) return res.status(500).json(err);
 

@@ -12,120 +12,176 @@
 
     <div class="container mx-auto p-6 bg-white mt-6 rounded-lg shadow-lg">
         <div class="flex flex-wrap">
-            <div class="w-2/5  lg:w-7/10 p-4 ">
-                <div class="bg-white rounded-lg shadow-lg p-4 ">
+            <div class="w-2/5 lg:w-7/10 p-4">
+                <div class="bg-white rounded-lg shadow-lg p-4">
                     <canvas id="myPieChart"></canvas>
                 </div>
             </div>
-            <div class="  ">
+            <div class="">
                 <div class="p-4 bg-white shadow-lg">
-                <h1>จำนวนเมืองที่กรอกเสร็จแล้ว</h1>
-                <br/>
-                <p>กรอกเสร็จแล้ว : 5 เมือง </p>
-                <p>กรอกยังไม่เสร็จ : 10 เมือง </p>
+                    <h1>จำนวนเมืองที่กรอกเสร็จแล้ว</h1>
+                    <br />
+                    <p>กรอกเสร็จแล้ว : 5 เมือง </p>
+                    <p>กรอกยังไม่เสร็จ : 10 เมือง </p>
                 </div>
             </div>
             <div class="w-2/6 lg:w-3/10 mx-3 flex items-center justify-center">
                 <div class="overflow-y-scroll h-max bg-gray-100 p-4 rounded-lg shadow-lg w-full">
                     <% date.forEach(function(item) { %>
-                        <div class="bg-white p-4 rounded-lg shadow-lg mb-4">
-                            <p class="font-semibold">วันประกาศเมืองอัจฉริยะ: <%= new Date(item.Date).toLocaleDateString('th-TH', {
+                    <div class="bg-white p-4 rounded-lg shadow-lg mb-4">
+                        <p class="font-semibold">วันประกาศเมืองอัจฉริยะ: <%= new Date(item.Date).toLocaleDateString('th-TH', {
                                 year: 'numeric', month: 'long', day: 'numeric'
                             }) %></p>
-                        
-                            <p class="font-semibold">เปิดฟอร์ม: <%= new Date(item.open).toLocaleDateString('th-TH', {
+
+                        <p class="font-semibold">เปิดฟอร์ม: <%= new Date(item.open).toLocaleDateString('th-TH', {
                                 year: 'numeric', month: 'long', day: 'numeric'
                             }) %></p>
-                            
-                            <p class="font-semibold">ปิดฟอร์ม: <%= new Date(item.close).toLocaleDateString('th-TH', {
+
+                        <p class="font-semibold">ปิดฟอร์ม: <%= new Date(item.close).toLocaleDateString('th-TH', {
                                 year: 'numeric', month: 'long', day: 'numeric'
                             }) %></p>
-                            
-                            <p class="font-semibold">รอบที่เปิด: <%= item.round %></p>
-                            
-                        </div>
+
+                        <p class="font-semibold">รอบที่เปิด: <%= item.round %></p>
+
+                    </div>
                     <% }) %>
                 </div>
             </div>
-            
+
         </div>
 
         <div class="mt-6">
-            <div class="overflow-y-scroll h-dvh bg-gray-100 p-4 rounded-lg shadow-lg">
-                <% city.forEach(function(item) { %>
-                    <div class="flex bg-white p-4 rounded-lg shadow-lg mb-4">
-                        <div class="w-1/2">
-                            <div class="flex"><p class="font-semibold">รหัสเมือง: </p>
-                                <p> <%=item.cityID%></p></div>
-                        
-                            <div class="flex"><p class="font-semibold">จังหวัด: </p>
-                                <p> <%=item.province%></p></div>
-                            
-                            <div class="flex"><p class="font-semibold">ชื่อเมือง: </p>
-                                <p><%=item.cityName%></p></div>
-                            
-                            <div class="flex"><p class="font-semibold">วันประกาศเมืองอัจฉริยะ: </p>
-                                <p><%= new Date(item.date).toLocaleDateString('th-TH', {
-                                year: 'numeric', month: 'long', day: 'numeric'
-                            }) %></p></div>
-                            
-                        </div>
-                        <div class="w-1/2 flex justify-around items-center">
-                            <div class="text-center mx-2">
-                                <p class="font-semibold">ส่งแล้ว</p>
-                                <p>53</p>
-                            </div>
-                            <div class="text-center mx-2">
-                                <p class="font-semibold">แบบร่าง</p>
-                                <p>24</p>
-                            </div>
-                            <div class="text-center mx-2">
-                                <p class="font-semibold">ยังไม่ส่ง</p>
-                                <p>9</p>
-                            </div>
-                        </div>
-                    </div>
-                <% }) %>
+            <div class="overflow-y-scroll max-h-dvh bg-gray-100 p-4 rounded-lg shadow-lg">
+                <table class="table-auto w-full bg-white rounded-lg shadow-lg">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="p-4 text-left sortable" data-column="cityID" onclick="sortTable('cityID')">รหัสเมือง <span class="sort-indicator"></span></th>
+                            <th class="p-4 text-left sortable" data-column="province" onclick="sortTable('province')">จังหวัด <span class="sort-indicator"></span></th>
+                            <th class="p-4 text-left sortable" data-column="cityName" onclick="sortTable('cityName')">ชื่อเมือง <span class="sort-indicator"></span></th>
+                            <th class="p-4 text-left sortable" data-column="date" onclick="sortTable('date')">วันประกาศเมืองอัจฉริยะ <span class="sort-indicator"></span></th>
+                            <th class="p-4 text-center text-[#238823]" data-column="success" onclick="sortTable('success')">ส่งแล้ว<span class="sort-indicator text-black"></span></th>
+                            <th class="p-4 text-center text-orange-500" data-column="unsuccess" onclick="sortTable('unsuccess')">แบบร่าง<span class="sort-indicator text-black"></span></th>
+                            <th class="p-4 text-center text-[#D2222D]" data-column="not" onclick="sortTable('not')">ยังไม่ส่ง<span class="sort-indicator text-black"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cityTable">
+                        <% city.forEach(function(item) { %>
+                        <tr class="bg-white mb-4 hover:bg-gray-100" onclick="check('<%= item.cityID %>')">
+                            <td class="p-4 border-b" data-cityid="<%= item.cityID %>"><%= item.cityID %></td>
+                            <td class="p-4 border-b" data-province="<%= item.province %>"><%= item.province %></td>
+                            <td class="p-4 border-b" data-cityname="<%= item.cityName %>"><%= item.cityName %></td>
+                            <td class="p-4 border-b" data-date="<%= item.date %>"><%= new Date(item.date).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                            <td class="p-4 border-b text-center "data-success="53">53</td>
+                            <td class="p-4 border-b text-center " data-unsuccess="24">24</td>
+                            <td class="p-4 border-b text-center " data-not="9">9</td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <%- include('include/ad-footer.ejs') %>
+</body>
 
-    <script>
-        const ctx = document.getElementById('myPieChart').getContext('2d');
-        const myPieChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['ยังไม่กรอก', 'ฉบับร่าง', 'ส่งแล้ว'],
-                datasets: [{
-                    label: 'สถานะโดยรวม',
-                    data: [300, 50, 100],
-                    backgroundColor: ['#D04848', '#FDE767', '#00f0d8']
-                }]
+<script>
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['ยังไม่กรอก', 'ฉบับร่าง', 'ส่งแล้ว'],
+            datasets: [{
+                label: 'สถานะโดยรวม',
+                data: [300, 50, 100],
+                backgroundColor: ['#D2222D', '#FFBF00', '#238823']
+            }]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    formatter: (value, context) => `${value}%`,
+                    color: '#fff',
+                    font: { weight: 'bold' }
+                }
             },
-            options: {
-                plugins: {
-                    datalabels: {
-                        formatter: (value, context) => `${value}%`,
-                        color: '#fff',
-                        font: { weight: 'bold' }
-                    }
-                },
-                legend: {
-                    position: 'right',
-                    align: 'center',
-                    labels: {
-                        boxWidth: 20,
-                        padding: 15
+            legend: {
+                position: 'right',
+                align: 'center',
+                labels: {
+                    boxWidth: 20,
+                    padding: 15
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    function searchTable() {
+        var input = document.getElementById("searchInput");
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById("cityTable");
+        var tr = table.getElementsByTagName("tr");
+
+        for (var i = 0; i < tr.length; i++) {
+            var tdArray = tr[i].getElementsByTagName("td");
+            var rowContainsFilter = false;
+
+            for (var j = 0; j < tdArray.length; j++) {
+                var td = tdArray[j];
+                if (td) {
+                    if (td.textContent.toUpperCase().indexOf(filter) > -1) {
+                        rowContainsFilter = true;
+                        break;
                     }
                 }
             }
+
+            tr[i].style.display = rowContainsFilter ? "" : "none";
+        }
+    }
+
+    function sortTable(column) {
+        var table = document.getElementById("cityTable");
+        var rows = Array.from(table.getElementsByTagName("tr"));
+        var direction = table.getAttribute("data-sort-direction") === "asc" ? "desc" : "asc";
+        var indicatorElements = document.querySelectorAll('.sort-indicator');
+
+        indicatorElements.forEach(element => {
+            element.textContent = '';
         });
-    </script>
-    
-    
 
-</body>
+        rows.sort(function(a, b) {
+            var aText = a.querySelector(`[data-${column}]`).getAttribute(`data-${column}`).toLowerCase();
+            var bText = b.querySelector(`[data-${column}]`).getAttribute(`data-${column}`).toLowerCase();
 
+            if (aText < bText) {
+                return direction === "asc" ? -1 : 1;
+            }
+            if (aText > bText) {
+                return direction === "asc" ? 1 : -1;
+            }
+            return 0;
+        });
+
+        rows.forEach(function(row) {
+            table.appendChild(row);
+        });
+
+        table.setAttribute("data-sort-direction", direction);
+
+        var currentIndicator = document.querySelector(`[data-column=${column}] .sort-indicator`);
+        currentIndicator.textContent = direction === 'asc' ? '↑' : '↓';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchInput').addEventListener('keyup', searchTable);
+    });
+</script>
+<script>
+     function check(cityID) {
+        window.location.href = `/admin/city/${cityID}`;
+    }
+</script>
 </html>

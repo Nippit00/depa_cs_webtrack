@@ -10,6 +10,9 @@
   <link rel="icon" type="image/x-icon" href="../tracktag/img/favi.png">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap"></script>
+
 </head>
 
 <body class="font-th-sarabun">
@@ -143,38 +146,42 @@
     
   </div>
 
-  <p class="text-center mt-5">
-    *** โปรดอ่าน:
-    <span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-red-500"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -
-    <span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-yellow-500"></span></span> หมายถึงฉบับร่าง -
-    <span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-green-500"></span></span> หมายถึง ดำเนินการแล้ว ***
-  </p>
+  <div class="text-center mt-5 flex flex-col md:flex-row md:justify-center items-center ">
+    <div><span class="text-red-600 font-semibold">*** โปรดอ่าน:</span></div> 
+    <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-red-500"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</div> 
+    <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-yellow-500"></span></span> หมายถึงฉบับร่าง -</div> 
+    <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-green-500"></span></span> หมายถึง ดำเนินการแล้ว -</div>
+    <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-gray-200 border-2 border-gray-500"></span></span> หมายถึง ยังไม่ถึงรอบเปิดกรอกฟอร์ม </div>
+    <div class="hidden md:block"><span class="text-red-600 font-semibold">***</span></div>
+  </div>
 
   <!-- Project Items Section -->
-  <div class="mx-8 my-10 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400">
+  <div class="max-w-dvh mx-8 my-10 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400">
     <h6 class="text-white text-2xl font-bold text-center mb-5">หัวข้อโครงการ</h6>
-    <div class="flex justify-between space-x-2 flex-wrap">
+    <div class="grid grid-cols-2 sm:grid-cols-11 gap-4 items-center">
       <% const projectItems = [
-            { id: 10, imgSrc: "/img/favi.png", alt: "Image 0", title: "โครงสร้างพื้นฐานกายภาพ" },
-            { id: 10, imgSrc: "/img/favi.png", alt: "Image 1", title: "โครงสร้างพื้นฐานดิจิตอล" },
-            { id: 1, imgSrc: "/img/cdp.png", alt: "Image 2", title: "CDP" },
-            { id: 2, imgSrc: "/img/s1.png", alt: "Image 3", title: "Smart Environment" },
-            { id: 3, imgSrc: "/img/se.png", alt: "Image 4", title: "Smart Energy" },
-            { id: 4, imgSrc: "/img/sec.png", alt: "Image 5", title: "Smart Economy" },
-            { id: 5, imgSrc: "/img/sm.png", alt: "Image 6", title: "Smart Mobility" },
-            { id: 6, imgSrc: "/img/sco.png", alt: "Image 7", title: "Smart Governance" },
-            { id: 7, imgSrc: "/img/sp.png", alt: "Image 8", title: "Smart People" },
-            { id: 8, imgSrc: "/img/sl.png", alt: "Image 9", title: "Smart Living" },
-            { id: 9, imgSrc: "/img/all01.png", alt: "Image 10", title: "All" }
-        ]; %>
+          { id: 10, imgSrc: "/img/favi.png", alt: "Image 0", title: "โครงสร้างพื้นฐานกายภาพ" },
+          { id: 11, imgSrc: "/img/favi.png", alt: "Image 1", title: "โครงสร้างพื้นฐานดิจิตอล" },
+          { id: 1, imgSrc: "/img/cdp.png", alt: "Image 2", title: "CDP" },
+          { id: 2, imgSrc: "/img/s1.png", alt: "Image 3", title: "Smart Environment" },
+          { id: 3, imgSrc: "/img/se.png", alt: "Image 4", title: "Smart Energy" },
+          { id: 4, imgSrc: "/img/sec.png", alt: "Image 5", title: "Smart Economy" },
+          { id: 5, imgSrc: "/img/sm.png", alt: "Image 6", title: "Smart Mobility" },
+          { id: 6, imgSrc: "/img/sco.png", alt: "Image 7", title: "Smart Governance" },
+          { id: 7, imgSrc: "/img/sp.png", alt: "Image 8", title: "Smart People" },
+          { id: 8, imgSrc: "/img/sl.png", alt: "Image 9", title: "Smart Living" },
+          { id: 9, imgSrc: "/img/all01.png", alt: "Image 10", title: "All" }
+      ]; %>
       <% projectItems.forEach(item => { %>
-        <div class="mb-2.5 text-center" onclick="show(<%= item.id %>)">
-          <img  src="<%= item.imgSrc %>" alt="<%= item.alt %>" id="<%= item.id %>"  class="max-w-full h-auto w-20 border-teal-400 rounded-full border-2 box-border p-2.5 m-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-135 hover:shadow-xl" />
-          <h5 class="mt-1.5 text-sm text-white"><%= item.title %></h5>
-        </div>
+      <div class="flex flex-col items-center mb-4 cursor-pointer" onclick="show(<%= item.id %>)">
+          <img src="<%= item.imgSrc %>" alt="<%= item.alt %>" id="<%= item.id %>" class="w-20 h-20 border-2 border-teal-400 rounded-full p-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl" />
+          <h5 class="mt-2 text-sm text-white font-semibold"><%= item.title %></h5>
+      </div>
       <% }) %>
-    </div>
-     <table class="w-full border-collapse bg-white shadow-lg text-center mt-5">
+  </div>
+  
+  
+     <table class="max-w-dvh border-collapse bg-white shadow-lg text-center mt-5">
       <thead>
         <tr>
           <th class="bg-teal-400 p-2.5 text-white">Project</th>
@@ -578,7 +585,7 @@
       labels: ['ยังไม่ดำเนินการ', 'ดำเนินการแล้ว'],
       datasets: [{
         data: [100 - initialRound.progress, initialRound.progress],
-        backgroundColor: ['#eeeeee', '#00f0d8'],
+        backgroundColor: ['#eeeeee', '#FF0000'],
         borderWidth: 6,
         borderColor: '#ffffff'
       }]
@@ -641,7 +648,7 @@
       labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
       datasets: [{
         data: [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100],
-        backgroundColor: ['#eeeeee', '#FFCE56'],
+        backgroundColor: ['#eeeeee', '#00f0d8'],
         borderWidth: 6,
         borderColor: '#ffffff'
       }]
@@ -733,7 +740,7 @@ const problemsChart = new Chart(problemsCtx, {
       datasets: [{
         label: 'โครงการที่สำเร็จแล้ว',
         data: Object.values(initialRound.success),
-        backgroundColor: '#FFCE56'
+        backgroundColor: '#00f0d8'
       },
       {
         label: 'โครงการที่ยังไม่สำเร็จ',
@@ -774,54 +781,85 @@ const problemsChart = new Chart(problemsCtx, {
     },
     plugins: [ChartDataLabels]
   });
-
-
   const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
-  const avgProgressChart = new Chart(avgProgressCtx, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(initialRound.averageProgressPerSmart),
-      datasets: [{
-        label: 'ค่าเฉลี่ยของความคืบหน้า (%)',
-        data: Object.values(initialRound.averageProgressPerSmart),
-        backgroundColor: '#00f0d8'
-      }]
-    },
-    options: {
-      scales: {
-        x: {
-          stacked: true
-        },
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: value => `${value}%`
+
+const entries = Object.entries(initialRound.averageProgressPerSmart);
+
+// จัดเรียงอาร์เรย์ตามค่า value
+const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
+
+// แปลงอาร์เรย์ที่จัดเรียงแล้วกลับเป็นวัตถุ (ถ้าต้องการ)
+const sortedObject = Object.fromEntries(sortedEntries);
+
+const labels = Object.keys(sortedObject);
+const data = Object.values(sortedObject);
+const treemapData = labels.map((label, index) => (
+{
+  v: data[index],
+  label: label,
+  
+}));
+
+function colorFromValue(value, border) {
+        var alpha = value / 100;
+        console.log("ALPHA :",alpha)
+        var color = "red";
+        if (border) {
+            alpha += 0.1;
           }
-        }
+        return Chart.helpers.color(color)
+            .alpha(alpha)
+            .rgbString();
+    }
+
+
+const avgProgressChart = new Chart(avgProgressCtx, {
+  type: 'treemap',
+  data: {
+    datasets: [
+      {
+        label: "ความคืบหน้าโครงการตามแผน",
+        data: data,
+        backgroundColor: function (ctx) {
+                        return colorFromValue(ctx.dataset.data[ctx.dataIndex].v);
+                    },
+        borderColor: function (ctx) {
+                        return colorFromValue(ctx.dataset.data[ctx.dataIndex].v, true);
+                    },
+        borderWidth: 2,
+        spacing: 0.1,
       },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom'
+    ],
+  },
+  options: {
+    plugins: {
+      datalabels: {
+        formatter: (value, context) => labels[context.dataIndex],
+        color: '#000',
+        align: 'center',
+        anchor: 'center',
+        font: {
+          weight: 'bold',
+          size: 14,
         },
-        tooltip: {
-          callbacks: {
-            label: tooltipItem => `${tooltipItem.dataset.label}: ${tooltipItem.raw}%`
-          }
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `ค่าเฉลี่ยความสำเร็จ: ${context.raw.v}%`,
         },
-        datalabels: {
-          display: true,
-          color: '#000',
-          font: {
-            weight: 'bold'
-          },
-          formatter: (value, context) => value === 0 ? null : `${value}%`
-        }
-      }
+      },
     },
-    plugins: [ChartDataLabels]
-  });
+    maintainAspectRatio: false,
+    title: {
+      display: true,
+      text: 'Basic Treemap Sample',
+    },
+    legend: {
+      display: false,
+    },
+  },
+  plugins: [ChartDataLabels],
+});
 </script>
 
   

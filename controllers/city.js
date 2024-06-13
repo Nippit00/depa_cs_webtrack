@@ -190,7 +190,7 @@ exports.getCityDashboard = (req, res, next) => {
               let unsuccessfulProjectsData = Array(8).fill(0);
   
               const validProblems = dataProgress.filter(
-                (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round
+                (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round && row.ans !== "ไม่มีปัญหา/อุปสรรค" && row.ans !== "อื่น ๆ"
               );
               const totalProblems = validProblems.length;
               const problemCounts = {};
@@ -263,13 +263,16 @@ exports.getCityDashboard = (req, res, next) => {
                 ECO: "0",
                 LIV: "0",
                 MOB: "0",
-                CDP: "0",
+                
               };
   
               Object.keys(smartKeyProgress).forEach((key) => {
-                averageProgressPerSmartKey[key] = (
-                  smartKeyProgress[key] / smartKeyCountsForAverage[key]
-                ).toFixed(2);
+                if(key!=='CDP'){
+                  averageProgressPerSmartKey[key] = (
+                    smartKeyProgress[key] / smartKeyCountsForAverage[key]
+                  ).toFixed(2);
+                }
+                
               });
   
               const totalAverage = (totalSum / count).toFixed(2);
@@ -320,7 +323,7 @@ exports.getCityFollow = (req, res, next) => {
       });
       
       db.query(qRound,[cityID],(err,dataRound)=>{
-        console.log(dataRound)
+        // console.log(dataRound)
         if (err) return res.status(500).json(err);
         res.render("city/follow", {
           pageTitle: "Follow",
