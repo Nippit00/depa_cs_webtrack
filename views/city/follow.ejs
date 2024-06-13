@@ -17,57 +17,51 @@
 
     function toggleCollapse(elementId) {
       const element = document.getElementById(elementId);
-      if (element.classList.contains('hidden')) {
-        element.classList.remove('hidden');
-      } else {
-        element.classList.add('hidden');
-      }
+      element.classList.toggle('hidden');
     }
   </script>
 </head>
 
 <body class="bg-gray-100">
   <div>
-    <% function countEcoSolutions(data) { let count1=0; followdata.forEach((item)=> {
-      if (item.smartKey === data) {
-      count1++;
-      }
+    <% function countEcoSolutions(data) {
+      let count1=0;
+      followdata.forEach((item) => {
+        if (item.smartKey === data) {
+          count1++;
+        }
       });
       return count1;
-      }
-      function countComplete(data) {
+    }
+    function countComplete(data) {
       let count2 = 0;
       followdata.forEach((item) => {
-      if (item.smartKey === data) {
-      if (item.status === 2) {
-      count2++;
-      }
-      }
+        if (item.smartKey === data && item.status === 2) {
+          count2++;
+        }
       });
       return count2;
-      }
-      function countCompleteRound2(data) {
+    }
+    function countCompleteRound2(data) {
       let count3 = 0;
       followdata.forEach((item) => {
-      if (item.smartKey === data) {
-      if (item.status_round2 === 2) {
-      count3++;
-      }
-      }
+        if (item.smartKey === data && item.status_round2 === 2) {
+          count3++;
+        }
       });
       return count3;
-      }
-      var currentDate = new Date();
-      var currentDay = currentDate.getDate();
-      var currentMonth = currentDate.getMonth() + 1;
-      var currentYear = currentDate.getFullYear();
-      var form1StartDay = 8;
-      var form1StartMonth = 5;
-      var form1Year = 2024;
-      var form2StartDay = 8;
-      var form2StartMonth = 5;
-      var form2Year = 2025;
-      %>
+    }
+    var currentDate = new Date();
+    var currentDay = currentDate.getDate();
+    var currentMonth = currentDate.getMonth() + 1;
+    var currentYear = currentDate.getFullYear();
+    var form1StartDay = 8;
+    var form1StartMonth = 5;
+    var form1Year = 2024;
+    var form2StartDay = 8;
+    var form2StartMonth = 5;
+    var form2Year = 2025;
+    %>
 
     <div id="spinner-container"
       class="flex fixed top-0 left-0 w-full h-full bg-white bg-opacity-90 z-50 overflow-hidden flex-col justify-center items-center">
@@ -79,15 +73,15 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col ">
-    <div class="items-center">
+  <div class="flex flex-col min-h-screen">
+    <div>
       <%- include('../component/navbar.ejs') %>
     </div>
     <div class="w-full">
       <img src="/img/bbj.png" alt="Banner Image" class="w-full">
     </div>
 
-    <div class="text-center mt-3 ">
+    <div class="text-center mt-3">
       <h1 class="text-4xl">
         รายงานความคืบหน้า<span class="text-[#04b2a1]">เมืองที่ได้รับตราสัญลักษณ์</span>
       </h1>
@@ -97,64 +91,65 @@
     </div>
     <div class="mt-5">
       <div>
-        <h4 class="text-center text-teal-500 text-2xl"><%=followdata[0].cityName%></h4>
+        <h4 class="text-center text-teal-500 text-2xl"><%= followdata[0].cityName %></h4>
       </div>
 
-      <div class="table-container w-11/12 lg:w-4/5 mx-auto shadow-lg rounded-2xl mb-12 bg-yellow-400 mt-3">
-        <p class="text-center pt-5"><span class="text-white text-shadow-lg">*** โปรดอ่าน:</span>
-          <span class="text-white text-shadow-lg">สถานะ <span
+      <div class="w-11/12 lg:w-4/5 mx-auto shadow-lg rounded-2xl mb-12 bg-yellow-400 mt-3">
+        <p class="text-center pt-5"><span class="text-white font-bold">*** โปรดอ่าน:</span>
+          <span class="text-white">สถานะ <span
               class="inline-block w-4 h-4 bg-red-500 rounded-full border border-red-500"></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</span>
-          <span class="text-white text-shadow-lg">สถานะ <span
+          <span class="text-white">สถานะ <span
               class="inline-block w-4 h-4 bg-yellow-500 rounded-full border border-yellow-500"></span> หมายถึงฉบับร่าง -</span>
-          <span class="text-white text-shadow-lg">สถานะ <span
+          <span class="text-white">สถานะ <span
               class="inline-block w-4 h-4 bg-green-500 rounded-full border border-green-500"></span> หมายถึง ดำเนินการแล้ว</span>
-          <span class="text-white text-shadow-lg">สถานะ <span class="inline-block w-4 h-4 bg-gray-200 rounded-full border-gray-500 border-2"></span> หมายถึง ยังไม่ถึงรอบเปิดกรอกฟอร์ม </span>
-            
-            </p>
+          <span class="text-white">สถานะ <span class="inline-block w-4 h-4 bg-gray-200 rounded-full border-gray-500 border-2"></span> หมายถึง ยังไม่ถึงรอบเปิดกรอกฟอร์ม</span>
+        </p>
 
-        <div class="content p-5 bg-gray-200 rounded-2xl mx-2 mb-5">
+        <div class="p-5 bg-gray-200 rounded-2xl mx-2 mb-5">
           <div id="accordion">
             <% function renderCard(section, displayName) { %>
-            <div class="card mb-2">
-              <div class="card-header flex justify-between items-center cursor-pointer" onclick="toggleCollapse('collapse<%= section %>')" id="heading<%= section %>">
-                <h5 class="mb-0">
+            <div class="mb-4">
+              <div class="bg-white rounded-lg shadow-md p-4 cursor-pointer flex justify-between items-center"
+                onclick="toggleCollapse('collapse<%= section %>')" id="heading<%= section %>">
+                <h5 class="text-lg font-semibold">
                   <%= displayName %>
                 </h5>
                 <% const countShow = countEcoSolutions(section) %>
                 <% const countSuccessShow = countComplete(section) %>
-                <span class="ml-auto mr-5 text-sm">รายงานเรียบร้อย <%= countSuccessShow %>/<%= countShow %> โครงการ</span>
+                <span class="ml-auto text-sm">รายงานเรียบร้อย <%= countSuccessShow %>/<%= countShow %> โครงการ</span>
               </div>
-              <div id="collapse<%= section %>" class="hidden" aria-labelledby="heading<%= section %>">
-                <div class="card-body">
-                  <table class="w-full border-collapse">
-                    <tr>
-                      <th class="border p-2">
-                        <% const countProject = countEcoSolutions(section) %>
-                        <%= countProject %> โครงการ
-                      </th>
-                      <th class="border p-2">รอบที่ <%= dataRound.round %></th>
-                      
-                      <th class="border p-2">
-                        <% const count = countEcoSolutions(section) %>
-                        <% const countSuccess = countComplete(section) %>
-                        <% const countSuccessRound2 = countCompleteRound2(section) %>
-                        <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
-                        สำเร็จ <%= countSuccess %>/<%= count %>
-                        <% } else { %>
-                        สำเร็จ <%= countSuccessRound2 %>/<%= count %>
-                        <% } %>
-                      </th>
-                    </tr>
+              <div id="collapse<%= section %>" class="hidden bg-white rounded-lg shadow-md mt-2">
+                <div class="p-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+                    <div class="p-2 bg-gray-100 rounded-md col-span-4">
+                      <% const countProject = countEcoSolutions(section) %>
+                      <%= countProject %> โครงการ
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-md">
+                      รอบที่ <%= dataRound.round %>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-md">
+                      <% const count = countEcoSolutions(section) %>
+                      <% const countSuccess = countComplete(section) %>
+                      <% const countSuccessRound2 = countCompleteRound2(section) %>
+                      <% if ((currentYear < form2Year) || (currentYear === form2Year && currentMonth < form2StartMonth) || (currentYear === form2Year && currentMonth === form2StartMonth && currentDay < form2StartDay)) { %>
+                      สำเร็จ <%= countSuccess %>/<%= count %>
+                      <% } else { %>
+                      สำเร็จ <%= countSuccessRound2 %>/<%= count %>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="">
                     <% followdata.forEach((item) => { %>
-                      <% if(item.smartKey===section){ %>
-                      <tr class="">
-                        <td><%= item.solutionID.slice(4) %> <%= item.solutionName %></td>
-                        <td><a class="p-2 bg-teal-500 text-white rounded" href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>">กรอกฟอร์ม</a></td>
-                        <td>สถานะ</td>
-                      </tr>
-                      
-                      <% }})%>
-                  </table>
+                    <% if(item.smartKey === section) { %>
+                    <div class="p-4 bg-white border rounded-md shadow-sm grid grid-cols-1 sm:grid-cols-6 gap-4 mt-4">
+                      <span class="mb-2 col-span-4"><%= item.solutionID.slice(4) %> <%= item.solutionName %></span>
+                      <a class="p-2 bg-teal-500 text-white rounded text-center" href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>">กรอกฟอร์ม</a>
+                      <span class="mt-2 text-center">สถานะ</span>
+                    </div>
+                    <% } %>
+                    <% }) %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -173,7 +168,9 @@
         </div>
       </div>
     </div>
-    <div class="mt-auto"><%- include('../component/footer.ejs') %></div>
+    <div class="mt-auto">
+      <%- include('../component/footer.ejs') %>
+    </div>
   </div>
 
 </body>
