@@ -1,9 +1,9 @@
 const mysql = require('mysql');
 
 const connectionConfig = {
-  host: process.env.DB_HOST || 'db',
+  host: process.env.DB_HOST,
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'example',
+  password: process.env.DB_PASSWORD ,
   database: process.env.DB_NAME || 'EvaluationSheet',
 };
 

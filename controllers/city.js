@@ -30,6 +30,17 @@ exports.GetCity = (req, res) => {
       const totalDays = currentDate.diff(announcementDate, 'days'); //นับวันทั้งหมด
       const twoYearsLater = announcementDate.clone().add(2, 'years'); //นับจากวันที่ประกาศไป2ปี
       const twoYearsLaterFormatted = twoYearsLater.format('DD/MM/YYYY');
+
+
+      
+      const anvYear = moment(twoYearsLater);
+      currentDate.hours(0).minutes(0).seconds(0).milliseconds(0);
+      anvYear.hours(23).minutes(59).seconds(59).milliseconds(999);
+      const durationAnv = moment.duration(anvYear.diff(currentDate));
+      const anvYears = durationAnv.years();
+      const anvMonths = durationAnv.months();
+      const anvDays = durationAnv.days();
+      const twoYearsLaterFormatThai = twoYearsLater.locale('th').add(543, 'years').format('DD MMMM YYYY'); // format in Thai months and Buddhist calendar year
       db.query(qSolution, [cityID], (err, solutionData) => {
         if (err) return res.status(500).json(err);
 
@@ -50,7 +61,38 @@ exports.GetCity = (req, res) => {
             db.query(qRound,[cityID],(err,dataRound)=>{
               if (err) return res.status(500).json(err);
 
-              // console.log(dataRound)
+              //เเปลงวันสันเดือนปี พศ.ไทย
+              const Open = moment(dataRound[0].open);
+              const Close = moment(dataRound[0].close);
+              const dateOpen = Open.locale('th').add(543, 'years').format('DD MMMM YYYY');
+              const dateClose = Close.locale('th').add(543, 'years').format('DD MMMM YYYY');
+
+              //เอามาเเยกค่าเป็น วัน เดือน ปี
+              const formStartDay = Open.date();
+              const formStartMonth = Open.month() + 1; // month is zero-indexed
+              const formStartMonthThai = Open.locale('th').format('MMMM');
+              const formEndMonthThai = Close.locale('th').format('MMMM');
+              const formStartYear = Open.year();
+              const formEndDay = Close.date();
+              const formEndMonth = Close.month() + 1; // month is zero-indexed
+              const formEndYear = Close.year();
+
+
+              //คำนวณวันที่เหลือเวลาในการกรอกฟอร์ม
+              const formEndDate = moment([formEndYear, formEndMonth, formEndDay]);
+              const currentDate = moment();
+              const durationEndForm = moment.duration(formEndDate.diff(currentDate));
+              const remainingYears = durationEndForm.years();
+              const remainingMonths = durationEndForm.months();
+              const remainingDays = durationEndForm.days();
+              //คำนวณวันที่เหลือในการเปิดให้กรอกฟอร์ม
+              const formStartDate = moment([formStartYear-543, formStartMonth-1, formStartDay]);
+              currentDate.hours(0).minutes(0).seconds(0).milliseconds(0);
+              formStartDate.hours(23).minutes(59).seconds(59).milliseconds(999);
+              const durationStartForm = moment.duration(formStartDate.diff(currentDate));
+              const remainingYearStart = durationStartForm.years();
+              const remainingMonthStart = durationStartForm.months();
+              const remainingDayStart = durationStartForm.days();
               res.render("city/city", {
                 req,
                 pageTitle: cityData[0].cityname,
@@ -59,9 +101,25 @@ exports.GetCity = (req, res) => {
                 citysolution: solutionData,
                 smartKeyCounts: smartKeyCounts,// ส่งจำนวน smart key แต่ละตัวในออบเจกต์ไปยัง view
                 datafile: cityFileData,
-                announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted },
+                announcementDuration: { years, months, days, totalDays, twoYearsLaterFormatted,twoYearsLaterFormatThai,dateOpen,dateClose,anvDays,anvMonths,anvYears},
                 province:province,
-                dataRound:dataRound,
+                dataRound:JSON.stringify(dataRound[0]),
+                formDates: {
+                  formStartDay,//วันที่เปิดฟอร์มเเบบเเยก วัน เดือน ปี
+                  formStartMonth,
+                  formStartYear,
+                  formEndDay,
+                  formEndMonth,
+                  formEndYear,
+                  formStartMonthThai,//เดือนไทย
+                  formEndMonthThai,
+                  remainingDays,//วันที่เหลือเวลากรอกฟอร์ม
+                  remainingMonths,
+                  remainingYears,
+                  remainingDayStart,//วันที่เหลือที่ฟอร์มจะเปิด
+                  remainingMonthStart,
+                  remainingYearStart,
+                }
               });
             })
           })

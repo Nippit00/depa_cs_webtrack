@@ -258,7 +258,7 @@
                 </div>
             </div>
         </div>
-        <div class="ml-0 mb-10 lg:ml-52 self-start mr-8">
+        <div class="ml-3 mb-10 mt-3 md:mt-0 md:ml-52 self-start mr-8">
             <div class="text-xl mb-2"><span>เอกสารรายละเอียดของแผนเมือง :</span></div>
             <% datafile.forEach(data => { %>
             <% if (data.fileID === "F1") { %>
@@ -292,70 +292,116 @@
             document.getElementById('spinner-container').style.display = 'flex';
         });
 
+
+
         document.addEventListener("DOMContentLoaded", function () {
-            const twoYearsLaterFormatted = '<%= announcementDuration.twoYearsLaterFormatted %>';
-            const round = parseInt('<%= dataRound[0].round %>');
-            const [day, month, year] = twoYearsLaterFormatted.split('/').map(Number);
-            const targetDate = new Date(year, month - 1, day);
-            let currentDate = new Date();
-            let timeDiff = Math.abs(targetDate.getTime() - currentDate.getTime());
-            let remainingDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            let remainingYears = Math.floor(remainingDays / 365.25);
-            let remainingDaysInYear = remainingDays % 365.25;
-            let remainingMonths = Math.floor(remainingDaysInYear / 30);
-            let remainingDaysInMonth = Math.floor(remainingDaysInYear % 30);
-            let currentDay = currentDate.getDate();
-            let currentMonth = currentDate.getMonth() + 1;
-            let currentYear = currentDate.getFullYear();
-            let event = false;
-            let form1StartDay = 23;
-            let form1EndDay = 30;
-            let form1StartMonth = 5;
-            let form1EndMonth = 5;
-            let form1Year = 2025;
-            let reportStartDay = 2;
-            let reportEndDay = 5;
-            let reportStartMonth = 12;
-            let reportEndMonth = 12;
-            let reportYear = 2027;
+            const twoYearsLaterFormatted = '<%= announcementDuration.twoYearsLaterFormatted %>'; // เวลาที่ต้องการคำนวณถึงดึงมากจาก database
+            const announcementDuration = <%- JSON.stringify(announcementDuration) %>;
+            const round = <%- dataRound %>;
+            const formDates = <%- JSON.stringify(formDates) %>; //เเปลงข้อมูล formDates จาก database เป็น Json
+            const [day, month, year] = twoYearsLaterFormatted.split('/').map(Number); //ตัด / ออกเเล้วเเปลงวันเป็นตัวเลข
+            const currentDate = new Date(); // สร้างเวลาเวลาปัจจุบัน
+            let currentDay = currentDate.getDate(); //วันปัจจุบัน
+            let currentMonth = currentDate.getMonth() + 1; //เดือนปัจจุบัน
+            let currentYear = currentDate.getFullYear(); //ปีปัจจุบัน
+            let event = false
+
+            let formStartDay = formDates.formStartDay;
+            let formEndDay = formDates.formEndDay;
+            let formStartMonth = formDates.formStartMonth;
+            let formEndMonth = formDates.formEndMonth;
+            let formStartYear = formDates.formStartYear;
+            let formEndYear = formDates.formEndYear;
+
+            const openForm = new Date(formStartYear-543, formStartMonth-1, formStartDay);
+            const closeForm = new Date(formEndYear-543, formEndMonth-1, formEndDay);
+            
+
+            // ตั้งเวลาให้เป็น 00:00:00
+            currentDate.setHours(0, 0, 0, 0);
+            openForm.setHours(0, 0, 0, 0);
+            closeForm.setHours(23, 59, 59, 999);
+
+            let reportStartDay = day;
+            let reportEndDay = day; // Assuming the end day is the same as the start day
+            let reportStartMonth = month;
+            let reportEndMonth = month; // Assuming the end month is the same as the start month
+            let reportYear = year;
+            const openAnvTwoYear = new Date(year, month-1, day);
+            openAnvTwoYear.setHours(0, 0, 0, 0);
+
+
             let message = '';
+            //ถ้าตัวเเปรไหนมีค่าเป็น 0 ไม่ต้องเเสดง
+            const yearsText = formDates.remainingYears - 543 > 0 ? `${formDates.remainingYears - 543} ปี ` : '';
+            const monthsText = formDates.remainingMonths > 0 ? `${formDates.remainingMonths} เดือน ` : '';
+            const daysText = formDates.remainingDays > 0 ? `${formDates.remainingDays} วัน ` : '';
 
-            if (currentYear === form1Year && currentMonth === form1StartMonth && currentDay >= form1StartDay && currentDay <= form1EndDay) {
-                message = `<span class="highlight">กรอกแบบฟอร์มครั้งที่ ${round} ช่วงเวลา 3-5 พ.ค. 2024</span><spanr><spanr>`;
-                event = true;
-            } else {
-                message = `กรอกแบบฟอร์มครั้งที่ ${round} ช่วงเวลา 3-5 พ.ค. 2024<spanr><spanr>`;
+            const yearsTextStart = formDates.remainingYearStart - 543 > 0 ? `${formDates.remainingYearStart - 543} ปี ` : '';
+            const monthsTextStart = formDates.remainingMonthStart > 0 ? `${formDates.remainingMonthStart} เดือน ` : '';
+            const daysTextStart = formDates.remainingDayStart > 0 ? `${formDates.remainingDayStart} วัน ` : '';
+
+            const yearsTextReport = announcementDuration.anvYears  > 0 ? `${announcementDuration.anvYears } ปี ` : '';
+            const monthsTextReport = announcementDuration.anvMonths > 0 ? `${announcementDuration.anvMonths} เดือน ` : '';
+            const daysTextReport = announcementDuration.anvDays > 0 ? `${announcementDuration.anvDays} วัน ` : '';
+            //เช็คว่าถึงเวลาเปิด form หรือยัง
+            if(currentDate >= openForm && currentDate <= closeForm)  {
+                    message = `<div class="bg-red-100 px-2 pt-2  rounded-md">
+                        <div class="p-1"><span class="highlight">***</span> กรอกแบบฟอร์มครั้งที่ ${round.round} <span class="highlight">***</span> </div>
+                        <div class="p-1"> <span class="highlight">***</span> กรุณากรอกฟอร์มภายในวันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight">***</span></div>
+                        <div class="p-1">โดยเข้าไปกรอกได้ที่เมนู -รายการความคืบหน้ารายโครงการ</div>
+                        <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
+    
+                    </div>`;
+                    event = true;
+                        
+            } else if(currentDate < openForm){
+                if(formStartYear === formEndYear){ //ถ้าอยู่ในปีเดียวกัน
+                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                            <div class="p-1">ภายในวันที่ ${formStartDay} ${formDates.formStartMonthThai} ถึง ${formEndDay} ${formDates.formEndMonthThai} ${formStartYear}</div>
+                            <div class="mb-10 p-1"><span class="highlight">เเบบฟอร์มจะเปิดให้กรอกในอีก (${yearsTextStart}${monthsTextStart}${daysTextStart.trim()})</span></div>`;
+                            
+
+                }else{
+                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                            <div class="p-1">ภายในวันที่ ${announcementDuration.dateOpen} ถึง ${announcementDuration.dateClose}</div>
+                            <div class="mb-10 p-1"><span class="highlight">เเบบฟอร์มจะเปิดให้กรอกในอีก (${yearsTextStart}${monthsTextStart}${daysTextStart.trim()})</span></div>`;
+                }
+            }else{
+                if(formStartYear === formEndYear){ //ถ้าอยู่ในปีเดียวกัน
+                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                            <div class="mb-10 p-1">ภายในวันที่ ${formStartDay} ${formDates.formStartMonthThai} ถึง ${formEndDay} ${formDates.formEndMonthThai} ${formStartYear}</div>`;
+                            
+
+                }else{
+                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                            <div class="mb-10 p-1">ภายในวันที่ ${announcementDuration.dateOpen} ถึง ${announcementDuration.dateClose}</div>`;
+                }
             }
 
-            if (
-                (currentYear === reportYear && currentMonth === reportStartMonth && currentDay >= reportStartDay && currentDay <= reportEndDay) ||
-                (currentYear === reportYear && currentMonth === reportEndMonth && currentDay <= reportEndDay)
-            ) {
-                message += '<span class="highlight">คุณต้องอัพโหลดไฟล์รายงาน ช่วงเวลา 2-5 ธ.ค. 2027</span><spanr><spanr>';
-                event = true;
-            } else if (event === true) {
-                message += 'คุณต้องอัพโหลดไฟล์รายงาน ในอีก ';
-                if (remainingYears > 0) {
-                    message += remainingYears + ' ปี ';
-                }
-                if (remainingMonths > 0) {
-                    message += remainingMonths + ' เดือน ';
-                }
-                message += remainingDaysInMonth + ' วัน<spanr><spanr>';
+
+
+
+            if (currentDate >= openAnvTwoYear) {
+                message += `<div class="bg-red-100 px-2 pt-2  rounded-md p-1">
+                        <div class="p-1"><span class="highlight">*** </span>ถึงวันครบรอบเมืองเเล้ว <span class="highlight">*** </span></div>
+                        <div><span class="highlight">*** </span>กรุณาอัพโหลดไฟล์รายงานครบ 2 ปี <span class="highlight">*** </span></div>
+                        <div class="p-1">โดยเข้าไปอัพโหลดไฟล์รายงานได้ที่เมนู </div>
+                        <div class="p-1">-ไฟล์รายงานครบ 2 ปี</div>
+                        </div>`;
             } else {
-                message += '<span class="highlight">คุณต้องอัพโหลดไฟล์รายงาน ในอีก ';
-                if (remainingYears > 0) {
-                    message += remainingYears + ' ปี ';
-                }
-                if (remainingMonths > 0) {
-                    message += remainingMonths + ' เดือน ';
-                }
-                message += remainingDaysInMonth + ' วัน</span><spanr><spanr>';
+                message += `<div>จะครบรอบ 2 ปี คุณต้องอัพโหลดไฟล์รายงาน</div>
+                            <div>ภายในวันที่ ${announcementDuration.twoYearsLaterFormatThai} <span class="highlight">
+                            <span class="highlight">เหลืออีก (${yearsTextReport}${monthsTextReport}${daysTextReport.trim()})</span></div> `;
             }
+
+
+
 
             Swal.fire({
                 title: 'ช่วงเวลากรอกฟอร์ม / อัพโหลดไฟล์',
-                html: '<style>.highlight { color: red; }</style>' + message,
+                html: '<style>.highlight { color: red; }</style>' +
+                    message,
                 imageUrl: "/img/favi.png",
                 imageWidth: 100,
                 imageHeight: 100,
@@ -369,7 +415,14 @@
                     confirmButton: 'bg-green-600 text-white rounded-md'
                 }
             });
+
+
+
+
         });
+
+
+
     </script>
 </body>
 
