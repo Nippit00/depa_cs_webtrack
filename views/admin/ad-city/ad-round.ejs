@@ -15,24 +15,25 @@
         <form action="/admin/openform" method="POST" id="roundForm" class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
             <div class="flex items-center justify-between mb-6">
                 <label class="text-sm font-bold text-blue-600">เปิด</label>
-                <input type="date" name="open" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mx-4">
+                <input type="date" name="open" required class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mx-4">
                 <label class="text-sm font-bold text-blue-600 mr-3">ปิด</label>
-                <input type="date" name="close" class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="date" name="close" required class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <% dates.forEach(item => { %>
                 <div class="mb-6">
                     <label for="<%= item.original %>" class="block text-gray-800 font-semibold mb-2">
                         ประกาศเมืองอัจฉริยะ วันที่: <span class="text-blue-600"><%= item.formatted %></span> ตอนนี้อายุ: <span class="text-blue-600"><%= item.age %></span>
                     </label>
-                    <input type="number" name="<%= item.original %>" placeholder="รอบที่จะเปิด" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" name="<%= item.original %>" placeholder="รอบที่จะเปิด" required class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             <% }) %>
-            <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token" />
-
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" id="token" />
+        
             <div class="text-center">
                 <input type="submit" value="บันทึก" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
         </form>
+        
     </div>
     
     <%- include('../include/ad-footer.ejs') %>

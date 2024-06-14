@@ -181,31 +181,29 @@
   </div>
   
   <div>
-     <table class="w-full border-collapse bg-white shadow-lg text-center mt-5">
-      <thead>
-        <tr class="w-full">
-          <th class="bg-teal-400 p-2.5 text-white">Project</th>
-          <th class="bg-teal-400 p-2.5 text-white">Percent ความสำเร็จ</th>
-          <th class="bg-teal-400 p-2.5 text-white">Percent ความคืบหน้า</th>
-          <th class="bg-teal-400 p-2.5 text-white">รอบติดตาม 12 เดือน</th>
-          <th class="bg-teal-400 p-2.5 text-white">รอบติดตามความคืบหน้าเพื่อต่อตราสัญลักษณ์</th>
-        </tr>
-      </thead>
-      <tbody id="body-table">
-        <tr>
-          <td class="p-2.5">โครงสร้างพื้นฐานกายภาพ</td>
-          <td class="p-2.5">
+    <div class="w-full border-collapse bg-white shadow-lg text-center mt-5">
+      <div class="grid grid-cols-8 bg-teal-400 text-white">
+        <div class="p-2.5 col-span-4 ">Project</div>
+        <div class="p-2.5">Percent ความสำเร็จ</div>
+        <div class="p-2.5">Percent ความคืบหน้า</div>
+        <div class="p-2.5">รอบติดตาม 12 เดือน</div>
+        <div class="p-2.5">รอบติดตามความคืบหน้าเพื่อต่อตราสัญลักษณ์</div>
+      </div>
+      <div id="body-table">
+        <div class="grid grid-cols-5 hover:bg-gray-100">
+          <div class="p-2.5 border-b-2">โครงสร้างพื้นฐานกายภาพ</div>
+          <div class="p-2.5 border-b-2">
             <div class="flex items-center h-2.5 bg-teal-400 text-white p-2.5 rounded-full" style="width: 50%">50%</div>
-          </td>
-          <td class="p-2.5">
+          </div>
+          <div class="p-2.5 border-b-2">
             <div class="flex items-center h-5 bg-yellow-400 text-white p-2.5 rounded-full" style="width: 50%">50%</div>
-          </td>
-          <td class="p-2.5">-</td>
-          
-          <td class="p-2.5"><%=solutionInfo[0].smartKey%></td>
-        </tr>
-      </tbody>
-    </table> 
+          </div>
+          <div class="p-2.5 border-b-2">-</div>
+          <div class="p-2.5 border-b-2">ghjk</div>
+        </div>
+      </div>
+    </div>
+    
   </div>
 
 
@@ -222,359 +220,125 @@
   window.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('spinner-container').style.display = 'flex';
   });
+
+  const solutionInfo = <%- solutionInfo %>;
+  const dataRound = <%- dataRound %>;
+  const reportOpenTime = new Date('<%- twoYearsLaterDate.toISOString() %>');
+  reportOpenTime.setHours(0, 0, 0, 0);
+  console.log(reportOpenTime)
+  const currentime = new Date()
+
+  function calculateAverageSuccess(dataArray, smartKey) {
+    let totalSuccess = 0;
+    let count = 0;
+    dataArray.forEach((data) => {
+      if (data.smartKey === smartKey) {
+        totalSuccess += data.Progress === 100 ? 1 : 0;
+        count++;
+      }
+    });
+    return count > 0 ? totalSuccess / count : 0;
+  }
+
+  function calculateAverageProgress(dataArray, smartKey) {
+    let totalProgress = 0;
+    let count = 0;
+    dataArray.forEach((data) => {
+      if (data.smartKey === smartKey) {
+        totalProgress += data.Progress / 100;
+        count++;
+      }
+    });
+    return count > 0 ? totalProgress / count : 0;
+  }
+
+  function generateTableHTML(data, key) {
+  let html = "";
+  data.forEach((item) => {
+    if (item.smartKey === key) {
+      const status = item.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
+      let statusFormCircle = '';
+          if (currentime >= new Date(dataRound.open)) {
+            statusFormCircle = item.status === 2 
+              ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
+              : item.status === 1 
+                ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
+                : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+          }else{
+            statusFormCircle=`<div class="w-5 h-5 rounded-full bg-gray-200 border-2 border-gray-500 inline-block"></div>`;
+          }
+          let statusReportCircle = '';
+          if (currentime >= reportOpenTime) {
+            statusReportCircle = item.status === 2 
+              ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
+              : item.status === 1 
+                ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
+                : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+          } else {
+            statusReportCircle = `<div class="w-5 h-5 rounded-full bg-gray-200 border-2 border-gray-500 inline-block"></div>`;
+          }
+          
+      html += `
+        <div class="grid grid-cols-8 hover:bg-gray-100 ">
+          <div class="p-5 border-b-2 col-span-4 text-left truncate">${item.solutionID.slice(4)} ${item.solutionName}</div>
+          <div class="p-5 border-b-2">${status}</div>
+          <div class="p-5 border-b-2">${item.Progress}%</div>
+          <div class="p-5 border-b-2 ">${statusFormCircle}</div>
+          <div class="p-5 border-b-2">${statusReportCircle}</div>
+        </div>`;
+    }
+  });
+  const averageProgress = calculateAverageProgress(data, key);
+  const averageSuccess = calculateAverageSuccess(data, key);
+  html += `
+    <div class="grid grid-cols-8 hover:bg-gray-100">
+      <div class="p-5 border-b-2 col-span-4">รวม</div>
+      <div class="p-5 border-b-2">${(averageSuccess * 100).toFixed(0)}%</div>
+      <div class="p-5 border-b-2">${(averageProgress * 100).toFixed(0)}%</div>
+      <div class="p-5 border-b-2"></div>
+      <div class="p-5 border-b-2"></div>
+    </div>`;
+  return html;
+}
+
+
   function show(index) {
-    // Remove active class from all images
+    const bodyTable = document.getElementById("body-table");
+    let key = "";
     const images = document.querySelectorAll('img');
     images.forEach(img => {
       img.classList.remove('active');
     });
-    const solutionInfo = <%- solutionInfo %>;
-
-    function calculateAverageSuccess(dataArray, smartKey) {
-      let totalSuccess = 0;
-      let count = 0;
-
-      dataArray.forEach((data) => {
-        if (data.smartKey === smartKey) {
-          totalSuccess += data.Progress === 100 ? 1 : 0;
-          count++;
-        }
-      });
-
-      return count > 0 ? totalSuccess / count : 0;
-    }
-
-    function calculateAverageProgress(dataArray, smartKey) {
-      let totalProgress = 0;
-      let count = 0;
-
-      dataArray.forEach((data) => {
-        if (data.smartKey === smartKey) {
-          totalProgress += data.Progress / 100;
-          count++;
-        }
-      });
-
-      return count > 0 ? totalProgress / count : 0;
-    }
-
-    // Add active class to the clicked image
     const clickedImage = document.getElementById(index.toString());
     clickedImage.classList.add('active');
-
-    const bodyTable = document.getElementById("body-table");
-    let html = "";
-
     switch (index) {
-      case 1:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "CDP") {
-            html += `
-                      <tr>
-                          <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                          <td class="p-5"></td>
-                          <td class="p-5"></td>
-                          <td class="p-5"></td>
-                          <td class="p-5"></td>
-                          <td class="p-5"></td>
-                      </tr>`;
-          }
-        });
-
-        html += `<tr>
-              <td>รวม</td>
-              <td></td>
-              <td></td>
-              <td></td>
-          </tr>`;
-        break;
-        case 2:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "ENV") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                      <tr class="hover:bg-gray-100">
-                          <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                          <td class="p-5">${status}</td>
-                          <td class="p-5">${data.Progress}%</td>
-                          <td class="p-5"></td>
-                          
-                          <td class="p-5"></td>
-                      </tr>
-                      <tr>
-                        <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-                      </tr>`;
-          }
-        });
-        const averageProgressEnv = calculateAverageProgress(solutionInfo, "ENV");
-        const averageSuccessEnv = calculateAverageSuccess(solutionInfo, "ENV");
-        html += `<tr class="hover:bg-gray-100">
-                  <td>รวม</td>
-                  <td class="p-5">${(averageSuccessEnv * 100).toFixed(0)}%</td>
-                  <td class="p-5">${(averageProgressEnv * 100).toFixed(0)}%</td>
-                  <td class="p-5"></td>
-                  
-                  <td class="p-5"></td>
-              </tr>`;
-        break;
-      
-      case 3:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "ENE") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-                  
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressEne = calculateAverageProgress(solutionInfo, "ENE");
-        const averageSuccessEne = calculateAverageSuccess(solutionInfo, "ENE");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessEne * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressEne * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-              
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      case 4:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "ECO") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-                 
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressEco = calculateAverageProgress(solutionInfo, "ECO");
-        const averageSuccessEco = calculateAverageSuccess(solutionInfo, "ECO");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessEco * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressEco * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-             
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      case 5:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "MOB") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-                 
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressMob = calculateAverageProgress(solutionInfo, "MOB");
-        const averageSuccessMob = calculateAverageSuccess(solutionInfo, "MOB");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessMob * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressMob * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-            
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      case 6:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "GOV") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-                 
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressGov = calculateAverageProgress(solutionInfo, "GOV");
-        const averageSuccessGov = calculateAverageSuccess(solutionInfo, "GOV");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessGov * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressGov * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-              
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      case 7:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "PEO") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-              
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressPeo = calculateAverageProgress(solutionInfo, "PEO");
-        const averageSuccessPeo = calculateAverageSuccess(solutionInfo, "PEO");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessPeo * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressPeo * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-             
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      case 8:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "LIV") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-               
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressLiv = calculateAverageProgress(solutionInfo, "LIV");
-        const averageSuccessLiv = calculateAverageSuccess(solutionInfo, "LIV");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessLiv * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressLiv * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-           
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      case 9:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          html += `
-              <tr class="hover:bg-gray-100">
-                <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                <td class="p-5">${status}</td>
-                <td class="p-5">${data.Progress}%</td>
-                <td class="p-5"></td>
-            
-                <td class="p-5"></td>
-            </tr>
-            <tr>
-              <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-            </tr>`;
-        });
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td></td>
-              <td></td>
-              <td></td>
-          </tr>`;
-        break;
-      case 10:
-        bodyTable.innerHTML = "";
-        solutionInfo.forEach((data) => {
-          if (data.smartKey === "CDP") {
-            const status = data.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
-            html += `
-                <tr class="hover:bg-gray-100">
-                  <td class="p-5">${data.solutionID.slice(4)} ${data.solutionName}</td>
-                  <td class="p-5">${status}</td>
-                  <td class="p-5">${data.Progress}%</td>
-                  <td class="p-5"></td>
-                
-                  <td class="p-5"></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="p-0"><hr class="border-t-1 border-gray-300"></td>
-              </tr>`;
-          }
-        });
-        const averageProgressCdp = calculateAverageProgress(solutionInfo, "CDP");
-        const averageSuccessCdp = calculateAverageSuccess(solutionInfo, "CDP");
-        html += `<tr class="hover:bg-gray-100">
-              <td>รวม</td>
-              <td class="p-5">${(averageSuccessCdp * 100).toFixed(0)}%</td>
-              <td class="p-5">${(averageProgressCdp * 100).toFixed(0)}%</td>
-              <td class="p-5"></td>
-             
-              <td class="p-5"></td>
-          </tr>`;
-        break;
-      default:
-        console.log(index)
-        break;
+      case 1: key = "CDP"; break;
+      case 2: key = "ENV"; break;
+      case 3: key = "ENE"; break;
+      case 4: key = "ECO"; break;
+      case 5: key = "MOB"; break;
+      case 6: key = "GOV"; break;
+      case 7: key = "PEO"; break;
+      case 8: key = "LIV"; break;
+      case 9: key = "ALL"; break;
+      default: key = ""; break;
     }
-    bodyTable.innerHTML = html;
+
+    bodyTable.innerHTML = generateTableHTML(solutionInfo, key);
   }
 
-
- // Add the CSS class for the active state
- const style = document.createElement('style');
- style.innerHTML = `
-     .active {
-       transform: scale(1.35);
-       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-       border-color: rgb(255, 255, 0);
-     }
-     `;
- document.head.appendChild(style);
-
+  // Add the CSS class for the active state
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .active {
+      transform: scale(1.35);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border-color: rgb(255, 198, 0);
+    }
+  `;
+  document.head.appendChild(style);
 
 </script>
-
 
 <script>
 const progressCtx = document.getElementById('progressChart').getContext('2d');
@@ -807,7 +571,6 @@ label: label,
 
 function colorFromValue(value, border) {
       var alpha = value / 100;
-      console.log("ALPHA :",alpha)
       var color = "red";
       if (border) {
           alpha += 0.1;

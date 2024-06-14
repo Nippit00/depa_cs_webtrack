@@ -4,6 +4,7 @@
 const db = require("../db.js");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
+const moment = require('moment');
 exports.getAdPage = (req, res, next) => {
   const q = "SELECT * FROM `Round` ORDER BY `date` ASC;"
   const q1 = "SELECT citydata.cityID, citydata.province, citydata.date,city_home.cityName FROM `citydata` JOIN city_home ON citydata.cityID=city_home.cityID WHERE 1"
@@ -445,6 +446,7 @@ exports.getAddSolutionPage = (req, res, next) => {
 };
 
 exports.postAddSolution = (req, res, next) => {
+
   const {
     cityID,
     solutionID,
@@ -751,24 +753,20 @@ exports.getRoundPage = (req, res, next) => {
   const q1 = "SELECT DISTINCT `date` FROM `citydata` ORDER BY `date` ASC;";
   db.query(q1, (err, dates) => {
     if (err) return res.status(500).json(err);
+    
 
-    const now = new Date();
+    const now = moment(); // ใช้ moment เพื่อวันที่ปัจจุบัน
     // แปลงวันที่ให้อยู่ในรูปแบบที่ต้องการในภาษาไทย และคำนวณอายุจากวันปัจจุบัน
     const formattedDates = dates.map(item => {
-      const date = new Date(item.date);
-      const timeDiff = now - date;
-      const ageInDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // คำนวณจำนวนวัน
+      const date = moment(item.date); // ใช้ moment เพื่อจัดการวันที่
+      const ageInDays = now.diff(date, 'days'); // คำนวณจำนวนวัน
       return {
         original: item.date,
-        formatted: date.toLocaleDateString('th-TH', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }),
+        formatted: date.locale('th').format('LL'), // ใช้ moment เพื่อแปลงวันที่เป็นภาษาไทย
         age: ageInDays
       };
     });
-
+    console.log(formattedDates)
     res.render("admin/ad-city/ad-round", {
       req,
       pageTitle: "round",
@@ -779,46 +777,57 @@ exports.getRoundPage = (req, res, next) => {
 };
 
 exports.postRound = (req, res, next) => {
+  console.log(req.body)
   const { open, close, _csrf, ...dates } = req.body;
 
-  for (const [date, round] of Object.entries(dates)) {
-    if (date === '_csrf') continue;
-    const formattedDate = new Date(date);
-    formattedDate.setDate(formattedDate.getDate());
-    const selectSql = "SELECT COUNT(*) as count FROM `Round` WHERE `Date` = ?";
-    db.query(selectSql, [formattedDate], (selectErr, selectResult) => {
+  const processDateRound = (date, round, open, close, callback) => {
+    const formattedDate = moment(date).toDate(); // ใช้ moment เพื่อจัดการวันที่
+    
+    const selectSql = "SELECT COUNT(*) as count FROM `Round` WHERE `Date` = ? AND `round` = ?";
+    db.query(selectSql, [formattedDate, round], (selectErr, selectResult) => {
       if (selectErr) {
         console.error(selectErr);
-        return res.status(500).send('Internal Server Error');
+        return callback(selectErr);
       }
 
       const count = selectResult[0].count;
       if (count > 0) {
-        // If date exists, update the record
-        const updateSql = "UPDATE `Round` SET `open` = ?, `close` = ?, `round` = ? WHERE `Date` = ?";
-        const updateValues = [open, close, round, formattedDate];
+        // If date and round exist, update the record
+        const updateSql = "UPDATE `Round` SET `open` = ?, `close` = ? WHERE `Date` = ? AND `round` = ?";
+        const updateValues = [open, close, formattedDate, round];
         db.query(updateSql, updateValues, (updateErr, updateResult) => {
           if (updateErr) {
             console.error(updateErr);
-            return res.status(500).send('Internal Server Error');
+            return callback(updateErr);
           }
-          console.log(`Updated round for date: ${formattedDate}`);
+          console.log(`Updated round for date: ${formattedDate}, round: ${round}`);
+          callback(null);
         });
       } else {
-        // If date does not exist, insert a new record
+        // If date and round do not exist, insert a new record
         const insertSql = "INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
         const insertValues = [formattedDate, open, close, round];
         db.query(insertSql, insertValues, (insertErr, insertResult) => {
           if (insertErr) {
             console.error(insertErr);
-            return res.status(500).send('Internal Server Error');
+            return callback(insertErr);
           }
-          console.log(`Inserted round for date: ${formattedDate}`);
+          console.log(`Inserted round for date: ${formattedDate}, round: ${round}`);
+          callback(null);
         });
       }
     });
-  }
+  };
 
-  res.redirect('/admin/city');
-}
+  const tasks = Object.entries(dates).map(([date, round]) => {
+    return (callback) => processDateRound(date, round, open, close, callback);
+  });
 
+  const async = require('async');
+  async.series(tasks, (err, results) => {
+    if (err) {
+      return res.status(500).send('Internal Server Error');
+    }
+    res.redirect('/admin/city');
+  });
+};

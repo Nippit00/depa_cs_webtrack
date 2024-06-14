@@ -106,10 +106,10 @@ exports.saveAnsObj = (req, res, next) => {
   const solutionID = req.params.solutionID;
   const timestamp = new Date();
   const round = req.params.round;
-  const qselectQuery = "SELECT status FROM solution WHERE solutionID = ?";
   const qUpdate = "UPDATE solution SET status = ? WHERE solutionID = ?";
   const updateProgress = "UPDATE `solution` SET `Progress`=? WHERE solutionID=?";
-
+  console.log("req.body :",req.body)
+  console.log("req.params :",req.params)
   if (solutionID.length > 255) {
     return res.status(400).json({ error: 'solutionID exceeds the maximum length allowed' });
   }
@@ -186,7 +186,7 @@ exports.saveAnsObj = (req, res, next) => {
         SET timestamp = ?, Round = ?, ans = ?
         WHERE solutionID = ? AND questionID = ? AND Round=?
       `;
-      db.query(updateQuery, [query[1], query[3], query[4], query[0], query[2],query[3]], (updateErr) => {
+      db.query(updateQuery, [query[1], query[3], query[4], query[0], query[2], query[3]], (updateErr) => {
         if (updateErr) {
           console.error('Error updating data:', updateErr);
           return res.status(500).json({ error: 'Failed to update answers' });
@@ -202,7 +202,7 @@ exports.saveAnsObj = (req, res, next) => {
         SET timestamp = ?, ans = ?, Round = ?
         WHERE solutionID = ? AND kpiID = ? AND Round=?
       `;
-      db.query(updateKpiQuery, [query[2], query[3], query[4], query[0], query[1],query[4]], (updateErr) => {
+      db.query(updateKpiQuery, [query[2], query[3], query[4], query[0], query[1], query[4]], (updateErr) => {
         if (updateErr) {
           console.error('Error updating KPI data:', updateErr);
           return res.status(500).json({ error: 'Failed to update KPI data' });
@@ -243,27 +243,19 @@ exports.saveAnsObj = (req, res, next) => {
         updateStatusAndRedirect();
       }
     });
+
   }
 
   function updateStatusAndRedirect() {
-    db.query(qselectQuery, [solutionID], (err, selectData) => {
+    const updateStatus='UPDATE `solution` SET `status`=1 WHERE solutionID=?'
+    db.query(updateStatus, [solutionID], (err, selectData) => {
       if (err) {
         console.error('Error selecting status:', err);
         return res.status(500).json({ error: 'Failed to select status' });
       }
-
-      let status = JSON.parse(selectData[0].status);
-      status[`round${round}`] = 1;
-      const updatedStatus = JSON.stringify(status);
-
-      db.query(qUpdate, [updatedStatus, solutionID], (err) => {
-        if (err) {
-          console.error("Error updating status:", err);
-          return res.status(500).json({ error: "Internal Server Error" });
-        }
         console.log("Status updated successfully");
         res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
-      });
+      ;
     });
   }
 };
@@ -695,7 +687,6 @@ exports.postFormcheck = (req, res, next) => {
   const dataForm = req.body;
   const solutionid = req.params.solutionID;
   const round = req.params.round
-
   try {
     const q = "SELECT solution.*, city_home.* FROM solution JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.solutionID = ?";
     const qKpi = "SELECT kpiID,	kpiName FROM kpi WHERE solutionID = ?"

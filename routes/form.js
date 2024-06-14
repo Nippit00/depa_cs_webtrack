@@ -11,7 +11,8 @@ router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormche
 
 
 // //select form
-router.get('/formsmart/:solutionID/:round',isAuth,formController.getformSmart);
+// router.get('/formsmart/:solutionID/:round',isAuth,formController.getformSmart);
+router.get('/formsmart/:solutionID/:round',formController.getformSmart);
 
 router.post('/formcheck/:solutionID/:round',isAuth,formController.postFormcheck);
 

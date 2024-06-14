@@ -14,9 +14,11 @@ exports.GetCity = (req, res) => {
     "SELECT * FROM cityfile WHERE cityfile.cityID = ?";
   const qProvince="SELECT city_home.cityName FROM `citydata`JOIN `city_home` ON `citydata`.`cityID` = `city_home`.`cityID`WHERE `citydata`.`province` = ? AND `citydata`.`cityID` != ?;"
   const qRound = `
-    SELECT * FROM round 
-    JOIN citydata ON round.Date = citydata.date 
-    WHERE cityID=?
+  SELECT *
+  FROM round
+  JOIN citydata ON round.Date = citydata.date
+  WHERE citydata.cityID = ?
+  ORDER BY round.round DESC;
   `
   try {
     db.query(qCityData, [cityID], (err, cityData) => {
@@ -79,8 +81,9 @@ exports.GetCity = (req, res) => {
 
 
               //คำนวณวันที่เหลือเวลาในการกรอกฟอร์ม
-              const formEndDate = moment([formEndYear, formEndMonth, formEndDay]);
+              const formEndDate = moment([formEndYear-543, formEndMonth-1, formEndDay]);
               const currentDate = moment();
+              formEndDate.hours(23).minutes(59).seconds(59).milliseconds(999);
               const durationEndForm = moment.duration(formEndDate.diff(currentDate));
               const remainingYears = durationEndForm.years();
               const remainingMonths = durationEndForm.months();
@@ -161,6 +164,13 @@ exports.getCityDashboard = (req, res, next) => {
   const qSmartKey = `
   SELECT smartKey,solutionName FROM solution 
   WHERE cityID=? `;
+  const qRound = `
+  SELECT *
+  FROM round
+  JOIN citydata ON round.Date = citydata.date
+  WHERE citydata.cityID = ?
+  ORDER BY round.round DESC;
+  `
 
   try {
     db.query(q, [cityID], (err, data) => {
@@ -179,52 +189,181 @@ exports.getCityDashboard = (req, res, next) => {
         db.query(qGetprogress, [cityID], (err, dataProgress) => {
           if (err) return res.status(500).json(err);
 
-          db.query(qSmartKey,[cityID],(err,dataSmartkey)=>{
-            if (err) return res.status(500).json(err);
+          db.query(qRound,[cityID],(err,dataRound)=>{
+            if(err) return res.status(500).json(err)
+            const announcementDate = moment(dataRound[0].date);
+            const twoYearsLaterFormatted = announcementDate.clone().add(2, 'years');
+            const twoYearsLaterDate = twoYearsLaterFormatted.toDate();
 
-            if (dataProgress.length === 0) {
+            db.query(qSmartKey,[cityID],(err,dataSmartkey)=>{
+              if (err) return res.status(500).json(err);
+  
+              if (dataProgress.length === 0) {
+                const rounded = {};
+                const smartKeyCounts = {};
+                const problemPercentages = [];
+                const successfulProjectsData = Array(8).fill(0);
+                let unsuccessfulProjectsData = [];
+    
+                const averageProgressPerSmartKey = {
+                  ENE: "0",
+                  ENV: "0",
+                  GOV: "0",
+                  ECO: "0",
+                  LIV: "0",
+                  MOB: "0",
+                  CDP: "0",
+                };
+    
+                dataSmartkey.forEach((row) => {
+                  if (smartKeyCounts[row.smartKey]) {
+                    smartKeyCounts[row.smartKey]++;
+                  } else {
+                    smartKeyCounts[row.smartKey] = 1;
+                  }
+                });
+                const count = Object.values(smartKeyCounts).reduce(
+                  (acc, value) => acc + value,
+                  0
+                );
+    
+                unsuccessfulProjectsData = Object.values(smartKeyCounts);
+    
+                rounded["1"] = {
+                  count: count,
+                  complete: [],
+                  progress: 0,
+                  success: successfulProjectsData,
+                  unsuccess: unsuccessfulProjectsData,
+                  problem: problemPercentages,
+                  smartkeycount: smartKeyCounts,
+                  averageProgressPerSmart: averageProgressPerSmartKey,
+                };
+                
+    
+                res.render("city/dashboard", {
+                  req,
+                  pageTitle: "Dashboard",
+                  path: "/city",
+                  solutionInfo: JSON.stringify(dataUpdate),
+                  data: data,
+                  valueInfo: value,
+                  rounded: JSON.stringify(rounded),
+                  dataRound: JSON.stringify(dataRound[0]),
+                  twoYearsLaterDate:twoYearsLaterDate,
+                });
+                return;
+              }
+    
+              const maxRound = Math.max(...dataProgress.map((row) => row.Round));
               const rounded = {};
-              const smartKeyCounts = {};
-              const problemPercentages = [];
-              const successfulProjectsData = Array(8).fill(0);
-              let unsuccessfulProjectsData = [];
-  
-              const averageProgressPerSmartKey = {
-                ENE: "0",
-                ENV: "0",
-                GOV: "0",
-                ECO: "0",
-                LIV: "0",
-                MOB: "0",
-                CDP: "0",
-              };
-  
-              dataSmartkey.forEach((row) => {
-                if (smartKeyCounts[row.smartKey]) {
-                  smartKeyCounts[row.smartKey]++;
-                } else {
-                  smartKeyCounts[row.smartKey] = 1;
-                }
-              });
-              const count = Object.values(smartKeyCounts).reduce(
-                (acc, value) => acc + value,
-                0
-              );
-  
-              unsuccessfulProjectsData = Object.values(smartKeyCounts);
-  
-              rounded["1"] = {
-                count: count,
-                complete: [],
-                progress: 0,
-                success: successfulProjectsData,
-                unsuccess: unsuccessfulProjectsData,
-                problem: problemPercentages,
-                smartkeycount: smartKeyCounts,
-                averageProgressPerSmart: averageProgressPerSmartKey,
-              };
-              
-  
+    
+              for (let round = 1; round <= maxRound; round++) {
+                const roundData = dataProgress.filter((row) => row.Round == round);
+                const smartKeyCounts = {};
+                const projectSuccess = [];
+                const successfulProjectsData = Array(8).fill(0);
+                let unsuccessfulProjectsData = Array(8).fill(0);
+    
+                const validProblems = dataProgress.filter(
+                  (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round && row.ans !== "ไม่มีปัญหา/อุปสรรค" && row.ans !== "อื่น ๆ"
+                );
+                const totalProblems = validProblems.length;
+                const problemCounts = {};
+    
+                validProblems.forEach((row) => {
+                  if (problemCounts[row.ans]) {
+                    problemCounts[row.ans]++;
+                  } else {
+                    problemCounts[row.ans] = 1;
+                  }
+                });
+    
+                const problemPercentages = Object.keys(problemCounts).map((key) => {
+                  return {
+                    problem: key,
+                    percentage: ((problemCounts[key] / totalProblems) * 100).toFixed(2),
+                  };
+                });
+    
+                dataSmartkey.forEach((row) => {
+                  if (smartKeyCounts[row.smartKey]) {
+                    smartKeyCounts[row.smartKey]++;
+                  } else {
+                    smartKeyCounts[row.smartKey] = 1;
+                  }
+                });
+    
+                const count = Object.values(smartKeyCounts).reduce(
+                  (acc, value) => acc + value,
+                  0
+                );
+    
+                const smartKeyProgress = {};
+                const smartKeyCountsForAverage = {};
+                let totalSum = 0;
+                let totalCount = 0;
+    
+                roundData.forEach((item) => {
+                  if (item.questionID == 2) {
+                    item.ans = parseInt(item.ans, 10);
+                    totalSum += item.ans;
+                    totalCount += 1;
+    
+                    if (smartKeyProgress[item.smartKey]) {
+                      smartKeyProgress[item.smartKey] += item.ans;
+                      smartKeyCountsForAverage[item.smartKey] += 1;
+                    } else {
+                      smartKeyProgress[item.smartKey] = item.ans;
+                      smartKeyCountsForAverage[item.smartKey] = 1;
+                    }
+    
+                    if (item.ans == 100) {
+                      projectSuccess.push(item.solutionName);
+                      successfulProjectsData[
+                        Object.keys(smartKeyCounts).indexOf(item.smartKey)
+                      ]++;
+                    }
+                  }
+                });
+    
+                const smartKeyCountsValues = Object.values(smartKeyCounts);
+                unsuccessfulProjectsData = smartKeyCountsValues.map(
+                  (value, index) => value - successfulProjectsData[index]
+                );
+    
+                const averageProgressPerSmartKey = {
+                  ENE: "0",
+                  ENV: "0",
+                  GOV: "0",
+                  ECO: "0",
+                  LIV: "0",
+                  MOB: "0",
+                  
+                };
+    
+                Object.keys(smartKeyProgress).forEach((key) => {
+                  if(key!=='CDP'){
+                    averageProgressPerSmartKey[key] = (
+                      smartKeyProgress[key] / smartKeyCountsForAverage[key]
+                    ).toFixed(2);
+                  }
+                  
+                });
+    
+                const totalAverage = (totalSum / count).toFixed(2);
+                rounded[round] = {
+                  count: count,
+                  complete: projectSuccess,
+                  progress: totalAverage,
+                  success: successfulProjectsData,
+                  unsuccess: unsuccessfulProjectsData,
+                  problem: problemPercentages,
+                  smartkeycount: smartKeyCounts,
+                  averageProgressPerSmart: averageProgressPerSmartKey,
+                };
+                // console.log(rounded)
+              }
               res.render("city/dashboard", {
                 req,
                 pageTitle: "Dashboard",
@@ -233,128 +372,10 @@ exports.getCityDashboard = (req, res, next) => {
                 data: data,
                 valueInfo: value,
                 rounded: JSON.stringify(rounded),
+                dataRound: JSON.stringify(dataRound[0]),
+                twoYearsLaterDate:twoYearsLaterDate,
               });
-              return;
-            }
-  
-            const maxRound = Math.max(...dataProgress.map((row) => row.Round));
-            const rounded = {};
-  
-            for (let round = 1; round <= maxRound; round++) {
-              const roundData = dataProgress.filter((row) => row.Round == round);
-              const smartKeyCounts = {};
-              const projectSuccess = [];
-              const successfulProjectsData = Array(8).fill(0);
-              let unsuccessfulProjectsData = Array(8).fill(0);
-  
-              const validProblems = dataProgress.filter(
-                (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round && row.ans !== "ไม่มีปัญหา/อุปสรรค" && row.ans !== "อื่น ๆ"
-              );
-              const totalProblems = validProblems.length;
-              const problemCounts = {};
-  
-              validProblems.forEach((row) => {
-                if (problemCounts[row.ans]) {
-                  problemCounts[row.ans]++;
-                } else {
-                  problemCounts[row.ans] = 1;
-                }
-              });
-  
-              const problemPercentages = Object.keys(problemCounts).map((key) => {
-                return {
-                  problem: key,
-                  percentage: ((problemCounts[key] / totalProblems) * 100).toFixed(2),
-                };
-              });
-  
-              dataSmartkey.forEach((row) => {
-                if (smartKeyCounts[row.smartKey]) {
-                  smartKeyCounts[row.smartKey]++;
-                } else {
-                  smartKeyCounts[row.smartKey] = 1;
-                }
-              });
-  
-              const count = Object.values(smartKeyCounts).reduce(
-                (acc, value) => acc + value,
-                0
-              );
-  
-              const smartKeyProgress = {};
-              const smartKeyCountsForAverage = {};
-              let totalSum = 0;
-              let totalCount = 0;
-  
-              roundData.forEach((item) => {
-                if (item.questionID == 2) {
-                  item.ans = parseInt(item.ans, 10);
-                  totalSum += item.ans;
-                  totalCount += 1;
-  
-                  if (smartKeyProgress[item.smartKey]) {
-                    smartKeyProgress[item.smartKey] += item.ans;
-                    smartKeyCountsForAverage[item.smartKey] += 1;
-                  } else {
-                    smartKeyProgress[item.smartKey] = item.ans;
-                    smartKeyCountsForAverage[item.smartKey] = 1;
-                  }
-  
-                  if (item.ans == 100) {
-                    projectSuccess.push(item.solutionName);
-                    successfulProjectsData[
-                      Object.keys(smartKeyCounts).indexOf(item.smartKey)
-                    ]++;
-                  }
-                }
-              });
-  
-              const smartKeyCountsValues = Object.values(smartKeyCounts);
-              unsuccessfulProjectsData = smartKeyCountsValues.map(
-                (value, index) => value - successfulProjectsData[index]
-              );
-  
-              const averageProgressPerSmartKey = {
-                ENE: "0",
-                ENV: "0",
-                GOV: "0",
-                ECO: "0",
-                LIV: "0",
-                MOB: "0",
-                
-              };
-  
-              Object.keys(smartKeyProgress).forEach((key) => {
-                if(key!=='CDP'){
-                  averageProgressPerSmartKey[key] = (
-                    smartKeyProgress[key] / smartKeyCountsForAverage[key]
-                  ).toFixed(2);
-                }
-                
-              });
-  
-              const totalAverage = (totalSum / count).toFixed(2);
-              rounded[round] = {
-                count: count,
-                complete: projectSuccess,
-                progress: totalAverage,
-                success: successfulProjectsData,
-                unsuccess: unsuccessfulProjectsData,
-                problem: problemPercentages,
-                smartkeycount: smartKeyCounts,
-                averageProgressPerSmart: averageProgressPerSmartKey,
-              };
-              // console.log(rounded)
-            }
-            res.render("city/dashboard", {
-              req,
-              pageTitle: "Dashboard",
-              path: "/city",
-              solutionInfo: JSON.stringify(dataUpdate),
-              data: data,
-              valueInfo: value,
-              rounded: JSON.stringify(rounded),
-            });
+            })
           })
         });
       });

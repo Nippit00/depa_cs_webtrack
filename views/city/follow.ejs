@@ -125,10 +125,10 @@
                       <% const countProject = countEcoSolutions(section) %>
                       <%= countProject %> โครงการ
                     </div>
-                    <div class="p-2 bg-gray-100 rounded-md">
+                    <div class="p-2 col-span-1  bg-gray-100 rounded-md text-center">
                       รอบที่ <%= dataRound.round %>
                     </div>
-                    <div class="p-2 bg-gray-100 rounded-md">
+                    <div class="p-2 col-span-1 bg-gray-100 rounded-md text-center">
                       <% const count = countEcoSolutions(section) %>
                       <% const countSuccess = countComplete(section) %>
                       <% const countSuccessRound2 = countCompleteRound2(section) %>
@@ -143,9 +143,9 @@
                     <% followdata.forEach((item) => { %>
                     <% if(item.smartKey === section) { %>
                     <div class="p-4 bg-white border rounded-md shadow-sm grid grid-cols-1 sm:grid-cols-6 gap-4 mt-4">
-                      <span class="mb-2 col-span-4"><%= item.solutionID.slice(4) %> <%= item.solutionName %></span>
-                      <a class="p-2 bg-teal-500 text-white rounded text-center" href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>">กรอกฟอร์ม</a>
-                      <span class="mt-2 text-center">สถานะ</span>
+                      <span class="mb-2 col-span-4 "><%= item.solutionID.slice(4) %> <%= item.solutionName %></span>
+                      <a class="p-2 w-full col-span-1 bg-teal-500 text-white rounded text-center h-10" href="/formsmart/<%= item.solutionID %>/<%= dataRound.round %>">กรอกฟอร์ม</a>
+                      <span class="mt-2 col-span-1 text-center">สถานะ:คิดแค่เพื่อน</span>
                     </div>
                     <% } %>
                     <% }) %>
