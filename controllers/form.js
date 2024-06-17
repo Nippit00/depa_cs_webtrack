@@ -8,20 +8,20 @@ exports.getformSmart = (req, res, next) => {
   // console.log("Round is:"+round)
   const q1 =
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
-  const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
+  const q2 = "SELECT * FROM anssolution WHERE solutionID = ? ";
   const q3 = "SELECT * FROM `question` WHERE 1";
-  const q4 = "SELECT * FROM `kpi` JOIN anskpi ON kpi.kpiID = anskpi.kpiID WHERE kpi.solutionID = ?";
+  const q4 = "SELECT * FROM `kpi` JOIN anskpi ON kpi.kpiID = anskpi.kpiID WHERE kpi.solutionID = ? ";
 
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
       db.query(q2, [solutionid], (err, dataOld) => {
-        // console.log(dataOld)
+        console.log(dataOld)
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
           db.query(q4, [solutionid], (err, kpi) => {
-            // console.log("length: "+ kpi.length)
+            console.log("length: "+ kpi)
             if (err) return res.status(500).json(err);
             if (kpi.length > 0) {
               res.render("form-smart", {

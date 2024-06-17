@@ -206,13 +206,7 @@ exports.getCityDashboard = (req, res, next) => {
                 let unsuccessfulProjectsData = [];
     
                 const averageProgressPerSmartKey = {
-                  ENE: "0",
-                  ENV: "0",
-                  GOV: "0",
-                  ECO: "0",
-                  LIV: "0",
-                  MOB: "0",
-                  CDP: "0",
+                
                 };
     
                 dataSmartkey.forEach((row) => {
@@ -333,12 +327,7 @@ exports.getCityDashboard = (req, res, next) => {
                 );
     
                 const averageProgressPerSmartKey = {
-                  ENE: "0",
-                  ENV: "0",
-                  GOV: "0",
-                  ECO: "0",
-                  LIV: "0",
-                  MOB: "0",
+                 
                   
                 };
     
@@ -393,7 +382,7 @@ exports.getCityFollow = (req, res, next) => {
   try {
     db.query(q, [cityID], (err, data) => {
       if (err) return res.status(500).json(err);
-      // console.log("Check follow data :",data)
+      
       const followdata = data.map(row => {
         return {
           ...row,

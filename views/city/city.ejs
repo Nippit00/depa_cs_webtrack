@@ -304,7 +304,6 @@
             let currentDay = currentDate.getDate(); //วันปัจจุบัน
             let currentMonth = currentDate.getMonth() + 1; //เดือนปัจจุบัน
             let currentYear = currentDate.getFullYear(); //ปีปัจจุบัน
-            let event = false
 
             let formStartDay = formDates.formStartDay;
             let formEndDay = formDates.formEndDay;
@@ -353,7 +352,6 @@
                         <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
     
                     </div>`;
-                    event = true;
                         
             } else if(currentDate < openForm){
                 if(formStartYear === formEndYear){ //ถ้าอยู่ในปีเดียวกัน
