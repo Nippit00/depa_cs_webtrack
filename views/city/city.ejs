@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
@@ -291,6 +294,17 @@
         window.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById('spinner-container').style.display = 'flex';
         });
+        function toggleReadMore() {
+            const readMoreText = document.querySelector('.read-more-text');
+            const readMoreBtn = document.querySelector('.read-more-btn');
+            if (readMoreText.style.display === 'none') {
+                readMoreText.style.display = 'inline';
+                readMoreBtn.textContent = 'อ่านน้อยลง';
+            } else {
+                readMoreText.style.display = 'none';
+                readMoreBtn.textContent = 'อ่านเพิ่มเติม';
+            }
+        }
 
 
 
@@ -314,6 +328,9 @@
 
             const openForm = new Date(formStartYear-543, formStartMonth-1, formStartDay);
             const closeForm = new Date(formEndYear-543, formEndMonth-1, formEndDay);
+            const fifteenDaysBeforeClose = new Date(closeForm);
+            fifteenDaysBeforeClose.setDate(closeForm.getDate() - 15);
+            console.log(fifteenDaysBeforeClose)
             
 
             // ตั้งเวลาให้เป็น 00:00:00
@@ -345,13 +362,46 @@
             const daysTextReport = announcementDuration.anvDays > 0 ? `${announcementDuration.anvDays} วัน ` : '';
             //เช็คว่าถึงเวลาเปิด form หรือยัง
             if(currentDate >= openForm && currentDate <= closeForm)  {
-                    message = `<div class="bg-red-100 px-2 pt-2  rounded-md">
-                        <div class="p-1"><span class="highlight">***</span> กรอกแบบฟอร์มครั้งที่ ${round.round} <span class="highlight">***</span> </div>
-                        <div class="p-1"> <span class="highlight">***</span> กรุณากรอกฟอร์มภายในวันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight">***</span></div>
-                        <div class="p-1">โดยเข้าไปกรอกได้ที่เมนู -รายการความคืบหน้ารายโครงการ</div>
-                        <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
-    
-                    </div>`;
+                    if(yearsText == 0 && monthsText == 0 && daysText == 0){
+                        message = `<div class="bg-red-100 px-2 pt-2  rounded-md">
+                            <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  กรอกแบบฟอร์มครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
+                            <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> กรุณากรอกฟอร์มภายในวันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span></div>
+                            <div class="p-1">
+                                <span class="read-more-text" style="display: none;">
+                                    <ul>
+                                        <li>โดยเข้าไปกรอกได้ที่เมนู </li>
+                                        <li>1. รายการความคืบหน้ารายโครงการ</li>
+                                        <li>2. เเล้วเลือก smart ที่จะกรอกฟอร์ม</li>
+                                        <li>3. กดปุ่ม กรอกฟอร์ม ตามโครงการที่ต้องการกรอก</li>
+                                    </ul>
+                                </span>
+                                <span class="read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
+                                
+                            </div>
+                            <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (วันนี้ วันสุดท้าย)</span></div>
+        
+                        </div>`;
+
+                    }else{
+                        message = `<div class="bg-red-100 px-2 pt-2  rounded-md">
+                            <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  กรอกแบบฟอร์มครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
+                            <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> กรุณากรอกฟอร์มภายในวันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span></div>
+                            <div class="p-1">
+                                <span class="read-more-text" style="display: none;">
+                                    <ul>
+                                        <li>โดยเข้าไปกรอกได้ที่เมนู </li>
+                                        <li>1. รายการความคืบหน้ารายโครงการ</li>
+                                        <li>2. เเล้วเลือก smart ที่จะกรอกฟอร์ม</li>
+                                        <li>3. กดปุ่ม กรอกฟอร์ม ตามโครงการที่ต้องการกรอก</li>
+                                    </ul>
+                                </span>
+                                <span class="read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
+                                
+                            </div>
+                            <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
+        
+                        </div>`;
+                    }
                         
             } else if(currentDate < openForm){
                 if(formStartYear === formEndYear){ //ถ้าอยู่ในปีเดียวกัน
@@ -393,6 +443,30 @@
                             <span class="highlight">เหลืออีก (${yearsTextReport}${monthsTextReport}${daysTextReport.trim()})</span></div> `;
             }
 
+            if (currentDate.toDateString() === fifteenDaysBeforeClose.toDateString()) {
+                let csrfToken = '<%= csrfToken %>'; 
+                let cityID = '<%=cityInfo.cityID%>';
+                fetch('/notification/postnoti', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Ensure the content type is set for JSON
+                        'X-CSRF-Token': csrfToken // Include the CSRF token in the headers
+                    },
+                    body: JSON.stringify({
+                        cityID: cityID,
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Notification sent successfully:', data);
+                })
+                .catch((error) => {
+                    console.error('Error sending notification:', error);
+                });
+            }
+            
+            
+
 
 
 
@@ -413,6 +487,9 @@
                     confirmButton: 'bg-green-600 text-white rounded-md'
                 }
             });
+
+            
+            
 
 
 

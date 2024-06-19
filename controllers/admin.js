@@ -6,8 +6,10 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 const moment = require('moment');
 exports.getAdPage = (req, res, next) => {
-  const q = "SELECT * FROM `Round` ORDER BY `date` ASC;"
-  const q1 = "SELECT citydata.cityID, citydata.province, citydata.date,city_home.cityName FROM `citydata` JOIN city_home ON citydata.cityID=city_home.cityID WHERE 1"
+  const q = "SELECT r.* FROM `Round` r INNER JOIN (SELECT `date`, MAX(`round`) as max_round FROM `Round` GROUP BY `date` ) sub ON r.`date` = sub.`date` AND r.`round` = sub.`max_round` ORDER BY r.`date` ASC;";
+  const q1 = "SELECT citydata.cityID, citydata.province, citydata.date, city_home.cityName FROM `citydata` JOIN city_home ON citydata.cityID=city_home.cityID WHERE 1 ORDER BY citydata.cityID ASC;";
+  const qStatus = "SELECT city_home.cityID, COUNT(CASE WHEN solution.status = 0 THEN 1 END) AS status0_count, COUNT(CASE WHEN solution.status = 1 THEN 1 END) AS status1_count, COUNT(CASE WHEN solution.status = 2 THEN 1 END) AS status2_count FROM solution JOIN city_home ON city_home.cityID = solution.cityID GROUP BY city_home.cityID;";
+  
   db.query(q, (err, date) => {
     if (err) {
       console.error(err);
@@ -18,16 +20,35 @@ exports.getAdPage = (req, res, next) => {
         console.error(err);
         return res.status(500).json(err);
       }
-      res.render("admin/ad-main", {
-        pageTitle: "Main",
-        path: "/",
-        date: date,
-        city:city,
+      db.query(qStatus, (err, dataStatus) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json(err);
+        }
+        
+        // Calculate the sum of each status count
+        const totalStatusCounts = dataStatus.reduce((acc, row) => {
+          acc.status0_count += row.status0_count;
+          acc.status1_count += row.status1_count;
+          acc.status2_count += row.status2_count;
+          return acc;
+        }, { status0_count: 0, status1_count: 0, status2_count: 0 });
+        
+        // console.log(dataStatus);
+        
+        res.render("admin/ad-main", {
+          pageTitle: "Main",
+          path: "/",
+          date: date,
+          city: city,
+          dataStatus: dataStatus,
+          totalStatusCounts:JSON.stringify(totalStatusCounts) , // Pass the summed values to the template
+        });
       });
-    })
-
+    });
   });
 };
+
 
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
@@ -749,29 +770,44 @@ exports.updateSolution = (req, res, next) => {
   }
 };
 
+
 exports.getRoundPage = (req, res, next) => {
   const q1 = "SELECT DISTINCT `date` FROM `citydata` ORDER BY `date` ASC;";
+  const q2 = "SELECT * FROM `Round` WHERE 1 ORDER BY `date` ASC;";
+
   db.query(q1, (err, dates) => {
     if (err) return res.status(500).json(err);
-    
 
-    const now = moment(); // ใช้ moment เพื่อวันที่ปัจจุบัน
-    // แปลงวันที่ให้อยู่ในรูปแบบที่ต้องการในภาษาไทย และคำนวณอายุจากวันปัจจุบัน
+    const now = moment(); // Use moment to get the current date
+    // Transform dates to the desired format and calculate age
     const formattedDates = dates.map(item => {
-      const date = moment(item.date); // ใช้ moment เพื่อจัดการวันที่
-      const ageInDays = now.diff(date, 'days'); // คำนวณจำนวนวัน
+      const date = moment(item.date);
+      const ageInDays = now.diff(date, 'days'); // Calculate age in days
       return {
         original: item.date,
-        formatted: date.locale('th').format('LL'), // ใช้ moment เพื่อแปลงวันที่เป็นภาษาไทย
+        formatted: date.locale('th').format('LL'), // Format date in Thai
         age: ageInDays
       };
     });
-    console.log(formattedDates)
-    res.render("admin/ad-city/ad-round", {
-      req,
-      pageTitle: "round",
-      path: "/round",
-      dates: formattedDates
+
+    db.query(q2, (err, all) => {
+      if (err) return res.status(500).json(err);
+
+      // Format the 'all' data
+      const formattedAllData = all.map(item => ({
+        ...item,
+        Date: moment(item.Date).locale('th').format('LL'), // Format the 'Date' field
+        open: moment(item.open).locale('th').format('LL'), // Format the 'open' field
+        close: moment(item.close).locale('th').format('LL') // Format the 'close' field
+      }));
+
+      res.render("admin/ad-city/ad-round", {
+        req,
+        pageTitle: "round",
+        path: "/round",
+        dates: formattedDates,
+        alldate: formattedAllData
+      });
     });
   });
 };

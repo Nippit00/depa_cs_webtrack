@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 // //send data form to backebd
-router.post('/comfirmformcheck/:solutionID',isAuth,formController.comfirmFormcheck);
+router.post('/comfirmformcheck/:solutionID/:round',isAuth,formController.comfirmFormcheck);
 
 
 // //select form
@@ -23,7 +23,7 @@ router.post('/formcheck/:solutionID/:round',isAuth,formController.postFormcheck)
 // router.post('/sendformsmart/:solutionID',isAuth,formController.postFormSmart);
 
 // //formcdp
-router.get('/formcdp1/:solutionID',isAuth,formController.getformCdp1);
+router.get('/formcdp1/:solutionID/:round',isAuth,formController.getformCdp1);
 
 
 //saveform

@@ -10,13 +10,23 @@ exports.getformSmart = (req, res, next) => {
     "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
   const q2 = "SELECT * FROM anssolution WHERE solutionID = ? ";
   const q3 = "SELECT * FROM `question` WHERE 1";
-  const q4 = "SELECT * FROM `kpi` JOIN anskpi ON kpi.kpiID = anskpi.kpiID WHERE kpi.solutionID = ? ";
+  const q4 = `
+    SELECT kpi.*, anskpi.*
+    FROM kpi
+    JOIN anskpi ON kpi.kpiID = anskpi.kpiID
+    JOIN (
+        SELECT kpiID, MAX(Round) AS maxRound
+        FROM anskpi
+        GROUP BY kpiID
+    ) AS latest ON anskpi.kpiID = latest.kpiID AND anskpi.Round = latest.maxRound
+    WHERE kpi.solutionID = ?;
+`;
 
   try {
     db.query(q1, [cityID, solutionid], (err, data) => {
       if (err) return res.status(500).json(err);
       db.query(q2, [solutionid], (err, dataOld) => {
-        console.log(dataOld)
+        // console.log(dataOld)
         if (err) return res.status(500).json(err);
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
@@ -63,41 +73,55 @@ exports.getformSmart = (req, res, next) => {
 exports.getformCdp1 = (req, res, next) => {
   const solutionid = req.params.solutionID;
   const cityID = req.session.userID;
-  const q1 =
-    "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
-  const q2 = "SELECT * FROM anssolution WHERE solutionID = ?;";
+  const round = req.params.round;
+  
+  const q1 = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
+  const q2 = "SELECT * FROM anssolution WHERE solutionID = ? ";
   const q3 = "SELECT * FROM `question` WHERE 1";
-  const q4 = "SELECT * FROM `anskpi` WHERE solutionID=?"
-  const qKpi = "SELECT * FROM kpi WHERE solutionID=?"
+  const q4 = "SELECT * FROM `kpi` JOIN anskpi ON kpi.kpiID = anskpi.kpiID WHERE kpi.solutionID = ? ";
+  
   try {
-    db.query(q1, [cityID, solutionid], (err, data) => {
-      if (err) return res.status(500).json(err);
-      db.query(q2, [solutionid], (err, dataOld) => {
-        if (err) return res.status(500).json(err);
-        db.query(q3, (err, question) => {
+      db.query(q1, [cityID, solutionid], (err, data) => {
           if (err) return res.status(500).json(err);
-          db.query(q4, [solutionid], (err, kpiOld) => {
-            if (err) return res.status(500).json(err);
-            db.query(qKpi, [solutionid], (err, datakpi) => {
+          db.query(q2, [solutionid], (err, dataOld) => {
               if (err) return res.status(500).json(err);
-              res.render("form-cdpPart1", {
-                formdata: data,
-                datakpi: kpiOld || [],
-                csrfToken: req.csrfToken(),
-                question: question,
-                datakpi: datakpi,
-                dataOld: dataOld
+              db.query(q3, (err, question) => {
+                  if (err) return res.status(500).json(err);
+                  db.query(q4, [solutionid], (err, kpi) => {
+                      if (err) return res.status(500).json(err);
+                      if (kpi.length > 0) {
+                          res.render("form-cdpPart1", {
+                              kpiQ: kpi,
+                              formdata: data,
+                              dataOld: dataOld || [],
+                              csrfToken: req.csrfToken(),
+                              question: question,
+                              round: round,
+                          });
+                      } else {
+                          const q5 = "SELECT * FROM `kpi` WHERE solutionID = ?";
+                          db.query(q5, [solutionid], (err, kpi) => {
+                              if (err) return res.status(500).json(err);
+                              res.render("form-cdpPart1", {
+                                  kpiQ: kpi,
+                                  formdata: data,
+                                  dataOld: dataOld || [],
+                                  csrfToken: req.csrfToken(),
+                                  question: question,
+                                  round: round,
+                              });
+                          });
+                      }
+                  });
               });
-            })
           });
-        });
       });
-    });
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+      console.log(err);
+      res.status(500).json(err);
   }
 };
+
 
 
 exports.saveAnsObj = (req, res, next) => {
@@ -109,7 +133,7 @@ exports.saveAnsObj = (req, res, next) => {
   const qUpdate = "UPDATE solution SET status = ? WHERE solutionID = ?";
   const updateProgress = "UPDATE `solution` SET `Progress`=? WHERE solutionID=?";
   console.log("req.body :",req.body)
-  console.log("req.params :",req.params)
+  // console.log("req.params :",req.params)
   if (solutionID.length > 255) {
     return res.status(400).json({ error: 'solutionID exceeds the maximum length allowed' });
   }
@@ -159,7 +183,7 @@ exports.saveAnsObj = (req, res, next) => {
         console.error('Error checking existing data:', checkErr);
         return res.status(500).json({ error: 'Failed to check existing data' });
       }
-
+      console.log(checkResult.length)
       if (checkResult.length > 0) {
         handleUpdates();
       } else {
@@ -418,11 +442,9 @@ exports.saveAnsObjEdit = (req, res, next) => {
          return res.status(500).json({ error: 'Failed to select status' });
        }
  
-       let status = JSON.parse(selectData[0].status);
-       status[`round${round}`] = 1;
-       const updatedStatus = JSON.stringify(status);
+       
  
-       db.query(qUpdate, [updatedStatus, solutionID], (err) => {
+       db.query(qUpdate, [1, solutionID], (err) => {
          if (err) {
            console.error("Error updating status:", err);
            return res.status(500).json({ error: "Internal Server Error" });
@@ -515,8 +537,9 @@ exports.saveAnsObjcdp1 = (req, res, next) => {
 };
 
 exports.comfirmFormcheck = (req, res, next) => {
-  const data = req.body;
-  const progress = req.body.A2;
+  console.log(req.body);
+  const data = req.body.dataChecks;
+  const progress = data.A2; // Ensure this is correctly assigned
   const solutionID = req.params.solutionID;
   const timestamp = new Date();
   const round = req.params.round;
@@ -526,6 +549,10 @@ exports.comfirmFormcheck = (req, res, next) => {
 
   if (solutionID.length > 255) {
     return res.status(400).json({ error: 'solutionID exceeds the maximum length allowed' });
+  }
+
+  if (progress === undefined || progress === null) {
+    return res.status(400).json({ error: 'Progress value is missing or invalid' });
   }
 
   let queries = [];
@@ -568,7 +595,7 @@ exports.comfirmFormcheck = (req, res, next) => {
       return res.status(500).json({ error: 'Failed to update progress' });
     }
 
-    db.query(checkQuery, [solutionID,round], (checkErr, checkResult) => {
+    db.query(checkQuery, [solutionID, round], (checkErr, checkResult) => {
       if (checkErr) {
         console.error('Error checking existing data:', checkErr);
         return res.status(500).json({ error: 'Failed to check existing data' });
@@ -600,7 +627,7 @@ exports.comfirmFormcheck = (req, res, next) => {
         SET timestamp = ?, Round = ?, ans = ?
         WHERE solutionID = ? AND questionID = ? AND Round=?
       `;
-      db.query(updateQuery, [query[1], query[3], query[4], query[0], query[2],query[3]], (updateErr) => {
+      db.query(updateQuery, [query[1], query[3], query[4], query[0], query[2], query[3]], (updateErr) => {
         if (updateErr) {
           console.error('Error updating data:', updateErr);
           return res.status(500).json({ error: 'Failed to update answers' });
@@ -616,7 +643,7 @@ exports.comfirmFormcheck = (req, res, next) => {
         SET timestamp = ?, ans = ?, Round = ?
         WHERE solutionID = ? AND kpiID = ? AND Round=?
       `;
-      db.query(updateKpiQuery, [query[2], query[3], query[4], query[0], query[1],query[4]], (updateErr) => {
+      db.query(updateKpiQuery, [query[2], query[3], query[4], query[0], query[1], query[4]], (updateErr) => {
         if (updateErr) {
           console.error('Error updating KPI data:', updateErr);
           return res.status(500).json({ error: 'Failed to update KPI data' });
@@ -666,11 +693,7 @@ exports.comfirmFormcheck = (req, res, next) => {
         return res.status(500).json({ error: 'Failed to select status' });
       }
 
-      let status = JSON.parse(selectData[0].status);
-      status[`round${round}`] = 1;
-      const updatedStatus = JSON.stringify(status);
-
-      db.query(qUpdate, [updatedStatus, solutionID], (err) => {
+      db.query(qUpdate, [2, solutionID], (err) => {
         if (err) {
           console.error("Error updating status:", err);
           return res.status(500).json({ error: "Internal Server Error" });
@@ -681,6 +704,7 @@ exports.comfirmFormcheck = (req, res, next) => {
     });
   }
 };
+
 
 
 exports.postFormcheck = (req, res, next) => {

@@ -12,7 +12,13 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
 
+  .font-th-sarabun {
+      font-family: 'Sarabun', sans-serif;
+  }
+  </style>
 </head>
 
 <body class="font-th-sarabun">
@@ -222,10 +228,10 @@
   });
 
   const solutionInfo = <%- solutionInfo %>;
+  // console.log(solutionInfo)
   const dataRound = <%- dataRound %>;
   const reportOpenTime = new Date('<%- twoYearsLaterDate.toISOString() %>');
   reportOpenTime.setHours(0, 0, 0, 0);
-  console.log(reportOpenTime)
   const currentime = new Date()
 
   function calculateAverageSuccess(dataArray, smartKey) {
@@ -255,6 +261,41 @@
   function generateTableHTML(data, key) {
   let html = "";
   data.forEach((item) => {
+    if(key==='ALL'){
+     
+      const status = item.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
+      let statusFormCircle = '';
+          if (currentime >= new Date(dataRound.open)) {
+            statusFormCircle = item.status === 2 
+              ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
+              : item.status === 1 
+                ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
+                : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+          }else{
+            statusFormCircle=`<div class="w-5 h-5 rounded-full bg-gray-200 border-2 border-gray-500 inline-block"></div>`;
+          }
+          let statusReportCircle = '';
+          if (currentime >= reportOpenTime) {
+            statusReportCircle = item.status === 2 
+              ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
+              : item.status === 1 
+                ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
+                : `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: red; display: inline-block;"></div>`;
+          } else {
+            statusReportCircle = `<div class="w-5 h-5 rounded-full bg-gray-200 border-2 border-gray-500 inline-block"></div>`;
+          }
+          
+      html += `
+        <div class="grid grid-cols-8 hover:bg-gray-100 ">
+          <div class="p-5 border-b-2 col-span-4 text-left truncate">${item.solutionID.slice(4)} ${item.solutionName}</div>
+          <div class="p-5 border-b-2">${status}</div>
+          <div class="p-5 border-b-2">${item.Progress}%</div>
+          <div class="p-5 border-b-2 ">${statusFormCircle}</div>
+          <div class="p-5 border-b-2">${statusReportCircle}</div>
+        </div>`;
+    
+    }
+    else{
     if (item.smartKey === key) {
       const status = item.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
       let statusFormCircle = '';
@@ -287,6 +328,7 @@
           <div class="p-5 border-b-2">${statusReportCircle}</div>
         </div>`;
     }
+  }
   });
   const averageProgress = calculateAverageProgress(data, key);
   const averageSuccess = calculateAverageSuccess(data, key);
@@ -321,6 +363,8 @@
       case 7: key = "PEO"; break;
       case 8: key = "LIV"; break;
       case 9: key = "ALL"; break;
+      case 10: key = "PIF"; break;
+      case 11: key = "DIF"; break;
       default: key = ""; break;
     }
 

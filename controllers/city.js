@@ -9,7 +9,7 @@ exports.GetCity = (req, res) => {
   const qCityData =
     "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?";
   const qSolution =
-    "SELECT `smartKey` FROM `solution` WHERE cityID=? ";
+    "SELECT `smartKey`,`solutionID` FROM `solution` WHERE cityID=? ";
   const qCityFile =
     "SELECT * FROM cityfile WHERE cityfile.cityID = ?";
   const qProvince="SELECT city_home.cityName FROM `citydata`JOIN `city_home` ON `citydata`.`cityID` = `city_home`.`cityID`WHERE `citydata`.`province` = ? AND `citydata`.`cityID` != ?;"
@@ -145,7 +145,7 @@ exports.getCityDashboard = (req, res, next) => {
   const q = `
     SELECT * FROM solution
     JOIN smart ON solution.smartKey = smart.smartKey
-    JOIN kpi ON kpi.solutionID = solution.solutionID
+    
     JOIN citydata ON citydata.cityID = solution.cityID
     JOIN city_home ON city_home.cityID = solution.cityID
     WHERE solution.cityID = ?
@@ -202,7 +202,7 @@ exports.getCityDashboard = (req, res, next) => {
                 const rounded = {};
                 const smartKeyCounts = {};
                 const problemPercentages = [];
-                const successfulProjectsData = Array(8).fill(0);
+                const successfulProjectsData = Array(10).fill(0);
                 let unsuccessfulProjectsData = [];
     
                 const averageProgressPerSmartKey = {
@@ -234,7 +234,7 @@ exports.getCityDashboard = (req, res, next) => {
                   averageProgressPerSmart: averageProgressPerSmartKey,
                 };
                 
-    
+                // console.log(JSON.stringify(dataUpdate))
                 res.render("city/dashboard", {
                   req,
                   pageTitle: "Dashboard",
@@ -256,8 +256,8 @@ exports.getCityDashboard = (req, res, next) => {
                 const roundData = dataProgress.filter((row) => row.Round == round);
                 const smartKeyCounts = {};
                 const projectSuccess = [];
-                const successfulProjectsData = Array(8).fill(0);
-                let unsuccessfulProjectsData = Array(8).fill(0);
+                const successfulProjectsData = Array(10).fill(0);
+                let unsuccessfulProjectsData = Array(10).fill(0);
     
                 const validProblems = dataProgress.filter(
                   (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round && row.ans !== "ไม่มีปัญหา/อุปสรรค" && row.ans !== "อื่น ๆ"
@@ -334,8 +334,10 @@ exports.getCityDashboard = (req, res, next) => {
                 Object.keys(smartKeyProgress).forEach((key) => {
                   if(key!=='CDP'){
                     averageProgressPerSmartKey[key] = (
-                      smartKeyProgress[key] / smartKeyCountsForAverage[key]
+
+                      smartKeyProgress[key] / smartKeyCounts[key]
                     ).toFixed(2);
+                   
                   }
                   
                 });
@@ -377,12 +379,12 @@ exports.getCityDashboard = (req, res, next) => {
 
 exports.getCityFollow = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN kpi ON kpi.solutionID = solution.solutionID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.status_solution=1 GROUP BY solution.solutionName ORDER BY solution.solutionID ASC";
-  const qRound = "SELECT * FROM citydata JOIN round ON citydata.date = round.Date WHERE citydata.cityID = ?"
+  const q = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.status_solution=1 GROUP BY solution.solutionName ORDER BY solution.solutionID ASC";
+  const qRound = "SELECT * FROM citydata JOIN round ON citydata.date = round.Date WHERE citydata.cityID = ? ORDER BY round.round DESC"
   try {
     db.query(q, [cityID], (err, data) => {
       if (err) return res.status(500).json(err);
-      
+      // console.log("Check follow data :",data)
       const followdata = data.map(row => {
         return {
           ...row,
@@ -392,12 +394,21 @@ exports.getCityFollow = (req, res, next) => {
       
       db.query(qRound,[cityID],(err,dataRound)=>{
         // console.log(dataRound)
+        const openForm = moment(dataRound[0].open);
+        const closeForm = moment(dataRound[0].close);
+        openForm.hours(0).minutes(0).seconds(0).milliseconds(0);
+        closeForm.hours(23).minutes(59).seconds(59).milliseconds(999);
+
         if (err) return res.status(500).json(err);
         res.render("city/follow", {
           pageTitle: "Follow",
           path: "/city",
           followdata: followdata || [],
           dataRound:dataRound[0],
+          dateForm:{
+            openForm: openForm.toISOString(),
+            closeForm: closeForm.toISOString(),
+          }
         });
       })
     });

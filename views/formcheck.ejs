@@ -123,7 +123,7 @@
                     <% Object.keys(dataCheck).forEach(function(key) { %>
                     <% dataKpi.forEach(function(item) { %>
                     <% if (item.kpiID === key ) { %>
-                    <p><%= item.kpiName %>: <span class="highlight">คำตอบ <%= dataCheck[key] %></span></p>
+                    <p><%= item.kpiName %>: <div class="highlight">คำตอบ <%= dataCheck[key] %></div></p>
                     <% } %>
                     <% }); %>
                     <% }); %>

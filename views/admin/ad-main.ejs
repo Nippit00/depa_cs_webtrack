@@ -10,43 +10,44 @@
 <body class="bg-gray-100 font-sans">
     <%- include('include/ad-navbar.ejs') %>
 
-    <div class="container mx-auto p-6 bg-white mt-6 rounded-lg shadow-lg">
-        <div class="flex flex-wrap">
-            <div class="w-2/5 lg:w-7/10 p-4">
+    <div class="container mx-auto p-6 bg-white mt-6 rounded-lg shadow-lg ">
+        <div class="flex flex-wrap ">
+            <div class="w-2/5 md:w-2/5 p-4">
                 <div class="bg-white rounded-lg shadow-lg p-4">
                     <canvas id="myPieChart"></canvas>
                 </div>
             </div>
-            <div class="">
-                <div class="p-4 bg-white shadow-lg">
+            <div class="w-2/6 md:w-1/3 mx-3 flex items-center h-[36rem] justify-center">
+                <div class="p-4 rounded-lg shadow-lg w-full h-full overflow-y-auto">
+                    <% date.forEach(function(item) { %>
+                    <div class="bg-white p-4 rounded-lg shadow-lg mb-4">
+                        <p class="font-semibold">วันประกาศเมืองอัจฉริยะ: <%= new Date(item.Date).toLocaleDateString('th-TH', {
+                                year: 'numeric', month: 'long', day: 'numeric'
+                            }) %></p>
+            
+                        <p class="font-semibold">เปิดฟอร์ม: <%= new Date(item.open).toLocaleDateString('th-TH', {
+                                year: 'numeric', month: 'long', day: 'numeric'
+                            }) %></p>
+            
+                        <p class="font-semibold">ปิดฟอร์ม: <%= new Date(item.close).toLocaleDateString('th-TH', {
+                                year: 'numeric', month: 'long', day: 'numeric'
+                            }) %></p>
+            
+                        <p class="font-semibold">รอบที่เปิด: <%= item.round %></p>
+                    </div>
+                    <% }) %>
+                   
+                </div>
+            </div>
+            <div class="w-1/4 ">
+                <div class="p-4 bg-white shadow-lg rounded-lg ">
                     <h1>จำนวนเมืองที่กรอกเสร็จแล้ว</h1>
                     <br />
                     <p>กรอกเสร็จแล้ว : 5 เมือง </p>
                     <p>กรอกยังไม่เสร็จ : 10 เมือง </p>
                 </div>
             </div>
-            <div class="w-2/6 lg:w-3/10 mx-3 flex items-center justify-center">
-                <div class="overflow-y-scroll h-max bg-gray-100 p-4 rounded-lg shadow-lg w-full">
-                    <% date.forEach(function(item) { %>
-                    <div class="bg-white p-4 rounded-lg shadow-lg mb-4">
-                        <p class="font-semibold">วันประกาศเมืองอัจฉริยะ: <%= new Date(item.Date).toLocaleDateString('th-TH', {
-                                year: 'numeric', month: 'long', day: 'numeric'
-                            }) %></p>
-
-                        <p class="font-semibold">เปิดฟอร์ม: <%= new Date(item.open).toLocaleDateString('th-TH', {
-                                year: 'numeric', month: 'long', day: 'numeric'
-                            }) %></p>
-
-                        <p class="font-semibold">ปิดฟอร์ม: <%= new Date(item.close).toLocaleDateString('th-TH', {
-                                year: 'numeric', month: 'long', day: 'numeric'
-                            }) %></p>
-
-                        <p class="font-semibold">รอบที่เปิด: <%= item.round %></p>
-
-                    </div>
-                    <% }) %>
-                </div>
-            </div>
+            
 
         </div>
 
@@ -65,15 +66,17 @@
                         </tr>
                     </thead>
                     <tbody id="cityTable">
-                        <% city.forEach(function(item) { %>
-                        <tr class="bg-white mb-4 hover:bg-gray-100" onclick="check('<%= item.cityID %>')">
-                            <td class="p-4 border-b" data-cityid="<%= item.cityID %>"><%= item.cityID %></td>
-                            <td class="p-4 border-b" data-province="<%= item.province %>"><%= item.province %></td>
-                            <td class="p-4 border-b" data-cityname="<%= item.cityName %>"><%= item.cityName %></td>
-                            <td class="p-4 border-b" data-date="<%= item.date %>"><%= new Date(item.date).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
-                            <td class="p-4 border-b text-center "data-success="53">53</td>
-                            <td class="p-4 border-b text-center " data-unsuccess="24">24</td>
-                            <td class="p-4 border-b text-center " data-not="9">9</td>
+                        <% city.forEach(function(cityItem) { 
+                            let status = dataStatus.find(statusItem => statusItem.cityID === cityItem.cityID) || {};
+                        %>
+                        <tr class="bg-white mb-4 hover:bg-gray-100" onclick="check('<%= cityItem.cityID %>')">
+                            <td class="p-4 border-b" data-cityid="<%= cityItem.cityID %>"><%= cityItem.cityID %></td>
+                            <td class="p-4 border-b" data-province="<%= cityItem.province %>"><%= cityItem.province %></td>
+                            <td class="p-4 border-b" data-cityname="<%= cityItem.cityName %>"><%= cityItem.cityName %></td>
+                            <td class="p-4 border-b" data-date="<%= cityItem.date %>"><%= new Date(cityItem.date).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                            <td class="p-4 border-b text-center" data-success="<%= status.status2_count || 0 %>"><%= status.status2_count || 0 %></td>
+                            <td class="p-4 border-b text-center" data-unsuccess="<%= status.status1_count || 0 %>"><%= status.status1_count || 0 %></td>
+                            <td class="p-4 border-b text-center" data-not="<%= status.status0_count || 0 %>"><%= status.status0_count || 0 %></td>
                         </tr>
                         <% }) %>
                     </tbody>
@@ -86,6 +89,7 @@
 </body>
 
 <script>
+    const status= <%-totalStatusCounts%>
     const ctx = document.getElementById('myPieChart').getContext('2d');
     const myPieChart = new Chart(ctx, {
         type: 'pie',
@@ -93,7 +97,7 @@
             labels: ['ยังไม่กรอก', 'ฉบับร่าง', 'ส่งแล้ว'],
             datasets: [{
                 label: 'สถานะโดยรวม',
-                data: [300, 50, 100],
+                data: [status.status0_count, status.status1_count, status.status2_count],
                 backgroundColor: ['#D2222D', '#FFBF00', '#238823']
             }]
         },

@@ -33,6 +33,6 @@ router.post('/addQuestion', isAdmin, adminController.getAddQuestion);
 router.get('/kpi/:solutionID', isAdmin, adminController.getkpi);
 router.post('/saveKpi/:solutionID', isAdmin, adminController.postkpi)
 router.post('/updateSolution/:solutionID', isAdmin, adminController.updateSolution)
-router.get('/round',isAdmin,adminController.getRoundPage)
+router.get('/round',adminController.getRoundPage)
 router.post('/openform',isAdmin,adminController.postRound)
 module.exports = router;

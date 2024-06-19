@@ -319,7 +319,12 @@
                 </div>
                 <% } }); %>
 
+                
+                <% if (kpiQ && kpiQ.length > 0) { %>
                     <h2 class="text-xl font-semibold text-center mt-10 mb-5">รายงานผลการดำเนินงาน (ตัวชี้วัด)</h2>
+                  <% } %>
+                  
+                   
                     <div id="KPI-Containner">
                         <% kpiQ.forEach(item=> { %>
                             <div class="mb-4" id="KPI<%= item.kpiID %>">
@@ -334,14 +339,12 @@
                                     <input type="radio" name="<%= item.kpiID %>" value="No" <%=item.ans==='No'
                                         ? 'checked' : '' %> class="mr-4">
                                     <% } else { %>
-                                        <input type="hidden" id="C<%= item.kpiID %>" value="<%= item.goal %>">
+                                       
                                         <input type="number" placeholder="<%= item.unit %>" id="A<%= item.kpiID %>"
                                             name="<%= item.kpiID %>" step="0.01"
-                                            value="<%= item.ans !== '' ? item.ans : '' %>"
+                                            
                                             class="block w-full p-2 border rounded-md">
-                                        <input type="text" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)" name="หมายเหตุ"
-                                            value="<%= item.note ? item.note : '' %>"
-                                            class="block w-full p-2 border rounded-md mt-2">
+                                       
                                         <% } %>
                             </div>
                             <% }); %>
@@ -352,9 +355,9 @@
                     <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                     <input type="hidden" name="round" value="<%= round %>">
 
-                    <p class="text-center text-red-500 mt-5">*** โปรดอ่าน: กรุณากดบันทึกทุกครั้งเพื่อบันทึกคำตอบไว้ ***
+                    <p class="text-center text-red-500 mt-5">*** โปรดอ่าน: กรุณากดบันทึกทุกครั้งเพื่อบันทึกคำตอบไว้ มิฉะนั้นต้องกรอกฟอร์มใหม่ ***
                     </p>
-                    <p class="text-center text-red-500 mb-5">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม ***</p>
+                    <p class="text-center text-red-500 mb-5">*** เมื่อกรอกครบเเล้วต้องกดส่งรายงาน เพื่อเป็นการส่งฟอร์ม ***</p>
                     <div class="text-center">
                         <button type="submit" id="saveButton"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">บันทึก</button>
