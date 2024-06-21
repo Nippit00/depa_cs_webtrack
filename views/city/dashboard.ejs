@@ -596,6 +596,8 @@ const stackedBarChart = new Chart(stackedBarCtx, {
   },
   plugins: [ChartDataLabels]
 });
+
+
 const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
 
 const entries = Object.entries(initialRound.averageProgressPerSmart);
@@ -674,6 +676,7 @@ options: {
 },
 plugins: [ChartDataLabels],
 });
+
 </script>
 
 </html>

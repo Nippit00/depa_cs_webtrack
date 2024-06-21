@@ -152,7 +152,7 @@ exports.getAdCityDataP = (req, res, next) => {
               const successfulProjectsData = Array(10).fill(0);
               let unsuccessfulProjectsData = [];
 
-              const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0' };
+              const averageProgressPerSmartKey = { };
 
               countsmart.forEach(row => {
                 if (smartKeyCounts[row.smartKey]) {
@@ -199,7 +199,9 @@ exports.getAdCityDataP = (req, res, next) => {
               let unsuccessfulProjectsData = Array(10).fill(0);
 
 
-              const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null' && row.Round == round);
+              const validProblems = result.filter(
+                (row) => row.questionID == 5 && row.ans !== "null" && row.Round == round && row.ans !== "ไม่มีปัญหา/อุปสรรค" && row.ans !== "อื่น ๆ"
+              );
               const totalProblems = validProblems.length;
               const problemCounts = {};
 
@@ -259,7 +261,7 @@ exports.getAdCityDataP = (req, res, next) => {
               unsuccessfulProjectsData = smartKeyCountsValues.map((value, index) => value - successfulProjectsData[index]);
 
               // หาค่าเฉลี่ยของแต่ละ smartKey
-              const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0','PEO':'0' };
+              const averageProgressPerSmartKey = {  };
               Object.keys(smartKeyProgress).forEach(key => {
                 averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
               });
@@ -437,22 +439,43 @@ exports.postUpdateProvince = (req, res, next) => {
   const cityID = req.params.cityID;
   const newData = req.body;
   delete newData._csrf;
+  console.log(req.body);
 
-  // SQL query for updating data
+  const querydate = "SELECT Round.round, Round.open, Round.close FROM `Round` JOIN citydata ON Round.Date = citydata.date WHERE citydata.cityID = ?";
+  const insertdateround = "INSERT INTO `Round`(`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
   const query = "UPDATE citydata SET ? WHERE cityID = ?";
 
-  // Execute the query
-  db.query(query, [newData, cityID], (err, result) => {
+  db.query(querydate, [cityID], (err, oldRound) => {
     if (err) {
-      console.error("Error updating data:", err);
-      return res.status(500).json({ error: "An error occurred while updating data" });
+      console.error("Error fetching round data:", err);
+      return res.status(500).json({ error: "An error occurred while fetching round data" });
     }
-    console.log("Data updated successfully");
 
-    // Redirect with success parameter
-    res.redirect(`/admin/city/edit/${cityID}?success=true`);
+    if (oldRound.length === 0) {
+      return res.status(404).json({ error: "No round data found for the specified cityID" });
+    }
+
+    const oldRoundData = oldRound[0];
+
+    db.query(insertdateround, [req.body.date, oldRoundData.open, oldRoundData.close, oldRoundData.round], (err, insertround) => {
+      if (err) {
+        console.error("Error inserting new round data:", err);
+        return res.status(500).json({ error: "An error occurred while inserting new round data" });
+      }
+
+      db.query(query, [newData, cityID], (err, result) => {
+        if (err) {
+          console.error("Error updating city data:", err);
+          return res.status(500).json({ error: "An error occurred while updating city data" });
+        }
+
+        console.log("Data updated successfully");
+        res.redirect(`/admin/city/edit/${cityID}?success=true`);
+      });
+    });
   });
 };
+
 
 
 exports.getAddSolutionPage = (req, res, next) => {
