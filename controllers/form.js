@@ -31,7 +31,7 @@ exports.getformSmart = (req, res, next) => {
         db.query(q3, (err, question) => {
           if (err) return res.status(500).json(err);
           db.query(q4, [solutionid], (err, kpi) => {
-            console.log("length: "+ kpi)
+            // console.log("length: "+ kpi)
             if (err) return res.status(500).json(err);
             if (kpi.length > 0) {
               res.render("form-smart", {
@@ -278,7 +278,12 @@ exports.saveAnsObj = (req, res, next) => {
         return res.status(500).json({ error: 'Failed to select status' });
       }
         console.log("Status updated successfully");
-        res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        if (solutionID.includes("CDP01")) {
+          console.log("TRUE")
+          res.redirect(`/formcdp1/${solutionID}/${round}?success=true`);
+        } else {
+          res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        }
       ;
     });
   }
@@ -450,7 +455,12 @@ exports.saveAnsObjEdit = (req, res, next) => {
            return res.status(500).json({ error: "Internal Server Error" });
          }
          console.log("Status updated successfully");
-         res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+         if (solutionID.includes("CDP01")) {
+          console.log("TRUE")
+          res.redirect(`/formcdp1/${solutionID}/${round}?succ`);
+        } else {
+          res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        }
        });
      });
    }
@@ -699,13 +709,16 @@ exports.comfirmFormcheck = (req, res, next) => {
           return res.status(500).json({ error: "Internal Server Error" });
         }
         console.log("Status updated successfully");
-        res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        if (solutionID.includes("CDP01")) {
+          console.log("TRUE")
+          res.redirect(`/formcdp1/${solutionID}/${round}?success=true`);
+        } else {
+          res.redirect(`/formsmart/${solutionID}/${round}?success=true`);
+        }
       });
     });
   }
 };
-
-
 
 exports.postFormcheck = (req, res, next) => {
   const dataForm = req.body;

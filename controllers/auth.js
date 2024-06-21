@@ -111,7 +111,7 @@ exports.PostLogin = (req, res) => {
 exports.postLogout = (req, res) => {
   // Get the login ID from session or wherever you store it during login
   const loginID = req.session.loginID;
-  console.log(req.session);
+  // console.log(req.session);
   // Destroy the session (as logout)
   req.session.destroy((err) => {
     if (err) {

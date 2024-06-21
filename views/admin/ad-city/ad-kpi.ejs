@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,7 @@
       margin: 0;
       height: 100%;
       background-color: #f3f4f6;
-      font-family: 'Inter', sans-serif;
+     
     }
 
     .input-wrapper {
@@ -71,12 +70,9 @@
     }
   </style>
 </head>
-
 <body class="p-4">
   <!-- แทรก Navbar -->
   <%- include('../include/ad-navbar.ejs') %>
-
-
 
   <div class="max-w-lg mx-auto mt-10">
     <h1 class="text-4xl font-bold mb-6 text-center text-gray-700">แก้ไข KPI</h1>
@@ -84,7 +80,7 @@
       <% kpi.forEach(function(item) { %>
         <div class="input-wrapper" id="input-wrapper-<%= item.kpiID %>">
           <button type="button" class="delete-button" onclick="deleteKpi('<%= item.kpiID %>')">&times;</button>
-          <input type="text" id="<%= item.kpiID %>" name="name<%= item.kpiID %>" value="<%= item.kpiName %>"
+          <input type="text" id="<%= item.kpiID %>" name="name_<%= item.kpiID %>" value="<%= item.kpiName %>"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="ชื่อ KPI">
           <div class="radio-wrapper mt-4">
             <label class="font-medium text-gray-600">รูปแบบการตอบข้อมูล:</label>
@@ -97,12 +93,13 @@
             value="<%= item.goal >= 0 ? item.goal : '' %>" placeholder="กรุณาใส่ค่ามากกว่า 0"
             id="goal_<%= item.kpiID %>"
             class="<%= item.goal > 0 ? '' : 'hidden' %> w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-          <input type="text" id="<%= item.kpiID %>" name="unit<%= item.kpiID %>" value="<%= item.unit %>"
+          <input type="text" id="<%= item.kpiID %>" name="unit_<%= item.kpiID %>" value="<%= item.unit %>"
             placeholder="หน่วย"
             class="w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
         </div>
       <% }); %>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>" id="token" />
+      <div id="newKpiContainer"></div>
       <div class="text-center mt-6">
         <button type="button" onclick="addNewKpi()"
           class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 cursor-pointer">เพิ่ม KPI</button>
@@ -111,90 +108,93 @@
       </div>
     </form>
     <!-- แทรก Footer -->
-    <%- include('../include/ad-footer.ejs') %>
+  
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var radios = document.querySelectorAll('input[type="radio"]');
-      radios.forEach(function (radio) {
-        showGoalInput(radio);
-      });
-    });
-
-    function showGoalInput(radio) {
-      var goalInput = radio.closest('.input-wrapper').querySelector('[id^="goal_"]');
-      if (radio.value === '1' && radio.checked) {
-        goalInput.classList.remove('hidden');
-      } else {
-        goalInput.classList.add('hidden');
-      }
-    }
-
-    function checkNum(inputId) {
-      var input = document.getElementById(inputId);
-      var value = parseFloat(input.value);
-
-      if (value <= 0 || isNaN(value)) {
-        alert("กรุณาใส่ค่าที่มากกว่า 0");
-        input.value = '';
-      }
-    }
-
-    function deleteKpi(kpiID) {
-      const element = document.getElementById(`input-wrapper-${kpiID}`);
-      element.remove();
-    }
-
-    function confirmSave() {
-      Swal.fire({
-        title: 'ยืนยันการบันทึก',
-        text: 'คุณแน่ใจหรือไม่ว่าต้องการที่จะบันทึกการแก้ไข?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'ใช่, บันทึก',
-        cancelButtonText: 'ยกเลิก'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          document.getElementById("kpiForm").submit();
-        }
-      });
-    }
-
-    function addNewKpi() {
-      var newKpiDiv = document.createElement('div');
-      newKpiDiv.classList.add('input-wrapper', 'mt-5');
-
-      newKpiDiv.innerHTML = `
-        <button type="button" class="delete-button" onclick="deleteNewKpi(this)">&times;</button>
-        <input type="text" name="newKpiName" placeholder="ชื่อ KPI" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-        <div class="radio-wrapper mt-4">
-          <label class="font-medium text-gray-600">รูปแบบการตอบข้อมูล:</label>
-          <input id="YesNo_new" name="newKpiType" type="radio" value="0" onclick="showNewGoalInput(this)">
-          <label for="YesNo_new">Yes No</label>
-          <input id="Int_new" name="newKpiType" type="radio" value="1" onclick="showNewGoalInput(this)">
-          <label for="Int_new">Number</label>
-        </div>
-        <input type="number" name="newKpiGoal" placeholder="เป้าหมาย" class="hidden w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-        <input type="text" name="newKpiUnit" placeholder="หน่วย" class="w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-      `;
-
-      document.getElementById('kpiForm').appendChild(newKpiDiv);
-    }
-
-    function deleteNewKpi(button) {
-      button.parentNode.remove();
-    }
-
-    function showNewGoalInput(radio) {
-      var goalInput = radio.closest('.input-wrapper').querySelector('input[type="number"]');
-      if (radio.value === '1' && radio.checked) {
-        goalInput.classList.remove('hidden');
-      } else {
-        goalInput.classList.add('hidden');
-      }
-    }
-  </script>
+  <%- include('../include/ad-footer.ejs') %>
+ 
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(function (radio) {
+      showGoalInput(radio);
+    });
+  });
 
+  function showGoalInput(radio) {
+    var goalInput = radio.closest('.input-wrapper').querySelector('[id^="goal_"]');
+    if (radio.value === '1' && radio.checked) {
+      goalInput.classList.remove('hidden');
+    } else {
+      goalInput.classList.add('hidden');
+    }
+  }
+
+  function checkNum(inputId) {
+    var input = document.getElementById(inputId);
+    var value = parseFloat(input.value);
+
+    if (value <= 0 || isNaN(value)) {
+      alert("กรุณาใส่ค่าที่มากกว่า 0");
+      input.value = '';
+    }
+  }
+
+  function deleteKpi(kpiID) {
+    const element = document.getElementById(`input-wrapper-${kpiID}`);
+    element.remove();
+  }
+
+  function confirmSave() {
+    Swal.fire({
+      title: 'ยืนยันการบันทึก',
+      text: 'คุณแน่ใจหรือไม่ว่าต้องการที่จะบันทึกการแก้ไข?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'ใช่, บันทึก',
+      cancelButtonText: 'ยกเลิก'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById("kpiForm").submit();
+      }
+    });
+  }
+
+  function addNewKpi() {
+    const newKpiID = Date.now().toString(); // Use a unique identifier
+    var newKpiDiv = document.createElement('div');
+    newKpiDiv.classList.add('input-wrapper', 'mt-5');
+    newKpiDiv.id = `input-wrapper-${newKpiID}`;
+
+    newKpiDiv.innerHTML = `
+      <button type="button" class="delete-button" onclick="deleteNewKpi('${newKpiID}')">&times;</button>
+      <input type="text" name="name_${newKpiID}" placeholder="ชื่อ KPI" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+      <div class="radio-wrapper mt-4">
+        <label class="font-medium text-gray-600">รูปแบบการตอบข้อมูล:</label>
+        <input id="YesNo_new_${newKpiID}" name="type_${newKpiID}" type="radio" value="0" onclick="showNewGoalInput(this)">
+        <label for="YesNo_new_${newKpiID}">เชิงคุณภาพ</label>
+        <input id="Int_new_${newKpiID}" name="type_${newKpiID}" type="radio" value="1" onclick="showNewGoalInput(this)">
+        <label for="Int_new_${newKpiID}">เชิงปริมาณ</label>
+      </div>
+      <input type="number" name="goal_${newKpiID}" placeholder="กรุณาใส่ค่ามากกว่า 0" class="hidden w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+      <input type="text" name="unit_${newKpiID}" placeholder="หน่วย" class="w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+    `;
+
+    document.getElementById('newKpiContainer').appendChild(newKpiDiv);
+  }
+
+  function deleteNewKpi(kpiID) {
+    const element = document.getElementById(`input-wrapper-${kpiID}`);
+    element.remove();
+  }
+
+  function showNewGoalInput(radio) {
+    var goalInput = radio.closest('.input-wrapper').querySelector('input[type="number"]');
+    if (radio.value === '1' && radio.checked) {
+      goalInput.classList.remove('hidden');
+    } else {
+      goalInput.classList.add('hidden');
+    }
+  }
+</script>
 </html>

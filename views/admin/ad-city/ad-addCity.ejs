@@ -16,132 +16,143 @@
 </head>
 <body class="bg-gray-100">
   <%- include('../include/ad-navbar.ejs') %>
-  <div class="container mx-auto py-8 ">
-    
-    <form action="/admin/postAddCity" method="POST" class="max-w-md mx-auto bg-white p-9 rounded-lg">
-      <h2 class="text-2xl font-bold mb-4 text-center">Add New City Data Form</h2>
-      <div class="mb-4">
-        <label for="cityID" class="block mb-2">City ID:</label>
+  <div class="container mx-auto py-8">
+    <form action="/admin/postAddCity" method="POST" class="max-w-lg mx-auto bg-white p-9 rounded-lg shadow-md">
+      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Add New City Data Form</h2>
+      <div class="mb-6">
+        <label for="cityID" class="block text-gray-700 font-bold mb-2">City ID:</label>
         <input
-        type="number"
-        id="cityID"
-        name="cityID"
-        class="w-full px-3 py-2 border rounded-md"
-        required
-        pattern="[0-9]{4}"
-        title="Please enter a 4-digit number." 
-        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-        maxlength="4"
-        placeholder="ใส่ได้แค่ตัวเลขจำนวน4ตัว"
-      />
-      
-
+          type="number"
+          id="cityID"
+          name="cityID"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
+          required
+          pattern="[0-9]{4}"
+          title="Please enter a 4-digit number."
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          maxlength="4"
+          placeholder="ใส่ได้แค่ตัวเลขจำนวน4ตัว"
+        />
       </div>
-      <div class="mb-4">
-        <label for="province" class="block mb-2">Province:</label>
+      <div class="mb-6">
+        <label for="province" class="block text-gray-700 font-bold mb-2">Province:</label>
         <input
           type="text"
           id="province"
           name="province"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="cityName" class="block mb-2">City Name:</label>
+      <div class="mb-6">
+        <label for="region" class="block text-gray-700 font-bold mb-2">Region:</label>
+        <select id="region" name="region" class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200">
+          <option value="ภาคเหนือตอนบน">ภาคเหนือตอนบน</option>
+          <option value="ภาคเหนือตอนล่าง">ภาคเหนือตอนล่าง</option>
+          <option value="ภาคอีสานตอนกลาง">ภาคอีสานตอนกลาง</option>
+          <option value="ภาคอีสานตอนล่าง">ภาคอีสานตอนล่าง</option>
+          <option value="ภาคใต้ตอนบน">ภาคใต้ตอนบน</option>
+          <option value="ภาคใต้ตอนล่าง">ภาคใต้ตอนล่าง</option>
+          <option value="ภาคกลาง">ภาคกลาง</option>
+          <option value="ภาคตะวันออก">ภาคตะวันออก</option>
+          <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+        </select>
+      </div>
+      <div class="mb-6">
+        <label for="cityName" class="block text-gray-700 font-bold mb-2">City Name:</label>
         <input
           type="text"
           id="cityName"
           name="cityName"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="date" class="block mb-2">Year:</label>
+      <div class="mb-6">
+        <label for="date" class="block text-gray-700 font-bold mb-2">Year:</label>
         <input
           type="date"
           id="date"
           name="date"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="developer" class="block mb-2">Developer:</label>
+      <div class="mb-6">
+        <label for="developer" class="block text-gray-700 font-bold mb-2">Developer:</label>
         <input
           type="text"
           id="developer"
           name="developer"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="executive" class="block mb-2">Executive:</label>
+      <div class="mb-6">
+        <label for="executive" class="block text-gray-700 font-bold mb-2">Executive:</label>
         <input
           type="text"
           id="executive"
           name="executive"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="govInvestment" class="block mb-2">Government Investment:</label>
+      <div class="mb-6">
+        <label for="govInvestment" class="block text-gray-700 font-bold mb-2">Government Investment:</label>
         <input
           type="number"
           id="govInvestment"
           name="government_investment"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="privateInvestment" class="block mb-2">Private Investment:</label>
+      <div class="mb-6">
+        <label for="privateInvestment" class="block text-gray-700 font-bold mb-2">Private Investment:</label>
         <input
           type="number"
           id="privateInvestment"
           name="private_investment"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="username" class="block mb-2">Username:</label>
+      <div class="mb-6">
+        <label for="username" class="block text-gray-700 font-bold mb-2">Username:</label>
         <input
           type="text"
           id="username"
           name="username"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="password" class="block mb-2">Password:</label>
+      <div class="mb-6">
+        <label for="password" class="block text-gray-700 font-bold mb-2">Password:</label>
         <input
           type="password"
           id="password"
           name="password"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="password2" class="block mb-2">Confirm Password:</label>
+      <div class="mb-6">
+        <label for="password2" class="block text-gray-700 font-bold mb-2">Confirm Password:</label>
         <input
           type="password"
           id="password2"
           name="password2"
-          class="w-full px-3 py-2 border rounded-md"
+          class="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-200"
           onchange="validateForm()"
           required
         />
-        <p id="passwordError" class="text-red-500 mt-1 hidden">
+        <p id="passwordError" class="text-red-500 mt-2 hidden">
           Passwords do not match.
         </p>
       </div>
-      <div id="map"></div>
+      <div id="map" class="mb-6 rounded-md shadow-md"></div>
       <input
         type="hidden"
         id="latitude"
@@ -153,17 +164,17 @@
         name="LNG"
       />
       <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token" />
-      <div class="mb-4">
+      <div class="mb-6">
         <input
           type="submit"
           value="Submit"
-          class="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer mt-2 w-full hover:bg-blue-700"
+          class="w-full px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-700"
           required
         />
       </div>
     </form>
   </div>
-  <% include('../include/ad-footer.ejs') %>
+  <%- include('../include/ad-footer.ejs') %>
   <script>
     function initMap() {
       const map = new google.maps.Map(document.getElementById("map"), {

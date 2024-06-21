@@ -149,7 +149,7 @@ exports.getAdCityDataP = (req, res, next) => {
               const rounded = {};
               const smartKeyCounts = {};
               const problemPercentages = [];
-              const successfulProjectsData = Array(8).fill(0);
+              const successfulProjectsData = Array(10).fill(0);
               let unsuccessfulProjectsData = [];
 
               const averageProgressPerSmartKey = { 'ENE': '0', 'ENV': '0', 'GOV': '0', 'ECO': '0', 'LIV': '0', 'MOB': '0', 'CDP': '0' };
@@ -195,8 +195,8 @@ exports.getAdCityDataP = (req, res, next) => {
               const roundData = result.filter(row => row.Round == round);
               const smartKeyCounts = {};
               const projectSuccess = [];
-              const successfulProjectsData = Array(8).fill(0);
-              let unsuccessfulProjectsData = Array(8).fill(0);
+              const successfulProjectsData = Array(10).fill(0);
+              let unsuccessfulProjectsData = Array(10).fill(0);
 
 
               const validProblems = result.filter(row => row.questionID == 5 && row.ans !== 'null' && row.Round == round);
@@ -248,7 +248,7 @@ exports.getAdCityDataP = (req, res, next) => {
 
                   // นับโครงการที่สำเร็จและไม่สำเร็จ
                   if (item.ans == 100) {
-                    
+                    // console.log(item.solutionName)
                     projectSuccess.push(item.solutionName);
                     successfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
                   }
@@ -264,12 +264,7 @@ exports.getAdCityDataP = (req, res, next) => {
                 averageProgressPerSmartKey[key] = (smartKeyProgress[key] / smartKeyCountsForAverage[key]).toFixed(2);
               });
               let funds=0
-              const qfunds=''
-              // db.query(qfunds,[],(err,fu)=>{
-              //   if (err) return res.status(500).json(err);
-              //   funds=fu
-              // })
-              console.log(funds)
+             
               // หาค่าเฉลี่ยของทั้งหมด
               const totalAverage = (totalSum / count).toFixed(2);
               rounded[round] = {
@@ -312,6 +307,7 @@ exports.getAddCity = (req, res, next) => {
     success: false,
   });
 };
+
 exports.postAddCity = (req, res, next) => {
   const {
     cityID,
@@ -327,7 +323,13 @@ exports.postAddCity = (req, res, next) => {
     password2,
     LAT,
     LNG,
+    region,
   } = req.body;
+
+  if (password !== password2) {
+    return res.status(400).send("Passwords do not match");
+  }
+
   db.query("SELECT * FROM admininfo WHERE AdminUsername = ?", [username], (adminUsernameError, adminUsernameResult) => {
     if (adminUsernameError) {
       console.error("Error checking admin username:", adminUsernameError);
@@ -338,6 +340,7 @@ exports.postAddCity = (req, res, next) => {
       // Admin username already exists
       return res.status(400).send("Admin username already exists");
     }
+
     db.query("SELECT * FROM citydata WHERE username = ?", [username], (usernameError, usernameResult) => {
       if (usernameError) {
         console.error("Error checking username:", usernameError);
@@ -348,15 +351,13 @@ exports.postAddCity = (req, res, next) => {
         // Username already exists
         return res.status(400).send("Username already exists");
       }
+
       // ใช้ bcrypt เพื่อเข้ารหัส password
       bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) {
           console.error("Error hashing password:", err);
           return res.status(500).send("Internal Server Error");
         }
-
-        // ทำสิ่งที่ต้องการด้วย hashedPassword ที่เข้ารหัสแล้ว
-        // console.log("Hashed Password:", hashedPassword);
 
         // เตรียมข้อมูลสำหรับการเพิ่มเข้าฐานข้อมูล
         const cityData = {
@@ -371,6 +372,7 @@ exports.postAddCity = (req, res, next) => {
           password: hashedPassword, // ใช้รหัสที่เข้ารหัสแล้ว
           LAT,
           LNG,
+          region, // เพิ่ม region ลงในฐานข้อมูลด้วย
         };
 
         // เพิ่มข้อมูลลงในตาราง citydata
@@ -388,26 +390,20 @@ exports.postAddCity = (req, res, next) => {
           };
 
           // เพิ่มข้อมูลลงในตาราง city_home
-          db.query(
-            "INSERT INTO city_home SET ?",
-            cityHomeData,
-            (homeError, homeResult) => {
-              if (homeError) {
-                console.error("Error inserting city home data:", homeError);
-                return res.status(500).send("Internal Server Error");
-              }
-              console.log("City home data added successfully");
-
-              // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
-              // res.status(200).redirect("admin/ad-city/ad-addCity?success=true");
-              // res.status(200).send("succesfully");
-              res.render("admin/ad-city/ad-addCity", {
-                pageTitle: "add",
-                path: "/",
-                success: true,
-              });
+          db.query("INSERT INTO city_home SET ?", cityHomeData, (homeError, homeResult) => {
+            if (homeError) {
+              console.error("Error inserting city home data:", homeError);
+              return res.status(500).send("Internal Server Error");
             }
-          );
+            console.log("City home data added successfully");
+
+            // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
+            res.render("admin/ad-city/ad-addCity", {
+              pageTitle: "add",
+              path: "/",
+              success: true,
+            });
+          });
         });
       });
     });
@@ -428,6 +424,7 @@ exports.getEditProvince = (req, res, next) => {
         path: "/city",
         cityData: data[0],
         success: false,
+        cityID: req.params.cityID,
       });
     });
   } catch (err) {
@@ -435,10 +432,12 @@ exports.getEditProvince = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
 exports.postUpdateProvince = (req, res, next) => {
   const cityID = req.params.cityID;
   const newData = req.body;
   delete newData._csrf;
+
   // SQL query for updating data
   const query = "UPDATE citydata SET ? WHERE cityID = ?";
 
@@ -446,15 +445,15 @@ exports.postUpdateProvince = (req, res, next) => {
   db.query(query, [newData, cityID], (err, result) => {
     if (err) {
       console.error("Error updating data:", err);
-      return res
-        .status(500)
-        .json({ error: "An error occurred while updating data" });
+      return res.status(500).json({ error: "An error occurred while updating data" });
     }
     console.log("Data updated successfully");
-    //fix later
-    exports.getAdCityDataP(req, res, next);
+
+    // Redirect with success parameter
+    res.redirect(`/admin/city/edit/${cityID}?success=true`);
   });
 };
+
 
 exports.getAddSolutionPage = (req, res, next) => {
   // console.log(req.params);
@@ -467,10 +466,8 @@ exports.getAddSolutionPage = (req, res, next) => {
 };
 
 exports.postAddSolution = (req, res, next) => {
-
   const {
     cityID,
-    solutionID,
     solutionName,
     smart,
     sourceFunds,
@@ -483,7 +480,7 @@ exports.postAddSolution = (req, res, next) => {
   let smartKey;
   switch (smart) {
     case "Environment":
-      smartKey = "ENV"; // สมมติว่า 'ENV' คือค่าที่สมบูรณ์กับ 'Environment'
+      smartKey = "ENV";
       break;
     case "Energy":
       smartKey = "ENE";
@@ -503,40 +500,52 @@ exports.postAddSolution = (req, res, next) => {
     case "People":
       smartKey = "PEO";
       break;
+    case "City Data Platform":
+      smartKey = "CDP";
+      break;
+    case "โครงสร้างพื้นฐานด้านดิจิทัล":
+      smartKey = "DIF";
+      break;
+    case "โครงสร้างพื้นฐานด้านกายภาพ":
+      smartKey = "PIF";
+      break;
     default:
-      smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
+      smartKey = "OTH";
       break;
   }
-  const q = "INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`,`status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,'1')";
-  db.query(q, [cityID, smartKey, solutionID, solutionName, sourceFunds, funds, startYear, endYear, status,], (err, result) => {
-    if (err) {
-      console.error("Error adding solution:", err);
-      res.status(500).json({ error: "Error adding solution" });
-    } else {
-      // console.log("Solution added successfully");
-      // res.status(200).json({ message: "Solution added successfully" });
-      const q1 = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
-      const q2 = "SELECT * FROM `solution`JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
 
-      db.query(q1, [cityID], (err, data) => {
-        if (err) return res.status(500).json(err);
-        // console.log("Data is:", data);
-        db.query(q2, [cityID], (errer, solution) => {
-          if (err) return res.status(500).json(errer);
-          res.render("admin/ad-city/ad-citydata", {
-            req,
-            pageTitle: "Dashboard",
-            path: "/city",
-            cityData: data[0],
-            solution: solution,
-          });
-        });
-      });
-      //here
+  // Query to find the latest solutionID for the specific smartKey
+  const query = "SELECT MAX(solutionID) as maxSolutionID FROM solution WHERE smartKey = ? AND cityID = ?";
+  db.query(query, [smartKey, cityID], (err, result) => {
+    if (err) {
+      console.error("Error retrieving max solutionID:", err);
+      return res.status(500).json({ error: "Error retrieving max solutionID" });
     }
-  }
-  );
+
+    let newSolutionID;
+    if (result.length > 0 && result[0].maxSolutionID) {
+      const maxSolutionID = result[0].maxSolutionID;
+      const numericPart = maxSolutionID.slice(7);
+      const newNumericPart = parseInt(numericPart, 10) + 1;
+      const formattedNumericPart = newNumericPart.toString().padStart(2, '0'); // Ensure two digits
+      newSolutionID = cityID + smartKey + formattedNumericPart;
+    } else {
+      newSolutionID = `${cityID}${smartKey}01`; // Starting solutionID if no previous solutions exist
+    }
+
+    const insertQuery = "INSERT INTO `solution`(`cityID`, `smartKey`, `solutionID`, `solutionName`, `Source_funds`, `funds`, `start_year`, `end_year`, `status`, `Progress`, `status_solution`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '1')";
+    db.query(insertQuery, [cityID, smartKey, newSolutionID, solutionName, sourceFunds, funds, startYear, endYear, '0', '0'], (insertErr, insertResult) => {
+      if (insertErr) {
+        console.error("Error adding solution:", insertErr);
+        return res.status(500).json({ error: "Error adding solution" });
+      }
+      res.redirect(`/admin/solution/add/${cityID}?success=true`);
+    });
+  });
 };
+
+
+
 
 exports.getEditSolution = (req, res, next) => {
   // console.log(req.params);
@@ -544,7 +553,7 @@ exports.getEditSolution = (req, res, next) => {
   try {
     db.query(q, [req.params.solutionID], (err, data) => {
       if (err) return res.status(500).json(err);
-      // console.log("Data is:", data);
+      console.log("Data is:", data);
       res.render("admin/ad-city/ad-editSolution", {
         req,
         pageTitle: "Edit_Solution",
@@ -581,11 +590,12 @@ exports.getQuestion = (req, res, next) => {
 };
 
 exports.getAddQuestion = (req, res, next) => {
-  const q = "INSERT INTO `question`(`question`) VALUES (?)";
+  const q = "INSERT INTO `question`(`question`, `Description`) VALUES (?,?)";
   const newQuestion = req.body.New_Question;
+  const newDescription = req.body.New_Description;
 
   try {
-    db.query(q, [newQuestion], (err, result) => {
+    db.query(q, [newQuestion,newDescription], (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).json(err);
@@ -594,13 +604,8 @@ exports.getAddQuestion = (req, res, next) => {
       const q1 = "SELECT * FROM `question` WHERE 1";
       db.query(q1, (err, data) => {
         if (err) return res.status(500).json(err);
-        res.render("admin/ad-question/ad-question.ejs", {
-          req,
-          pageTitle: "Question",
-          path: "/Question",
-          data: data,
-          success: true,
-        });
+        res.redirect(`/admin/question`);
+
       });
 
     });
@@ -620,13 +625,7 @@ exports.postDeleteQuestion = (req, res, next) => {
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
       // console.log("data:", data);
-      res.render("admin/ad-question/ad-question.ejs", {
-        req,
-        pageTitle: "Question",
-        path: "/Question",
-        data: data,
-        success: false,
-      });
+      res.redirect(`/admin/question`);
     });
   });
 };
@@ -648,49 +647,56 @@ exports.getkpi = (req, res, next) => {
   })
 
 }
+//ค่อยเทสยังไม่เทส
 exports.postkpi = (req, res, next) => {
-  // ดึงข้อมูลจาก req.body
   const data = req.body;
-
-  // ดึงข้อมูล solutionID จาก req.params
   const solutionID = req.params.solutionID;
 
-  // ตรวจสอบว่าข้อมูลถูกส่งมาให้หรือไม่
+  console.log("req.body", data);
   if (!data || !solutionID) {
     return res.status(400).json({ message: 'ข้อมูลไม่ครบถ้วน' });
   }
 
-  const q = "UPDATE kpi SET kpiName=?, goal=?, unit=? WHERE kpiID=?";
+  const deleteKpiQuery = "DELETE FROM kpi WHERE solutionID=?";
+  const insertKpiQuery = "INSERT INTO kpi (solutionID, kpiID, kpiName, goal, unit) VALUES (?, ?, ?, ?, ?)";
 
-  // วนลูปเพื่ออัปเดตข้อมูล KPI ในฐานข้อมูล
-  Object.keys(data).forEach((key) => {
-    if (key.startsWith('type')) {
-      const kpiID = key.replace('type_', ''); // ดึง kpiID จากชื่อ key
-      const kpiName = data[`name${kpiID}`]; // ดึงชื่อ KPI จาก data
-      const unit = data[`unit${kpiID}`]; // ดึงหน่วยนับของ KPI จาก data
-      const goal = data[`goal_${kpiID}`] || 0; // หากไม่มี goal ให้ใช้ค่าเริ่มต้นเป็น 0
-      // console.log("kpiID:"+kpiID)
-      // console.log("kpiName:"+kpiName)
-      // console.log("unit:"+unit)
-      // console.log("goal:"+goal)
-
-      // Execute the SQL query
-      db.query(q, [kpiName, goal, unit, kpiID], (err, result) => {
-        // console.log(result)
-
-        if (err) {
-          console.error(`Error updating KPI ${kpiID}:`, err);
-        } else {
-          // console.log(`Updated KPI ${kpiID} with solutionID ${solutionID}:`, { kpiID, kpiName, goal, unit });
-        }
-      });
+  // Delete all existing KPIs for the given solutionID
+  db.query(deleteKpiQuery, [solutionID], (err, deleteResult) => {
+    if (err) {
+      console.error("Error deleting KPIs:", err);
+      return res.status(500).json({ error: "Error deleting KPIs" });
     }
-  });
 
-  // ส่งคำตอบกลับ
-  // res.status(200).json({ message: 'อัปเดตข้อมูล KPI สำเร็จ' });
-  res.redirect('/admin/city');
+    let kpiIndex = 1;
+
+    // Insert new KPIs
+    Object.keys(data).forEach((key) => {
+      if (key.startsWith('type')) {
+        const kpiSuffix = String(kpiIndex).padStart(2, '0');
+        const kpiID = `${solutionID}-${kpiSuffix}`;
+        const kpiName = data[`name_${key.replace('type_', '')}`];
+        const unit = data[`unit_${key.replace('type_', '')}`];
+        const goal = data[`goal_${key.replace('type_', '')}`] || 0;
+
+        // Insert the new KPI
+        db.query(insertKpiQuery, [solutionID, kpiID, kpiName, goal, unit], (err, insertResult) => {
+          if (err) {
+            console.error(`Error adding KPI ${kpiID}:`, err);
+          } else {
+            console.log(`Inserted KPI ${kpiID} for solutionID ${solutionID}`);
+          }
+        });
+
+        kpiIndex++;
+      }
+    });
+
+    res.redirect(`/admin/city`);
+  });
 };
+
+
+
 
 exports.deleteSolution = (req, res, next) => {
   // console.log(req.params);
@@ -709,43 +715,17 @@ exports.deleteSolution = (req, res, next) => {
 exports.updateSolution = (req, res, next) => {
   // console.log(req.body);
 
-  const { cityID, smart, solutionName, sourceFunds, funds, startYear, endYear, _csrf } = req.body;
+  const { cityID, solutionName, sourceFunds, funds, startYear, endYear, _csrf } = req.body;
   const solutionID = req.params.solutionID; // Assumes you have solutionID in the params
 
-  let smartKey;
-  switch (smart) {
-    case "Environment":
-      smartKey = "ENV"; // สมมติว่า 'ENV' คือค่าที่สมบูรณ์กับ 'Environment'
-      break;
-    case "Energy":
-      smartKey = "ENE";
-      break;
-    case "Economy":
-      smartKey = "ECO";
-      break;
-    case "Governance":
-      smartKey = "GOV";
-      break;
-    case "Living":
-      smartKey = "LIV";
-      break;
-    case "Mobility":
-      smartKey = "MOB";
-      break;
-    case "People":
-      smartKey = "PEO";
-      break;
-    default:
-      smartKey = "OTH"; // สมมติว่า 'OTH' คือค่าที่สมบูรณ์กับ 'Others' หรือค่าที่ไม่เข้าข่ายข้างต้น
-      break;
-  }
+  
 
-  const q3 = "UPDATE `solution` SET `smartKey`=?, `solutionName`=?, `Source_funds`=?, `funds`=?, `start_year`=?, `end_year`=?, `status_solution`='1' WHERE `solutionID`=?";
+  const q3 = "UPDATE `solution` SET  `solutionName`=?, `Source_funds`=?, `funds`=?, `start_year`=?, `end_year`=?, `status_solution`='1' WHERE `solutionID`=?";
   const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey=smart.smartKey WHERE cityID=? AND status_solution=1 ORDER BY `solution`.`smartKey` ASC";
 
   try {
-    db.query(q3, [smartKey, solutionName, sourceFunds, funds, startYear, endYear, solutionID], (err, result) => {
+    db.query(q3, [ solutionName, sourceFunds, funds, startYear, endYear, solutionID], (err, result) => {
       if (err) return res.status(500).json(err);
 
       db.query(q, [cityID], (err, data) => {
@@ -754,13 +734,7 @@ exports.updateSolution = (req, res, next) => {
         db.query(q2, [cityID], (errer, solution) => {
           if (errer) return res.status(500).json(errer);
           // console.log(solution)
-          res.render("admin/ad-city/ad-citydata", {
-            req,
-            pageTitle: "Dashboard",
-            path: "/city",
-            cityData: data[0],
-            solution: solution,
-          });
+          res.redirect(`/admin/city/${solutionID.slice(0, 4)}`);
         });
       });
     });

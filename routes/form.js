@@ -29,6 +29,6 @@ router.get('/formcdp1/:solutionID/:round',isAuth,formController.getformCdp1);
 //saveform
 router.post('/saveForm/:solutionID/:round',isAuth,formController.saveAnsObj);
 router.post('/saveEdit/:solutionID/:round',isAuth,formController.saveAnsObjEdit);
-router.post('/saveFormcdp1/:solutionID',isAuth,formController.saveAnsObjcdp1);
+router.post('/saveFormcdp1/:solutionID/:round',isAuth,formController.saveAnsObjcdp1);
 // router.post('/saveformsmart_round2/:solutionID',isAuth,formController.saveFormRound2);
 module.exports = router;

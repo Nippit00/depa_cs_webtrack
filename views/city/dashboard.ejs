@@ -178,6 +178,7 @@
           { id: 8, imgSrc: "/img/sl.png", alt: "Image 9", title: "Smart Living" },
           { id: 9, imgSrc: "/img/all01.png", alt: "Image 10", title: "All" }
       ]; %>
+      
       <% projectItems.forEach(item => { %>
       <div class="flex flex-col items-center mb-4 cursor-pointer" onclick="show(<%= item.id %>)">
           <img src="<%= item.imgSrc %>" alt="<%= item.alt %>" id="<%= item.id %>" class="w-20 h-20 border-2 border-teal-400 rounded-full p-2.5 bg-white shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl" />
@@ -378,6 +379,7 @@
       transform: scale(1.35);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       border-color: rgb(255, 198, 0);
+      
     }
   `;
   document.head.appendChild(style);
