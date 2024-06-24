@@ -170,7 +170,7 @@ exports.saveAnsObj = (req, res, next) => {
     }
   }
 
-  const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ? AND Round=?';
+  const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ? AND Round=? AND questionID!=3';
 
   db.query(updateProgress, [progress, solutionID], (updateProgressErr) => {
     if (updateProgressErr) {
@@ -341,7 +341,7 @@ exports.saveAnsObjEdit = (req, res, next) => {
      }
    }
  
-   const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ? AND Round=?';
+   const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ? AND Round=? AND questionID!=3';
  
    db.query(updateProgress, [progress, solutionID], (updateProgressErr) => {
      if (updateProgressErr) {
@@ -597,7 +597,7 @@ exports.comfirmFormcheck = (req, res, next) => {
     }
   }
 
-  const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ? AND Round=?';
+  const checkQuery = 'SELECT * FROM anssolution WHERE solutionID = ? AND Round=? AND questionID!=3';
 
   db.query(updateProgress, [progress, solutionID], (updateProgressErr) => {
     if (updateProgressErr) {

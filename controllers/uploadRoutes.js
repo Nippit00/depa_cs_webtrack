@@ -55,23 +55,27 @@ exports.uploadFile = upload.single('fileUpload');
 exports.handleUpload = (req, res) => {
     try {
         const solutionParam = req.params;
-        const file_path = path.join('/public/uploads/', path.basename(req.file.path));
-        const qInsert = "INSERT INTO anssolution (solutionID, Q3) VALUES (?, ?)";
-        const qFetchData = "SELECT * FROM anssolution WHERE solutionID = ?";
-        const qUpdate = "UPDATE anssolution SET Q3=? WHERE solutionID=?;";
+        // Ensure filename ends with .jpg
+        console.log(path.extname(req.file.filename))
+        const newFilename = path.basename(req.file.filename, path.extname(req.file.filename)) + '.jpg';
+        const file_path = path.join('/public/uploads/', newFilename);
 
-        db.query(qFetchData, [solutionParam.solutionID], (err, fetchData) => {
+        const qInsert = "INSERT INTO `anssolution`(`solutionID`, `timestamp`, `questionID`, `ans`, `Round`) VALUES (?,'2024-06-30 00:00:00.001','3',?,?)";
+        const qFetchData = "SELECT * FROM anssolution WHERE solutionID = ? AND round=? AND questionID='3'";
+        const qUpdate = "UPDATE anssolution SET ans=? WHERE solutionID=? AND round=? AND questionID='3';";
+
+        db.query(qFetchData, [solutionParam.solutionID, req.body.round], (err, fetchData) => {
             if (err) return res.status(500).json({ error: "FetchDataError", message: err });
 
             if (fetchData && fetchData.length > 0) {
-                db.query(qUpdate, [file_path, solutionParam.solutionID], (err, updateData) => {
+                db.query(qUpdate, [file_path, solutionParam.solutionID, req.body.round], (err, updateData) => {
                     if (err) return res.status(500).json({ error: "UpdateError", message: err });
-                    res.status(200).json({ message: 'อัปโหลดไฟล์สำเร็จ' });
+                    res.status(200).json({ message: 'File uploaded successfully' });
                 });
             } else {
-                db.query(qInsert, [solutionParam.solutionID, file_path], (err, insertData) => {
+                db.query(qInsert, [solutionParam.solutionID, file_path, req.body.round], (err, insertData) => {
                     if (err) return res.status(500).json({ error: "InsertDataError", message: err });
-                    res.status(200).json({ message: 'อัปโหลดไฟล์สำเร็จ' });
+                    res.status(200).json({ message: 'File uploaded successfully' });
                 });
             }
         });

@@ -96,6 +96,88 @@ exports.postnotification = (req, res, next) => {
   }
 };
 
+cron.schedule('0 10 * * *', () => {
+  const qDate = "SELECT Date,open,close FROM round";
+db.query(qDate, (err, dataDate) => {
+    if (err) return res.status(500).json(err);
+
+    const q = `
+        SELECT 
+        citydata.province,
+        COUNT(*) AS total,
+        SUM(CASE WHEN solution.status = 0 THEN 1 ELSE 0 END) AS status_zero_count,
+        citydata.date
+        FROM solution 
+        JOIN citydata ON citydata.cityID = solution.cityID
+        GROUP BY citydata.province
+    `;
+
+    db.query(q, (err, data) => {
+        if (err) return res.status(500).json(err);
+
+        const currentDate = new Date();
+        const result = data.map(row => {
+            const percentage = (row.status_zero_count / row.total) * 100;
+            return {
+                province: row.province,
+                percentage: percentage.toFixed(2) + '%',
+                date: new Date(row.date) // แปลง date ให้เป็น Date object
+            };
+        });
+
+        const finalResults = [];
+
+        dataDate.forEach(cityDate => {
+          const closeForm = new Date(cityDate.close);
+          const fifteenDaysBeforeClose = new Date(closeForm);
+          const DayClose = new Date(closeForm);
+          const fifteenDaysAfterClose = new Date(closeForm);
+          fifteenDaysBeforeClose.setDate(closeForm.getDate() - 15);
+          fifteenDaysAfterClose.setDate(closeForm.getDate() + 15)
+        
+          if (currentDate.toDateString() === fifteenDaysBeforeClose.toDateString()  || currentDate.toDateString() === DayClose.toDateString()  || currentDate.toDateString() === fifteenDaysAfterClose.toDateString()) {
+            const matchingResult = result.filter(row => 
+              row.date.toDateString() === new Date(cityDate.Date).toDateString()
+            );
+            finalResults.push(...matchingResult);
+        
+            const messageHeader = `แจ้งเตือน: รายละเอียดการกรอกแบบฟอร์มที่ยังไม่เสร็จ\n`;
+            const messageBody = finalResults.map((solution,i) => {
+              const province = solution.province || 'ไม่ทราบจังหวัด';
+              return `${i+1} จังหวัด: ${province}\nยังไม่ได้กรอก: ${solution.percentage}\n`;
+            }).join('\n');
+        
+            const messageFooter = `\nต้องดำเนินการภายใน 15 วันก่อนถึงวันที่ ${closeForm.toLocaleDateString('th-TH')}.`;
+            const fullMessage = `${messageHeader}${messageBody}${messageFooter}`;
+        
+            const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
+            const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
+        
+            axios.post(LINE_NOTIFY_API_URL, `message=${encodeURIComponent(fullMessage)}`, {
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
+              },
+            })
+            .then((response) => {
+              console.log("Notification sent:", response.data);
+            })
+            .catch((error) => {
+              console.error("Error sending notification:", error.response ? error.response.data : error.messages);
+            });
+          }
+        });
+        
+        
+
+    });
+});
+
+
+
+
+});
+
 
 // Initialize your express app and routes here
 const express = require('express');

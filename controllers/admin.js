@@ -125,7 +125,7 @@ exports.getAdCityP = (req, res, next) => {
   }
 };
 
-exports.getAdCityDataP = (req, res, next) => {
+exports.getAdCityDataP =  (req, res, next) => {
   try {
     const q = "SELECT * FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
     const q2 = "SELECT * FROM `solution` JOIN smart ON solution.smartKey=smart.smartKey WHERE solution.cityID=? AND solution.status_solution=1 ORDER BY `solution`.`smartKey` ASC";
@@ -146,6 +146,7 @@ exports.getAdCityDataP = (req, res, next) => {
 
             // ตรวจสอบว่ามีข้อมูลใน result หรือไม่
             if (result.length === 0) {
+             
               const rounded = {};
               const smartKeyCounts = {};
               const problemPercentages = [];
@@ -235,6 +236,7 @@ exports.getAdCityDataP = (req, res, next) => {
               let totalCount = 0;  // จำนวนทั้งหมด
               
               roundData.forEach(item => {
+                // console.log(item)
                 if (item.questionID == 2) {
                   item.ans = parseInt(item.ans, 10);
                   totalSum += item.ans;
@@ -247,15 +249,17 @@ exports.getAdCityDataP = (req, res, next) => {
                     smartKeyProgress[item.smartKey] = item.ans;
                     smartKeyCountsForAverage[item.smartKey] = 1;
                   }
-
                   // นับโครงการที่สำเร็จและไม่สำเร็จ
                   if (item.ans == 100) {
-                    // console.log(item.solutionName)
-                    projectSuccess.push(item.solutionName);
+                   
+                    projectSuccess.push({solutionName:item.solutionName,solutionID:item.solutionID});
                     successfulProjectsData[Object.keys(smartKeyCounts).indexOf(item.smartKey)]++;
+
+
+                    }
                   }
                 }
-              });
+              );
 
               const smartKeyCountsValues = Object.values(smartKeyCounts);
               unsuccessfulProjectsData = smartKeyCountsValues.map((value, index) => value - successfulProjectsData[index]);

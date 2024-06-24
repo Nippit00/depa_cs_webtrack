@@ -51,6 +51,7 @@ const formRoute = require("./routes/form.js");
 const fileUplaod=require("./routes/file.js")
 const uploadroutes = require("./routes/uploadRoutes.js");
 const notification =require("./routes/notification.js")
+const notificationCon =require("./controllers/notification.js")
 
 app.use(authRoute,csrfProtection);
 app.use(mainRoute);

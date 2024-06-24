@@ -83,8 +83,47 @@
     transition: width 0.4s ease;
   }
 </style>
+<style>
+  /* Modal Style */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
 
-<body class="bg-teal-500">
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+
+<body class="bg-teal-500 max-w-dvh">
 
   <div id="spinner-container">
     <img id="static-image" src="/img/favi.png" alt="Loading...">
@@ -243,15 +282,17 @@
           <h3 class="section-title">โครงการที่สำเร็จ</h3>
           <ul class="list-disc pl-5 space-y-2">
             <% initialRound.complete.forEach(item=> { %>
-              <li>
-                <%= item %>
+              <li onclick="openModal('<%= item.solutionID %>')">
+                <%= item.solutionName %>
+                <img src="/uploads/<%= item.solutionID %>.jpg" alt="<%= item.solutionID %>" hidden>
               </li>
-              <% }) %>
+            <% }) %>
           </ul>
         </div>
+        
       </div>
-      <div class="mt-6">
-        <table class="min-w-full divide-y divide-gray-200">
+      <div class="mt-6 ">
+        <table class="min-w-full divide-y divide-gray-200 ">
           <thead class="bg-yellow-300">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">โครงสร้าง / Smart</th>
@@ -269,7 +310,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-blue-500">
-                    <a href="/admin/kpi/<%= smartItem.solutionID %>">
+                    <a href="">
                       <%= smartItem.solutionName %>
                     </a>
                   </div>
@@ -297,7 +338,13 @@
 
 
 
-
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <img src="" id="modalImg" style="width:100%">
+      </div>
+    </div>
+    
 </body>
 
 <script>
@@ -332,7 +379,32 @@
     handleSearch();
   });
 </script>
-
+<script>
+  function openModal(solutionID) {
+    const modal = document.getElementById('myModal');
+    const modalImg = document.getElementById("modalImg");
+    modal.style.display = "block";
+    modalImg.src = "/uploads/" + solutionID + ".jpg";
+  }
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    var modal = document.getElementById('myModal');
+    modal.style.display = "none";
+  }
+  
+  // Close the modal when clicking anywhere outside of the modal content
+  window.onclick = function(event) {
+    var modal = document.getElementById('myModal');
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+  
 <script>
   
 
