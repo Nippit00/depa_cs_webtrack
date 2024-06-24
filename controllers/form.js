@@ -66,9 +66,6 @@ exports.getformSmart = (req, res, next) => {
   }
 };
 
-
-
-
 //Get formcdpPart1
 exports.getformCdp1 = (req, res, next) => {
   const solutionid = req.params.solutionID;
@@ -121,8 +118,6 @@ exports.getformCdp1 = (req, res, next) => {
       res.status(500).json(err);
   }
 };
-
-
 
 exports.saveAnsObj = (req, res, next) => {
   const data = req.body;
@@ -288,12 +283,6 @@ exports.saveAnsObj = (req, res, next) => {
     });
   }
 };
-
-
-
-
-
-
 
 exports.saveAnsObjEdit = (req, res, next) => {
    const data = req.body.dataChecks;
@@ -465,11 +454,6 @@ exports.saveAnsObjEdit = (req, res, next) => {
      });
    }
 };
-
-
-
-
-
 
 //SaveformCdpPart1
 exports.saveAnsObjcdp1 = (req, res, next) => {

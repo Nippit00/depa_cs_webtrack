@@ -49,7 +49,6 @@ exports.getAdPage = (req, res, next) => {
   });
 };
 
-
 exports.notification = (req, res, next) => {
   // ส่วนของ Token ที่ได้จากการสร้างของแอปไลน์ Notify
   // const CityID = req.params.CityID;
@@ -480,8 +479,6 @@ exports.postUpdateProvince = (req, res, next) => {
   });
 };
 
-
-
 exports.getAddSolutionPage = (req, res, next) => {
   // console.log(req.params);
   res.render("admin/ad-city/ad-addsolution", {
@@ -722,9 +719,6 @@ exports.postkpi = (req, res, next) => {
   });
 };
 
-
-
-
 exports.deleteSolution = (req, res, next) => {
   // console.log(req.params);
 
@@ -739,6 +733,7 @@ exports.deleteSolution = (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
 exports.updateSolution = (req, res, next) => {
   // console.log(req.body);
 
@@ -770,7 +765,6 @@ exports.updateSolution = (req, res, next) => {
     res.status(500).json(err);
   }
 };
-
 
 exports.getRoundPage = (req, res, next) => {
   const q1 = "SELECT DISTINCT `date` FROM `citydata` ORDER BY `date` ASC;";
@@ -868,3 +862,4 @@ exports.postRound = (req, res, next) => {
     res.redirect('/admin/city');
   });
 };
+
