@@ -62,13 +62,8 @@ const storageReport = multer.diskStorage({
         cb(null, uploadReport);
     },
     filename: function (req, file, cb) {
-        if (file.originalname.startsWith(req.params.solutionID)) {
-            const filePath = path.join(uploadReport, file.originalname);
-            fs.unlinkSync(filePath);
-            cb(null, file.originalname);
-        } else {
-            cb(null, req.params.solutionID + path.extname(file.originalname));
-        }
+        const ext = path.extname(file.originalname).toLowerCase();
+        cb(null, req.params.cityid + ext); // Save file with cityid as filename
     }
 });
 
@@ -80,7 +75,7 @@ const uploadReportTwoyear = multer({ storage: storageReport });
 
 exports.uploadFile = upload.single('fileUpload');
 exports.uploadFileCdp2 = uploadCdp2.single('fileUpload');
-exports.uploadReport = uploadReportTwoyear.single('fileUpload');
+exports.uploadReport = uploadReportTwoyear.single('fileToUpload');
 
 exports.handleUpload = (req, res) => {
     try {

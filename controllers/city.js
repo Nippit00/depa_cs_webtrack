@@ -420,10 +420,12 @@ exports.getCityFollow = (req, res, next) => {
 };
 
 exports.getCityUpload = (req, res, next) => {
+  const cityid = req.session.userID
   // Render the /upload page
   res.render("city/upload", {
     pageTitle: "Upload",
     path: "/city",
+    cityid:cityid,
   });
 };
 

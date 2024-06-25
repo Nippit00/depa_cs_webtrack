@@ -100,7 +100,7 @@
 
         <!-- Content -->
         <div class="px-5 mt-7">
-            <div class="text-lg text-center">ท่านสามารถ download ผลสรุปเบื้องต้นได้ดัง link นี้​</div>
+            <div class="text-lg text-center">ท่านสามารถ download ผลสรุปเบื้องต้นได้ดัง link นี้ </div>
             <br>
             <div class="text-center">
                 <span>ไฟล์แบบฟอร์มสำหรับเมืองที่ต้องการต่อตราสัญลักษณ์ครบ 2 ปี
@@ -112,7 +112,7 @@
         
             <!-- Upload Form -->
             <div class="upload-form-container max-w-lg mx-auto p-5 border-2 border-yellow-400 rounded-xl my-10 bg-white shadow-md">
-                <form action="/upload" method="post" id="uploadForm" onsubmit="return confirmUpload()">
+                <form action="/upload/report/<%=cityid%>" method="post" id="uploadForm" onsubmit="return confirmUpload()">
                     <div class="titles-container text-center py-5">
                         <!-- CSRF Token -->
                         <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token">
