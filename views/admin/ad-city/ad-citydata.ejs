@@ -280,15 +280,16 @@
         <!-- โครงการที่สำเร็จ -->
         <div class="card">
           <h3 class="section-title">โครงการที่สำเร็จ</h3>
-          <ul class="list-disc pl-5 space-y-2">
-            <% initialRound.complete.forEach(item=> { %>
+          <ul id="successfulProjectsList" class="list-disc pl-5 space-y-2">
+              <% initialRound.complete.forEach(item => { %>
               <li onclick="openModal('<%= item.solutionID %>')">
-                <%= item.solutionName %>
-                <img src="/uploads/<%= item.solutionID %>.jpg" alt="<%= item.solutionID %>" hidden>
+                  <%= item.solutionName %>
+                  <img src="/uploads/<%= item.solutionID %>.jpg" alt="<%= item.solutionID %>" hidden>
               </li>
-            <% }) %>
+              <% }) %>
           </ul>
-        </div>
+      </div>
+      
         
       </div>
       <div class="mt-6 ">
@@ -321,8 +322,13 @@
                   <%} else{%>   
                     <div class="text-sm text-blue-500"> 
                   <%} %>
-               
-                    <a href="/ad_formsmart/<%=smartItem.solutionID%>">
+                  <% if (smartItem.solutionID.includes("CDP01")) { %> 
+                    <a href="/ad_formcdp1/<%=smartItem.solutionID%>">
+                    <% } else{%>
+                      <a href="/ad_formsmart/<%=smartItem.solutionID%>">
+                      <%}%>
+                  
+                   
                       <%= smartItem.solutionName %>
                     </a>
                   </div>
@@ -751,51 +757,70 @@ plugins: [ChartDataLabels],
     // ตั้งค่าให้ dropdown เลือกค่าปัจจุบัน
     roundSelect.value = currentRound;
   });
-
   function changeRound(selectedRound) {
     currentRound = parseInt(selectedRound);
     if (currentRound < 1) currentRound = 1;
     if (currentRound > Object.keys(rounded).length) currentRound = Object.keys(rounded).length;
     initialRound = rounded[currentRound];
 
+    // Update the list of successful projects dynamically
+    const projectList = document.getElementById('successfulProjectsList');
+    projectList.innerHTML = ''; // Clear existing list items
+    initialRound.complete.forEach(item => {
+        const li = document.createElement('li');
+        li.onclick = function() { openModal(item.solutionID); };
+        li.innerHTML = `${item.solutionName} <img src="/uploads/${item.solutionID}.jpg" alt="${item.solutionID}" hidden>`;
+        projectList.appendChild(li);
+    });
+
+    // Update all charts with new round data
+    updateCharts(initialRound);
+}
+
+function updateCharts(roundData) {
     // Update the progress chart
-    progressChart.data.datasets[0].data = [100 - initialRound.progress, initialRound.progress];
-    progressChart.options.centerText.text = `${initialRound.progress}%`;
+    progressChart.data.datasets[0].data = [100 - roundData.progress, roundData.progress];
+    progressChart.options.centerText.text = `${roundData.progress}%`;
     progressChart.update();
 
     // Update the success chart
-    const totalProjects = initialRound.count;
-    const successProjects = initialRound.success.reduce((a, b) => a + b, 0);
+    const totalProjects = roundData.count;
+    const successProjects = roundData.success.reduce((a, b) => a + b, 0);
     const unsuccessfulProjects = totalProjects - successProjects;
     successChart.data.datasets[0].data = [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100];
     successChart.options.centerText.text = `${((successProjects / totalProjects) * 100).toFixed(0)}%`;
     successChart.update();
 
     // Update the problem chart
-    problemsChart.data.labels = initialRound.problem.map(p => p.problem);
-    problemsChart.data.datasets[0].data = initialRound.problem.map(problem => problem.percentage);
+    problemsChart.data.labels = roundData.problem.map(p => p.problem);
+    problemsChart.data.datasets[0].data = roundData.problem.map(problem => problem.percentage);
     problemsChart.update();
 
     // Update the stacked bar chart
-    stackedBarChart.data.datasets[0].data = Object.values(initialRound.success);
-    stackedBarChart.data.datasets[1].data = Object.values(initialRound.unsuccess);
+    stackedBarChart.data.datasets[0].data = Object.values(roundData.success);
+    stackedBarChart.data.datasets[1].data = Object.values(roundData.unsuccess);
     stackedBarChart.update();
 
     // Update the average progress chart (Treemap)
-    const entries = Object.entries(initialRound.averageProgressPerSmart);
+    updateTreemap(roundData);
+}
+
+function updateTreemap(roundData) {
+    const entries = Object.entries(roundData.averageProgressPerSmart || {});
     const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
     const sortedObject = Object.fromEntries(sortedEntries);
 
     const labels = Object.keys(sortedObject);
     const data = Object.values(sortedObject);
-    avgProgressChart.data.datasets[0].data = labels.map((label, index) => (
-    {
-        v: data[index],
-        label: label,
-    }));
+    avgProgressChart.data.datasets[0].data = data.map((value, index) => {
+        return {v: value || 0, label: labels[index]}; // Ensure 'v' is never undefined
+    });
 
     avgProgressChart.update();
 }
+
+
+
 
 </script>
 </html>

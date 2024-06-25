@@ -18,6 +18,7 @@ router.post('/saveFormcdp1/:solutionID/:round',isAuth,formController.saveAnsObjc
 
 //Admin Zone
 router.get('/ad_formsmart/:solutionID',isAdmin,ad_form.getformSmart);
+router.get('/ad_formcdp1/:solutionID',isAdmin,ad_form.getformCdp1);
 router.post('/ad_saveForm/:solutionID/:round',isAdmin,ad_form.saveAnsObj);
 router.post('/Approve/:solutionID/:round',isAdmin,ad_form.Approve);
 router.post('/CancleApprove/:solutionID/:round',isAdmin,ad_form.CancleApprove);

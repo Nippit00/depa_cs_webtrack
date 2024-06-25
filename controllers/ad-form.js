@@ -65,57 +65,69 @@ exports.getformSmart = (req, res, next) => {
 };
 
 // //Get formcdpPart1
-// exports.getformCdp1 = (req, res, next) => {
-//   const solutionid = req.params.solutionID;
-//   const cityID = req.session.userID;
-//   const round = req.params.round;
+exports.getformCdp1 = (req, res, next) => {
+    const solutionid = req.params.solutionID;
 
-//   const q1 = "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
-//   const q2 = "SELECT * FROM anssolution WHERE solutionID = ? ";
-//   const q3 = "SELECT * FROM `question` WHERE 1";
-//   const q4 = "SELECT * FROM `kpi` JOIN anskpi ON kpi.kpiID = anskpi.kpiID WHERE kpi.solutionID = ? ";
+    // console.log("Round is:"+round)
+    const q1 =
+        "SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? AND solution.solutionID = ? ";
+    const q2 = "SELECT * FROM anssolution WHERE solutionID = ? ";
+    const q3 = "SELECT * FROM `question` WHERE 1";
+    const q4 = `
+    SELECT kpi.*, anskpi.*
+    FROM kpi
+    JOIN anskpi ON kpi.kpiID = anskpi.kpiID
+    JOIN (
+        SELECT kpiID, MAX(Round) AS maxRound
+        FROM anskpi
+        GROUP BY kpiID
+    ) AS latest ON anskpi.kpiID = latest.kpiID AND anskpi.Round = latest.maxRound
+    WHERE kpi.solutionID = ?;
+`;
 
-//   try {
-//       db.query(q1, [cityID, solutionid], (err, data) => {
-//           if (err) return res.status(500).json(err);
-//           db.query(q2, [solutionid], (err, dataOld) => {
-//               if (err) return res.status(500).json(err);
-//               db.query(q3, (err, question) => {
-//                   if (err) return res.status(500).json(err);
-//                   db.query(q4, [solutionid], (err, kpi) => {
-//                       if (err) return res.status(500).json(err);
-//                       if (kpi.length > 0) {
-//                           res.render("form-cdpPart1", {
-//                               kpiQ: kpi,
-//                               formdata: data,
-//                               dataOld: dataOld || [],
-//                               csrfToken: req.csrfToken(),
-//                               question: question,
-//                               round: round,
-//                           });
-//                       } else {
-//                           const q5 = "SELECT * FROM `kpi` WHERE solutionID = ?";
-//                           db.query(q5, [solutionid], (err, kpi) => {
-//                               if (err) return res.status(500).json(err);
-//                               res.render("form-cdpPart1", {
-//                                   kpiQ: kpi,
-//                                   formdata: data,
-//                                   dataOld: dataOld || [],
-//                                   csrfToken: req.csrfToken(),
-//                                   question: question,
-//                                   round: round,
-//                               });
-//                           });
-//                       }
-//                   });
-//               });
-//           });
-//       });
-//   } catch (err) {
-//       console.log(err);
-//       res.status(500).json(err);
-//   }
-// };
+    try {
+        db.query(q1, [solutionid.slice(0, 4), solutionid], (err, data) => {
+            if (err) return res.status(500).json(err);
+            db.query(q2, [solutionid], (err, dataOld) => {
+                // console.log(dataOld)
+                if (err) return res.status(500).json(err);
+                db.query(q3, (err, question) => {
+                    if (err) return res.status(500).json(err);
+                    db.query(q4, [solutionid], (err, kpi) => {
+                        // console.log("length: "+JSON.stringify(kpi[0].Round))
+                        if (err) return res.status(500).json(err);
+                        if (kpi.length > 0) {
+                            res.render("admin/ad-form/ad-form-cdpPart1", {
+                                kpiQ: kpi,
+                                formdata: data,
+                                dataOld: dataOld || [],
+                                csrfToken: req.csrfToken(),
+                                question: question,
+                                round: JSON.stringify(kpi[0].Round),
+                            });
+                        } else {
+                            const q5 = "SELECT * FROM `kpi` WHERE solutionID = ?";
+                            db.query(q5, [solutionid], (err, kpi) => {
+                                if (err) return res.status(500).json(err);
+                                res.render("admin/ad-form/ad-form-cdpPart1", {
+                                    kpiQ: kpi,
+                                    formdata: data,
+                                    dataOld: dataOld || [],
+                                    csrfToken: req.csrfToken(),
+                                    question: question,
+                                    round: 1,
+                                });
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+};
 
 exports.saveAnsObj = (req, res, next) => {
     const data = req.body;

@@ -109,7 +109,7 @@
                     </button>
                 </span>
             </div>
-
+        
             <!-- Upload Form -->
             <div class="upload-form-container max-w-lg mx-auto p-5 border-2 border-yellow-400 rounded-xl my-10 bg-white shadow-md">
                 <form action="/upload" method="post" id="uploadForm" onsubmit="return confirmUpload()">
@@ -118,7 +118,7 @@
                         <input type="hidden" name="_csrf" value="<%=csrfToken%>" id="token">
                         <h5 class="text-xl font-bold mb-5">อัปโหลดไฟล์ครบ 2ปี</h5>
                         <!-- Upload File Section -->
-                        <div class="upload-container border-2 border-dashed border-yellow-400 p-5 text-center">
+                        <div id="uploadContainer" class="upload-container border-2 border-dashed border-yellow-400 p-5 text-center">
                             <div class="upload-btn bg-yellow-400 text-white rounded-full py-3 px-6 cursor-pointer transition duration-300 ease-in-out hover:bg-yellow-500" id="uploadBtn">Browse Files or Drop Here</div>
                             <input type="file" name="fileToUpload" id="fileToUpload" class="hidden">
                             <span class="file-name mt-2 block" id="fileName"></span>
@@ -135,6 +135,7 @@
                 </form>
             </div>
         </div>
+        
 
         <!-- Footer -->
         <div class="mt-auto">
@@ -151,134 +152,140 @@
             document.getElementById('spinner-container').style.display = 'flex';
         });
 
-        const FileData = [];
+        let FileData = [];
 
-        document.getElementById('fileToUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64Data = event.target.result;
-                document.getElementById("value").value = base64Data;
-                FileData.push(base64Data);
-                console.log(FileData);
-            };
-            reader.readAsDataURL(file);
-        });
+    document.getElementById('uploadBtn').addEventListener('click', function() {
+        document.getElementById('fileToUpload').click();
+    });
 
-        function submitData() {
-            if (FileData.length === 0) {
-                alert("กรุณาเลือกไฟล์ที่ต้องการอัปโหลด");
-                return;
-            }
+    document.getElementById('fileToUpload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const base64Data = event.target.result;
+            document.getElementById("value").value = base64Data;
+            FileData.push(base64Data);
+            console.log(FileData);
+        };
+        reader.readAsDataURL(file);
+    });
 
-            const csrfToken = document.getElementById('token').value;
-
-            try {
-                const requestBody = {
-                    file: FileData,
-                    CityID: 123
-                };
-
-                fetch('/upload', {
-                        method: 'POST',
-                        body: JSON.stringify(requestBody),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'CSRF-Token': csrfToken
-                        }
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        console.log('File uploaded successfully');
-                        window.location.href = "/city";
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            } catch (error) {
-                console.error('Error:', error);
-            }
+    function confirmUpload() {
+        if (FileData.length === 0) {
+            alert("กรุณาเลือกไฟล์ที่ต้องการอัปโหลด");
+            return false;
         }
+        return confirm("คุณต้องการอัปโหลดไฟล์ใช่หรือไม่?");
+    }
 
-        document.getElementById('downloadButton').addEventListener('click', function(event) {
-            event.preventDefault();
+    document.getElementById('downloadButton').addEventListener('click', function(event) {
+        event.preventDefault();
 
-            Swal.fire({
-                title: 'คุณต้องการต่อตราสัญลักษณ์ใช่หรือไม่?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'ใช่',
-                cancelButtonText: 'ไม่'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('downloadLink').click();
-                }
-            });
+        Swal.fire({
+            title: 'คุณต้องการต่อตราสัญลักษณ์ใช่หรือไม่?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่',
+            cancelButtonText: 'ไม่'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Assuming you have an element with id 'downloadLink' for the actual download
+                document.getElementById('downloadLink').click();
+            }
         });
+    });
 
-        const uploadContainer = document.getElementById('uploadContainer');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const fileInput = document.getElementById('fileToUpload');
-        const fileNameSpan = document.getElementById('fileName');
-        const uploadedFilesContainer = document.getElementById('uploadedFilesContainer');
+    const uploadContainer = document.getElementById('uploadContainer');
+    const fileInput = document.getElementById('fileToUpload');
+    const fileNameSpan = document.getElementById('fileName');
+    const uploadedFilesContainer = document.getElementById('uploadedFilesContainer');
 
-        uploadContainer.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadContainer.classList.add('bg-blue-100');
-        });
+    uploadContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadContainer.classList.add('bg-blue-100');
+    });
 
-        uploadContainer.addEventListener('dragleave', () => {
-            uploadContainer.classList.remove('bg-blue-100');
-        });
+    uploadContainer.addEventListener('dragleave', () => {
+        uploadContainer.classList.remove('bg-blue-100');
+    });
 
-        uploadContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadContainer.classList.remove('bg-blue-100');
-            const droppedFiles = e.dataTransfer.files;
-            handleFiles(droppedFiles);
-        });
+    uploadContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadContainer.classList.remove('bg-blue-100');
+        const droppedFiles = e.dataTransfer.files;
+        handleFiles(droppedFiles);
+    });
 
-        uploadBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
+    fileInput.addEventListener('change', () => {
+        handleFiles(fileInput.files);
+    });
 
-        fileInput.addEventListener('change', () => {
-            handleFiles(fileInput.files);
-        });
+    function handleFiles(files) {
+        if (files.length > 0) {
+            const fileName = files[0].name;
+            fileNameSpan.textContent = fileName;
 
-        function handleFiles(files) {
-            if (files.length > 0) {
-                const fileName = files[0].name;
-                fileNameSpan.textContent = fileName;
+            const uploadedFileElement = document.createElement('div');
+            uploadedFileElement.classList.add('uploaded-file', 'bg-blue-100', 'p-2', 'mb-1', 'rounded', 'flex', 'items-center');
 
-                const uploadedFileElement = document.createElement('div');
-                uploadedFileElement.classList.add('uploaded-file', 'bg-blue-100', 'p-2', 'mb-1', 'rounded', 'flex', 'items-center');
-
-                uploadedFileElement.innerHTML = `
+            uploadedFileElement.innerHTML = `
                 <span>${fileName}</span>
                 <i class="fa fa-times ml-auto text-red-500 cursor-pointer" aria-hidden="true" onclick="removeUploadedFile(this)"></i>
-                `;
+            `;
 
-                uploadedFilesContainer.appendChild(uploadedFileElement);
-            }
+            uploadedFilesContainer.appendChild(uploadedFileElement);
+        }
+    }
+
+    function removeUploadedFile(element) {
+        const uploadedFileElement = element.closest('.uploaded-file');
+        const index = Array.from(uploadedFilesContainer.children).indexOf(uploadedFileElement);
+
+        if (index !== -1) {
+            uploadedFileElement.remove();
+            FileData.splice(index, 1);
+            document.getElementById('fileName').textContent = ''; // Clear the file name display
+        }
+    }
+
+    function submitData() {
+        if (FileData.length === 0) {
+            alert("กรุณาเลือกไฟล์ที่ต้องการอัปโหลด");
+            return;
         }
 
-        function removeUploadedFile(element) {
-            const uploadedFileElement = element.closest('.uploaded-file');
-            const index = Array.from(uploadedFilesContainer.children).indexOf(uploadedFileElement);
+        const csrfToken = document.getElementById('token').value;
 
-            if (index !== -1) {
-                uploadedFileElement.remove();
-                FileData.splice(index, 1);
-            }
-        }
+        try {
+            const requestBody = {
+                file: FileData,
+                CityID: 123
+            };
 
-        function confirmUpload() {
-            return confirm("คุณต้องการอัปโหลดไฟล์ใช่หรือไม่?");
+            fetch('/upload', {
+                    method: 'POST',
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'CSRF-Token': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log('File uploaded successfully');
+                    window.location.href = "/city";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } catch (error) {
+            console.error('Error:', error);
         }
+    }
     </script>
+    
 </body>
 
 </html>

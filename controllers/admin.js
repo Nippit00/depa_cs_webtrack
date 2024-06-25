@@ -400,14 +400,41 @@ exports.postAddCity = (req, res, next) => {
               console.error("Error inserting city home data:", homeError);
               return res.status(500).send("Internal Server Error");
             }
-            console.log("City home data added successfully");
+            const checkRound="SELECT * FROM `Round` WHERE Date=?"
+            db.query(checkRound,[date],(err,result)=>{
+              if (err) {
+                console.error("Error inserting city home data:", homeError);
+                return res.status(500).send("Internal Server Error");
+              }
+              if(result.length>0){
+                console.log("City home data added successfully");
 
-            // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
-            res.render("admin/ad-city/ad-addCity", {
-              pageTitle: "add",
-              path: "/",
-              success: true,
-            });
+                      // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
+                      res.render("admin/ad-city/ad-addCity", {
+                        pageTitle: "add",
+                        path: "/",
+                        success: true,
+                      });
+              }
+              else{
+                const insertRound="INSERT INTO `Round`(`Date`, `open`, `close`, `round`) VALUES (?,?,?,?)"
+                db.query(insertRound,[date,'2020-06-20','2020-06-20',1],(err,rounde)=>{
+                  if (err) {
+                    console.error("Error inserting city home data:", homeError);
+                    return res.status(500).send("Internal Server Error");
+                  }
+                  console.log("City home data added successfully");
+
+                      // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
+                      res.render("admin/ad-city/ad-addCity", {
+                        pageTitle: "add",
+                        path: "/",
+                        success: true,
+                      });
+                })
+              }
+            })
+                      
           });
         });
       });

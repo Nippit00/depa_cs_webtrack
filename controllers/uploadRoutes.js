@@ -5,7 +5,8 @@ const multer = require('multer');
 
 // Directory paths for uploads
 const uploadDir = path.join(__dirname, '../public/uploads');
-const uploadCdp = path.join(__dirname, '../public/uploads/cdp');
+const uploadCdp = path.join(__dirname, '../public/uploadCdp');
+const uploadReport = path.join(__dirname, '../public/uploadReport');
 
 // Create directories if they don't exist
 if (!fs.existsSync(uploadDir)) {
@@ -13,6 +14,9 @@ if (!fs.existsSync(uploadDir)) {
 }
 if (!fs.existsSync(uploadCdp)) {
     fs.mkdirSync(uploadCdp, { recursive: true });
+}
+if (!fs.existsSync(uploadReport)) {
+    fs.mkdirSync(uploadReport, { recursive: true });
 }
 
 const storage = multer.diskStorage({
@@ -53,15 +57,30 @@ const storageCdp = multer.diskStorage({
     }
 });
 
+const storageReport = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadReport);
+    },
+    filename: function (req, file, cb) {
+        if (file.originalname.startsWith(req.params.solutionID)) {
+            const filePath = path.join(uploadReport, file.originalname);
+            fs.unlinkSync(filePath);
+            cb(null, file.originalname);
+        } else {
+            cb(null, req.params.solutionID + path.extname(file.originalname));
+        }
+    }
+});
+
 
 const upload = multer({ storage: storage });
 const uploadCdp2 = multer({ storage: storageCdp });
-const uploadCdp3 = multer({ storage: storageCdp });
+const uploadReportTwoyear = multer({ storage: storageReport });
 
 
 exports.uploadFile = upload.single('fileUpload');
 exports.uploadFileCdp2 = uploadCdp2.single('fileUpload');
-exports.uploadFileCdp3 = uploadCdp3.single('fileUpload');
+exports.uploadReport = uploadReportTwoyear.single('fileUpload');
 
 exports.handleUpload = (req, res) => {
     try {
@@ -96,3 +115,14 @@ exports.handleUpload = (req, res) => {
     }
 };
 
+
+exports.handleUploadReport = (req,res)=>{
+    try{
+        res.status(200).json({"status":"ok"})
+
+    }catch(err){
+        res.status(500).jsonO(err)
+        console.log(err)
+    }
+
+}

@@ -80,7 +80,8 @@
         </div>
     </div>
     <div>
-        <%- include('component/navbar.ejs') %>
+        <%- include('../include/ad-navbar') %>
+
     </div>
     <button onclick="goBack()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-5 mt-5">
         ย้อนกลับ
@@ -128,7 +129,8 @@
                     <%= !formdata || formdata.length===0 ? "ไม่พบข้อมูล" : "" %>
                 </p>
                 <p><strong>เงินทุน:</strong>
-                    <%= !formdata || formdata.length===0 ? "ไม่พบข้อมูล" : (formdata[0].funds * 1000000).toLocaleString('th-TH') %>
+                    <%= !formdata || formdata.length===0 ? "ไม่พบข้อมูล" : (formdata[0].funds *
+                        1000000).toLocaleString('th-TH') %>
                         บาท
                 </p>
             </div>
@@ -185,7 +187,7 @@
                 <input type="hidden" name="Q3" value="FileUpload">
                 <label for="fileUpload" class="block text-teal-600 font-medium mb-2 text-xl">แนบรูปภาพ:</label>
                 <p class="text-gray-500 mb-2">แนบภาพประกอบการดำเนินโครงการเพื่อเป็นหลักฐานแสดงความสำเร็จของโครงการ</p>
-                <input type="file" id="fileUpload"  accept="image/png, image/gif, image/jpeg"
+                <input type="file" id="fileUpload" accept="image/png, image/gif, image/jpeg"
                     class="block w-full p-2 border rounded-md">
             </div>
 
@@ -424,20 +426,23 @@
                             <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                             <input type="hidden" name="round" value="<%= round %>">
 
-                            <p class="text-center text-red-500 mt-5">*** โปรดอ่าน:
-                                กรุณากดบันทึกทุกครั้งเพื่อบันทึกคำตอบไว้ ***
-                            </p>
-                            <p class="text-center text-red-500 mb-5">*** ต้องกดส่งรายงานเท่านั้น จึงจะเป็นการส่งฟอร์ม
-                                ***</p>
-                            <div class="text-center">
-                                <button type="submit" id="saveButton"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">บันทึก</button>
-                                <button type="submit" id="submitButton"
-                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">ส่งรายงาน</button>
-                            </div>
+                            
+                                <div class="text-center mt-5">
+                                    <button type="submit" id="saveButton"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">บันทึก</button>
+                                    <% if( formdata[0].status==2 ){%>
+                                        <button  id="ApproveButton"
+                                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">อนุมัติ</button>
+                                    <%} else if(formdata[0].status==3){%>
+                                        <button  id="CanclesubmitButton"
+                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">ยกเลิกอนุมัติ</button>
+                                    <%} %>
+                                    
+                                </div>
         </form>
     </div>
-    <%- include('component/footer.ejs') %>
+    <%- include('../include/ad-footer') %>
+
 </body>
 
 <script>
@@ -447,96 +452,60 @@
 
     window.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('spinner-container').style.display = 'flex';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const successParam = urlParams.get('success');
+
+            if (successParam === 'true') {
+                Swal.fire({
+                    title: "บันทึกสำเร็จ!",
+                    text: "บันทึกฉบับร่างสำเร็จ",
+                    icon: "success",
+                }).then(function () {
+                    // Make sure the URL redirection is correct
+                    window.location.href = '/admin/city/<%=formdata[0].cityID%>';
+                });
+            }
+
+
+
+            const urlupdateParams = new URLSearchParams(window.location.search);
+            const updatesuccess = urlupdateParams.get('updatesuccess');
+
+            if (updatesuccess === 'true') {
+                Swal.fire({
+                    title: "อัพเดตสำเร็จ!",
+                    text: "เปลี่ยนสถานะสำเร็จ",
+                    icon: "success",
+                }).then(function () {
+                    // Make sure the URL redirection is correct
+                    window.location.href = '/admin/city/<%=formdata[0].cityID%>';
+                });
+            }
+
+            const urlcancleParams = new URLSearchParams(window.location.search);
+            const canclesuccess = urlcancleParams.get('canclesuccess');
+
+            if (updatesuccess === 'true') {
+                Swal.fire({
+                    title: "อัพเดตสำเร็จ!",
+                    text: "เปลี่ยนสถานะสำเร็จ",
+                    icon: "success",
+                }).then(function () {
+                    // Make sure the URL redirection is correct
+                    window.location.href = '/admin/city/<%=formdata[0].cityID%>';
+                });
+            }
+            document.getElementById('ApproveButton').addEventListener('click', function (event) {
+                reportForm.action = "/Approve/<%=formdata[0].solutionID%>/<%=round%>";
+            });
+            document.getElementById('CancleButton').addEventListener('click', function (event) {
+                reportForm.action = "/CancleApprove/<%=formdata[0].solutionID%>/<%=round%>";
+            });
+        });
+
     });
-
-    document.getElementById('submitButton').addEventListener('click', function (event) {
-        let isValid = true;
-        let firstInvalidElement = null;
-        const requiredFields = document.querySelectorAll('[name^="A"]');
-        const kpiFields = document.getElementById('KPI-Containner').querySelectorAll('input,select');
-        const status = document.getElementById('status').value;
-
-        if (status !== 'ยกเลิก') {
-            requiredFields.forEach(field => {
-                const element = field;
-
-                if (element && !element.value.trim()) {
-                    isValid = false;
-                    element.style.border = '2px solid red';
-                    if (!firstInvalidElement) {
-                        firstInvalidElement = element;
-                    }
-                } else if (element) {
-                    element.style.border = '';
-                }
-            });
-          
-            if(!document.getElementById('fileUpload').value.trim()){
-                isValid = false;
-                document.getElementById('fileUpload').style.border = '2px solid red';
-                    if (!firstInvalidElement) {
-                        firstInvalidElement = document.getElementById('fileUpload');
-                    }
-            }
-
-            else{
-                document.getElementById('fileUpload').style.border = '';
-            }
-            kpiFields.forEach(field => {
-                const element = field;
-             
-
-                if (element&&!element.value.trim()) {
-                    isValid = false;
-                    element.style.border = '2px solid red';
-                    if (!firstInvalidElement) {
-                        firstInvalidElement = element;
-                    }
-                } 
-                
-                else {
-                    field.style.border = '';
-                }
-            });
-
-        }
-        else {
-            requiredFields.forEach(field => {
-                const element = field;
-
-                if (element.name === 'A1' || element.name === 'A2' || element.id === 'fileUpload' || element.name === 'A5' || element.name === 'A8') {
-                    console.log(element.value.trim())
-                    if (!element.value.trim()) {
-                        isValid = false;
-                        element.style.border = '2px solid red';
-                        if (!firstInvalidElement) {
-                            firstInvalidElement = element;
-                        }
-                    }
-                    else {
-                        element.style.border = '';
-                    }
-                }
-            });
-
-        }
-
-        if (!isValid) {
-            alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
-            if (firstInvalidElement) {
-                firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstInvalidElement.focus();
-            }
-            event.preventDefault();
-        }
-
-        if (isValid) {
-            event.preventDefault();
-            reportForm.action = "/formcheck/<%=formdata[0].solutionID%>/<%= round %>";
-            reportForm.submit();
-        }
-    });
-
 
     function toggleFileUpload() {
         const progress = document.getElementById('progress').value;
