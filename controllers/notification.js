@@ -96,7 +96,7 @@ exports.postnotification = (req, res, next) => {
   }
 };
 
-cron.schedule('0 10 * * *', () => {
+cron.schedule('0 9 * * *', () => {
   const qDate = "SELECT Date,open,close FROM round";
 db.query(qDate, (err, dataDate) => {
     if (err) return res.status(500).json(err);
@@ -127,46 +127,81 @@ db.query(qDate, (err, dataDate) => {
 
         const finalResults = [];
 
-        dataDate.forEach(cityDate => {
+        dataDate.some(cityDate => {
           const closeForm = new Date(cityDate.close);
           const fifteenDaysBeforeClose = new Date(closeForm);
           const DayClose = new Date(closeForm);
           const fifteenDaysAfterClose = new Date(closeForm);
+        
           fifteenDaysBeforeClose.setDate(closeForm.getDate() - 15);
-          fifteenDaysAfterClose.setDate(closeForm.getDate() + 15)
+          fifteenDaysAfterClose.setDate(closeForm.getDate() + 15);
         
-          if (currentDate.toDateString() === fifteenDaysBeforeClose.toDateString()  || currentDate.toDateString() === DayClose.toDateString()  || currentDate.toDateString() === fifteenDaysAfterClose.toDateString()) {
-            const matchingResult = result.filter(row => 
-              row.date.toDateString() === new Date(cityDate.Date).toDateString()
-            );
-            finalResults.push(...matchingResult);
+          if (
+            currentDate.toDateString() === fifteenDaysBeforeClose.toDateString() || 
+            currentDate.toDateString() === DayClose.toDateString() || 
+            currentDate.toDateString() === fifteenDaysAfterClose.toDateString()
+          ) {
+            finalResults.push(...result);
         
-            const messageHeader = `แจ้งเตือน: รายละเอียดการกรอกแบบฟอร์มที่ยังไม่เสร็จ\n`;
-            const messageBody = finalResults.map((solution,i) => {
+            const messageHeader = `แจ้งเตือน: การกรอกแบบฟอร์มที่ยังไม่เสร็จ\n`;
+            const messageBody = finalResults.map((solution, i) => {
               const province = solution.province || 'ไม่ทราบจังหวัด';
-              return `${i+1} จังหวัด: ${province}\nยังไม่ได้กรอก: ${solution.percentage}\n`;
+              return `${i + 1} จังหวัด: ${province}  \nยังไม่ได้กรอก: ${solution.percentage}\n`;
             }).join('\n');
         
-            const messageFooter = `\nต้องดำเนินการภายใน 15 วันก่อนถึงวันที่ ${closeForm.toLocaleDateString('th-TH')}.`;
+            let messageFooter;
+            if (currentDate.toDateString() === fifteenDaysBeforeClose.toDateString()) {
+              messageFooter = `\nต้องดำเนินการภายใน 15 วันก่อนถึงวันที่ ${closeForm.toLocaleDateString('th-TH')}.`;
+            } else if (currentDate.toDateString() === DayClose.toDateString()) {
+              messageFooter = `\nต้องดำเนินการภายในวันนี้  ${closeForm.toLocaleDateString('th-TH')}.`;
+            } else {
+              messageFooter = `\nหมดช่วงเวลากรอกฟอร์มมาแล้ว 15 วัน ตั้งแต่วันที่ ${closeForm.toLocaleDateString('th-TH')}.`;
+            }
+
             const fullMessage = `${messageHeader}${messageBody}${messageFooter}`;
         
             const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
             const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
         
-            axios.post(LINE_NOTIFY_API_URL, `message=${encodeURIComponent(fullMessage)}`, {
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
-              },
+            // Function to send message via LINE Notify
+            function sendLineNotification(message) {
+              return axios.post(LINE_NOTIFY_API_URL, `message=${encodeURIComponent(message)}`, {
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                  Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
+                },
+              });
+            }
+        
+            // Function to split message into chunks
+            function chunkMessage(message, chunkSize) {
+              const chunks = [];
+              for (let i = 0; i < message.length; i += chunkSize) {
+                chunks.push(message.slice(i, i + chunkSize));
+              }
+              return chunks;
+            }
+        
+            // Split the full message into chunks of up to 1000 characters each
+            const maxLength = 1000; // LINE Notify message length limit
+            const messageChunks = chunkMessage(fullMessage, maxLength);
+        
+            // Send each chunk sequentially
+            messageChunks.reduce((promise, chunk) => {
+              return promise.then(() => sendLineNotification(chunk));
+            }, Promise.resolve())
+            .then(() => {
+              console.log("All notifications sent successfully.");
             })
-            .then((response) => {
-              console.log("Notification sent:", response.data);
-            })
-            .catch((error) => {
-              console.error("Error sending notification:", error.response ? error.response.data : error.messages);
+            .catch(error => {
+              console.error("Error sending notification:", error.response ? error.response.data : error.message);
             });
+        
+            return true; // Stop the loop when the condition is met
           }
+          return false;
         });
+        
         
         
 

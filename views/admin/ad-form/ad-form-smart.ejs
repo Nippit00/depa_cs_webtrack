@@ -81,7 +81,7 @@
         </div>
     </div>
     <div>
-        <%- include('component/navbar.ejs') %>
+        <%- include('../include/ad-navbar') %>
     </div>
     <button onclick="goBack()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-5 mt-5">
         ย้อนกลับ
@@ -89,7 +89,7 @@
 
     <script>
         function goBack() {
-            window.location.href = '/city/follow';
+            window.location.href = '/admin/city/<%=formdata[0].cityID%>';
         }
     </script>
 
@@ -148,7 +148,7 @@
     </div>
 
     <div class="mt-10 w-4/5 mx-auto border-2 rounded-xl bg-white p-8 shadow-lg mb-5">
-        <form action="/saveForm/<%= formdata[0].solutionID %>/<%= round %>" method="post" id="reportForm">
+        <form action="/ad_saveForm/<%= formdata[0].solutionID %>/<%= round %>" method="post" id="reportForm">
             <div class="mt-5" id="Q1">
                 <input type="hidden" name="Q1" value="สถานะ">
                 <label for="status" class="block font-medium mb-2 text-teal-600 text-xl">สถานะ:</label>
@@ -182,13 +182,13 @@
                 </select>
             </div>
 
-            <div id="fileUploadContainer" class="mt-5" style="display: none;">
+            <!-- <div id="fileUploadContainer" class="mt-5" style="display: none;">
                 
                 <label for="fileUpload" class="block text-teal-600 font-medium mb-2 text-xl">แนบรูปภาพ:</label>
                 <p class="text-gray-500 mb-2">แนบภาพประกอบการดำเนินโครงการเพื่อเป็นหลักฐานแสดงความสำเร็จของโครงการ</p>
                 <input type="file" id="fileUpload"  accept="image/png, image/gif, image/jpeg"
                     class="block w-full p-2 border rounded-md">
-            </div>
+            </div> -->
 
             <div class="mt-5" id="Q4">
                 <input type="hidden" name="Q4" value="ผลการดำเนินงาน">
@@ -399,18 +399,24 @@
                     <input type="hidden" id="currentDateTime" name="currentDateTime" value="">
                     <input type="hidden" name="round" value="<%= round %>">
 
-                    <p class="text-center text-red-500 mt-5">*** โปรดอ่าน: กรุณากดบันทึกทุกครั้งเพื่อบันทึกคำตอบไว้ มิฉะนั้นต้องกรอกฟอร์มใหม่ ***
+                    <!-- <p class="text-center text-red-500 mt-5">*** โปรดอ่าน: กรุณากดบันทึกทุกครั้งเพื่อบันทึกคำตอบไว้ มิฉะนั้นต้องกรอกฟอร์มใหม่ ***
                     </p>
-                    <p class="text-center text-red-500 mb-5">*** เมื่อกรอกครบเเล้วต้องกดส่งรายงาน เพื่อเป็นการส่งฟอร์ม ***</p>
+                    <p class="text-center text-red-500 mb-5">*** เมื่อกรอกครบเเล้วต้องกดส่งรายงาน เพื่อเป็นการส่งฟอร์ม ***</p> -->
                     <div class="text-center">
                         <button type="submit" id="saveButton"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">บันทึก</button>
-                        <button type="submit" id="submitButton"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">ส่งรายงาน</button>
+                        <% if( formdata[0].status==2 ){%>
+                            <button  id="ApproveButton"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">อนุมัติ</button>
+                        <%} else if(formdata[0].status==3){%>
+                            <button  id="CanclesubmitButton"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">ยกเลิกอนุมัติ</button>
+                        <%} %>
+                        
                     </div>
         </form>
     </div>
-    <%- include('component/footer.ejs') %>
+    <%- include('../include/ad-footer.ejs') %>
 </body>
 
 <script>
@@ -422,95 +428,95 @@
         document.getElementById('spinner-container').style.display = 'flex';
     });
 
-    document.getElementById('submitButton').addEventListener('click', function (event) {
-        let isValid = true;
-        let firstInvalidElement = null;
-        const requiredFields = document.querySelectorAll('[name^="A"]');
-        const kpiFields = document.getElementById('KPI-Containner').querySelectorAll('input');
-        const status = document.getElementById('status').value;
+    // document.getElementById('submitButton').addEventListener('click', function (event) {
+    //     let isValid = true;
+    //     let firstInvalidElement = null;
+    //     const requiredFields = document.querySelectorAll('[name^="A"]');
+    //     const kpiFields = document.getElementById('KPI-Containner').querySelectorAll('input');
+    //     const status = document.getElementById('status').value;
 
-        if (status !== 'ยกเลิก') {
-            requiredFields.forEach(field => {
-                const element = field;
-                if (element && !element.value.trim()) {
-                    isValid = false;
-                    element.style.border = '2px solid red';
-                    if (!firstInvalidElement) {
-                        firstInvalidElement = element;
-                    }
-                } else if (element) {
-                    element.style.border = '';
-                }
-            });
-            if(!document.getElementById('fileUpload').value.trim()){
-                isValid = false;
-                document.getElementById('fileUpload').style.border = '2px solid red';
-                    if (!firstInvalidElement) {
-                        firstInvalidElement = document.getElementById('fileUpload');
-                    }
-            }
+    //     if (status !== 'ยกเลิก') {
+    //         requiredFields.forEach(field => {
+    //             const element = field;
+    //             if (element && !element.value.trim()) {
+    //                 isValid = false;
+    //                 element.style.border = '2px solid red';
+    //                 if (!firstInvalidElement) {
+    //                     firstInvalidElement = element;
+    //                 }
+    //             } else if (element) {
+    //                 element.style.border = '';
+    //             }
+    //         });
+    //         if(!document.getElementById('fileUpload').value.trim()){
+    //             isValid = false;
+    //             document.getElementById('fileUpload').style.border = '2px solid red';
+    //                 if (!firstInvalidElement) {
+    //                     firstInvalidElement = document.getElementById('fileUpload');
+    //                 }
+    //         }
 
-            kpiFields.forEach(field => {
-                if (field.type === 'radio') {
-                    const radioGroup = document.getElementsByName(field.name);
-                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-                    if (!isChecked) {
-                        isValid = false;
-                        radioGroup.forEach(radio => radio.parentNode.style.border = '2px solid red');
-                        if (!firstInvalidElement) {
-                            firstInvalidElement = radioGroup[0];
-                        }
-                    } else {
-                        radioGroup.forEach(radio => radio.parentNode.style.border = '');
-                    }
-                } else if (field.type === 'number' && !field.value.trim()) {
+    //         kpiFields.forEach(field => {
+    //             if (field.type === 'radio') {
+    //                 const radioGroup = document.getElementsByName(field.name);
+    //                 const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+    //                 if (!isChecked) {
+    //                     isValid = false;
+    //                     radioGroup.forEach(radio => radio.parentNode.style.border = '2px solid red');
+    //                     if (!firstInvalidElement) {
+    //                         firstInvalidElement = radioGroup[0];
+    //                     }
+    //                 } else {
+    //                     radioGroup.forEach(radio => radio.parentNode.style.border = '');
+    //                 }
+    //             } else if (field.type === 'number' && !field.value.trim()) {
                     
-                    isValid = false;
-                    field.style.border = '2px solid red';
-                    if (!firstInvalidElement) {
-                        firstInvalidElement = field;
-                    }
-                } else {
-                    field.style.border = '';
-                }
-            });
-        }
-        else {
-            requiredFields.forEach(field => {
-                const element = field;
+    //                 isValid = false;
+    //                 field.style.border = '2px solid red';
+    //                 if (!firstInvalidElement) {
+    //                     firstInvalidElement = field;
+    //                 }
+    //             } else {
+    //                 field.style.border = '';
+    //             }
+    //         });
+    //     }
+    //     else {
+    //         requiredFields.forEach(field => {
+    //             const element = field;
 
-                if (element.name === 'A1' || element.name === 'A2'|| element.id === 'fileUpload' || element.name === 'A5' || element.name === 'A8') {
-                    console.log(element.value.trim())
-                    if (!element.value.trim()) {
-                        isValid = false;
-                        element.style.border = '2px solid red';
-                        if (!firstInvalidElement) {
-                            firstInvalidElement = element;
-                        }
-                    }
-                    else{
-                            element.style.border = '';
-                    }
-                }
-            });
+    //             if (element.name === 'A1' || element.name === 'A2'|| element.id === 'fileUpload' || element.name === 'A5' || element.name === 'A8') {
+    //                 console.log(element.value.trim())
+    //                 if (!element.value.trim()) {
+    //                     isValid = false;
+    //                     element.style.border = '2px solid red';
+    //                     if (!firstInvalidElement) {
+    //                         firstInvalidElement = element;
+    //                     }
+    //                 }
+    //                 else{
+    //                         element.style.border = '';
+    //                 }
+    //             }
+    //         });
 
-        }
+    //     }
 
-        if (!isValid) {
-            alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
-            if (firstInvalidElement) {
-                firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstInvalidElement.focus();
-            }
-            event.preventDefault();
-        }
+    //     if (!isValid) {
+    //         alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+    //         if (firstInvalidElement) {
+    //             firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //             firstInvalidElement.focus();
+    //         }
+    //         event.preventDefault();
+    //     }
 
-        if (isValid) {
-            event.preventDefault();
-            reportForm.action = "/formcheck/<%=formdata[0].solutionID%>/<%= round %>";
-            reportForm.submit();
-        }
-    });
+    //     if (isValid) {
+    //         event.preventDefault();
+    //         reportForm.action = "/formcheck/<%=formdata[0].solutionID%>/<%= round %>";
+    //         reportForm.submit();
+    //     }
+    // });
 
 
 
@@ -525,50 +531,54 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        toggleFileUpload(); // Check the initial state on page load
-
         const urlParams = new URLSearchParams(window.location.search);
         const successParam = urlParams.get('success');
+
         if (successParam === 'true') {
             Swal.fire({
                 title: "บันทึกสำเร็จ!",
                 text: "บันทึกฉบับร่างสำเร็จ",
                 icon: "success",
             }).then(function () {
-                window.location.href = "/city/follow";
+                // Make sure the URL redirection is correct
+                window.location.href = '/admin/city/<%=formdata[0].cityID%>';
             });
         }
 
-        document.getElementById('fileUpload').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const formData = new FormData();
-                const round= '<%= round %>'
-                formData.append('fileUpload', file);
-                formData.append('round', round);
-                const csrfToken = document.querySelector('input[name="_csrf"]').value;
-                const solutionID = '<%=formdata[0].solutionID%>';
+        
 
-                fetch(`/upload/formsmart/${solutionID}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-Token': csrfToken
-                    },
-                    body: formData
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Upload successful:', data);
-                    })
-                    .catch(error => {
-                        console.error('There was a problem with the upload:', error);
-                    });
-            }
+        const urlupdateParams = new URLSearchParams(window.location.search);
+        const updatesuccess = urlupdateParams.get('updatesuccess');
+
+        if (updatesuccess === 'true') {
+            Swal.fire({
+                title: "อัพเดตสำเร็จ!",
+                text: "เปลี่ยนสถานะสำเร็จ",
+                icon: "success",
+            }).then(function () {
+                // Make sure the URL redirection is correct
+                window.location.href = '/admin/city/<%=formdata[0].cityID%>';
+            });
+        }
+
+        const urlcancleParams = new URLSearchParams(window.location.search);
+        const canclesuccess = urlcancleParams.get('canclesuccess');
+
+        if (updatesuccess === 'true') {
+            Swal.fire({
+                title: "อัพเดตสำเร็จ!",
+                text: "เปลี่ยนสถานะสำเร็จ",
+                icon: "success",
+            }).then(function () {
+                // Make sure the URL redirection is correct
+                window.location.href = '/admin/city/<%=formdata[0].cityID%>';
+            });
+        }
+        document.getElementById('ApproveButton').addEventListener('click', function (event) {
+            reportForm.action = "/Approve/<%=formdata[0].solutionID%>/<%=round%>";
+        });
+        document.getElementById('CancleButton').addEventListener('click', function (event) {
+            reportForm.action = "/CancleApprove/<%=formdata[0].solutionID%>/<%=round%>";
         });
     });
 

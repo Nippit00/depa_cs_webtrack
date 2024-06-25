@@ -5,10 +5,14 @@ const multer = require('multer');
 
 // Directory paths for uploads
 const uploadDir = path.join(__dirname, '../public/uploads');
+const uploadCdp = path.join(__dirname, '../public/uploads/cdp');
 
 // Create directories if they don't exist
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
+}
+if (!fs.existsSync(uploadCdp)) {
+    fs.mkdirSync(uploadCdp, { recursive: true });
 }
 
 const storage = multer.diskStorage({
@@ -16,8 +20,31 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname).toLowerCase();
+        if (ext === '.jpg') {
+            const existingFilePath = path.join(uploadDir, req.params.solutionID + '.jpg');
+            if (fs.existsSync(existingFilePath)) {
+                // If it exists, delete the existing file
+                fs.unlinkSync(existingFilePath);
+            }
+            cb(null, req.params.solutionID + '.jpg');
+        } else {
+            // Reject uploads of file types other than JPG
+            const error = new Error('Only JPG files are allowed');
+            error.code = 'LIMIT_FILE_TYPE';
+            cb(error);
+        }
+    }
+});
+
+
+const storageCdp = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadCdp);
+    },
+    filename: function (req, file, cb) {
         if (file.originalname.startsWith(req.params.solutionID)) {
-            const filePath = path.join(uploadDir, file.originalname);
+            const filePath = path.join(uploadCdp, file.originalname);
             fs.unlinkSync(filePath);
             cb(null, file.originalname);
         } else {
@@ -26,31 +53,15 @@ const storage = multer.diskStorage({
     }
 });
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, uploadDir);
-//     },
-//     filename: function (req, file, cb) {
-//         const extension = path.extname(file.originalname);
-//         const solutionID = req.params.solutionID;
-//         const number = req.params.number; // Assume the number is passed as a parameter
-        
-//         const newFileName = `${solutionID}_${number}${extension}`;
 
-//         // Check if the file exists and delete if it does
-//         const filePath = path.join(uploadDir, newFileName);
-//         if (fs.existsSync(filePath)) {
-//             fs.unlinkSync(filePath);
-//         }
+const upload = multer({ storage: storage });
+const uploadCdp2 = multer({ storage: storageCdp });
+const uploadCdp3 = multer({ storage: storageCdp });
 
-//         cb(null, newFileName);
-//     }
-// });
-
-
-const upload = multer({ storage: storage });;
 
 exports.uploadFile = upload.single('fileUpload');
+exports.uploadFileCdp2 = uploadCdp2.single('fileUpload');
+exports.uploadFileCdp3 = uploadCdp3.single('fileUpload');
 
 exports.handleUpload = (req, res) => {
     try {

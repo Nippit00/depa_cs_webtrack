@@ -197,18 +197,9 @@
         <div class="p-2.5">รอบติดตามความคืบหน้าเพื่อต่อตราสัญลักษณ์</div>
       </div>
       <div id="body-table">
-        <div class="grid grid-cols-5 hover:bg-gray-100">
-          <div class="p-2.5 border-b-2">โครงสร้างพื้นฐานกายภาพ</div>
-          <div class="p-2.5 border-b-2">
-            <div class="flex items-center h-2.5 bg-teal-400 text-white p-2.5 rounded-full" style="width: 50%">50%</div>
-          </div>
-          <div class="p-2.5 border-b-2">
-            <div class="flex items-center h-5 bg-yellow-400 text-white p-2.5 rounded-full" style="width: 50%">50%</div>
-          </div>
-          <div class="p-2.5 border-b-2">-</div>
-          <div class="p-2.5 border-b-2">ghjk</div>
-        </div>
-      </div>
+        
+        
+        
     </div>
     
   </div>
@@ -239,10 +230,17 @@
     let totalSuccess = 0;
     let count = 0;
     dataArray.forEach((data) => {
-      if (data.smartKey === smartKey) {
+      if(smartKey==="ALL"){
         totalSuccess += data.Progress === 100 ? 1 : 0;
         count++;
       }
+      else{
+        if (data.smartKey === smartKey) {
+          totalSuccess += data.Progress === 100 ? 1 : 0;
+          count++;
+      }
+      }
+      
     });
     return count > 0 ? totalSuccess / count : 0;
   }
@@ -251,10 +249,17 @@
     let totalProgress = 0;
     let count = 0;
     dataArray.forEach((data) => {
-      if (data.smartKey === smartKey) {
+      if(smartKey==="ALL"){
         totalProgress += data.Progress / 100;
         count++;
       }
+      else{ 
+        if (data.smartKey === smartKey) {
+          totalProgress += data.Progress / 100;
+          count++;
+      }
+    }
+     
     });
     return count > 0 ? totalProgress / count : 0;
   }
@@ -267,7 +272,7 @@
       const status = item.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
       let statusFormCircle = '';
           if (currentime >= new Date(dataRound.open)) {
-            statusFormCircle = item.status === 2 
+            statusFormCircle = item.status === 2 || item.status === 3
               ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
               : item.status === 1 
                 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
@@ -277,7 +282,7 @@
           }
           let statusReportCircle = '';
           if (currentime >= reportOpenTime) {
-            statusReportCircle = item.status === 2 
+            statusReportCircle = item.status === 2 || item.status === 3
               ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
               : item.status === 1 
                 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
@@ -301,7 +306,7 @@
       const status = item.Progress === 100 ? "สำเร็จ" : "ไม่สำเร็จ";
       let statusFormCircle = '';
           if (currentime >= new Date(dataRound.open)) {
-            statusFormCircle = item.status === 2 
+            statusFormCircle = item.status === 2 || item.status === 3
               ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
               : item.status === 1 
                 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
@@ -311,7 +316,7 @@
           }
           let statusReportCircle = '';
           if (currentime >= reportOpenTime) {
-            statusReportCircle = item.status === 2 
+            statusReportCircle = item.status === 2 || item.status === 3
               ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: green; display: inline-block;"></div>` 
               : item.status === 1 
                 ? `<div style="width: 20px; height: 20px; border-radius: 50%; background-color: orange; display: inline-block;"></div>` 
@@ -383,7 +388,10 @@
     }
   `;
   document.head.appendChild(style);
-
+  
+  window.addEventListener('DOMContentLoaded', (event) => {
+   show(10)
+  });
 </script>
 
 <script>

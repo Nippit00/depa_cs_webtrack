@@ -186,7 +186,7 @@
                 
                 <label for="fileUpload" class="block text-teal-600 font-medium mb-2 text-xl">แนบรูปภาพ:</label>
                 <p class="text-gray-500 mb-2">แนบภาพประกอบการดำเนินโครงการเพื่อเป็นหลักฐานแสดงความสำเร็จของโครงการ</p>
-                <input type="file" id="fileUpload"  accept="image/png, image/gif, image/jpeg"
+                <input type="file" id="fileUpload"  accept="image/jpeg"
                     class="block w-full p-2 border rounded-md">
             </div>
 
@@ -324,13 +324,14 @@
                         <input type="hidden" name="Excel" value="FileUpload">
                         <label for="excel" class="block text-teal-600 font-medium mb-2 text-xl">แนบไฟล์ excel:</label>
                         <p class="text-gray-500 mb-2">แนบไฟล์ excel CDP2</p>
-                        <input type="file"  name="excel" accept=".xlsx, .xls "
+                        <input type="file" id="excelfileCdp2" name="excel" accept=".xlsx, .xls "
                             class="block w-full p-2 border rounded-md">
                     </div>
                     <div class="container mx-auto p-4">
                         <label class="block text-teal-600 font-medium mb-2 text-xl">
                             downloadไฟล์ excel 
                             <a href="https://docs.google.com/spreadsheets/d/14Z7Ah91l4-SCc6E61eTzniGgZQxc60v9eRcMPjQkwYc/edit?usp=sharing" 
+                            target="_blank"
                                class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-xl font-medium rounded-md hover:bg-teal-700">
                                 ตรงนี้ 
                                 <i class="fas fa-download ml-2"></i>
@@ -345,7 +346,7 @@
                         <input type="hidden" name="Excel" value="FileUpload">
                         <label for="excel" class="block text-teal-600 font-medium mb-2 text-xl">แนบไฟล์ excel :</label>
                         <p class="text-gray-500 mb-2">แนบไฟล์ excel CDP3</p>
-                        <input type="file"  name="excel" accept=".xlsx, .xls "
+                        <input type="file" id="excelfileCdp3" name="excel" accept=".xlsx, .xls "
                             class="block w-full p-2 border rounded-md">
                             
 
@@ -353,7 +354,8 @@
                     <div class="container mx-auto p-4">
                         <label class="block text-teal-600 font-medium mb-2 text-xl">
                             downloadไฟล์ excel 
-                            <a href="https://docs.google.com/spreadsheets/d/1bKHx-VA57DTbgWzTUKZ504fkdmrbWr_AVk9ikkHHVvA/edit?usp=sharing" 
+                            <a href="https://docs.google.com/spreadsheets/d/1bKHx-VA57DTbgWzTUKZ504fkdmrbWr_AVk9ikkHHVvA/edit?usp=sharing"
+                            target="_blank" 
                                class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-xl font-medium rounded-md hover:bg-teal-700">
                                 ตรงนี้ 
                                 <i class="fas fa-download ml-2"></i>
@@ -540,6 +542,70 @@
         }
 
         document.getElementById('fileUpload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                const round= '<%= round %>'
+                formData.append('fileUpload', file);
+                formData.append('round', round);
+                const csrfToken = document.querySelector('input[name="_csrf"]').value;
+                const solutionID = '<%=formdata[0].solutionID%>';
+
+                fetch(`/upload/formsmart/${solutionID}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-Token': csrfToken
+                    },
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Upload successful:', data);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the upload:', error);
+                    });
+            }
+        });
+
+        document.getElementById('excelfileCdp2').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                const round= '<%= round %>'
+                formData.append('fileUpload', file);
+                formData.append('round', round);
+                const csrfToken = document.querySelector('input[name="_csrf"]').value;
+                const solutionID = '<%=formdata[0].solutionID%>';
+
+                fetch(`/upload/formsmart/${solutionID}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-Token': csrfToken
+                    },
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Upload successful:', data);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the upload:', error);
+                    });
+            }
+        });
+
+        document.getElementById('excelfileCdp2').addEventListener('change', function (event) {
             const file = event.target.files[0];
             if (file) {
                 const formData = new FormData();
