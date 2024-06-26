@@ -2,9 +2,12 @@ const path = require("path");
 const express = require("express");
 const multer = require('multer');
 // const bcrypt = require('bcryptjs');
+const https = require("https");
+const morgan = require("morgan");
 
 const session = require('express-session');
 const csrf = require('csurf');
+const fs = require("fs");
 require('dotenv').config();
 
 
@@ -29,6 +32,7 @@ app.use(session({
 }))
 
 app.use(csrfProtection);
+app.use(morgan("dev"));
 // app.use((err, req, res, next) => {
 //   if (err.code === 'EBADCSRFTOKEN') {
 //     res.status(403).send('Invalid CSRF token');
@@ -62,8 +66,14 @@ app.use("/city", cityRoute);
 app.use("/upload", uploadroutes);
 app.use("/notification",notification)
 
+const options = {
+  key: fs.readFileSync(path.join(__dirname, "./key.pem")),
+  cert: fs.readFileSync(path.join(__dirname, "./cert.pem")),
+};
 
-    app.listen(process.env.PORT, () => {
-      console.log(`depa-SmartCity-WebTracking is running on port 8888`);
-      console.log("******************************");
-    });
+const server = https.createServer(options, app);
+
+server.listen(process.env.PORT, () => {
+  console.log(`App listening on https://localhost:${process.env.PORT}`);
+});
+

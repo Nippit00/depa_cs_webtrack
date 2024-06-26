@@ -10,6 +10,8 @@ COPY package*.json ./
 # Install the dependencies
 RUN npm install
 
+COPY .dockerignore package*.json ./
+
 # Copy the rest of the application code to the working directory
 COPY . .
 

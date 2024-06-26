@@ -14,13 +14,24 @@
   <link rel="stylesheet" href="/css/styles.css">
   <title>Login</title>
   <link rel="icon" type="image/x-icon" href="/img/favi.png">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      flex: 1;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100">
 
   <%- include('../component/navbar.ejs') %>
 
-  <div class="flex flex-col md:flex-row my-16 items-center justify-center">
+  <div class="flex flex-col md:flex-row my-16 items-center justify-center content">
     <div class="md:w-1/2 w-full flex flex-col items-center p-6">
       <div class="text-4xl font-bold">LOGIN</div>
       <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">

@@ -385,6 +385,8 @@ exports.getCityFollow = (req, res, next) => {
     db.query(q, [cityID], (err, data) => {
       if (err) return res.status(500).json(err);
       // console.log("Check follow data :",data)
+      const currenttime = new Date();
+      
       const followdata = data.map(row => {
         return {
           ...row,
@@ -398,6 +400,11 @@ exports.getCityFollow = (req, res, next) => {
         const closeForm = moment(dataRound[0].close);
         openForm.hours(0).minutes(0).seconds(0).milliseconds(0);
         closeForm.hours(23).minutes(59).seconds(59).milliseconds(999);
+        if (currenttime >= openForm && currenttime < closeForm) {
+          req.session.isTime = true;
+        } else {
+          req.session.isTime = false;
+        }
 
         if (err) return res.status(500).json(err);
         res.render("city/follow", {

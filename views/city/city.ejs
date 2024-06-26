@@ -76,7 +76,7 @@
     </style>
 </head>
 
-<spanody class="font-th-sarabun">
+<body class="font-th-sarabun">
     <div id="spinner-container">
         <img id="static-image" src="/img/favi.png" alt="Loading...">
         <div id="spinner">
@@ -85,10 +85,11 @@
             <div class="dot"></div>
         </div>
     </div>
+    <%- include('../component/navbar.ejs') %>
     <div class="flex flex-col">
-        <div>
-            <%- include('../component/navbar.ejs') %>
-        </div>
+        
+            
+       
         <div>
             <img src="/img/bbj.png" alt="Banner Image" class="w-full">
         </div>
@@ -205,14 +206,14 @@
             </div>
             <div class="flex flex-wrap justify-around p-6 rounded-xl border-[#00B2A9] border-4 mt-5  ">
                 <div class="flex flex-col items-center m-4">
-                    <img src="/img/lo01.png" alt="Image 1" class="w-20 h-20">
+                    <img src="/img/ENV.png" alt="Image 1" class="w-20 h-20">
                     <div class="text-center text-lg">Smart Environment</div>
                     <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.ENV %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <img src="/img/lo04.png" alt="Image 2" class="w-20 h-20">
+                    <img src="/img/ENE.png" alt="Image 2" class="w-20 h-20">
                     <div class="text-center text-lg">Smart Energy</div>
 
                     <div class="mt-2 text-lg border-2  p-2 rounded-lg" >
@@ -221,14 +222,14 @@
                 </div>
                 <div class="flex flex-col items-center m-4">
                     
-                    <img src="/img/lo05.png" alt="Image 3" class="w-20 h-20">
+                    <img src="/img/ECO.png" alt="Image 3" class="w-20 h-20">
                     <div class="text-center text-lg">Smart Economy</div>
                     <div class="mt-2 text-lg border-2  p-2 rounded-lg">
                         <%= smartKeyCounts.ECO %> โครงการ
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <img src="/img/lo03.png" alt="Image 4" class="w-20 h-20">
+                    <img src="/img/MOB.png" alt="Image 4" class="w-20 h-20">
                     <div class="text-center text-lg ">Smart Mobility</div>
 
                     <div class="mt-2 text-lg border-2  p-2 rounded-lg">
@@ -236,7 +237,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <img src="/img/lo02.png" alt="Image 5" class="w-20 h-20">
+                    <img src="/img/GOV.png" alt="Image 5" class="w-20 h-20">
                     <div class="text-center text-lg">Smart Governance</div>
 
                     <div class="mt-2 text-lg border-2  p-2 rounded-lg">
@@ -244,7 +245,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <img src="/img/lo07.png" alt="Image 6" class="w-20 h-20">
+                    <img src="/img/PEO.png" alt="Image 6" class="w-20 h-20">
                     <div class="text-center text-lg">Smart People</div>
 
                     <div class="mt-2 text-lg border-2  p-2 rounded-lg">
@@ -252,7 +253,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center m-4">
-                    <img src="/img/lo06.png" alt="Image 7" class="w-20 h-20">
+                    <img src="/img/LIV.png" alt="Image 7" class="w-20 h-20">
                     <div class="text-center text-lg">Smart Living</div>
 
                     <div class="mt-2 text-lg border-2 p-2 rounded-lg">
@@ -475,8 +476,8 @@
                 html: '<style>.highlight { color: red; }</style>' +
                     message,
                 imageUrl: "/img/favi.png",
-                imageWidth: 100,
-                imageHeight: 100,
+                imageWidth: 200,
+                imageHeight: 200,
                 imageAlt: "Custom image",
                 confirmButtonText: 'OK',
                 customClass: {

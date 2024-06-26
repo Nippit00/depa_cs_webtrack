@@ -59,100 +59,77 @@
       </div>
     </div>  
         <!-- กราฟ  -->
-        <div class="flex flex-col justify-center mt-3">
-          <div class="flex flex-col md:flex-row justify-between mx-5 ">
-            <div class="md:w-1/4">
-              <%
-              let currentRound = Object.keys(JSON.parse(rounded)).length;
-              const initialRound = JSON.parse(rounded)[currentRound];
-              %>
-              <div class="grid grid-cols-2 gap-2">
-                <div class="flex  items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2<%= initialRound.smartkeycount.ENV ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo01.png" alt="ENV Image" style="width: 70px; height: 70px;">
-                  <div class="font-normal mt-2 text-xs">ENV (<%= initialRound.smartkeycount.ENV ?? '0' %>)</div>
-                </div>
-                <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.ENE ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo04.png" alt="ENE Image" style="width: 70px; height: 70px;">
-                  <span class="font-normal mt-2 text-xs">ENE (<%= initialRound.smartkeycount.ENE ?? '0' %>)</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.ECO ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo05.png" alt="ECO Image" style="width: 70px; height: 70px;">
-                  <span class="font-normal mt-2 text-xs">ECO (<%= initialRound.smartkeycount.ECO ?? '0' %>)</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.GOV ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo02.png" alt="GOV Image" style="width: 70px; height: 70px;">
-                  <span class="font-normal mt-2 text-xs">GOV (<%= initialRound.smartkeycount.GOV ?? '0' %>)</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.LIV ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo06.png" alt="LIV Image" style="width: 70px; height: 70px;">
-                  <span class="font-normal mt-2 text-xs">LIV (<%= initialRound.smartkeycount.LIV ?? '0' %>)</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.PEO ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo07.png" alt="PEO Image" style="width: 70px; height: 70px;">
-                  <span class="font-normal mt-2 text-xs">PEO (<%= initialRound.smartkeycount.PEO ?? '0' %>)</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.MOB ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo03.png" alt="MOB Image" style="width: 70px; height: 70px;">
-                  <span class="font-normal mt-2 text-xs">MOB (<%= initialRound.smartkeycount.MOB ?? '0' %>)</span>
-                </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- บริการเมืองอัจฉริยะ -->
+          <% const initialRound=JSON.parse(rounded)[Object.keys(JSON.parse(rounded)).length]; %>
+          <div class="card col-span-1">
+              <h3 class="section-title">บริการเมืองอัจฉริยะ : <span style="color: #2c7f97;">
+                  <%= Object.keys(initialRound.smartkeycount).length-1 %>
+              </span>
+              Smarts <br />จำนวนโครงการ : <span style="color: #d0a519;">
+                  <%= initialRound.count-4 %>
+              </span> โครงการ</h3>
+              <div class="grid grid-cols-3 gap-2">
+                  <!-- Icon blocks looped through initialRound.smartkeycount -->
+                  <% Object.entries(initialRound.smartkeycount).forEach(([key, count]) => { if(key==="PIF"||key==="DIF"){}
+                  else{%>
+                  <div class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= count ? '' : 'grayscale opacity-50' %>">
+                      <img src="/img/<%= key %>.png" alt="<%= key %> Image" style="width: 70px; height: 70px;">
+                      <span class="font-normal mt-2"><%= key %> (<%= count ?? '0' %>)</span>
+                  </div>
+                  <% }}) %>
               </div>
-   
-            </div>
-           
-              <div class="text-center bg-slate-50 p-5 rounded-xl">
-                <h3 class="">ความคืบหน้าของโครงการตามแผน</h3>
-                <div class="chart-container">
-                  <canvas id="progressChart"></canvas>
-                </div>
-                <div class="chart-container">
-                  <canvas id="avgprogress"></canvas>
-                </div>
-              </div>
-              <!-- ค่าเฉลี่ยความสำเร็จ -->
-              <div class="text-center bg-slate-50 p-5 rounded-xl">
-                <h3 class="">ค่าเฉลี่ย % ของความสำเร็จ</h3>
-                <div class="chart-container">
-                  <canvas id="successChart"></canvas>
-                </div>
-                <div class="chart-container">
-                  <canvas id="stackedBarChart"></canvas>
-                </div>
-              </div>
-             
-            
           </div>
-          <!-- ความคืบหน้าโครงการ -->
-           <div class="flex flex-col  md:flex-row ">
-            <div class="mb-5 md:w-1/3">
-              <h3 class=" text-center mt-5">ปัญหาและอุปสรรค</h3>
-              <div class="chart-container">
-                <canvas id="problemsChart"></canvas>
+          <!-- กราฟ -->
+          <div class="card col-span-1 lg:col-span-2">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <!-- ความคืบหน้าโครงการ -->
+                  <div class="text-center">
+                      <h3 class="section-title ">ความคืบหน้าของโครงการตามแผน</h3>
+                      <div class="chart-container">
+                          <canvas id="progressChart"></canvas>
+                      </div>
+                      <div class="chart-container">
+                          <canvas id="avgprogress"></canvas>
+                      </div>
+                  </div>
+                  <!-- ค่าเฉลี่ยความสำเร็จ -->
+                  <div class="text-center">
+                      <h3 class="section-title">ค่าเฉลี่ย % ความสำเร็จของ</h3>
+                      <div class="chart-container">
+                          <canvas id="successChart"></canvas>
+                      </div>
+                      <div class="chart-container">
+                          <canvas id="stackedBarChart"></canvas>
+                      </div>
+                  </div>
               </div>
-            </div>
-            <div class="w-full">
-            
-              <div class="overflow-scroll h-52 border-2 border-sky-100 bg-sky-100 p-3 rounded-xl m-5 ">
-               <div class="section-title">โครงการที่สำเร็จ</div>
-                 <ul class="list-disc pl-5 space-y-2">
-                   <% initialRound.complete.forEach(item => { %>
-                   <li><%= item %></li>
-                   <% }) %>
-                 </ul>
-             </div>
-            </div>
-             
-           </div>
-           
-           
-          
-        </div>
+          </div>
+          <!-- problem -->
+          <div class="col-span-1 lg:col-span-1">
+              <h3 class="section-title" style="text-align: center;">ปัญหาและอุปสรรค</h3>
+              <div class="chart-container w-full">
+                  <canvas id="problemsChart" class="w-full"></canvas>
+              </div>
+          </div>
+          <!-- โครงการที่สำเร็จ -->
+          <div class="col-span-1 lg:col-span-2 overflow-scroll h-52 border-2 border-sky-100 bg-sky-100 p-3 rounded-xl m-5">
+              <div class="section-title">โครงการที่สำเร็จ</div>
+              <ul class="list-disc pl-5 space-y-2">
+                  <% initialRound.complete.forEach(item => { %>
+                  <li><%= item %></li>
+                  <% }) %>
+              </ul>
+          </div>
+      </div>
+      
         
         
        
     
   </div>
 
-  <div class="text-center mt-5 flex flex-col md:flex-row md:justify-center items-center ">
+  <div class="text-center mt-5 flex flex-col md:flex-row md:justify-center items-center hidden lg:flex ">
     <div><span class="text-red-600 font-semibold">*** โปรดอ่าน:</span></div> 
     <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-red-500"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</div> 
     <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-yellow-500"></span></span> หมายถึงฉบับร่าง -</div> 
@@ -162,7 +139,7 @@
   </div>
 
   <!-- Project Items Section -->
-  <div class="max-w-dvh mx-8 my-10 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400">
+  <div class="max-w-dvh mx-8 my-10 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 hidden lg:block">
     <h6 class="text-white text-2xl font-bold text-center mb-5">หัวข้อโครงการ</h6>
     <div class="grid grid-cols-2 sm:grid-cols-11 gap-4 items-center">
       <% const projectItems = [
@@ -203,10 +180,11 @@
     </div>
     
   </div>
+  </div>
 
 
 
-  
+  </div>
 
   <%- include('../component/footer.ejs') %>
 </body>
@@ -408,7 +386,7 @@ const progressChart = new Chart(progressCtx, {
     labels: ['ยังไม่ดำเนินการ', 'ดำเนินการแล้ว'],
     datasets: [{
       data: [100 - initialRound.progress, initialRound.progress],
-      backgroundColor: ['#eeeeee', '#FF0000'],
+      backgroundColor: ['#eeeeee', '#36BA98'],
       borderWidth: 6,
       borderColor: '#ffffff'
     }]
@@ -420,7 +398,8 @@ const progressChart = new Chart(progressCtx, {
         color: '#fff',
         font: {
           weight: 'bold',
-          size: 16
+          size: 16,
+          family: "'Sarabun', sans-serif"
         },
         align: 'center',
         anchor: 'center'
@@ -471,7 +450,7 @@ const successChart = new Chart(successCtx, {
     labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
     datasets: [{
       data: [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100],
-      backgroundColor: ['#eeeeee', '#00f0d8'],
+      backgroundColor: ['#eeeeee', '#37B7C3'],
       borderWidth: 6,
       borderColor: '#ffffff'
     }]
@@ -482,7 +461,8 @@ const successChart = new Chart(successCtx, {
         formatter: (value) => `${value.toFixed(0)}%`,
         color: '#fff',
         font: {
-          weight: 'bold'
+          weight: 'bold',
+          family: "'Sarabun', sans-serif"
         }
       },
       tooltip: {
@@ -563,7 +543,7 @@ const stackedBarChart = new Chart(stackedBarCtx, {
     datasets: [{
       label: 'โครงการที่สำเร็จแล้ว ',
       data: Object.values(initialRound.success),
-      backgroundColor: '#00f0d8'
+      backgroundColor: '#37B7C3'
     },
     {
       label: 'โครงการที่ยังไม่สำเร็จ',
@@ -596,7 +576,8 @@ const stackedBarChart = new Chart(stackedBarCtx, {
         display: true,
         color: '#000',
         font: {
-          weight: 'bold'
+          weight: 'bold',
+          family: "'Sarabun', sans-serif"
         },
         formatter: (value, context) => value === 0 ? null : value
       }
@@ -627,7 +608,7 @@ label: label,
 
 function colorFromValue(value, border) {
       var alpha = value / 100;
-      var color = "red";
+      var color = "#36BA98";
       if (border) {
           alpha += 0.1;
         }
@@ -665,6 +646,7 @@ options: {
       font: {
         weight: 'bold',
         size: 14,
+        family: "'Sarabun', sans-serif"
       },
     },
     tooltip: {
