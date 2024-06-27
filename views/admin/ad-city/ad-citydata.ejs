@@ -203,37 +203,37 @@
               <div class="grid grid-cols-4 gap-4 ">
                 <div
                   class="flex  items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2<%= initialRound.smartkeycount.ENV ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo01.png" alt="ENV Image" style="width: 70px; height: 70px;">
+                  <img src="/img/ENV.png" alt="ENV Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">ENV (<%= initialRound.smartkeycount.ENV ?? '0' %>)</span>
                 </div>
                 <div
                   class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.ENE ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo04.png" alt="ENE Image" style="width: 70px; height: 70px;">
+                  <img src="/img/ENE.png" alt="ENE Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">ENE (<%= initialRound.smartkeycount.ENE ?? '0' %>)</span>
                 </div>
                 <div
                   class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.ECO ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo05.png" alt="ECO Image" style="width: 70px; height: 70px;">
+                  <img src="/img/ECO.png" alt="ECO Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">ECO (<%= initialRound.smartkeycount.ECO ?? '0' %>)</span>
                 </div>
                 <div
                   class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.GOV ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo02.png" alt="GOV Image" style="width: 70px; height: 70px;">
+                  <img src="/img/GOV.png" alt="GOV Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">GOV (<%= initialRound.smartkeycount.GOV ?? '0' %>)</span>
                 </div>
                 <div
                   class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.LIV ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo06.png" alt="LIV Image" style="width: 70px; height: 70px;">
+                  <img src="/img/LIV.png" alt="LIV Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">LIV (<%= initialRound.smartkeycount.LIV ?? '0' %>)</span>
                 </div>
                 <div
                   class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.PEO ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo07.png" alt="PEO Image" style="width: 70px; height: 70px;">
+                  <img src="/img/PEO.png" alt="PEO Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">PEO (<%= initialRound.smartkeycount.PEO ?? '0' %>)</span>
                 </div>
                 <div
                   class="flex items-center justify-center space-x-2 flex-col border-[1px] rounded-md border-inherit border-solid py-2 <%= initialRound.smartkeycount.MOB ? '' : 'grayscale opacity-50' %>">
-                  <img src="/img/lo03.png" alt="MOB Image" style="width: 70px; height: 70px;">
+                  <img src="/img/MOB.png" alt="MOB Image" style="width: 70px; height: 70px;">
                   <span class="font-normal mt-2">MOB (<%= initialRound.smartkeycount.MOB ?? '0' %>)</span>
                 </div>
                 <div class="col-span-4 w-full ">
@@ -306,7 +306,7 @@
               
               <tr class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900 flex items-center">
+                  <div class="text-md text-gray-900 flex items-center">
                     
                     <span>  <%= smartItem.smart === 'City Data Platform' ? smartItem.smart : 'smart ' + smartItem.smart %></span>
                     <% if(smartItem.status==3){%>
@@ -318,9 +318,9 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <% if(smartItem.Progress==100){ %>
-                    <div class="text-sm text-green-500">
+                    <div class="text-md text-green-500">
                   <%} else{%>   
-                    <div class="text-sm text-blue-500"> 
+                    <div class="text-md text-blue-500"> 
                   <%} %>
                   <% if (smartItem.solutionID.includes("CDP01")) { %> 
                     <a href="/ad_formcdp1/<%=smartItem.solutionID%>">
@@ -442,7 +442,7 @@
       datasets: [{
         data: [100 - initialRound.progress, initialRound.progress],
         // data: [1, 99],
-        backgroundColor: ['#eeeeee', 'red'],
+        backgroundColor: ['#eeeeee', '#36BA98'],
         borderWidth: 6,
         borderColor: '#ffffff'
       }]
@@ -521,7 +521,7 @@
       labels: ['ยังไม่สำเร็จ', 'สำเร็จแล้ว'],
       datasets: [{
         data: [(unsuccessfulProjects / totalProjects) * 100, (successProjects / totalProjects) * 100],
-        backgroundColor: ['#eeeeee', '#FFCE56'],
+        backgroundColor: ['#eeeeee', '#37B7C3'],
         borderWidth: 6,
         borderColor: '#ffffff'
       }]
@@ -614,7 +614,7 @@ options: {
       datasets: [{
           label: 'โครงการที่สำเร็จแล้ว',
           data: Object.values(initialRound.success),
-          backgroundColor: '#FFCE56'
+          backgroundColor: '#37B7C3'
         },
         {
           label: 'โครงการที่ยังไม่สำเร็จ',
@@ -655,87 +655,76 @@ options: {
     },
     plugins: [ChartDataLabels]
   });
-  // console.log(initialRound.averageProgressPerSmart)
-  
- //treemap
+ // Context for the chart
  const avgProgressCtx = document.getElementById('avgprogress').getContext('2d');
 
+// Get entries from data source
 const entries = Object.entries(initialRound.averageProgressPerSmart);
 
-// จัดเรียงอาร์เรย์ตามค่า value
+// Sort entries by value
 const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
 
-// แปลงอาร์เรย์ที่จัดเรียงแล้วกลับเป็นวัตถุ (ถ้าต้องการ)
+// Convert sorted array back to object if necessary
 const sortedObject = Object.fromEntries(sortedEntries);
 
+// Extract labels and data from the sorted object
 const labels = Object.keys(sortedObject);
 const data = Object.values(sortedObject);
-const treemapData = labels.map((label, index) => (
-{
-v: data[index],
-label: label,
 
-}));
+// Function to determine color based on value
+function colorFromValue(value) {
+    var alpha = value / 100;
+    return `rgba(54, 186, 152, ${alpha})`; // Use a single color with opacity based on value
+}
 
-function colorFromValue(value, border) {
-      var alpha = value / 100;
-      var color = "red";
-      if (border) {
-          alpha += 0.1;
-        }
-      return Chart.helpers.color(color)
-          .alpha(alpha)
-          .rgbString();
-  }
-
-
+// Creating the bar chart
 const avgProgressChart = new Chart(avgProgressCtx, {
-type: 'treemap',
-data: {
-  datasets: [
-    {
-      label: "ความคืบหน้าโครงการตามแผน",
-      data: data,
-      backgroundColor: function (ctx) {
-                      return colorFromValue(ctx.dataset.data[ctx.dataIndex].v);
-                  },
-      borderColor: function (ctx) {
-                      return colorFromValue(ctx.dataset.data[ctx.dataIndex].v, true);
-                  },
-      borderWidth: 2,
-      spacing: 0.1,
+    type: 'bar',
+    data: {
+        labels: labels, // Assigning labels to the X axis
+        datasets: [{
+            label: "ความคืบหน้าโครงการตามแผน",
+            data: data, // Values for each bar
+            backgroundColor: data.map(value => colorFromValue(value)), // Dynamic background color
+            borderColor: data.map(value => colorFromValue(value, true)), // Border color slightly darker than the fill color
+            borderWidth: 1
+        }]
     },
-  ],
-},
-options: {
-  plugins: {
-    datalabels: {
-      formatter: (value, context) => labels[context.dataIndex],
-      color: '#000',
-      align: 'center',
-      anchor: 'center',
-      font: {
-        weight: 'bold',
-        size: 14,
-      },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true // Start the y-axis at 0
+            }
+        },
+        plugins: {
+            datalabels: {
+                formatter: (value, context) => `${value}%`, // Adding '%' sign to the datalabels
+                color: '#000',
+                align: 'center',
+                anchor: 'center',
+                font: {
+                    weight: 'bold',
+                    size: 14
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context) => `ค่าเฉลี่ยความสำเร็จ: ${context.raw}%` // Customizing tooltip
+                }
+            }
+        },
+        maintainAspectRatio: false,
+        title: {
+            display: true,
+            text: 'Basic Bar Chart Sample'
+        },
+        legend: {
+            display: false
+        }
     },
-    tooltip: {
-      callbacks: {
-        label: (context) => `ค่าเฉลี่ยความสำเร็จ: ${context.raw.v}%`,
-      },
-    },
-  },
-  maintainAspectRatio: false,
-  title: {
-    display: true,
-    text: 'Basic Treemap Sample',
-  },
-  legend: {
-    display: false,
-  },
-},
-plugins: [ChartDataLabels],
+    plugins: [ChartDataLabels]
 });
+
 
 </script>
 
@@ -802,22 +791,23 @@ function updateCharts(roundData) {
     stackedBarChart.update();
 
     // Update the average progress chart (Treemap)
-    updateTreemap(roundData);
+    updatebar(roundData);
 }
 
-function updateTreemap(roundData) {
+function updatebar(roundData) {
     const entries = Object.entries(roundData.averageProgressPerSmart || {});
     const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
     const sortedObject = Object.fromEntries(sortedEntries);
 
     const labels = Object.keys(sortedObject);
     const data = Object.values(sortedObject);
-    avgProgressChart.data.datasets[0].data = data.map((value, index) => {
-        return {v: value || 0, label: labels[index]}; // Ensure 'v' is never undefined
-    });
 
+    // Update data for the bar chart
+    avgProgressChart.data.labels = labels;
+    avgProgressChart.data.datasets[0].data = data;
     avgProgressChart.update();
 }
+
 
 
 

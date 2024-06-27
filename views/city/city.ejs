@@ -195,7 +195,7 @@
             </div>
             <div class="w-full lg:w-1/2 p-5 lg:p-20">
                 <div class="map-container">
-                    <img src="/cityPic/<%= cityInfo.cityID %>.png" id="mapImage" class="w-full">
+                    <img src="/cityPic/<%= cityInfo.cityID %>.png" id="mapImage" class="w-full lg:h-96">
                 </div>
             </div>
         </div>
@@ -443,33 +443,6 @@
                             <div>ภายในวันที่ ${announcementDuration.twoYearsLaterFormatThai} <span class="highlight">
                             <span class="highlight">เหลืออีก (${yearsTextReport}${monthsTextReport}${daysTextReport.trim()})</span></div> `;
             }
-
-            /*if (currentDate.toDateString() === fifteenDaysBeforeClose.toDateString()) {
-                let csrfToken = '<%= csrfToken %>'; 
-                let cityID = '<%=cityInfo.cityID%>';
-                fetch('/notification/postnoti', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json', // Ensure the content type is set for JSON
-                        'X-CSRF-Token': csrfToken // Include the CSRF token in the headers
-                    },
-                    body: JSON.stringify({
-                        cityID: cityID,
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Notification sent successfully:', data);
-                })
-                .catch((error) => {
-                    console.error('Error sending notification:', error);
-                });
-            }*/
-            
-            
-
-
-
 
             Swal.fire({
                 title: 'ช่วงเวลากรอกฟอร์ม / อัพโหลดไฟล์',

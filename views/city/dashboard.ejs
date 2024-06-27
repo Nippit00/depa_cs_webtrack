@@ -62,7 +62,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- บริการเมืองอัจฉริยะ -->
           <% const initialRound=JSON.parse(rounded)[Object.keys(JSON.parse(rounded)).length]; %>
-          <div class="card col-span-1">
+          <div class="card col-span-1 lg:ml-3">
               <h3 class="section-title">บริการเมืองอัจฉริยะ : <span style="color: #2c7f97;">
                   <%= Object.keys(initialRound.smartkeycount).length-1 %>
               </span>
@@ -129,7 +129,7 @@
     
   </div>
 
-  <div class="text-center mt-5 flex flex-col md:flex-row md:justify-center items-center hidden lg:flex ">
+  <div class="text-center mt-10 flex flex-col md:flex-row md:justify-center items-center hidden lg:flex lg:text-lg">
     <div><span class="text-red-600 font-semibold">*** โปรดอ่าน:</span></div> 
     <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-red-500"></span></span> หมายถึง ยังไม่ทำการกรอกฟอร์ม -</div> 
     <div><span class="text-black">สถานะ <span class="inline-block w-4 h-4 rounded-full bg-yellow-500"></span></span> หมายถึงฉบับร่าง -</div> 

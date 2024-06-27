@@ -45,20 +45,13 @@
     function countComplete(data) {
       let count2 = 0;
       followdata.forEach((item) => {
-        if (item.smartKey === data && item.status === 2||item.status===3) {
-          count2++;
+        if (item.smartKey === data) {
+          if(item.status === 2||item.status===3){
+            count2++;
+          }
         }
       });
       return count2;
-    }
-    function countCompleteRound2(data) {
-      let count3 = 0;
-      followdata.forEach((item) => {
-        if (item.smartKey === data && item.status_round2 === 2) {
-          count3++;
-        }
-      });
-      return count3;
     }
     %>
     <%
@@ -131,7 +124,6 @@
                     <div class="p-2 col-span-1 bg-gray-100 rounded-md text-center">
                       <% const count = countEcoSolutions(section) %>
                       <% const countSuccess = countComplete(section) %>
-                      <% const countSuccessRound2 = countCompleteRound2(section) %>
                       <%= countSuccess %>/<%= count %>
                     </div>
                   </div>
