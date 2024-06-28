@@ -313,59 +313,42 @@ exports.getAddCity = (req, res, next) => {
   });
 };
 
-exports.postAddCity = (req, res, next) => {
+exports.postAddCity = async (req, res, next) => {
   const {
-    cityID,
-    province,
-    cityName,
-    date,
-    developer,
-    executive,
-    government_investment,
-    private_investment,
-    username,
-    password,
-    password2,
-    LAT,
-    LNG,
-    region,
+      cityID,
+      province,
+      cityName,
+      date,
+      developer,
+      executive,
+      government_investment,
+      private_investment,
+      username,
+      password,
+      password2,
+      LAT,
+      LNG,
+      region,
   } = req.body;
 
   if (password !== password2) {
-    return res.status(400).send("Passwords do not match");
+      return res.status(400).send("Passwords do not match");
   }
 
-  db.query("SELECT * FROM admininfo WHERE AdminUsername = ?", [username], (adminUsernameError, adminUsernameResult) => {
-    if (adminUsernameError) {
-      console.error("Error checking admin username:", adminUsernameError);
-      return res.status(500).send("Internal Server Error");
-    }
-
-    if (adminUsernameResult.length > 0) {
-      // Admin username already exists
-      return res.status(400).send("Admin username already exists");
-    }
-
-    db.query("SELECT * FROM citydata WHERE username = ?", [username], (usernameError, usernameResult) => {
-      if (usernameError) {
-        console.error("Error checking username:", usernameError);
-        return res.status(500).send("Internal Server Error");
+  try {
+      const adminUsernameExists = await queryDatabase("SELECT * FROM admininfo WHERE AdminUsername = ?", [username]);
+      if (adminUsernameExists.length > 0) {
+          return res.status(400).send("Admin username already exists");
       }
 
-      if (usernameResult.length > 0) {
-        // Username already exists
-        return res.status(400).send("Username already exists");
+      const usernameExists = await queryDatabase("SELECT * FROM citydata WHERE username = ?", [username]);
+      if (usernameExists.length > 0) {
+          return res.status(400).send("Username already exists");
       }
 
-      // ใช้ bcrypt เพื่อเข้ารหัส password
-      bcrypt.hash(password, 10, (err, hashedPassword) => {
-        if (err) {
-          console.error("Error hashing password:", err);
-          return res.status(500).send("Internal Server Error");
-        }
-
-        // เตรียมข้อมูลสำหรับการเพิ่มเข้าฐานข้อมูล
-        const cityData = {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      const cityData = {
           cityID,
           province,
           date,
@@ -374,73 +357,50 @@ exports.postAddCity = (req, res, next) => {
           government_investment,
           private_investment,
           username,
-          password: hashedPassword, // ใช้รหัสที่เข้ารหัสแล้ว
+          password: hashedPassword,
           LAT,
           LNG,
-          region, // เพิ่ม region ลงในฐานข้อมูลด้วย
-        };
+          region,
+      };
 
-        // เพิ่มข้อมูลลงในตาราง citydata
-        db.query("INSERT INTO citydata SET ?", cityData, (error, result) => {
-          if (error) {
-            console.error("Error inserting city data:", error);
-            return res.status(500).send("Internal Server Error");
-          }
-          console.log("City data added successfully");
+      await queryDatabase("INSERT INTO citydata SET ?", cityData);
 
-          // เตรียมข้อมูลสำหรับการเพิ่มข้อมูลลงในตาราง city_home
-          const cityHomeData = {
-            cityID,
-            cityName,
-          };
+      const cityHomeData = {
+          cityID,
+          cityName,
+      };
 
-          // เพิ่มข้อมูลลงในตาราง city_home
-          db.query("INSERT INTO city_home SET ?", cityHomeData, (homeError, homeResult) => {
-            if (homeError) {
-              console.error("Error inserting city home data:", homeError);
-              return res.status(500).send("Internal Server Error");
-            }
-            const checkRound="SELECT * FROM `Round` WHERE Date=?"
-            db.query(checkRound,[date],(err,result)=>{
-              if (err) {
-                console.error("Error inserting city home data:", homeError);
-                return res.status(500).send("Internal Server Error");
-              }
-              if(result.length>0){
-                console.log("City home data added successfully");
+      await queryDatabase("INSERT INTO city_home SET ?", cityHomeData);
 
-                      // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
-                      res.render("admin/ad-city/ad-addCity", {
-                        pageTitle: "add",
-                        path: "/",
-                        success: true,
-                      });
-              }
-              else{
-                const insertRound="INSERT INTO `Round`(`Date`, `open`, `close`, `round`) VALUES (?,?,?,?)"
-                db.query(insertRound,[date,'2020-06-20','2020-06-20',1],(err,rounde)=>{
-                  if (err) {
-                    console.error("Error inserting city home data:", homeError);
-                    return res.status(500).send("Internal Server Error");
-                  }
-                  console.log("City home data added successfully");
+      const roundExists = await queryDatabase("SELECT * FROM `Round` WHERE Date=?", [date]);
+      if (roundExists.length === 0) {
+          await queryDatabase("INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, '2020-06-20', '2020-06-20', 1)", [date]);
+      }
 
-                      // ตอบกลับหลังจากทำการเพิ่มข้อมูลทั้งสองตารางแล้ว
-                      res.render("admin/ad-city/ad-addCity", {
-                        pageTitle: "add",
-                        path: "/",
-                        success: true,
-                      });
-                })
-              }
-            })
-                      
-          });
-        });
+      res.render("admin/ad-city/ad-addCity", {
+          pageTitle: "add",
+          path: "/",
+          success: true,
       });
-    });
-  });
+  } catch (error) {
+      console.error("Database operation failed:", error);
+      return res.status(500).send("Internal Server Error");
+  }
 };
+
+// Utility function to handle database queries with promise support
+function queryDatabase(query, params) {
+  return new Promise((resolve, reject) => {
+      db.query(query, params, (error, results) => {
+          if (error) {
+              reject(error);
+          } else {
+              resolve(results);
+          }
+      });
+  });
+}
+
 
 exports.getEditProvince = (req, res, next) => {
   // console.log(req.params);

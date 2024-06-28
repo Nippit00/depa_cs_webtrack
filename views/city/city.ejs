@@ -102,13 +102,9 @@
         </div>
         <div class="flex flex-col lg:flex-row justify-around mt-10 mx-auto">
             <div class="w-full  lg:w-1/2 p-5 lg:p-20">
-                <h4 class="text-2xl font-medium md:mb-">
-                    <span class="text-teal-600">
-                        <%= cityInfo.cityName %>
-                    </span>
-                </h4>
+             
                 <div class="my-3  ">
-                    <span class="text-lg text-gray-700 font-medium">รายชื่อข้อเสนอแผนพัฒนาเมืองอัจฉริยะ: </span>
+                    <span class="text-lg text-gray-700 font-medium">ชื่อแผนเมืองอัจฉริยะ: </span>
                     <span class="text-teal-600">
                         <%= cityInfo.cityName %>
                     </span>
@@ -175,10 +171,10 @@
                 </div>
                 <% } %>
                 <div class="my-3">
-                    <% if (cityInfo.executive && cityInfo.executive.includes('ผู้ว่าราชการจังหวัด')) { %>
+                    <% if (1) { %>
                     <% if (province.length > 0) { %>
                     <div class="flex items-start">
-                        <div class="text-lg text-gray-700 font-medium">โครงการในจังหวัด : </div>
+                        <div class="text-lg text-gray-700 font-medium">Smart Cityในจังหวัด : </div>
                         <div class="text-lg">
                             <% province.forEach(item => { %>
                             <div>

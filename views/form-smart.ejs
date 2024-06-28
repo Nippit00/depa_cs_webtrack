@@ -163,8 +163,8 @@
                         'selected' : '' %>>ตามแผน</option>
                     <option value="เร็วกว่าแผน" <%=(dataOld.find(d=> d.questionID == '1')?.ans ?? '') === 'เร็วกว่าแผน'
                         ? 'selected' : '' %>>เร็วกว่าแผน</option>
-                    <option value="ยกเลิก" <%=(dataOld.find(d=> d.questionID == '1')?.ans ?? '') === 'ยกเลิก' ?
-                        'selected' : '' %>>ยกเลิก</option>
+                        <option value="ปรับแผน" <%=(dataOld.find(d=> d.questionID == '1')?.ans ?? '') === 'ปรับแผน' ?'selected' : '' %>>ขอปรับแผน</option>
+                    <option value="ยกเลิก" <%=(dataOld.find(d=> d.questionID == '1')?.ans ?? '') === 'ยกเลิก' ?'selected' : '' %>>ขอยกเลิก</option>
                 </select>
             </div>
 
@@ -377,21 +377,14 @@
                                 <label for="<%= item.kpiID %>" class="block text-teal-600 font-medium mt-5 text-xl">
                                     <%= item.kpiName %>: <span class="text-red-500">*</span>
                                 </label>
-                                <% if (item.goal==0) { %>
-                                    <label class="mr-4">Yes</label>
-                                    <input type="radio" name="<%= item.kpiID %>" value="Yes" <%=item.ans==='Yes'
-                                        ? 'checked' : '' %> class="mr-4">
-                                    <label class="mr-4">No</label>
-                                    <input type="radio" name="<%= item.kpiID %>" value="No" <%=item.ans==='No'
-                                        ? 'checked' : '' %> class="mr-4">
-                                    <% } else { %>
+                               
                                        
                                         <input type="number" placeholder="<%= item.unit %>" id="A<%= item.kpiID %>"
                                             name="<%= item.kpiID %>" step="0.01"
                                             value="<%= item.ans %>"
                                             class="block w-full p-2 border rounded-md">
                                        
-                                        <% } %>
+                                  
                             </div>
                             <% }); %>
                     </div>
@@ -431,7 +424,7 @@
         const kpiFields = document.getElementById('KPI-Containner').querySelectorAll('input');
         const status = document.getElementById('status').value;
 
-        if (status !== 'ยกเลิก') {
+        if (status !== 'ยกเลิก'||status !== 'ปรับแผน') {
             requiredFields.forEach(field => {
                 const element = field;
                 if (element && !element.value.trim()) {
