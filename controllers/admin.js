@@ -388,7 +388,6 @@ exports.postAddCity = async (req, res, next) => {
   }
 };
 
-// Utility function to handle database queries with promise support
 function queryDatabase(query, params) {
   return new Promise((resolve, reject) => {
       db.query(query, params, (error, results) => {
@@ -400,7 +399,6 @@ function queryDatabase(query, params) {
       });
   });
 }
-
 
 exports.getEditProvince = (req, res, next) => {
   // console.log(req.params);
@@ -554,9 +552,6 @@ exports.postAddSolution = (req, res, next) => {
     });
   });
 };
-
-
-
 
 exports.getEditSolution = (req, res, next) => {
   // console.log(req.params);
