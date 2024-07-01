@@ -1,24 +1,40 @@
-version: '2'
-services:
-  data:
-    container_name: flask_data
-    image: mysql:latest
-    volumes:
-      - mysql_data:/var/lib/mysql
-    command: "true"
+version: '3.8'
 
-  mysql:
-    container_name: flask_mysql
-    restart: always
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: 'test_pass' # TODO: Change this
-      MYSQL_USER: 'test'
-      MYSQL_PASSWORD: 'pass' # Fixed the key here
-    volumes:
-      - mysql_data:/var/lib/mysql
+services:
+  node-app:
+    build: .
     ports:
-      - "3306:3306"
+      - "8888:8888"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=example
+      - DB_NAME=mydatabase
+
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: mydatabase
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+    - ./php-config/php.ini:/usr/local/etc/php/php.ini
+      
 
 volumes:
-  mysql_data:
+  db_data:
