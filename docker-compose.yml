@@ -12,7 +12,7 @@ services:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=example
-      - DB_NAME=mydatabase
+      - DB_NAME=EvaluationSheet
 
   db:
     image: mysql:5.7
