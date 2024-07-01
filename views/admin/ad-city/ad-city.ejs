@@ -22,7 +22,7 @@
                     <th class="py-2 px-4">เมือง</th>
                     <th class="py-2 px-4">วันที่</th>
                     <th class="py-2 px-4">หน่วยงานผู้พัฒนา</th>
-                    <th class="py-2 px-4">ผู้บริหาร</th>
+                   
                     <th class="py-2 px-4">ลงทุนของรัฐ</th>
                     <th class="py-2 px-4">ลงทุนเอกชน</th>
                 </tr>
@@ -34,7 +34,7 @@
                     <td class="py-2 px-4 border-1 border-r border-l"><%= city.province %></td>
                     <td class="py-2 px-4 border-1 border-r border-l "><%= city.date.toISOString().slice(0, 10) %></td>
                     <td class="py-2 px-4 break-words border-1 border-r border-l"><%= city.developer %></td>
-                    <td class="py-2 px-4 break-words border-1 border-r border-l"><%= city.executive %></td>
+                    
                     <td class="py-2 px-4 text-center border-1 border-r border-l">
                         <% if (city.government_investment === 0) { %>
                             0 บาท

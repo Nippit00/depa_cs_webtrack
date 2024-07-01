@@ -106,7 +106,7 @@ exports.getHistoryPage = (req, res, next) => {
 //get city ad-city
 exports.getAdCityP = (req, res, next) => {
   const q =
-    "SELECT `cityID`, `province`, `date`, `developer`, `executive`, `government_investment`, `private_investment`,`LAT`, `LNG` FROM `citydata` WHERE 1";
+    "SELECT `cityID`, `province`, `date`, `developer`,  `government_investment`, `private_investment`,`LAT`, `LNG` FROM `citydata` WHERE 1";
   try {
     db.query(q, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -320,7 +320,7 @@ exports.postAddCity = async (req, res, next) => {
       cityName,
       date,
       developer,
-      executive,
+   
       government_investment,
       private_investment,
       username,
@@ -353,7 +353,7 @@ exports.postAddCity = async (req, res, next) => {
           province,
           date,
           developer,
-          executive,
+          
           government_investment,
           private_investment,
           username,
@@ -403,7 +403,7 @@ function queryDatabase(query, params) {
 exports.getEditProvince = (req, res, next) => {
   // console.log(req.params);
   const q =
-    "SELECT citydata.cityID, citydata.province, citydata.date, citydata.developer, citydata.executive, citydata.government_investment, citydata.private_investment, citydata.LAT, citydata.LNG FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
+    "SELECT citydata.cityID, citydata.province, citydata.date, citydata.developer, citydata.government_investment, citydata.private_investment, citydata.LAT, citydata.LNG FROM citydata JOIN city_home ON citydata.cityID = city_home.cityID WHERE citydata.cityID = ?;";
   try {
     db.query(q, [req.params.cityID], (err, data) => {
       if (err) return res.status(500).json(err);
@@ -552,6 +552,9 @@ exports.postAddSolution = (req, res, next) => {
     });
   });
 };
+
+
+
 
 exports.getEditSolution = (req, res, next) => {
   // console.log(req.params);

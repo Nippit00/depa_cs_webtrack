@@ -140,7 +140,7 @@
 
   <!-- Project Items Section -->
   <div class="max-w-dvh mx-8 my-10 bg-gray-400 p-5 rounded-xl shadow-md border-2 border-teal-400 hidden lg:block">
-    <h6 class="text-white text-2xl font-bold text-center mb-5">หัวข้อโครงการ</h6>
+    <h6 class="text-white text-2xl font-bold text-center mb-5">สรุปสถานะรายงาน</h6>
     <div class="grid grid-cols-2 sm:grid-cols-11 gap-4 items-center">
       <% const projectItems = [
           { id: 10, imgSrc: "/img/favi.png", alt: "Image 0", title: "โครงสร้างพื้นฐานกายภาพ" },
@@ -218,9 +218,10 @@
           count++;
       }
       }
+
       
     });
-    return count > 0 ? totalSuccess / count : 0;
+    return totalSuccess;
   }
 
   function calculateAverageProgress(dataArray, smartKey) {
@@ -319,7 +320,7 @@
   html += `
     <div class="grid grid-cols-8 hover:bg-gray-100">
       <div class="p-5 border-b-2 col-span-4">รวม</div>
-      <div class="p-5 border-b-2">${(averageSuccess * 100).toFixed(0)}%</div>
+      <div class="p-5 border-b-2">${averageSuccess }</div>
       <div class="p-5 border-b-2">${(averageProgress * 100).toFixed(0)}%</div>
       <div class="p-5 border-b-2"></div>
       <div class="p-5 border-b-2"></div>

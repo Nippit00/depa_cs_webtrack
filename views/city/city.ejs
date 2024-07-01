@@ -109,6 +109,18 @@
                         <%= cityInfo.cityName %>
                     </span>
                 </div>
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">วิศัยทัศน์ :</span>
+                    <span class="text-teal-600">
+                        <%= cityInfo.Vision %>
+                    </span>
+                </div>
+                <div class="my-3">
+                    <span class="text-lg text-gray-700 font-medium">ประเภทพื้นที่ :</span>
+                    <span class="text-teal-600">
+                        <%= cityInfo.CoverageArea %>
+                    </span>
+                </div>
                 <div class="my-3 ">
                     <span class="text-lg text-gray-700 font-medium">จังหวัด:</span>
                     <span class="text-teal-600">
@@ -144,12 +156,7 @@
                         <%= announcementDuration.twoYearsLaterFormatted %>
                     </span>
                 </div>
-                <div class="my-3">
-                    <span class="text-lg text-gray-700 font-medium">ผู้บริหารของหน่วยงาน :</span>
-                    <span class="text-teal-600">
-                        <%= cityInfo.executive %>
-                    </span>
-                </div>
+               
                 <div class="my-3">
                     <span class="text-lg text-gray-700 font-medium">มูลค่าการลงทุน :</span>
                     <span class="text-teal-600">
@@ -361,8 +368,8 @@
             if(currentDate >= openForm && currentDate <= closeForm)  {
                     if(yearsText == 0 && monthsText == 0 && daysText == 0){
                         message = `<div class="bg-red-100 px-2 pt-2  rounded-md">
-                            <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  กรอกแบบฟอร์มครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
-                            <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> กรุณากรอกฟอร์มภายในวันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span></div>
+                            <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  รอบการรายงาน : ครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
+                            <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> ช่วงเวลาการรายงาน : ภายใน วันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span><span class="highlight">เหลือเวลากรอกฟอร์มอีก (วันนี้ วันสุดท้าย)</span></div>
                             <div class="p-1">
                                 <span class="read-more-text" style="display: none;">
                                     <ul>
@@ -381,8 +388,8 @@
 
                     }else{
                         message = `<div class="bg-red-100 px-2 pt-2  rounded-md">
-                            <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  กรอกแบบฟอร์มครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
-                            <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> กรุณากรอกฟอร์มภายในวันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span></div>
+                            <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  รอบการรายงาน : ครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
+                            <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> ช่วงเวลาการรายงาน : ภายใน วันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
                             <div class="p-1">
                                 <span class="read-more-text" style="display: none;">
                                     <ul>
@@ -402,24 +409,24 @@
                         
             } else if(currentDate < openForm){
                 if(formStartYear === formEndYear){ //ถ้าอยู่ในปีเดียวกัน
-                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                    message = `<div>รอบการรายงาน : ครั้งที่${round.round} </div>
                             <div class="p-1">ภายในวันที่ ${formStartDay} ${formDates.formStartMonthThai} ถึง ${formEndDay} ${formDates.formEndMonthThai} ${formStartYear}</div>
                             <div class="mb-10 p-1"><span class="highlight">เเบบฟอร์มจะเปิดให้กรอกในอีก (${yearsTextStart}${monthsTextStart}${daysTextStart.trim()})</span></div>`;
                             
 
                 }else{
-                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                    message = `<div>รอบการรายงาน : ครั้งที่ ${round.round} </div>
                             <div class="p-1">ภายในวันที่ ${announcementDuration.dateOpen} ถึง ${announcementDuration.dateClose}</div>
                             <div class="mb-10 p-1"><span class="highlight">เเบบฟอร์มจะเปิดให้กรอกในอีก (${yearsTextStart}${monthsTextStart}${daysTextStart.trim()})</span></div>`;
                 }
             }else{
                 if(formStartYear === formEndYear){ //ถ้าอยู่ในปีเดียวกัน
-                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                    message = `<div>รอบการรายงาน : ครั้งที่ ${round.round} </div>
                             <div class="mb-10 p-1">ภายในวันที่ ${formStartDay} ${formDates.formStartMonthThai} ถึง ${formEndDay} ${formDates.formEndMonthThai} ${formStartYear}</div>`;
                             
 
                 }else{
-                    message = `<div>กรอกแบบฟอร์มครั้งที่ ${round.round} </div>
+                    message = `<div>รอบการรายงาน : ครั้งที่ ${round.round} </div>
                             <div class="mb-10 p-1">ภายในวันที่ ${announcementDuration.dateOpen} ถึง ${announcementDuration.dateClose}</div>`;
                 }
             }
@@ -441,7 +448,7 @@
             }
 
             Swal.fire({
-                title: 'ช่วงเวลากรอกฟอร์ม / อัพโหลดไฟล์',
+                title: 'การรายงานผลความคืบหน้า',
                 html: '<style>.highlight { color: red; }</style>' +
                     message,
                 imageUrl: "/img/favi.png",
