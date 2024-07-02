@@ -20,7 +20,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: mydatabase
+      MYSQL_DATABASE: EvaluationSheet
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
