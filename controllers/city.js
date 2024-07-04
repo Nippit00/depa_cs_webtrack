@@ -1,9 +1,6 @@
 const db = require("../db.js");
 const moment = require('moment'); //ใช้ในการคำนวณวันที่
 
-// ****************
-// **  getCity   **
-// ****************
 exports.GetCity = (req, res) => {
   const cityID = req.session.userID;
   const qCityData =
@@ -149,14 +146,11 @@ exports.GetCity = (req, res) => {
   }
 };
 
-
-
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
   const q = `
     SELECT * FROM solution
     JOIN smart ON solution.smartKey = smart.smartKey
-    
     JOIN citydata ON citydata.cityID = solution.cityID
     JOIN city_home ON city_home.cityID = solution.cityID
     WHERE solution.cityID = ?
@@ -443,7 +437,7 @@ exports.getCityUpload = (req, res, next) => {
 };
 
 exports.getHistory = (req, res, next) => {
-  q = "SELECT * FROM `Login_log` WHERE cityID = ?";
+  q = "SELECT * FROM `login_log` WHERE cityID = ?";
   // console.log(req.session.cityID)
   db.query(q, [req.session.userID], (err, data) => {
     if (err) return res.status(500).json(err);

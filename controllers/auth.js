@@ -34,15 +34,18 @@ exports.PostLogin = (req, res) => {
   db.query(q, [username], (err, data) => {
     try {
       if (err || !data || data.length === 0) {
+        console.log("Not Found user")
        // Handle admin login
-       const AdminC = "SELECT * FROM `AdminInfo` WHERE AdminUsername = ?";
+       const AdminC = "SELECT * FROM `admininfo` WHERE adminusername = ?";
        db.query(AdminC, [username], (err, adminData) => {
-         try {
+        console.log(adminData)
            if (err || !adminData || adminData.length === 0) {
              return res.status(404).redirect("/login");
            }
+           console.log("Found Admin")
            const adminInfo = adminData[0];
            if (adminInfo.AdminPassword === password) {
+            console.log("Admin complete check password")
              req.session.isAdmin = true;
              req.session.userID = adminInfo.AdminUsername;
              // Log admin login
@@ -52,7 +55,7 @@ exports.PostLogin = (req, res) => {
           });
               
              const logQuery =
-               "INSERT INTO `Login_log` (`cityID`, `login_time`) VALUES (?, ?)";
+               "INSERT INTO `login_log` (`cityID`, `login_time`) VALUES (?, ?)";
              db.query(
                logQuery,
                [adminInfo.AdminUsername, timestamp],
@@ -68,11 +71,10 @@ exports.PostLogin = (req, res) => {
            } else {
              return res.redirect("/login");
            }
-         } catch (error) {
-           console.log(error);
-         }
+        
        });
       } else {
+        console.log("Found user")
         const cityData = data[0];
         bcrypt.compare(password, cityData.password, (err, result) => {
           if (err || !result) {
@@ -86,7 +88,7 @@ exports.PostLogin = (req, res) => {
             hour12: false,
         });
           const logQuery =
-            "INSERT INTO `Login_log` (`cityID`, `login_time`) VALUES (?, ?)";
+            "INSERT INTO `login_log` (`cityID`, `login_time`) VALUES (?, ?)";
           db.query(logQuery, [cityData.cityID, timestamp], (err, log) => {
             if (err) {
               console.log("Error logging user login:", err);
@@ -126,7 +128,7 @@ exports.postLogout = (req, res) => {
       hour12: false,
   });
     const updateQuery =
-      "UPDATE `Login_log` SET `logout_time`=? WHERE `Login_ID`=?";
+      "UPDATE `login_log` SET `logout_time`=? WHERE `Login_ID`=?";
     db.query(updateQuery, [logoutTime, loginID], (err, result) => {
       if (err) {
         console.log("Error updating logout time:", err);

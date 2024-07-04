@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 const moment = require('moment');
 exports.getAdPage = (req, res, next) => {
-  const q = "SELECT r.* FROM `Round` r INNER JOIN (SELECT `date`, MAX(`round`) as max_round FROM `Round` GROUP BY `date` ) sub ON r.`date` = sub.`date` AND r.`round` = sub.`max_round` ORDER BY r.`date` ASC;";
+  const q = "SELECT r.* FROM `round` r INNER JOIN (SELECT `date`, MAX(`round`) as max_round FROM `round` GROUP BY `date` ) sub ON r.`date` = sub.`date` AND r.`round` = sub.`max_round` ORDER BY r.`date` ASC;";
   const q1 = "SELECT citydata.cityID, citydata.province, citydata.date, city_home.cityName FROM `citydata` JOIN city_home ON citydata.cityID=city_home.cityID WHERE 1 ORDER BY citydata.cityID ASC;";
   const qStatus = "SELECT city_home.cityID, COUNT(CASE WHEN solution.status = 0 THEN 1 END) AS status0_count, COUNT(CASE WHEN solution.status = 1 THEN 1 END) AS status1_count, COUNT(CASE WHEN solution.status = 2 THEN 1 END) AS status2_count FROM solution JOIN city_home ON city_home.cityID = solution.cityID GROUP BY city_home.cityID;";
   
@@ -92,7 +92,7 @@ exports.notification = (req, res, next) => {
 };
 
 exports.getHistoryPage = (req, res, next) => {
-  q = "SELECT * FROM `Login_log` ORDER BY `Login_ID` DESC;"
+  q = "SELECT * FROM `login_log` ORDER BY `Login_ID` DESC;"
   db.query(q, (err, data) => {
     if (err) return res.status(500).json(err);
     // console.log(data);
@@ -372,9 +372,9 @@ exports.postAddCity = async (req, res, next) => {
 
       await queryDatabase("INSERT INTO city_home SET ?", cityHomeData);
 
-      const roundExists = await queryDatabase("SELECT * FROM `Round` WHERE Date=?", [date]);
+      const roundExists = await queryDatabase("SELECT * FROM `round` WHERE Date=?", [date]);
       if (roundExists.length === 0) {
-          await queryDatabase("INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, '2020-06-20', '2020-06-20', 1)", [date]);
+          await queryDatabase("INSERT INTO `round` (`Date`, `open`, `close`, `round`) VALUES (?, '2020-06-20', '2020-06-20', 1)", [date]);
       }
 
       res.render("admin/ad-city/ad-addCity", {
@@ -429,8 +429,8 @@ exports.postUpdateProvince = (req, res, next) => {
   delete newData._csrf;
   console.log(req.body);
 
-  const querydate = "SELECT Round.round, Round.open, Round.close FROM `Round` JOIN citydata ON Round.Date = citydata.date WHERE citydata.cityID = ?";
-  const insertdateround = "INSERT INTO `Round`(`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
+  const querydate = "SELECT round.round, round.open, round.close FROM `round` JOIN citydata ON round.Date = citydata.date WHERE citydata.cityID = ?";
+  const insertdateround = "INSERT INTO `round`(`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
   const query = "UPDATE citydata SET ? WHERE cityID = ?";
 
   db.query(querydate, [cityID], (err, oldRound) => {
@@ -552,9 +552,6 @@ exports.postAddSolution = (req, res, next) => {
     });
   });
 };
-
-
-
 
 exports.getEditSolution = (req, res, next) => {
   // console.log(req.params);
@@ -753,7 +750,7 @@ exports.updateSolution = (req, res, next) => {
 
 exports.getRoundPage = (req, res, next) => {
   const q1 = "SELECT DISTINCT `date` FROM `citydata` ORDER BY `date` ASC;";
-  const q2 = "SELECT * FROM `Round` WHERE 1 ORDER BY `date` ASC;";
+  const q2 = "SELECT * FROM `round` WHERE 1 ORDER BY `date` ASC;";
 
   db.query(q1, (err, dates) => {
     if (err) return res.status(500).json(err);
@@ -799,7 +796,7 @@ exports.postRound = (req, res, next) => {
   const processDateRound = (date, round, open, close, callback) => {
     const formattedDate = moment(date).toDate(); // ใช้ moment เพื่อจัดการวันที่
     
-    const selectSql = "SELECT COUNT(*) as count FROM `Round` WHERE `Date` = ? AND `round` = ?";
+    const selectSql = "SELECT COUNT(*) as count FROM `round` WHERE `Date` = ? AND `round` = ?";
     db.query(selectSql, [formattedDate, round], (selectErr, selectResult) => {
       if (selectErr) {
         console.error(selectErr);
@@ -809,7 +806,7 @@ exports.postRound = (req, res, next) => {
       const count = selectResult[0].count;
       if (count > 0) {
         // If date and round exist, update the record
-        const updateSql = "UPDATE `Round` SET `open` = ?, `close` = ? WHERE `Date` = ? AND `round` = ?";
+        const updateSql = "UPDATE `round` SET `open` = ?, `close` = ? WHERE `Date` = ? AND `round` = ?";
         const updateValues = [open, close, formattedDate, round];
         db.query(updateSql, updateValues, (updateErr, updateResult) => {
           if (updateErr) {
@@ -821,7 +818,7 @@ exports.postRound = (req, res, next) => {
         });
       } else {
         // If date and round do not exist, insert a new record
-        const insertSql = "INSERT INTO `Round` (`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
+        const insertSql = "INSERT INTO `round` (`Date`, `open`, `close`, `round`) VALUES (?, ?, ?, ?)";
         const insertValues = [formattedDate, open, close, round];
         db.query(insertSql, insertValues, (insertErr, insertResult) => {
           if (insertErr) {
