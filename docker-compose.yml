@@ -10,7 +10,7 @@ services:
     environment:
       - DB_HOST=db
       - DB_USER=root
-      - DB_PASSWORD=example
+      - DB_PASSWORD=Depa@1234
       - DB_NAME=EvaluationSheet
     volumes:
       - .:/usr/src/app
@@ -20,7 +20,7 @@ services:
     platform: linux/amd64
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: Depa@1234
       MYSQL_DATABASE: EvaluationSheet
       MYSQL_INITDB_SKIP_TZINFO: 1
     volumes:
