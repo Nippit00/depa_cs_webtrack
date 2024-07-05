@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   # node-app:
   #   build: .
@@ -12,42 +13,33 @@ services:
   #     - DB_USER=root
   #     - DB_PASSWORD=example
   #     - DB_NAME=EvaluationSheet
+
   db:
     image: mysql:5.7
-    container_name: db-container
-    ports:
-      - "6959:3306"
+    platform: linux/amd64
+    restart: always
     environment:
-      MYSQL_DATABASE: 'Greeting'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: EvaluationSheet
     volumes:
-      - db-data:/var/lib/mysql
-  
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin-container
-    ports:
-      - "6960:80"
-    environment:
-      PMA_HOST: db
-      PMA_USER: user
-      PMA_PASSWORD: password
+      - db_data_new:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mysql-client:
+    image: mysql:5.7
+    platform: linux/amd64
+    command: ["mysql", "-h", "db", "-uroot", "-pexample"]
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
 volumes:
-  db_data:
+  db_data_new:
+
   # ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'example';
 # FLUSH PRIVILEGES;
+
