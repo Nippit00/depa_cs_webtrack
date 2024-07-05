@@ -34,8 +34,7 @@ services:
       - "80:80"
     environment:
       PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: example
     volumes:
       - ./php-config/php.ini:/usr/local/etc/php/php.ini
 
