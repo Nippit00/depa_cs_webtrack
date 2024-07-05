@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   node-app:
     build: .
@@ -12,6 +13,9 @@ services:
       - DB_USER=root
       - DB_PASSWORD=example
       - DB_NAME=EvaluationSheet
+    volumes:
+      - .:/usr/src/app
+
   db:
     image: mysql:5.7
     platform: linux/amd64
@@ -26,6 +30,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+
   # phpmyadmin:
   #   image: phpmyadmin/phpmyadmin
   #   platform: linux/amd64
@@ -38,10 +43,5 @@ services:
   #   volumes:
   #     - ./php-config/php.ini:/usr/local/etc/php/php.ini
 
-    
-    
-  
 volumes:
   db_data:
-  # ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'example';
-# FLUSH PRIVILEGES;
