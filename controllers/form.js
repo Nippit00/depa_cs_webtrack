@@ -531,7 +531,7 @@ exports.saveAnsObjcdp1 = (req, res, next) => {
 };
 
 exports.comfirmFormcheck = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const data = req.body.dataChecks;
   const progress = data.A2; // Ensure this is correctly assigned
   const solutionID = req.params.solutionID;
@@ -548,11 +548,11 @@ exports.comfirmFormcheck = (req, res, next) => {
   if (progress === undefined || progress === null) {
     return res.status(400).json({ error: 'Progress value is missing or invalid' });
   }
-  console.log("Active function")
+  // console.log("Active function")
   // send notification
   if (req.body.dataChecks.A1 === "ยกเลิก" || req.body.dataChecks.A1 === "ปรับแผน") {
     solutionID;
-    console.log("Active condition");
+    // console.log("Active condition");
     const q = "SELECT citydata.province, solution.solutionName FROM `solution` JOIN citydata ON solution.cityID = citydata.cityID WHERE solution.solutionID = ?";
     
     try {

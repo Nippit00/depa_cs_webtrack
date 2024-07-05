@@ -116,20 +116,38 @@
 
                         <% const keysQ=Object.keys(dataCheck).filter(key=> key.startsWith('Q'));
                             const keysA = Object.keys(dataCheck).filter(key => key.startsWith('A'));
-
-                            for (let i = 0; i < Math.max(keysQ.length, keysA.length); i++) { const keyQ=keysQ[i]; const
-                                keyA=keysA[i]; %>
-                                <p>
-                                    <% if (keyQ) { %>
-                                        <%= dataCheck[keyQ] %>
-                                            <% } %>:
-                                                <% if (keyA) { %>
-                                                    <span class="highlight">
-                                                        <%= dataCheck[keyA] %>
-                                                    </span>
-                                                    <% } %>
-                                </p>
-                                <% } %>
+                            console.log(dataCheck['A1']!=='ยกเลิก')
+                            if(dataCheck['A1']!=='ยกเลิก'&&dataCheck['A1']!=='ปรับแผน'){
+                                for (let i = 0; i < Math.max(keysQ.length, keysA.length); i++) { const keyQ=keysQ[i]; const
+                                    keyA=keysA[i]; %>
+                                    <p>
+                                        <% if (keyQ) { %>
+                                            <%= dataCheck[keyQ] %>
+                                                <% } %>:
+                                                    <% if (keyA) { %>
+                                                        <span class="highlight">
+                                                            <%= dataCheck[keyA] %>
+                                                        </span>
+                                                        <% } %>
+                                    </p>
+                                <% }
+                                } else{ 
+                                    for (let i = 0; i < Math.max(keysQ.length, keysA.length); i++) { const keyQ=keysQ[i]; const
+                                        keyA=keysA[i]; 
+                                        if(keyA==='A1'||keyA==='A2'||keyA==='A5'||keyA==='A8'){
+                                        %>
+                                        <p>
+                                            <% if (keyQ) { %>
+                                                <%= dataCheck[keyQ] %>
+                                                    <% } %>:
+                                                        <% if (keyA) { %>
+                                                            <span class="highlight">
+                                                                <%= dataCheck[keyA] %>
+                                                            </span>
+                                                            <% } %>
+                                        </p>
+                                    <% }}
+                                } %>
                     </div>
 
                     <div>
@@ -138,7 +156,8 @@
                             <% dataKpi.forEach(function(item) { %>
                                 <% if (item.kpiID===key ) { %>
                                     <p>
-                                        <%= item.kpiName %>: <div class="highlight">ผลการดำเนินงาน: <%= dataCheck[key] %>
+                                        <%= item.kpiName %>: <div class="highlight">ผลการดำเนินงาน: <%= dataCheck[key]
+                                                    %>
                                             </div>
                                     </p>
                                     <% } %>
