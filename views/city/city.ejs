@@ -90,8 +90,8 @@
         
             
        
-        <div>
-            <img src="/img/banner.jpg" alt="Banner Image" class="w-full">
+        <div class=" ">
+            <img src="/img/banner.png" alt="Banner Image" class="w-full ">
         </div>
         <div class="text-4xl flex font-normal justify-center py-5 flex-wrap">
             <p>แผน </p>
@@ -373,16 +373,22 @@
                             <div class="p-1">
                                 <span class="read-more-text" style="display: none;">
                                     <ul>
-                                        <li>โดยเข้าไปกรอกได้ที่ </li>
-                                        <li>1. เลือกเมนู รายการความคืบหน้ารายโครงการ</li>
-                                        <li>2. เลือก smart ที่จะกรอกฟอร์ม</li>
-                                        <li>3. กดปุ่ม กรอกฟอร์ม ตามโครงการที่ต้องการกรอก</li>
+                                        <i class="fas fa-exclamation-triangle"></i><li class="highlight">วิธีการรายงาน :</li><i class="fas fa-exclamation-triangle"></i>
+                                        <li class="text-left p-1">ขั้นที่ 1 :รายการความคืบหน้ารายโครงการ</li>
+                                        <li class="text-left p-1">ขั้นที่ 2 :"หมวดของ smart" ที่ต้องการรายงาน</li>
+                                        <li class="text-left p-1">ขั้นที่ 3 :เลือก "โครงการ" ที่ต้องการรายงาน</li>
+                                        <li class="text-left p-1">ขั้นที่ 4 :กด "บันทึก" ทุกครั้งที่รายงาน เพื่อให้ท่านสามารถกลับมารายงานต่อได้ในภายใน</li>
+                                        <li class="text-left p-1">ขั้นที่ 5 :กด "ส่ง" เมื่อรายงานครบถ้วนเเละต้องการส่งรายงาน</li>
+                                    </ul>
+                                    <ul>
+                                        <li class="highlight">คำเตือน :</li>
+                                        <li class="text-left p-1">กดปุ่ม "บันทึก" ทุกครั้งที่ กรอกข้อมูล ระบบจะบันทึกข้อมูลให้</li>
+                                        <li class="text-left p-1">กดปุ่ม "ส่ง" เมื่อต้องการส่งรายงาน ท่านจะไม่สามารถเเก้ไขข้อมูลได้</li>
                                     </ul>
                                 </span>
-                                <span class="read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
+                                <span class="mb-10 p-1 read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
                                 
                             </div>
-                            <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (วันนี้ วันสุดท้าย)</span></div>
         
                         </div>`;
 
@@ -393,16 +399,22 @@
                             <div class="p-1">
                                 <span class="read-more-text" style="display: none;">
                                     <ul>
-                                        <li>โดยเข้าไปกรอกได้ที่ </li>
-                                        <li>1. เลือกเมนู รายการความคืบหน้ารายโครงการ</li>
-                                        <li>2. เลือก smart ที่จะกรอกฟอร์ม</li>
-                                        <li>3. กดปุ่ม กรอกฟอร์ม ตามโครงการที่ต้องการกรอก</li>
+                                        <i class="fas fa-exclamation-triangle"></i><li class="highlight">วิธีการรายงาน </li><i class="fas fa-exclamation-triangle"></i>
+                                        <li class="text-left p-1">ขั้นที่ 1 :รายการความคืบหน้ารายโครงการ</li>
+                                        <li class="text-left p-1">ขั้นที่ 2 :"หมวดของ smart" ที่ต้องการรายงาน</li>
+                                        <li class="text-left p-1">ขั้นที่ 3 :เลือก "โครงการ" ที่ต้องการรายงาน</li>
+                                        <li class="text-left p-1">ขั้นที่ 4 :กด "บันทึก" ทุกครั้งที่รายงาน เพื่อให้ท่านสามารถกลับมารายงานต่อได้ในภายใน</li>
+                                        <li class="text-left p-1">ขั้นที่ 5 :กด "ส่ง" เมื่อรายงานครบถ้วนเเละต้องการส่งรายงาน</li>
+                                    </ul>
+                                    <ul>
+                                        <li class="highlight">คำเตือน :</li>
+                                        <li class="text-left p-1">กดปุ่ม "บันทึก" ทุกครั้งที่ กรอกข้อมูล ระบบจะบันทึกข้อมูลให้</li>
+                                        <li class="text-left p-1">กดปุ่ม "ส่ง" เมื่อต้องการส่งรายงาน ท่านจะไม่สามารถเเก้ไขข้อมูลได้</li>
                                     </ul>
                                 </span>
-                                <span class="read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
+                                <span class="mb-10 p-1 read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
                                 
                             </div>
-                            <div class="mb-10 p-1"><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
         
                         </div>`;
                     }
@@ -435,14 +447,14 @@
 
 
             if (currentDate >= openAnvTwoYear) {
-                message += `<div class="bg-red-100 px-2 pt-2  rounded-md p-1">
+                message += `<div class="bg-red-100 px-2 pt-2  rounded-md p-1 mt-10">
                         <div class="p-1"><span class="highlight">*** </span>ถึงวันครบรอบเมืองเเล้ว <span class="highlight">*** </span></div>
                         <div><span class="highlight">*** </span>กรุณาอัพโหลดไฟล์รายงานครบ 2 ปี <span class="highlight">*** </span></div>
                         <div class="p-1">โดยเข้าไปอัพโหลดไฟล์รายงานได้ที่เมนู </div>
                         <div class="p-1">-ไฟล์รายงานครบ 2 ปี</div>
                         </div>`;
             } else {
-                message += `<div>จะครบรอบ 2 ปี คุณต้องอัพโหลดไฟล์รายงาน</div>
+                message += `<div class="mt-10">จะครบรอบ 2 ปี คุณต้องอัพโหลดไฟล์รายงาน</div>
                             <div>ภายในวันที่ ${announcementDuration.twoYearsLaterFormatThai} <span class="highlight">
                             <span class="highlight">เหลืออีก (${yearsTextReport}${monthsTextReport}${daysTextReport.trim()})</span></div> `;
             }

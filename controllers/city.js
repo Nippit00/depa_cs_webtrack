@@ -148,34 +148,11 @@ exports.GetCity = (req, res) => {
 
 exports.getCityDashboard = (req, res, next) => {
   const cityID = req.session.userID;
-  const q = `
-    SELECT * FROM solution
-    JOIN smart ON solution.smartKey = smart.smartKey
-    JOIN citydata ON citydata.cityID = solution.cityID
-    JOIN city_home ON city_home.cityID = solution.cityID
-    WHERE solution.cityID = ?
-    GROUP BY solution.solutionID;
-  `;
-  const qGetvalue = `
-    SELECT * FROM anssolution
-    JOIN solution ON anssolution.solutionID = solution.solutionID
-    WHERE solution.cityID = ?;
-  `;
-  const qGetprogress = `
-    SELECT * FROM solution
-    JOIN anssolution ON solution.solutionID = anssolution.solutionID
-    WHERE solution.cityID = ?;
-  `;
-  const qSmartKey = `
-  SELECT smartKey,solutionName FROM solution 
-  WHERE cityID=? `;
-  const qRound = `
-  SELECT *
-  FROM round
-  JOIN citydata ON round.Date = citydata.date
-  WHERE citydata.cityID = ?
-  ORDER BY round.round DESC;
-  `
+  const q = `SELECT * FROM solution JOIN smart ON solution.smartKey = smart.smartKey JOIN citydata ON citydata.cityID = solution.cityID JOIN city_home ON city_home.cityID = solution.cityID WHERE solution.cityID = ? GROUP BY solution.solutionID;`;
+  const qGetvalue = `SELECT * FROM anssolution JOIN solution ON anssolution.solutionID = solution.solutionID WHERE solution.cityID = ?;`;
+  const qGetprogress = `SELECT * FROM solution JOIN anssolution ON solution.solutionID = anssolution.solutionID WHERE solution.cityID = ?;`;
+  const qSmartKey = `SELECT smartKey,solutionName FROM solution  WHERE cityID=? `;
+  const qRound = `SELECT * FROM round JOIN citydata ON round.Date = citydata.date WHERE citydata.cityID = ? ORDER BY round.round DESC;`
 
   try {
     db.query(q, [cityID], (err, data) => {

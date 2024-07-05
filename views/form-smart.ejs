@@ -424,7 +424,7 @@
         const kpiFields = document.getElementById('KPI-Containner').querySelectorAll('input');
         const status = document.getElementById('status').value;
 
-        if (status !== 'ยกเลิก'||status !== 'ปรับแผน') {
+        if (status !== 'ยกเลิก'&&status !== 'ปรับแผน') {
             requiredFields.forEach(field => {
                 const element = field;
                 if (element && !element.value.trim()) {
@@ -603,7 +603,7 @@
         const status = document.getElementById('status').value;
         const fields = document.querySelectorAll('[id^="Q"]');
         fields.forEach(field => {
-            if (status === 'ยกเลิก') {
+            if (status === 'ยกเลิก'||status === 'ปรับแผน') {
                 if (field.id !== 'Q1' && field.id !== 'Q2' && field.id !== 'Q5' && field.id !== 'Q8') {
                     field.style.display = 'none';
                 } else {
@@ -615,7 +615,7 @@
         });
         const kpi = document.querySelectorAll('[id^="KPI"]');
         kpi.forEach(field => {
-            if (status === 'ยกเลิก') {
+            if (status === 'ยกเลิก'||status === 'ปรับแผน') {
 
                 field.style.display = 'none';
             }
@@ -623,6 +623,13 @@
                 field.style.display = '';
             }
         })
+        const saveButton =document.getElementById('saveButton')
+        if(status === 'ยกเลิก'||status === 'ปรับแผน'){
+            saveButton.style.display='none'
+        }
+        else{
+            saveButton.style.display=''
+        }
     }
 
     document.getElementById('status').addEventListener('change', toggleFields);

@@ -548,6 +548,48 @@ exports.comfirmFormcheck = (req, res, next) => {
   if (progress === undefined || progress === null) {
     return res.status(400).json({ error: 'Progress value is missing or invalid' });
   }
+  console.log("Active function")
+  // send notification
+  if (req.body.dataChecks.A1 === "ยกเลิก" || req.body.dataChecks.A1 === "ปรับแผน") {
+    solutionID;
+    console.log("Active condition");
+    const q = "SELECT citydata.province, solution.solutionName FROM `solution` JOIN citydata ON solution.cityID = citydata.cityID WHERE solution.solutionID = ?";
+    
+    try {
+        db.query(q, [solutionID], (err, data) => {
+            if (err) {
+                console.error("Database query error:", err);
+                return res.status(500).json(err);
+            }
+
+            const LINE_NOTIFY_TOKEN = "npl7B2crirxxrRoFmq3KFSNaR2xjGH4Ixn9G0KOUNDf";
+            const message = "จังหวัด " + data[0].province + "โครงการ " +solutionID+" "+data[0].solutionName + "ขอ " + req.body.dataChecks.A1;
+            const LINE_NOTIFY_API_URL = "https://notify-api.line.me/api/notify";
+
+            axios.post(LINE_NOTIFY_API_URL, `message=${encodeURIComponent(message)}`, {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Bearer ${LINE_NOTIFY_TOKEN}`,
+                },
+            })
+            .then(response => {
+                console.log("Notification sent:", response.data);
+                res.status(200).json({ message: "Notification sent successfully" });
+            })
+            .catch(error => {
+                console.error("Error sending notification:", error);
+                if (!res.headersSent) {
+                    res.status(500).json({ error: "Failed to send notification" });
+                }
+            });
+        });
+    } catch (err) {
+        console.error("Error during the request handling:", err);
+        if (!res.headersSent) {
+            res.status(500).json(err);
+        }
+    }
+}
 
   let queries = [];
   let kpiQueries = [];
@@ -702,6 +744,7 @@ exports.comfirmFormcheck = (req, res, next) => {
       });
     });
   }
+  
 };
 
 exports.postFormcheck = (req, res, next) => {

@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  node-app:
-    build: .
-    ports:
-      - "8888:8888"
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=example
-      - DB_NAME=EvaluationSheet
+  # node-app:
+  #   build: .
+  #   ports:
+  #     - "8888:8888"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_USER=root
+  #     - DB_PASSWORD=example
+  #     - DB_NAME=EvaluationSheet
 
   db:
     image: mysql:5.7
@@ -43,3 +43,7 @@ services:
 
 volumes:
   db_data:
+
+  # ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'example';
+# FLUSH PRIVILEGES;
+
