@@ -22,6 +22,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: EvaluationSheet
+      MYSQL_INITDB_SKIP_TZINFO: 1
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -29,6 +30,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    command: mysqld --innodb-force-recovery=1
 
 volumes:
   db_data:
