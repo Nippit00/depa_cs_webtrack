@@ -14,30 +14,28 @@ services:
   #     - DB_NAME=EvaluationSheet
   db:
     image: mysql:5.7
-    platform: linux/amd64
-    restart: always
+    container_name: db-container
+    ports:
+      - "6959:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: EvaluationSheet
+      MYSQL_DATABASE: 'Greeting'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
     volumes:
-      - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - db-data:/var/lib/mysql
+  
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    platform: linux/amd64
-    restart: always
+    container_name: phpmyadmin-container
     ports:
-      - "80:80"
+      - "6960:80"
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: example
-    volumes:
-      - ./php-config/php.ini:/usr/local/etc/php/php.ini
-
+      PMA_USER: user
+      PMA_PASSWORD: password
+    depends_on:
+      - db
 
     
           
