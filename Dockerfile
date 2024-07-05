@@ -10,13 +10,11 @@ COPY package*.json ./
 # Install the dependencies
 RUN npm install
 
-COPY .dockerignore package*.json ./
+# Rebuild native modules like bcrypt
+RUN npm rebuild bcrypt --build-from-source
 
 # Copy the rest of the application code to the working directory
 COPY . .
-
-# Rebuild native modules like bcrypt
-RUN npm rebuild bcrypt --build-from-source
 
 # Expose the port the app runs on
 EXPOSE 80
