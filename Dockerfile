@@ -19,7 +19,7 @@ COPY . .
 RUN npm rebuild bcrypt --build-from-source
 
 # Expose the port the app runs on
-EXPOSE 8888
+EXPOSE 80
 
 # Define the command to run the application
 CMD ["node", "app.js"]
