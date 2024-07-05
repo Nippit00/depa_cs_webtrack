@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 80
 
 # Define the command to run the application
-CMD ["sudo","node", "app.js"]
+CMD ["node", "app.js"]
