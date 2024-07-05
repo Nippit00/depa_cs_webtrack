@@ -34,7 +34,7 @@ services:
     platform: linux/amd64
     restart: always
     ports:
-      - "8080:80"
+      - "5959:5960"
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: example
