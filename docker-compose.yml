@@ -21,9 +21,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: EvaluationSheet
-      MYSQL_EXTRA_OPTS: "--innodb_force_recovery=1"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data_new:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -39,7 +38,7 @@ services:
         condition: service_healthy
 
 volumes:
-  db_data:
+  db_data_new:
 
   # ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'example';
 # FLUSH PRIVILEGES;
