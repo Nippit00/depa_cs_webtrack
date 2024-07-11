@@ -12,22 +12,22 @@ services:
     volumes:
       - .:/usr/src/app
 
-  # db:
-  #   image: mysql:5.7
-  #   platform: linux/amd64
-  #   restart: always
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: Depa@1234
-  #     MYSQL_DATABASE: EvaluationSheet
-  #     MYSQL_INITDB_SKIP_TZINFO: 1
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 3
-  #   command: mysqld --innodb-force-recovery=1
+  db:
+    image: mysql:latest
+    platform: linux/amd64
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Depa@1234
+      MYSQL_DATABASE: EvaluationSheet
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    command: mysqld --innodb-force-recovery=1
 
 volumes:
   db_data:
