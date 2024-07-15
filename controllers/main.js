@@ -57,6 +57,7 @@ GROUP BY cityID;
                 res.render("main", {
                     req,
                     pageTitle: "City Overview",
+                    cityName:"ยินดีต้อนรับ",
                     path: "/home",
                     fetchData: updatedCitiesData,
                 });

@@ -86,12 +86,28 @@
         </div>
     </div>
     <%- include('../component/navbar.ejs') %>
-    <div class="flex flex-col">
+    <div class="flex flex-col ">
         
             
        
-        <div class=" ">
-            <img src="/img/banner.png" alt="Banner Image" class="w-full ">
+        <div class="relative">
+            <img src="/img/banner.png" alt="Banner Image" class="w-full">
+        
+            <div class="absolute top-0 right-0 mt-4 mr-4">
+                <div id="alert" class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
+                    <div class="flex">
+                        <div class="py-1">
+                            <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-bold">Our privacy policy has changed</p>
+                            <p class="text-sm">Make sure you know how these changes affect you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="text-4xl flex font-normal justify-center py-5 flex-wrap">
             <p>แผน </p>
@@ -100,8 +116,8 @@
         <div class="my-3">
             <%- include('../component/menu1.ejs') %>
         </div>
-        <div class="flex flex-col lg:flex-row justify-around mt-10 mx-auto">
-            <div class="w-full  lg:w-1/2 p-5 lg:p-20">
+        <div class="flex flex-col lg:flex-row justify-around mt-10 mx-auto ">
+            <div class="w-full  lg:w-1/2 p-5 lg:p-20 ">
              
                 <div class="my-3  ">
                     <span class="text-lg text-gray-700 font-medium">ชื่อแผนเมืองอัจฉริยะ: </span>
@@ -197,6 +213,7 @@
                 </div>
             </div>
             <div class="w-full lg:w-1/2 p-5 lg:p-20">
+                
                 <div class="map-container">
                     <img src="/cityPic/<%= cityInfo.cityID %>.png" id="mapImage" class="w-full lg:h-96">
                 </div>
@@ -291,6 +308,9 @@
     </div>
 
     <script>
+        setTimeout(function() {
+            document.getElementById('alert').style.display = 'none';
+        }, 100000); // 10000 milliseconds = 10 seconds
         window.onload = function () {
             document.getElementById('spinner-container').style.display = 'none';
         };
@@ -371,9 +391,9 @@
                             <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  รอบการรายงาน : ครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
                             <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> ช่วงเวลาการรายงาน : ภายใน วันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span><span class="highlight">เหลือเวลากรอกฟอร์มอีก (วันนี้ วันสุดท้าย)</span></div>
                             <div class="p-1">
-                                <span class="read-more-text" style="display: none;">
+                                <span class="read-more-text" style="display: inline;">
                                     <ul>
-                                        <i class="fas fa-exclamation-triangle"></i><li class="highlight">วิธีการรายงาน :</li><i class="fas fa-exclamation-triangle"></i>
+                                        <li class="highlight mt-1">วิธีการรายงาน :</li>
                                         <li class="text-left p-1">ขั้นที่ 1 :รายการความคืบหน้ารายโครงการ</li>
                                         <li class="text-left p-1">ขั้นที่ 2 :"หมวดของ smart" ที่ต้องการรายงาน</li>
                                         <li class="text-left p-1">ขั้นที่ 3 :เลือก "โครงการ" ที่ต้องการรายงาน</li>
@@ -383,10 +403,9 @@
                                     <ul>
                                         <li class="highlight">คำเตือน :</li>
                                         <li class="text-left p-1">กดปุ่ม "บันทึก" ทุกครั้งที่ กรอกข้อมูล ระบบจะบันทึกข้อมูลให้</li>
-                                        <li class="text-left p-1">กดปุ่ม "ส่ง" เมื่อต้องการส่งรายงาน ท่านจะไม่สามารถเเก้ไขข้อมูลได้</li>
+                                        <li class="text-left p-1">กดปุ่ม "ส่งรายงาน" เมื่อต้องการส่งรายงาน ท่านจะไม่สามารถเเก้ไขข้อมูลได้</li>
                                     </ul>
                                 </span>
-                                <span class="mb-10 p-1 read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
                                 
                             </div>
         
@@ -397,14 +416,14 @@
                             <div class="p-1"><span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span>  รอบการรายงาน : ครั้งที่ ${round.round}  <span class="highlight"><i class="fas fa-bullhorn" style="color: red;"></i></span> </div>
                             <div class="p-1"> <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span> ช่วงเวลาการรายงาน : ภายใน วันที่ ${formEndDay} ${formDates.formEndMonthThai} ${formEndYear} <span class="highlight"><i class="fas fa-exclamation-triangle"></i></span><span class="highlight">เหลือเวลากรอกฟอร์มอีก (${yearsText}${monthsText}${daysText.trim()})</span></div>
                             <div class="p-1">
-                                <span class="read-more-text" style="display: none;">
+                                <span class="read-more-text" style="display: inline;">
                                     <ul>
-                                        <i class="fas fa-exclamation-triangle"></i><li class="highlight">วิธีการรายงาน </li><i class="fas fa-exclamation-triangle"></i>
+                                        <li class="highlight mt-1">วิธีการรายงาน </li>
                                         <li class="text-left p-1">ขั้นที่ 1 :รายการความคืบหน้ารายโครงการ</li>
                                         <li class="text-left p-1">ขั้นที่ 2 :"หมวดของ smart" ที่ต้องการรายงาน</li>
                                         <li class="text-left p-1">ขั้นที่ 3 :เลือก "โครงการ" ที่ต้องการรายงาน</li>
                                         <li class="text-left p-1">ขั้นที่ 4 :กด "บันทึก" ทุกครั้งที่รายงาน เพื่อให้ท่านสามารถกลับมารายงานต่อได้ในภายใน</li>
-                                        <li class="text-left p-1">ขั้นที่ 5 :กด "ส่ง" เมื่อรายงานครบถ้วนเเละต้องการส่งรายงาน</li>
+                                        <li class="text-left p-1">ขั้นที่ 5 :กด "ส่งรายงาน" เมื่อรายงานครบถ้วนเเละต้องการส่งรายงาน</li>
                                     </ul>
                                     <ul>
                                         <li class="highlight">คำเตือน :</li>
@@ -412,7 +431,6 @@
                                         <li class="text-left p-1">กดปุ่ม "ส่ง" เมื่อต้องการส่งรายงาน ท่านจะไม่สามารถเเก้ไขข้อมูลได้</li>
                                     </ul>
                                 </span>
-                                <span class="mb-10 p-1 read-more-btn" style="color: blue; cursor: pointer;" onclick="toggleReadMore()">อ่านเพิ่มเติม</span>
                                 
                             </div>
         

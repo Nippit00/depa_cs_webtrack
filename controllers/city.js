@@ -106,6 +106,7 @@ exports.GetCity = (req, res) => {
               const remainingDayStart = durationStartForm.days();
               res.render("city/city", {
                 req,
+                cityName: cityData[0].province,
                 pageTitle: cityData[0].cityname,
                 path: "/city",
                 cityInfo: cityData[0],
@@ -220,6 +221,7 @@ exports.getCityDashboard = (req, res, next) => {
                 res.render("city/dashboard", {
                   req,
                   pageTitle: "Dashboard",
+                  cityName: data[0].province,
                   path: "/city",
                   solutionInfo: JSON.stringify(dataUpdate),
                   data: data,
@@ -340,6 +342,7 @@ exports.getCityDashboard = (req, res, next) => {
               res.render("city/dashboard", {
                 req,
                 pageTitle: "Dashboard",
+                cityName: data[0].province,
                 path: "/city",
                 solutionInfo: JSON.stringify(dataUpdate),
                 data: data,
@@ -382,11 +385,12 @@ exports.getCityFollow = (req, res, next) => {
         const closeForm = moment(dataRound[0].close);
         openForm.hours(0).minutes(0).seconds(0).milliseconds(0);
         closeForm.hours(23).minutes(59).seconds(59).milliseconds(999);
-
+        
         if (err) return res.status(500).json(err);
         res.render("city/follow", {
           pageTitle: "Follow",
           path: "/city",
+          cityName: dataRound[0].province,
           followdata: followdata || [],
           dataRound:dataRound[0],
           dateForm:{
@@ -405,12 +409,17 @@ exports.getCityFollow = (req, res, next) => {
 
 exports.getCityUpload = (req, res, next) => {
   const cityid = req.session.userID
-  // Render the /upload page
-  res.render("city/upload", {
-    pageTitle: "Upload",
-    path: "/city",
-    cityid:cityid,
-  });
+  const q="SELECT `province` FROM `citydata` WHERE cityID=? "
+  db.query(q,[cityid],(err,province)=>{
+    if (err) return res.status(500).json(err);
+    res.render("city/upload", {
+      pageTitle: "Upload",
+      path: "/city",
+      cityName: province[0].province,
+      cityid:cityid,
+    });
+  })
+  
 };
 
 exports.getHistory = (req, res, next) => {

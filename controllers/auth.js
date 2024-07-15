@@ -10,6 +10,7 @@ exports.getLogin = (req, res, next) => {
    res.render("auth/login", {
      pageTitle: "Login - Authentication",
      path: "/login",
+     cityName:"ยินดีต้อนรับ",
      csrfToken: req.csrfToken(),
    });
  } catch (error) {
