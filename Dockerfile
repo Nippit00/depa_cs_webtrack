@@ -1,23 +1,23 @@
 # Use the official Node.js image from the Docker Hub
-FROM node:latest
+FROM node:18-alpine
 
 # Create and set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY package.json .
 
 # Install the dependencies
 RUN npm install
 
 # Rebuild native modules like bcrypt
-RUN npm rebuild bcrypt --build-from-source
+#RUN npm rebuild bcrypt --build-from-source
 
 # Copy the rest of the application code to the working directory
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 80
+EXPOSE 8888
 
 # Define the command to run the application
-CMD ["node", "app.js"]
+CMD ["npm", "start"]

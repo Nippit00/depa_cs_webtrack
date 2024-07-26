@@ -1,33 +1,48 @@
 version: '3.8'
+
 services:
-  node-app:
+  app:
     build: .
+    container_name: website
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db_depa
+    networks:
+      - webnet
+    environment:
+      DB_HOST: 'db_depa'
+      DB_USER: 'MYSQL_USER'
+      DB_PASSWORD: 'MYSQL_PASSWORD'
+      DB_DATABASE: 'EvaluationSheet'
+      PORT: 8888
+
+  db_depa:
+    image: mysql:8.4.2
+    container_name: db_depa
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - webnet
+    environment:
+      MYSQL_ROOT_PASSWORD: 'MYSQL_ROOT_PASSWORD'
+      MYSQL_DATABASE: 'EvaluationSheet'
+      MYSQL_USER: 'MYSQL_USER'
+      MYSQL_PASSWORD: 'MYSQL_PASSWORD'
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-containers
     ports:
       - "80:80"
+    depends_on:
+      - db_depa
+    networks:
+      - webnet
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=Depa@1234
-      - DB_NAME=EvaluationSheet
-    volumes:
-      - .:/usr/src/app
+      PMA_HOST: db_depa
+      PMA_PORT: "3306"
 
-  # db:
-  #   image: mysql:latest
-  #   platform: linux/amd64
-  #   restart: always
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: Depa@1234
-  #     MYSQL_DATABASE: EvaluationSheet
-  #     MYSQL_INITDB_SKIP_TZINFO: 1
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 3
-  #   command: mysqld --innodb-force-recovery=1
-
-volumes:
-  db_data:
+networks:
+  webnet:
