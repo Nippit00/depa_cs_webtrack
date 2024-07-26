@@ -31,7 +31,6 @@ GROUP BY cityID;
             if (err) {
                 return res.status(500).json({ error: "queryError", message: err.message });
             }
-
             db.query(queryAvgProgress, (err, progressData) => {
                 if (err) {
                     return res.status(500).json({ error: "queryError", message: err.message });
@@ -49,7 +48,7 @@ GROUP BY cityID;
                         years: duration.years(),
                         months: duration.months(),
                         days: duration.days(),
-                        averageProgress: cityProgress ? cityProgress.AvgProgress.toFixed(0) : "N/A", // Format average progress to 0 decimal places
+                        averageProgress: cityProgress ? cityProgress.AvgProgress : "N/A", // Format average progress to 0 decimal places
                         completionPercentage: cityCompletionInfo.PercentageCompleted
                     };
                 });
