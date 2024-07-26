@@ -29,10 +29,11 @@
         <img src="/img/navpic.png" class="w-72">
       </div>
       <div class="text-[#14B8A6] inline-flex items-center relative">
-        <% if(0){ %>
+        <% if(typeof cityName !== 'undefined'){ %>
+        <% if(cityName){ %>
           <span><%= cityName %></span>
         <% } %>
-        <% if(0 ){ %>
+        <% if(cityName != "ยินดีต้อนรับ"){ %>
           <span class="relative hover:bg-red-500 rounded-full duration-300 cursor-pointer" id="notification-icon">
             <svg class="w-9" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#00B2A9">
               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -52,7 +53,7 @@
               <li class="mb-2">Notification 3</li>
             </ul>
           </div>
-        <% } %>
+        <% } }%>
       </div>
       
       <% if (!isAuthenticated) { %>
